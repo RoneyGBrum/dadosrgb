@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<!--
+════════════════════════════════════════════════════════════════════════
+  PROPOSTA DE FLUXO DE TRABALHO — WBG FELLOWSHIP PROGRAM · MGI
+  Versão 3.0 — Revisão pós-reunião de alinhamento
+════════════════════════════════════════════════════════════════════════
+
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ CHANGELOG v3.0 (ajustes deliberados na reunião de alinhamento)      │
+  │                                                                     │
+  │  • Objetivos:  "processo SEI INDIVIDUAL POR VAGA" + objetivo de     │
+  │                previsibilidade de prazos (mín./máx.) e gargalos.    │
+  │  • Atores:     nota de governança — interlocução com o BM           │
+  │                centralizada na SGP/SE; com os órgãos via DGIMP+SE;   │
+  │                Embaixadas do Brasil como facilitador local.         │
+  │  • Fase 1:     inclusão da DEPRO (e ASSINT como evolução futura).   │
+  │  • Fase 2:     abertura do PROCESSO SEI ANTES da publicação;        │
+  │                divulgação ampliada (LinkedIn + órgãos); previsão    │
+  │                de RELATÓRIO FINAL no edital (recomendação TCU).     │
+  │  • Fase 5:     comunicação/feedback aos candidatos por SGP + SE.    │
+  │  • Fase 6:     registro da interlocução com o órgão; comunicação    │
+  │                às embaixadas; MoA como modelo vinculado ao edital.  │
+  │  • Fase 7:     separação RESPONSÁVEL × APOIO + canal FAQ/SAQ.       │
+  │  • NOVO slide: "Prazos do Ciclo" (70–80 dias úteis, gargalo BM).   │
+  │  • NOVO slide: "Evolução do Programa" (escala, embaixadas,          │
+  │                novos parceiros).                                     │
+  │                                                                     │
+  │  OBS.: NÃO foi incluída ação afirmativa no edital (decisão da       │
+  │        reunião). Ponto mantido em aberto para deliberação futura.   │
+  │                                                                     │
+  │  COMO EDITAR: cada bloco abaixo está comentado. Para alterar um     │
+  │  passo, procure o comentário "// PASSO" ou "<!-- EDITÁVEL:".        │
+  └────────────────────────────────────────────────────────────────────┘
+-->
+<html lang="pt-BR">
+<head>
+<script>document.documentElement.className='js';</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Proposta de Fluxo de Trabalho — WBG Fellowship Program · MGI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ══════════════════════════════════════════════════════════════
+     PAINEL DE CORES (PALETA HARMONIZADA EM TODO O DOCUMENTO)
+     ══════════════════════════════════════════════════════════════ */
+  :root{
+    --navy:#16234A;   /* azul-marinho — cor da Fase 1 e da coordenação (SE)       */
+    --blue:#3D5C93;   /* azul médio   — cor da Fase 2 e da execução interna MGI   */
+    --amber:#BD6A2E;  /* laranja/âmbar— cor da Fase 3, decisões e retornos        */
+    --teal:#3E7568;   /* verde-azulado— cor da Fase 4, avanços e do Banco Mundial */
+    --sand:#A6916A;   /* areia/dourado— cor da Fase 5                             */
+    --mist:#6C7CA6;   /* azul acinzentado — cor da Fase 6 e pós-seleção           */
+
+    /* fundo e texto */
+    --paper:#EEF0F7;  /* cor de fundo de toda a página                           */
+    --card:#FFFFFF;   /* cor de fundo dos cartões/caixas                         */
+    --ink:#12172B;    /* cor do texto principal (quase preto)                    */
+    --muted:#5B6478;  /* cor do texto secundário (cinza-azulado)                 */
+    --line:#D8DCEC;   /* cor de linhas e bordas finas                            */
+
+    /* TIPOGRAFIA E ESPAÇAMENTO */
+    --fs-eyebrow:.78rem;
+    --fs-h2:clamp(1.9rem,3.6vw,3.1rem);
+    --fs-body:clamp(1rem,1.2vw,1.15rem);
+    --fs-cover-h1:clamp(2.6rem,7vw,5.4rem);
+    --pad-slide-y:clamp(80px,10vw,120px);
+    --pad-slide-x:clamp(24px,6vw,96px);
+
+    --radius-sm:8px; --radius-md:14px; --radius-lg:22px;
+    --shadow-sm:0 1px 2px rgba(18,23,43,.06), 0 1px 1px rgba(18,23,43,.05);
+    --shadow-md:0 10px 30px rgba(18,23,43,.08);
+    --shadow-lg:0 28px 64px rgba(18,23,43,.16);
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    overflow-x:hidden;
+    scroll-snap-type:y proximity;
+  }
+  ::selection{background:rgba(189,106,46,.22);}
+  h1,h2,h3{font-family:'Manrope',system-ui,sans-serif;margin:0;letter-spacing:-0.01em;}
+  p{margin:0;}
+  button{font-family:inherit;}
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- estrutura fixa: barra de progresso + navegação lateral ---------- */
+  .progress-track{
+    position:fixed;top:0;left:0;right:0;height:3px;
+    background:rgba(22,35,74,.12);
+    z-index:60;
+  }
+  .progress-fill{
+    height:100%;width:0%;
+    background:linear-gradient(to right,var(--navy),var(--amber));
+  }
+  .rail-nav{
+    position:fixed;right:22px;top:50%;transform:translateY(-50%);
+    z-index:60;display:flex;flex-direction:column;gap:10px;
+    align-items:flex-end;
+  }
+  .rail-dot{
+    display:flex;align-items:center;gap:10px;background:none;border:none;
+    cursor:pointer;padding:3px;
+  }
+  .rail-dot .dot{
+    width:8px;height:8px;border-radius:50%;background:rgba(22,35,74,.25);
+    transition:all .35s var(--ease);
+  }
+  .rail-dot .rail-label{
+    font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--navy);
+    opacity:0;transform:translateX(6px);transition:all .3s var(--ease);
+    white-space:nowrap;background:var(--card);padding:4px 10px;border-radius:6px;
+    box-shadow:var(--shadow-sm);
+  }
+  .rail-dot:hover .rail-label{opacity:1;transform:translateX(0);}
+  .rail-dot.active .dot{background:var(--amber);width:22px;border-radius:4px;}
+  .rail-dot:focus-visible .dot{outline:2px solid var(--amber);outline-offset:3px;}
+  @media (max-width:1024px){.rail-nav{display:none;}}
+
+  /* ---------- base de cada slide ---------- */
+  .slide{
+    scroll-snap-align:start;
+    min-height:100svh;
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+    padding:var(--pad-slide-y) var(--pad-slide-x) clamp(56px,8vw,96px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'IBM Plex Mono',monospace;font-size:var(--fs-eyebrow);font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--amber);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--amber);}
+  .display{
+    font-size:var(--fs-h2);font-weight:700;line-height:1.08;
+    color:var(--navy);max-width:900px;
+  }
+  .lead{
+    font-size:var(--fs-body);line-height:1.75;color:var(--muted);
+    max-width:680px;margin-top:22px;
+  }
+  .watermark{
+    position:absolute;right:clamp(0px,3vw,40px);top:clamp(20px,6vw,40px);
+    font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(6rem,18vw,15rem);
+    color:var(--navy);opacity:.045;line-height:1;user-select:none;pointer-events:none;
+    z-index:0;
+  }
+  .slide > *{position:relative;z-index:1;}
+
+  .js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .js .reveal.is-visible{opacity:1;transform:none;}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{transition-duration:.001ms !important;animation-duration:.001ms !important;}
+  }
+
+  /* ---------- capa ---------- */
+  .cover{justify-content:center;align-items:flex-start;}
+  .cover .kicker{
+    font-family:'IBM Plex Mono',monospace;font-size:.8rem;letter-spacing:.1em;
+    color:var(--navy);text-transform:uppercase;font-weight:600;
+  }
+  .cover .kicker span{display:block;font-weight:400;color:var(--muted);letter-spacing:.02em;
+    text-transform:none;margin-top:6px;font-size:.85rem;}
+  .cover .rule{width:64px;height:2px;background:var(--amber);margin:28px 0;}
+  .cover h1{font-size:var(--fs-cover-h1);font-weight:800;color:var(--navy);line-height:1.02;}
+  .cover h2{
+    font-size:clamp(1.15rem,2.4vw,1.7rem);font-weight:500;color:var(--teal);margin-top:14px;
+  }
+  .cover .lead{margin-top:26px;}
+  .cover .meta{
+    margin-top:56px;display:flex;gap:36px;flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--muted);
+  }
+  .cover .meta b{color:var(--navy);font-weight:600;}
+  .scroll-cue{
+    position:absolute;bottom:40px;left:var(--pad-slide-x);display:flex;align-items:center;gap:10px;
+    font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted);
+    cursor:pointer;background:none;border:none;
+  }
+  .scroll-cue svg{animation:bob 1.8s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+  /* ---------- mini linha do tempo (contexto) ---------- */
+  .mini-tl{display:flex;gap:0;margin-top:44px;flex-wrap:wrap;}
+  .mini-tl-item{flex:1;min-width:160px;padding-right:24px;position:relative;}
+  .mini-tl-item:not(:last-child)::after{
+    content:'';position:absolute;top:6px;right:0;width:calc(100% - 0px);height:1px;background:var(--line);
+  }
+  .mini-tl-dot{width:11px;height:11px;border-radius:50%;background:var(--amber);margin-bottom:14px;}
+  .mini-tl-date{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--navy);font-weight:600;}
+  .mini-tl-text{font-size:.86rem;color:var(--muted);margin-top:6px;line-height:1.5;}
+  .stat-chip{
+    display:inline-flex;align-items:baseline;gap:10px;margin-top:32px;padding:14px 22px;
+    background:var(--card);border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow-sm);
+  }
+  .stat-chip b{font-family:'Manrope',sans-serif;font-size:1.5rem;font-weight:800;color:var(--amber);}
+  .stat-chip span{font-size:.86rem;color:var(--muted);}
+
+  /* ---------- objetivos ---------- */
+  .obj-list{margin-top:40px;display:flex;flex-direction:column;}
+  .obj-item{
+    display:grid;grid-template-columns:64px 1fr;gap:26px;padding:26px 0;
+    border-top:1px solid var(--line);
+  }
+  .obj-item:last-child{border-bottom:1px solid var(--line);}
+  .obj-num{font-family:'IBM Plex Mono',monospace;font-size:1.4rem;font-weight:600;color:var(--line);}
+  .obj-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy);margin-bottom:6px;}
+  .obj-desc{font-size:.95rem;color:var(--muted);line-height:1.65;max-width:640px;}
+
+  /* ---------- organograma de atores ---------- */
+  .org-chart{margin-top:48px;display:flex;flex-direction:column;gap:28px;}
+  .org-tier{display:flex;gap:20px;flex-wrap:wrap;align-items:stretch;}
+  .org-box{
+    background:var(--card);border-radius:var(--radius-md);padding:18px 22px;
+    box-shadow:var(--shadow-sm);border-top:3px solid transparent;min-width:180px;
+    display:flex;flex-direction:column;gap:4px;justify-content:center;
+  }
+  .org-box-label{font-family:'Manrope',sans-serif;font-weight:700;font-size:.98rem;color:var(--ink);}
+  .org-box-role{font-size:.78rem;color:var(--muted);line-height:1.4;}
+  .org-box--teal{border-top-color:var(--teal);}
+  .org-box--navy{border-top-color:var(--navy);}
+  .org-box--blue{border-top-color:var(--blue);}
+  .org-box--amber{border-top-color:var(--amber);}
+  .org-box--sand{border-top-color:var(--sand);}
+  .org-arrow{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;color:var(--line);align-self:center;}
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px;}
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+  .legend-item i{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0;}
+
+  /* ---------- cartões da visão geral ---------- */
+  .quad-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .quad-card{
+    background:var(--card);border-radius:var(--radius-lg);padding:30px;box-shadow:var(--shadow-sm);
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease);border:1px solid var(--line);
+  }
+  .quad-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+  .quad-icon{color:var(--amber);margin-bottom:16px;}
+  .quad-card:nth-child(2) .quad-icon{color:var(--teal);}
+  .quad-card:nth-child(3) .quad-icon{color:var(--blue);}
+  .quad-card:nth-child(4) .quad-icon{color:var(--navy);}
+  .quad-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy);margin-bottom:10px;}
+  .quad-desc{font-size:.92rem;color:var(--muted);line-height:1.6;}
+
+  /* ---------- linha do tempo macro (7 fases) ---------- */
+  .macro-timeline{position:relative;margin-top:54px;padding-top:22px;}
+  .macro-line-track{position:absolute;left:22px;right:22px;top:22px;height:2px;background:var(--line);}
+  .macro-line-fill{height:100%;width:0%;background:linear-gradient(to right,var(--navy),var(--blue),var(--amber),var(--teal),var(--sand),var(--mist),var(--navy));transform-origin:left;transition:width 1.6s var(--ease);}
+  .macro-timeline.in-view .macro-line-fill{width:100%;}
+  .macro-row{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;position:relative;}
+  .macro-node{
+    display:flex;flex-direction:column;align-items:center;gap:12px;background:none;border:none;
+    cursor:pointer;text-align:center;padding:0 4px;
+  }
+  .macro-num{
+    width:42px;height:42px;border-radius:50%;background:var(--c,var(--navy));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
+    font-weight:600;box-shadow:var(--shadow-sm);flex-shrink:0;
+  }
+  .macro-label{font-size:.78rem;color:var(--ink);line-height:1.35;}
+  .macro-label b{display:block;font-family:'Manrope',sans-serif;font-weight:700;color:var(--navy);font-size:.88rem;margin-bottom:2px;}
+  .hint{margin-top:34px;font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted);}
+
+  /* ---------- seções de fase ---------- */
+  .phase-grid{display:grid;grid-template-columns:320px 1fr;gap:56px;margin-top:36px;align-items:start;}
+  .phase-left{position:sticky;top:64px;}
+  .phase-tag{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.76rem;letter-spacing:.1em;
+    text-transform:uppercase;color:#fff;background:var(--c,var(--navy));padding:6px 14px;border-radius:999px;
+    margin-bottom:20px;font-weight:500;
+  }
+  .phase-title{font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(1.6rem,2.6vw,2.2rem);color:var(--navy);line-height:1.12;}
+  .phase-desc{font-size:.96rem;color:var(--muted);line-height:1.65;margin-top:16px;}
+  .phase-stats{margin-top:26px;display:flex;flex-direction:column;gap:10px;}
+  .phase-stat{
+    display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--navy);
+    background:rgba(22,35,74,.06);border:1px solid rgba(22,35,74,.12);padding:10px 14px;border-radius:10px;
+  }
+  .steps-list{position:relative;}
+  .steps-list::before{content:'';position:absolute;left:27px;top:30px;bottom:30px;width:2px;background:var(--line);}
+  .step{display:grid;grid-template-columns:56px 1fr;gap:24px;padding:26px 0;position:relative;}
+  .step-num{
+    width:56px;height:56px;border-radius:50%;background:var(--c,var(--navy));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
+    font-weight:600;font-size:1.1rem;box-shadow:var(--shadow-sm);position:relative;z-index:1;flex-shrink:0;
+  }
+  .step-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:1.02rem;color:var(--ink);margin-bottom:8px;}
+  .step-desc{font-size:.92rem;color:var(--muted);line-height:1.62;max-width:620px;}
+  .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{
+    display:inline-flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+    font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:5px 11px;border-radius:999px;
+    border:1px solid transparent;
+  }
+  /* pílulas de AGENTE */
+  .pill-se{background:rgba(22,35,74,.08);color:var(--navy);border-color:rgba(22,35,74,.2);}
+  .pill-dgimp{background:rgba(61,92,147,.1);color:var(--blue);border-color:rgba(61,92,147,.24);}
+  .pill-comissao{background:rgba(189,106,46,.1);color:var(--amber);border-color:rgba(189,106,46,.26);}
+  .pill-bm{background:rgba(62,117,104,.1);color:var(--teal);border-color:rgba(62,117,104,.26);}
+  .pill-mgi{background:rgba(91,100,120,.1);color:var(--muted);border-color:rgba(91,100,120,.22);}
+  .pill-orgao{background:rgba(166,145,106,.14);color:var(--sand);border-color:rgba(166,145,106,.3);}
+  .pill-bolsista{background:rgba(18,23,43,.045);color:var(--ink);border-color:var(--line);}
+  .pill-ascom{background:rgba(189,106,46,.12);color:#A8551E;border-color:rgba(189,106,46,.28);}
+  .pill-assint{background:rgba(62,117,104,.14);color:var(--teal);border-color:rgba(62,117,104,.3);}
+  .pill-depro{background:rgba(61,92,147,.15);color:#243D68;border-color:rgba(61,92,147,.35);}
+  /* EDITÁVEL: pílula de APOIO — use quando o setor apenas apoia/é consultado
+     (borda tracejada + tom suave). Ex.: <span class="pill pill-apoio">SE · apoio</span> */
+  .pill-apoio{background:transparent;color:var(--muted);border:1px dashed rgba(91,100,120,.5);}
+  /* EDITÁVEL: pílula de EMBAIXADA (facilitador local no país de destino) */
+  .pill-embaixada{background:rgba(62,117,104,.08);color:#2E5A50;border-color:rgba(62,117,104,.28);}
+  /* pílula de PRAZO */
+  .pill-prazo{background:rgba(18,23,43,.05);color:var(--ink);border-color:var(--line);}
+  /* pílula de FASE */
+  .pill-fase{background:var(--c,var(--navy));color:#fff;border-color:transparent;font-weight:700;}
+
+  /* Botão interativo do modal */
+  .btn-modal{
+    display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;
+    font-size:.82rem;font-weight:600;color:var(--navy);background:var(--card);
+    border:1px solid var(--navy);padding:8px 14px;border-radius:8px;cursor:pointer;
+    transition:all .25s var(--ease);margin-top:12px;box-shadow:var(--shadow-sm);
+  }
+  .btn-modal:hover{background:var(--navy);color:#fff;transform:translateY(-1px);box-shadow:var(--shadow-md);}
+
+  /* Modal de explicação da comissão */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(18,23,43,.65);backdrop-filter:blur(4px);
+    z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
+    animation:fadeIn .25s var(--ease);
+  }
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .modal-box{
+    background:var(--card);border-radius:var(--radius-lg);max-width:640px;width:100%;
+    padding:32px;box-shadow:var(--shadow-lg);border:1px solid var(--line);position:relative;
+    animation:scaleUp .25s var(--ease);
+  }
+  @keyframes scaleUp{from{transform:scale(.95);opacity:0;}to{transform:none;opacity:1;}}
+  .modal-close{
+    position:absolute;top:20px;right:20px;background:none;border:none;font-size:1.5rem;
+    color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;
+  }
+  .modal-close:hover{background:var(--paper);color:var(--ink);}
+  .modal-title{font-family:'Manrope',sans-serif;font-weight:800;font-size:1.35rem;color:var(--navy);margin-bottom:14px;padding-right:24px;}
+  .modal-body{font-size:.95rem;color:var(--ink);line-height:1.7;}
+  .modal-note{
+    margin-top:18px;padding:16px;background:rgba(189,106,46,.08);border-left:4px solid var(--amber);
+    border-radius:6px;font-size:.88rem;color:#7A3E12;line-height:1.6;
+  }
+
+  @media (max-width:960px){
+    .macro-row{grid-template-columns:1fr;gap:20px;}
+    .macro-line-track{left:22px;right:auto;top:22px;bottom:22px;width:2px;height:auto;}
+    .macro-node{flex-direction:row;text-align:left;}
+    .macro-label{text-align:left;}
+  }
+  @media (max-width:860px){
+    .phase-grid{grid-template-columns:1fr;gap:32px;}
+    .phase-left{position:relative;top:0;}
+    .quad-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- síntese ---------- */
+  #s13{max-width:1760px;}
+  .synth-stat{
+    margin-top:28px;padding:26px 30px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+  }
+  .synth-stat b{font-family:'Manrope',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:var(--amber);}
+  .synth-stat span{font-size:.92rem;color:var(--muted);max-width:560px;line-height:1.55;}
+
+  .hz-timeline{position:relative;margin-top:44px;overflow-x:auto;overflow-y:visible;padding:6px 4px 20px;-webkit-overflow-scrolling:touch;}
+  .hz-timeline::-webkit-scrollbar{height:8px;}
+  .hz-row{display:flex;gap:10px;position:relative;z-index:1;padding:0 4px;}
+  .hz-track{position:absolute;left:4px;right:4px;top:50%;height:2px;background:var(--line);transform:translateY(-50%);z-index:0;}
+  .hz-track-fill{height:100%;width:100%;background:linear-gradient(to right,var(--navy),var(--blue),var(--amber),var(--teal),var(--sand),var(--mist),var(--navy));transform-origin:left;}
+  .js .hz-timeline .hz-track-fill{width:0%;transition:width 1.6s var(--ease);}
+  .js .hz-timeline.is-visible .hz-track-fill{width:100%;}
+  .hz-item{flex:1 1 0;min-width:90px;display:flex;flex-direction:column;align-items:center;}
+  .hz-zone{height:220px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .hz-zone--top{justify-content:flex-end;}
+  .hz-zone--bottom{justify-content:flex-start;}
+  .hz-stem{width:2px;height:14px;background:var(--line);flex-shrink:0;}
+  .hz-num{
+    width:46px;height:46px;border-radius:50%;background:var(--c,var(--navy));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
+    font-weight:600;font-size:1rem;box-shadow:var(--shadow-sm);flex-shrink:0;position:relative;z-index:1;
+  }
+  .hz-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:.86rem;color:var(--ink);line-height:1.25;}
+  .hz-desc{font-size:.74rem;color:var(--muted);line-height:1.4;margin-top:4px;}
+  .hz-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-top:8px;}
+  .hz-tags .pill{padding:3px 7px;font-size:.58rem;}
+  @media (max-width:640px){
+    .hz-title{font-size:.78rem;}
+    .hz-desc{font-size:.68rem;}
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     NOVO SLIDE 14: FLUXOGRAMA DIDÁTICO COM IDAS E VINDAS
+     ══════════════════════════════════════════════════════════════ */
+  #s14{max-width:1400px;}
+  .route-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+    margin-top:32px;position:relative;
+  }
+  .route-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);
+    padding:22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:12px;
+    position:relative;transition:all .35s var(--ease);border-left:5px solid var(--c,var(--navy));
+  }
+  .route-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--c,var(--navy));}
+  .route-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .route-step-id{
+    font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:700;
+    color:#fff;background:var(--c,var(--navy));padding:4px 10px;border-radius:6px;
+  }
+  .route-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy);line-height:1.2;}
+  .route-desc{font-size:.86rem;color:var(--muted);line-height:1.5;}
+  
+  /* Seção de rotas, avanços e retornos (Idas e Vindas) */
+  .route-paths{
+    margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);
+    display:flex;flex-direction:column;gap:8px;font-size:.8rem;font-family:'Inter',sans-serif;
+  }
+  .path-item{display:flex;align-items:flex-start;gap:8px;line-height:1.35;}
+  .path-icon{font-weight:800;flex-shrink:0;width:18px;text-align:center;}
+  .path-advance{color:var(--teal);font-weight:600;}
+  .path-return{color:var(--amber);font-weight:600;background:rgba(189,106,46,.08);padding:6px 8px;border-radius:6px;border-left:2px solid var(--amber);}
+  
+  .route-actors{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+  
+  .route-transversal{
+    margin-top:24px;background:rgba(22,35,74,.03);border:1px dashed var(--navy);
+    border-radius:var(--radius-md);padding:18px 24px;display:flex;align-items:center;
+    justify-content:space-between;gap:20px;flex-wrap:wrap;
+  }
+  .route-transversal h4{font-family:'Manrope',sans-serif;font-weight:700;font-size:1rem;color:var(--navy);}
+  .route-transversal p{font-size:.85rem;color:var(--muted);margin-top:4px;}
+
+  @media (max-width:1024px){
+    .route-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:680px){
+    .route-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- encerramento (SLIDE 15) — PALETA HARMONIZADA CLARA --------- */
+  .closing{background:var(--paper);color:var(--ink);align-items:center;text-align:center;}
+  .closing-icon{color:var(--amber);margin-bottom:28px;}
+  .closing h2{font-family:'Manrope',sans-serif;font-weight:700;font-size:clamp(1.7rem,3.4vw,2.6rem);max-width:860px;margin:0 auto;color:var(--navy);line-height:1.15;}
+  .closing .lead{color:var(--muted);margin:22px auto 0;max-width:680px;text-align:center;}
+  .closing .meta{margin-top:44px;font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted);}
+  .rgb-mark{
+    position:absolute;bottom:26px;right:var(--pad-slide-x);font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;letter-spacing:.16em;color:var(--muted);opacity:.5;
+  }
+
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--paper);}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
+</style>
+</head>
+<body>
+
+<!-- MODAL INTERATIVO DA COMISSÃO DE SELEÇÃO -->
+<div id="comissaoModal" class="modal-overlay" onclick="closeModalOnBg(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('comissaoModal')" aria-label="Fechar">×</button>
+    <div class="modal-title">Dinâmica da Avaliação pela Comissão</div>
+    <div class="modal-body">
+      Feita a pré-seleção pela equipe da <strong>CGMOP</strong>, é realizada uma reunião com a comissão para explicar a dinâmica da avaliação. Os nomes com os respectivos currículos são enviados para os membros da comissão e estes devem fazer a sua escolha individual dos três melhores candidatos segundo seu ponto de vista (<strong>escolha cega</strong>).<br><br>
+      Depois, a <strong>DGIMP</strong> reúne o resultado e, se houver necessidade de desempate ou definição final, a comissão se reúne para essa deliberação.
+    </div>
+    <div class="modal-note">
+      <strong>Nota importante:</strong> É orientado que seja escolhida, dentro do possível, <em>ao menos uma mulher</em> para composição da lista tríplice, lembrando que, até o momento, ainda não foram definidos critérios afirmativos formais de reforço de gênero ou cor/origem étnica.
+    </div>
+  </div>
+</div>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="rail-nav" id="railNav" aria-label="Navegação da apresentação">
+  <button class="rail-dot" data-target="#s00" aria-label="Capa"><span class="rail-label">Capa</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s01" aria-label="Contextualização"><span class="rail-label">01 · Contexto</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s02" aria-label="Objetivos"><span class="rail-label">02 · Objetivos</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s03" aria-label="Atores"><span class="rail-label">03 · Atores</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s04" aria-label="Visão geral"><span class="rail-label">04 · Visão geral</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s05" aria-label="Fluxo de trabalho"><span class="rail-label">05 · Fluxo Macro</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s06" aria-label="Fase 1"><span class="rail-label">06 · Fase 1</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s07" aria-label="Fase 2"><span class="rail-label">07 · Fase 2</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s08" aria-label="Fase 3"><span class="rail-label">08 · Fase 3</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s09" aria-label="Fase 4"><span class="rail-label">09 · Fase 4</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s10" aria-label="Fase 5"><span class="rail-label">10 · Fase 5</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s11" aria-label="Fase 6"><span class="rail-label">11 · Fase 6</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s12" aria-label="Fase 7"><span class="rail-label">12 · Fase 7</span><span class="dot"></span></button>
+  <!-- EDITÁVEL: dot do novo slide Prazos -->
+  <button class="rail-dot" data-target="#sPrazos" aria-label="Prazos do Ciclo"><span class="rail-label">Prazos do Ciclo</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s13" aria-label="Síntese"><span class="rail-label">13 · Síntese</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s14" aria-label="Fluxograma"><span class="rail-label">14 · Fluxograma</span><span class="dot"></span></button>
+  <!-- EDITÁVEL: dot do novo slide Evolução -->
+  <button class="rail-dot" data-target="#sEvolucao" aria-label="Evolução do Programa"><span class="rail-label">Evolução</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s15" aria-label="Encerramento"><span class="rail-label">15 · Encerramento</span><span class="dot"></span></button>
+</nav>
+
+<main id="main">
+
+<!-- ══════════════════════════════════════════════════════════════
+     CAPA (SLIDE 00)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide cover" id="s00">
+  <div class="kicker">Ministério da Gestão e da Inovação em Serviços Públicos
+    <span>Secretaria de Gestão de Pessoas · DEPRO · CGMOP · DGIMP</span>
+  </div>
+  <div class="rule"></div>
+  <h1>Proposta de<br>Fluxo de Trabalho</h1>
+  <h2>Programa de Bolsas do Banco Mundial — WBG Fellowship Program</h2>
+  <p class="lead">Definição de papéis, responsabilidades e prazos por setor. Acompanha modelos de Edital, Termo de Referência (TOR) e Memorando de Acordo (MoA).</p>
+  <div class="meta">
+    <span><b>Brasília/DF</b> — Julho de 2026</span>
+    <span><b>Versão 3.0</b> — Revisão pós-reunião de alinhamento</span>
+  </div>
+  <button class="scroll-cue" data-target="#s01">
+    Role para explorar
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+  </button>
+  <span class="rgb-mark">RGB</span>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CONTEXTUALIZAÇÃO (SLIDE 01)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s01">
+  <span class="watermark">01</span>
+  <span class="eyebrow reveal">01 — Contextualização</span>
+  <h2 class="display reveal">Cenário atual</h2>
+  <p class="lead reveal">Em 21 de agosto de 2025, o Ministério da Gestão e da Inovação em Serviços Públicos (MGI) e o Grupo Banco Mundial (WBG) firmaram <strong>Memorando de Entendimento (MoU)</strong> que estabeleceu o arcabouço institucional do <strong>Programa de Bolsas (Fellowship Program)</strong>. O programa permite que servidores públicos federais brasileiros sejam designados, por meio de <strong>Nomeação para Missão Especial (Special Assignment Appointment)</strong>, para atuar em unidades do Banco Mundial no exterior, por período de <strong>doze meses</strong>, <strong>mantendo o vínculo, a remuneração e a previdência</strong> com a Administração Pública brasileira. O instrumento possui <strong>vigência inicial de dois anos</strong> — com término previsto para <strong>21 de agosto de 2027</strong> —, não havendo menção expressa a prorrogação automática; contudo, prevê que suas disposições e prazos podem ser <strong>alterados mediante comunicação escrita e mútua</strong> entre as partes.</p>
+  <p class="lead reveal">O primeiro ciclo do programa (2025–2026) resultou na seleção de servidores, com a celebração de Memorandos de Acordo (MoA) entre o WBG e os órgãos de exercício das pessoas Servidoras — a exemplo da ANEEL e do Ministério do Planejamento e Orçamento (MPO). Esse ciclo demonstrou a relevância da iniciativa, mas também evidenciou uma fragilidade estrutural: <b style="color:var(--navy)">a ausência de um fluxo de trabalho formalmente definido</b>.</p>
+
+  <div class="mini-tl reveal">
+    <div class="mini-tl-item"><div class="mini-tl-dot"></div><div class="mini-tl-date">21 AGO 2025</div><div class="mini-tl-text">MoU firmado entre MGI e Grupo Banco Mundial</div></div>
+    <div class="mini-tl-item"><div class="mini-tl-dot"></div><div class="mini-tl-date">2025–2026</div><div class="mini-tl-text">1º ciclo: bolsistas selecionados para ANEEL e MPO</div></div>
+    <div class="mini-tl-item"><div class="mini-tl-dot"></div><div class="mini-tl-date">JUL 2026</div><div class="mini-tl-text">Esta proposta de fluxo em 7 fases</div></div>
+  </div>
+
+  <div class="stat-chip reveal"><b>12 meses</b><span>de missão no exterior, com vínculo, remuneração e previdência mantidos no Brasil</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     OBJETIVOS DA PROPOSTA (SLIDE 02)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s02">
+  <span class="watermark">02</span>
+  <span class="eyebrow reveal">02 — Objetivos da Proposta</span>
+  <h2 class="display reveal">O que este fluxo resolve</h2>
+  <div class="obj-list">
+    <div class="obj-item reveal"><div class="obj-num">01</div><div><div class="obj-title">Padronizar</div><div class="obj-desc">Estabelecer um fluxo padronizado em 7 fases, do levantamento de setores até o retorno da pessoa servidora, com etapas, responsáveis e prazos.</div></div></div>
+    <div class="obj-item reveal"><div class="obj-num">02</div><div><div class="obj-title">Delimitar</div><div class="obj-desc">Delimitar atribuições por setor, eliminando sobreposições e lacunas de competência.</div></div></div>
+    <!-- EDITÁVEL: ajuste deliberado — "SEI INDIVIDUAL POR VAGA" -->
+    <div class="obj-item reveal"><div class="obj-num">03</div><div><div class="obj-title">Governar</div><div class="obj-desc">Reforçar a governança documental: um processo SEI <strong>individual por vaga</strong>, com vinculação de MoA, TOR e demais peças ao edital.</div></div></div>
+    <div class="obj-item reveal"><div class="obj-num">04</div><div><div class="obj-title">Disciplinar</div><div class="obj-desc">Disciplinar prazos e obrigações, incluindo os do Banco Mundial, bem como a comunicação da instituição com os candidatos.</div></div></div>
+    <!-- EDITÁVEL: novo objetivo (previsibilidade de prazos / gargalos) -->
+    <div class="obj-item reveal"><div class="obj-num">05</div><div><div class="obj-title">Prever</div><div class="obj-desc">Dar previsibilidade ao ciclo: estimar prazos mínimos e máximos por fase e evidenciar os gargalos — sobretudo os que dependem do Banco Mundial.</div></div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ATORES (SLIDE 03) — COM CAIXA ABRAÇANDO E ASSINT
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s03">
+  <span class="watermark">03</span>
+  <span class="eyebrow reveal">03 — Atores</span>
+  <h2 class="display reveal">Atores e governança institucional</h2>
+  <p class="lead reveal">Cada unidade responde por etapas específicas do processo.</p>
+
+  <div class="org-chart reveal">
+    <div class="org-tier">
+      <div class="org-box org-box--teal" style="flex:1;"><span class="org-box-label">Banco Mundial</span><span class="org-box-role">Parceiro externo</span></div>
+      <div class="org-box org-box--navy" style="flex:1;"><span class="org-box-label">Secretaria Executiva (SE)</span><span class="org-box-role">Coordenação institucional · interlocutora</span></div>
+    </div>
+    
+    <div class="org-tier" style="align-items:stretch;">
+      <div class="org-box org-box--blue" style="flex:2.2; display:flex; flex-direction:column; justify-content:center; background:rgba(61,92,147,.04); border:1px solid rgba(61,92,147,.22);">
+        <span class="org-box-label" style="color:var(--navy); margin-bottom:12px; font-size:1.05rem;">Secretaria de Gestão de Pessoas (SGP) <span class="mono" style="font-size:.78rem; font-weight:normal; color:var(--muted); display:inline-block; margin-left:6px;">· Execução Interna MGI</span></span>
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div style="background:var(--card); border:1px solid var(--line); padding:10px 16px; border-radius:8px; font-weight:700; font-size:.88rem; color:var(--blue); box-shadow:var(--shadow-sm); flex:1; text-align:center;">DEPRO</div>
+          <span class="org-arrow">→</span>
+          <div style="background:var(--card); border:1px solid var(--line); padding:10px 16px; border-radius:8px; font-weight:700; font-size:.88rem; color:var(--blue); box-shadow:var(--shadow-sm); flex:1; text-align:center;">CGMOP</div>
+          <span class="org-arrow">→</span>
+          <div style="background:var(--card); border:1px solid var(--line); padding:10px 16px; border-radius:8px; font-weight:700; font-size:.88rem; color:var(--blue); box-shadow:var(--shadow-sm); flex:1; text-align:center;">DGIMP</div>
+        </div>
+      </div>
+      
+      <div class="org-box org-box--sand" style="flex:1; justify-content:center; border-top-color:var(--teal);">
+        <span class="org-box-label" style="color:var(--teal);">ASSINT</span>
+        <span class="org-box-role">Assessoria Internacional</span>
+      </div>
+      <div class="org-box org-box--sand" style="flex:1; justify-content:center; border-top-color:var(--teal);">
+        <span class="org-box-label" style="color:var(--teal);">ASCOM</span>
+        <span class="org-box-role">Assessoria de Comunicação</span>
+      </div>
+    </div>
+
+    <div class="org-tier">
+      <div class="org-box org-box--amber" style="flex:1;"><span class="org-box-label">Comissão de Seleção</span><span class="org-box-role">Órgão colegiado · avaliação técnica</span></div>
+      <div class="org-box org-box--sand" style="flex:1;"><span class="org-box-label">Órgão de Exercício</span><span class="org-box-role">Parceiro institucional · órgão de atuação da pessoa servidora</span></div>
+      <div class="org-box org-box--amber" style="flex:1;"><span class="org-box-label">Servidor</span><span class="org-box-role">Bolsista que participará do intercâmbio</span></div>
+    </div>
+
+    <!-- EDITÁVEL: quarto nível — facilitador local no país de destino -->
+    <div class="org-tier">
+      <div class="org-box org-box--teal" style="flex:1;"><span class="org-box-label">Embaixadas do Brasil</span><span class="org-box-role">Ciência da missão e apoio institucional no país de destino</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       EDITÁVEL: NOTA DE GOVERNANÇA (definições de interlocução da reunião)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="reveal" style="margin-top:26px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+    <div style="background:var(--card); border:1px solid var(--line); border-left:3px solid var(--navy); border-radius:var(--radius-md); padding:14px 16px; box-shadow:var(--shadow-sm);">
+      <div style="font-weight:700; color:var(--navy); font-size:.92rem; margin-bottom:4px;">Interlocução com o Banco Mundial</div>
+      <div style="color:var(--muted); font-size:.86rem; line-height:1.5;">Centralizada na <strong>DEPRO</strong>, com acompanhamento da <strong>SE</strong> — garante controle de prazos e respostas.</div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--line); border-left:3px solid var(--blue); border-radius:var(--radius-md); padding:14px 16px; box-shadow:var(--shadow-sm);">
+      <div style="font-weight:700; color:var(--blue); font-size:.92rem; margin-bottom:4px;">Interlocução com os órgãos interessados no programa</div>
+      <div style="color:var(--muted); font-size:.86rem; line-height:1.5;">Conduzida pela <strong>CGMOP</strong>, com apoio da <strong>DEPRO</strong>, no âmbito da SGP.</div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:var(--radius-md); padding:14px 16px; box-shadow:var(--shadow-sm);">
+      <div style="font-weight:700; color:var(--teal); font-size:.92rem; margin-bottom:4px;">ASSINT — evolução futura</div>
+      <div style="color:var(--muted); font-size:.86rem; line-height:1.5;">Participação a partir da <strong>Fase 1</strong> (definição de áreas), como aprimoramento previsto do fluxo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     VISÃO GERAL / 4 CARTÕES (SLIDE 04)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s04">
+  <span class="watermark">04</span>
+  <span class="eyebrow reveal">04 — Visão Geral</span>
+  <h2 class="display reveal">O processo em quatro ideias</h2>
+  <p class="lead reveal">Visão geral do processo de seleção para afastamento internacional no formato atualizado.</p>
+
+  <div class="quad-grid">
+    <div class="quad-card reveal">
+      <div class="quad-icon"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><ellipse cx="24" cy="24" rx="8" ry="18"/><line x1="6" y1="24" x2="42" y2="24"/><path d="M9 14c6 4 24 4 30 0M9 34c6-4 24-4 30 0"/></svg></div>
+      <div class="quad-title">Propósito do Afastamento</div>
+      <div class="quad-desc">Promover a qualificação de servidores no exterior, fortalecendo competências institucionais por meio de intercâmbio técnico internacional.</div>
+    </div>
+    <div class="quad-card reveal">
+      <div class="quad-icon"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M16 24l6 6 12-12"/></svg></div>
+      <div class="quad-title">Seleção em 7 Fases</div>
+      <div class="quad-desc">O processo agora é organizado em 7 fases sequenciais e contínuas, cobrindo desde a prospecção do escopo com o Banco até o encerramento da missão.</div>
+    </div>
+    <div class="quad-card reveal">
+      <div class="quad-icon"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="10" r="4"/><circle cx="10" cy="34" r="4"/><circle cx="38" cy="34" r="4"/><circle cx="24" cy="24" r="4"/><path d="M24 14v6M13 32l7-6M35 32l-7-6"/></svg></div>
+      <div class="quad-title">Integração de Sistemas</div>
+      <div class="quad-desc">Utiliza plataformas parcialmente integradas: Sigepe Oportunidades, SIAPE, Recruta.Gov e SEI, assegurando rastreabilidade e eficiência em cada etapa.</div>
+    </div>
+    <div class="quad-card reveal">
+      <div class="quad-icon"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="18" y="6" width="12" height="8" rx="2"/><rect x="4" y="30" width="12" height="8" rx="2"/><rect x="18" y="30" width="12" height="8" rx="2"/><rect x="32" y="30" width="12" height="8" rx="2"/><path d="M24 14v8M10 22v8M24 22v8M38 22v8M10 22h28"/></svg></div>
+      <div class="quad-title">Organização do Processo</div>
+      <div class="quad-desc">Cada fase possui responsáveis definidos, prazos claros e entregas específicas.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FLUXO MACRO / 7 FASES (SLIDE 05)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s05">
+  <span class="watermark">05</span>
+  <span class="eyebrow reveal">05 — Fluxo de Trabalho</span>
+  <h2 class="display reveal">Sete fases, um só processo</h2>
+  <p class="lead reveal">Fluxo Macro Operacional</p>
+
+  <div class="macro-timeline reveal" id="macroTimeline">
+    <div class="macro-line-track"><div class="macro-line-fill"></div></div>
+    <div class="macro-row">
+      <button class="macro-node" style="--c:var(--navy)" data-target="#s06"><span class="macro-num">01</span><span class="macro-label"><b>Fase 1</b>Áreas de Interesse</span></button>
+      <button class="macro-node" style="--c:var(--blue)" data-target="#s07"><span class="macro-num">02</span><span class="macro-label"><b>Fase 2</b>Lançamento Edital</span></button>
+      <button class="macro-node" style="--c:var(--amber)" data-target="#s08"><span class="macro-num">03</span><span class="macro-label"><b>Fase 3</b>Inscrições e Triagem</span></button>
+      <button class="macro-node" style="--c:var(--teal)" data-target="#s09"><span class="macro-num">04</span><span class="macro-label"><b>Fase 4</b>Comissão Avaliadora</span></button>
+      <button class="macro-node" style="--c:var(--sand)" data-target="#s10"><span class="macro-num">05</span><span class="macro-label"><b>Fase 5</b>Resultados</span></button>
+      <button class="macro-node" style="--c:var(--mist)" data-target="#s11"><span class="macro-num">06</span><span class="macro-label"><b>Fase 6</b>Formalização</span></button>
+      <button class="macro-node" style="--c:var(--navy)" data-target="#s12"><span class="macro-num">07</span><span class="macro-label"><b>Fase 7</b>Contínuas</span></button>
+    </div>
+  </div>
+  <p class="hint reveal">Clique em uma fase para ver o detalhamento técnico e prazos ↓</p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FASE 1: DEFINIÇÃO DAS ÁREAS DE INTERESSE (SLIDE 06)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s06">
+  <span class="watermark">06</span>
+  <span class="eyebrow reveal">06 — Fase 1 de 7</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--navy)">Fase 1</span>
+      <div class="phase-title">Definição das Áreas de Interesse</div>
+      <p class="phase-desc">Alinhamento estratégico do escopo temático com o organismo internacional e recebimento dos requisitos técnicos.</p>
+      <div class="phase-stats">
+        <div class="phase-stat">2 etapas</div>
+        <div class="phase-stat">30 a 60 dias (prazos concomitantes/sequenciais)</div>
+      </div>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">01</div>
+        <div>
+          <div class="step-title">Definição das Áreas de Interesse</div>
+          <div class="step-desc">Destina-se ao alinhamento estratégico das áreas de cooperação técnica, contemplando os <strong>setores prioritários,</strong> como: <strong>(I) Sustentabilidade e Infraestrutura:</strong> Clima e Meio Ambiente, Recursos Hídricos e Energia, Infraestrutura, Transporte e Mobilidade, Planejamento Urbano e Habitação, e Riscos de Desastres; <strong>(II) Desenvolvimento Social:</strong> Saúde Pública e Proteção Social; <strong>(III) Inovação e Governo Digital:</strong> Governo Digital e Transformação do Estado; <strong>(IV) Gestão Pública:</strong> Gestão de Pessoas, Compras Públicas, Estatais, Arquivos Públicos e Serviços Compartilhados.</div><div class="tag-row">
+            <!-- EDITÁVEL: DEPRO incluída na definição de áreas; ASSINT como evolução futura -->
+            <span class="pill pill-se">SE · Apoio</span>
+            <span class="pill pill-depro">DEPRO · Coordenação</span> 
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-apoio">ASSINT · futuro</span>
+            <span class="pill pill-prazo">Prazo: 15 a 30 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">02</div>
+        <div>
+          <div class="step-title">Elaboração do Termo de Referência (TOR)</div>
+          <div class="step-desc">Elaboração e envio do TOR detalhando as qualificações exigidas, localidade da missão e atribuições técnicas do posto.</div>
+          <div class="tag-row">
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-prazo">Prazo: 15 a 30 dias</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FASE 2: PREPARAÇÃO E LANÇAMENTO DO EDITAL (SLIDE 07)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s07">
+  <span class="watermark">07</span>
+  <span class="eyebrow reveal">07 — Fase 2 de 7</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--blue)">Fase 2</span>
+      <div class="phase-title">Preparação e Lançamento do Edital</div>
+      <p class="phase-desc">Abertura do processo no SEI, modelagem, instrução processual, cadastro em sistema e ampla divulgação da oportunidade — com apoio da SE na interlocução.</p>
+      <div class="phase-stats">
+        <div class="phase-stat">6 etapas</div>
+        <div class="phase-stat">13 dias úteis (soma dos prazos)</div>
+      </div>
+    </div>
+    <div class="steps-list">
+      <!-- EDITÁVEL: NOVA ETAPA — abertura do processo SEI ANTES da publicação (1 SEI por vaga) -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">01</div>
+        <div>
+          <div class="step-title">Abertura do Processo no SEI</div>
+          <div class="step-desc">Autuação de um processo SEI <strong>individual por vaga</strong>, antes da publicação do edital, para instrução e rastreabilidade de todo o ciclo.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 1 dia</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--blue)">02</div>
+        <div>
+          <div class="step-title">Instrução Processual</div>
+          <div class="step-desc">Início das tratativas internas após a definição do escopo e recebimento do TOR.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <!-- EDITÁVEL: edital com TOR/MoA vinculados + previsão de RELATÓRIO FINAL (recomendação TCU) -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--mist)">03</div>
+        <div>
+          <div class="step-title">Elaboração do Edital</div>
+          <div class="step-desc">Elaboração do edital com os critérios e requisitos do TOR, com TOR e MoA vinculados como anexos e <strong>previsão de apresentação de relatório final</strong> ao término da missão (prática recomendada pelo TCU).</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 5 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--amber)">04</div>
+        <div>
+          <div class="step-title">Cadastro no Sigepe</div>
+          <div class="step-desc">Cadastro da oportunidade no sistema Sigepe Oportunidades para registro oficial e abertura de inscrições.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">05</div>
+        <div>
+          <div class="step-title">Publicação do Edital</div>
+          <div class="step-desc">Publicação formal do edital nos canais oficiais e disponibilização na plataforma para os candidatos.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 1 dia</span>
+          </div>
+        </div>
+      </div>
+      <!-- EDITÁVEL: divulgação AMPLIADA (LinkedIn + órgãos diretamente interessados); SE nas comunicações -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--sand)">06</div>
+        <div>
+          <div class="step-title">Publicidade e Divulgação Ampliada</div>
+          <div class="step-desc">Ampla divulgação em múltiplos canais — portais oficiais, <strong>LinkedIn</strong> e articulação com os <strong>órgãos diretamente interessados</strong> — para maximizar alcance e engajamento.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Coordenação</span>
+            <span class="pill pill-depro">DEPRO · Apoio</span>
+            <span class="pill pill-ascom">ASCOM · Apoio</span>
+            <span class="pill pill-apoio">SE · Apoio</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FASE 3: INSCRIÇÕES E TRIAGEM DE CANDIDATOS (SLIDE 08)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s08">
+  <span class="watermark">08</span>
+  <span class="eyebrow reveal">08 — Fase 3 de 7</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--amber)">Fase 3</span>
+      <div class="phase-title">Inscrições e Triagem de Candidatos</div>
+      <p class="phase-desc">Atividades de suporte aos candidatos, recebimento de currículos, cruzamento de dados e verificação preliminar de requisitos.</p>
+      <div class="phase-stats">
+        <div class="phase-stat">4 etapas</div>
+        <div class="phase-stat">6 dias úteis + atendimento contínuo</div>
+      </div>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">01</div>
+        <div>
+          <div class="step-title">Esclarecimento de Dúvidas</div>
+          <div class="step-desc">Atendimento aos candidatos para esclarecimento de dúvidas sobre o edital e o processo seletivo via canais oficiais.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: ao decorrer do processo seletivo</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--blue)">02</div>
+        <div>
+          <div class="step-title">Enriquecimento com Dados do SIAPE</div>
+          <div class="step-desc">Complementação e validação dos dados funcionais dos candidatos inscritos (vínculo, cargo, tempo de serviço, sexo e outros).</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--mist)">03</div>
+        <div>
+          <div class="step-title">Geração de Relatório Recruta.Gov</div>
+          <div class="step-desc">Extração e análise dos relatórios do sistema Recruta.Gov para estruturação da triagem inicial.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--amber)">04</div>
+        <div>
+          <div class="step-title">Análise de Compatibilidade Preliminar</div>
+          <div class="step-desc">Verificação objetiva da compatibilidade dos perfis inscritos com os requisitos eliminatórios da oportunidade.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FASE 4: ARTICULAÇÃO E AVALIAÇÃO PELA COMISSÃO (SLIDE 09)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s09">
+  <span class="watermark">09</span>
+  <span class="eyebrow reveal">09 — Fase 4 de 7</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--teal)">Fase 4</span>
+      <div class="phase-title">Articulação e Avaliação pela Comissão</div>
+      <!-- EDITÁVEL: reforço de celeridade — critérios e prazos de indicação definidos previamente -->
+      <p class="phase-desc">Formação do colegiado interministerial, alinhamento técnico e consolidação da lista tríplice, com critérios e prazos de indicação definidos previamente para dar celeridade ao processo.</p>
+      <div class="phase-stats">
+        <div class="phase-stat">6 etapas</div>
+        <div class="phase-stat">23 dias úteis (soma dos prazos)</div>
+      </div>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">01</div>
+        <div>
+          <div class="step-title">Composição da Comissão</div>
+          <div class="step-desc">Articulação com os órgãos envolvidos para a indicação formal dos membros que integrarão a comissão de seleção. Não havendo devolutiva tempestiva, o MGI designa servidores do próprio quadro como membros, evitando atrasos no processo.</div>
+          <div class="tag-row">
+            <span class="pill pill-se">SE · Execução</span>
+            <span class="pill pill-prazo">Prazo: 5 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--blue)">02</div>
+        <div>
+          <div class="step-title">Elaboração e Publicação da Portaria de Designação</div>
+          <div class="step-desc">Elaboração e publicação formal (pelo SEI)  da Portaria designando os membros da comissão avaliadora.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--mist)">03</div>
+        <div>
+          <div class="step-title">Agendamento de Reuniões</div>
+          <div class="step-desc">Organização e agendamento do calendário de reuniões de alinhamento e deliberação da comissão avaliadora.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 5 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--amber)">04</div>
+        <div>
+          <div class="step-title">Briefing à Comissão</div>
+          <div class="step-desc">Reunião de apresentação dos critérios do TOR, da metodologia de pontuação e orientações gerais à comissão.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-cgmop">CGMOP · Apoio</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--sand)">05</div>
+        <div>
+          <div class="step-title">Disponibilização de Arquivos</div>
+          <div class="step-desc">Envio seguro dos documentos, currículos e relatórios pré-selecionados aos membros da comissão.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">06</div>
+        <div>
+          <div class="step-title">Seleção dos Currículos e Consolidação das Escolhas</div>
+          <div class="step-desc">
+            Avaliação individual dos currículos pela comissão, reunião de consolidação dos resultados, desempates e fechamento da lista tríplice.
+            <br>
+            <button class="btn-modal" onclick="openModal('comissaoModal')">Clique aqui para entender a dinâmica da Comissão ℹ️</button>
+          </div>
+          <div class="tag-row">
+            <span class="pill pill-comissao">Comissão · Execução</span>
+            <span class="pill pill-dgimp">DGIMP · Apoio</span>
+            <span class="pill pill-prazo">Prazo total: 7 dias</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FASE 5: COMUNICAÇÃO E PUBLICAÇÃO DOS RESULTADOS (SLIDE 10)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s10">
+  <span class="watermark">10</span>
+  <span class="eyebrow reveal">10 — Fase 5 de 7</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--sand)">Fase 5</span>
+      <div class="phase-title">Comunicação e Publicação dos Resultados</div>
+      <p class="phase-desc">Divulgação de listas, interposição de recursos, envio ao Banco Mundial, acompanhamento da seleção internacional e feedback aos candidatos.</p>
+      <div class="phase-stats">
+        <div class="phase-stat">8 etapas</div>
+        <div class="phase-stat">16 dias fixos + até 15 dias (BM) + contínuo</div>
+      </div>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">01</div>
+        <div>
+          <div class="step-title">Resultado Preliminar</div>
+          <div class="step-desc">Divulgação oficial do resultado preliminar com a lista tríplice selecionada pela comissão.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 1 dia</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--blue)">02</div>
+        <div>
+          <div class="step-title">Análise de Recursos</div>
+          <div class="step-desc">Recebimento, análise e deliberação sobre eventuais recursos interpostos pelos candidatos inscritos.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 3 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--mist)">03</div>
+        <div>
+          <div class="step-title">Publicação do Resultado Final</div>
+          <div class="step-desc">Publicação do resultado final pelos mesmos meios de publicação do edital e solicitação de currículos em inglês.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Coordenação</span>
+            <span class="pill pill-depro">DEPRO · Apoio</span>
+            <span class="pill pill-ascom">ASCOM · Apoio</span>
+            <span class="pill pill-prazo">Prazo: 3 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--amber)">04</div>
+        <div>
+          <div class="step-title">Encaminhamento da Lista Tríplice ao Banco Mundial</div>
+          <div class="step-desc">Envio formal dos perfis, documentação e currículos em inglês dos três finalistas para o WBG.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-prazo">Prazo: 2 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">05</div>
+        <div>
+          <div class="step-title">Seleção dos Candidatos</div>
+          <div class="step-desc">Entrevistas e avaliação final realizadas pelo Banco Mundial com a lista tríplice para definição do bolsista e a comunicação do resultado ao MGI e aos demais candidatos da lista tríplice</div>
+          <div class="tag-row">
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-prazo">Prazo: até 15 dias</span>
+          </div>
+        </div>
+      </div>
+      <!-- EDITÁVEL: acompanhamento centralizado na SGP/SE (controle de prazos junto ao BM) -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--sand)">06</div>
+        <div>
+          <div class="step-title">Acompanhamento da Seleção (Ponto Focal do BM)</div>
+          <div class="step-desc">Acompanhamento, junto ao Banco Mundial, do andamento, dos prazos e das entrevistas, com apoio da DEPRO e da SE no escalonamento das cobranças quando houver atraso. Recomenda-se um <strong>ponto focal do BM no Brasil</strong> e a formalização de prazos de resposta.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">CGMOP · Execução</span>
+            <span class="pill pill-depro">DEPRO · Apoio</span>
+            <span class="pill pill-apoio">SE · apoio</span>
+            <span class="pill pill-prazo">Prazo: contínuo</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--mist)">07</div>
+        <div>
+          <div class="step-title">Organização de Reunião com o órgão de Exercício do Servidor Bolsista</div>
+          <div class="step-desc">Apresentação do Programa Fellowship ao Órgão de Exercício do Servidor Bolsista.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">CGMOP · Execução</span>
+            <span class="pill pill-depro">DEPRO · Apoio</span>
+            <span class="pill pill-apoio">SE · apoio</span>
+            <span class="pill pill-prazo">Prazo: 5 dias</span>
+          </div>
+        </div>
+      </div>
+      <!-- EDITÁVEL: NOVA ETAPA — feedback padronizado aos candidatos não selecionados -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">08</div>
+        <div>
+          <div class="step-title">Comunicação e Feedback aos Candidatos</div>
+          <div class="step-desc">Retorno aos candidatos não selecionados, feito pela equipe, condicionado à comunicação clara dos resultados pelo Banco Mundial ao MGI.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">CGMOP · Execução</span>
+            <span class="pill pill-depro">DEPRO · Apoio</span>
+            <span class="pill pill-apoio">SE · apoio</span>
+            <span class="pill pill-prazo">Prazo: 2 dias após resultado do BM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FASE 6: FORMALIZAÇÃO (SLIDE 11)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s11">
+  <span class="watermark">11</span>
+  <span class="eyebrow reveal">11 — Fase 6 de 7</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--mist)">Fase 6</span>
+      <div class="phase-title">Formalização</div>
+      <p class="phase-desc">Celebração dos instrumentos jurídicos, registro da interlocução institucional, publicação de atos de afastamento no DOU e controle da missão.</p>
+      <div class="phase-stats">
+        <div class="phase-stat">5 etapas</div>
+        <div class="phase-stat">25 dias úteis (inicial) + 12 meses de missão</div>
+      </div>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">01</div>
+        <div>
+          <div class="step-title">Formalização do MoA</div>
+          <!-- EDITÁVEL: MoA segue o MODELO previamente vinculado ao edital -->
+          <div class="step-desc">Assinatura do Memorandum of Agreement (MoA) específico entre o Banco Mundial e o órgão de exercício do servidor, a partir do <strong>modelo previamente vinculado ao edital</strong>.</div>
+          <div class="tag-row">
+            <span class="pill pill-se">SE · Apoio</span>
+            <span class="pill pill-depro">DEPRO · Execução</span>
+            <span class="pill pill-assint">ASSINT · Apoio</span>
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-bolsista">Servidor · Execução</span>
+            <span class="pill pill-orgao">Órgão de Exercício · Execução</span>
+            <span class="pill pill-prazo">Prazo: até 10 dias</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--blue)">02</div>
+        <div>
+          <div class="step-title">Publicação da Portaria de Afastamento</div>
+          <div class="step-desc">Elaboração e publicação no Diário Oficial da União do ato que autoriza o afastamento do servidor com ônus limitado.</div>
+          <div class="tag-row">
+            <span class="pill pill-orgao">Órgão de Exercício</span>
+            <span class="pill pill-prazo">Prazo: 5 dias</span>
+          </div>
+        </div>
+      </div>
+            <!-- EDITÁVEL: NOVA ETAPA — registro da interlocução com o órgão + comunicação às embaixadas -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">03</div>
+        <div>
+          <div class="step-title">Comunicação às Embaixadas</div>
+          <div class="step-desc">Registro formal com a <strong>comunicação às embaixadas do Brasil</strong> no país de destino, para ciência e apoio institucional local.</div>
+          <div class="tag-row">
+            <span class="pill pill-se">SE · apoio</span>
+            <span class="pill pill-apoio">DEPRO · apoio</span>
+            <span class="pill pill-assint">ASSINT · Execução</span>
+            <span class="pill pill-embaixada">Embaixadas do Brasil</span>
+            <span class="pill pill-prazo">Prazo: 5 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--mist)">04</div>
+        <div>
+          <div class="step-title">Assinatura do Instrumento Individual de Designação</div>
+          <div class="step-desc">Assinatura do instrumento formal de designação entre a instituição anfitriã do Banco Mundial e o servidor selecionado.</div>
+          <div class="tag-row">
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-bolsista">Servidor</span>
+            <span class="pill pill-prazo">Prazo: 5 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--amber)">05</div>
+        <div>
+          <div class="step-title">Controle do Prazo e Apresentação de Relatório Final</div>
+          <div class="step-desc">Acompanhamento dos 12 meses de afastamento no exterior e recebimento/avaliação do relatório final de atividades ao término da missão.</div>
+          <div class="tag-row">
+            <span class="pill pill-dgimp">DGIMP · Execução</span>
+            <span class="pill pill-orgao">Órgão de Exercício · Execução</span>
+            <span class="pill pill-bolsista">Servidor · Execução</span>
+            <span class="pill pill-prazo">Prazo: 12 meses (missão)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FASE 7: ATIVIDADES CONTÍNUAS (SLIDE 12)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s12">
+  <span class="watermark">12</span>
+  <span class="eyebrow reveal">12 — Fase 7 de 7</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--navy)">Fase 7</span>
+      <div class="phase-title">Atividades que Permeiam Todas as Fases</div>
+      <p class="phase-desc">Frentes contínuas e transversais de atendimento, suporte jurídico-normativo, canal de dúvidas e governança de processo no SEI — com separação entre áreas responsáveis e de apoio.</p>
+      <div class="phase-stats">
+        <div class="phase-stat">4 frentes contínuas</div>
+        <div class="phase-stat">Duração: todo o ciclo</div>
+      </div>
+    </div>
+    <div class="steps-list">
+      <!-- EDITÁVEL: cada frente agora separa RESPONSÁVEL (pílula sólida) × APOIO (pílula tracejada) -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">01</div>
+        <div>
+          <div class="step-title">Atendimento Institucional</div>
+          <div class="step-desc">Suporte institucional contínuo aos órgãos de exercício, gerências setoriais do Banco e servidores envolvidos.</div>
+          <div class="tag-row"><span class="pill pill-dgimp">DGIMP · Execução</span><span class="pill pill-apoio">SE · apoio</span></div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--blue)">02</div>
+        <div>
+          <div class="step-title">Atendimento Normativo</div>
+          <div class="step-desc">Orientação técnica sobre aspectos legais, direitos previdenciários, manutenção de folha e regramentos do afastamento.</div>
+          <div class="tag-row"><span class="pill pill-dgimp">MGI</span><span class="pill pill-apoio">DEPRO · apoio</span></div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--mist)">03</div>
+        <div>
+          <div class="step-title">Gestão Documental no SEI</div>
+          <div class="step-desc">Abertura, instrução, registro de histórico e tramitação limpa do processo administrativo — um processo por vaga.</div>
+          <div class="tag-row"><span class="pill pill-dgimp">DGIMP</span></div>
+        </div>
+      </div>
+      <!-- EDITÁVEL: NOVA FRENTE — canal de dúvidas (FAQ/SAQ) no portal do MGI -->
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--amber)">04</div>
+        <div>
+          <div class="step-title">Canal de Atendimento ao Candidato (FAQ/SAQ)</div>
+          <div class="step-desc">Manutenção de seção de perguntas frequentes e esclarecimentos no portal do MGI, atualizada a cada ciclo seletivo.</div>
+          <div class="tag-row"><span class="pill pill-dgimp">DGIMP · Execução</span><span class="pill pill-apoio">ASCOM · apoio</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     EDITÁVEL: NOVO SLIDE — PRAZOS DO CICLO (gargalo no Banco Mundial)
+     id="sPrazos" (não colide com a numeração s00–s15). A barra é
+     proporcional ao valor em "dias úteis"; para ajustar, edite o
+     atributo style="width:XX%" e o texto do valor em cada linha.
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="sPrazos">
+  <span class="watermark">⏱</span>
+  <span class="eyebrow reveal">Prazos do Ciclo</span>
+  <h2 class="display reveal">Quanto tempo leva cada fase</h2>
+  <p class="lead reveal">Estimativa em dias úteis. As fases internas são rápidas; o principal gargalo está na seleção conduzida pelo Banco Mundial.</p>
+
+  <!-- barras de prazo (width = valor/26 * 100, aprox.) -->
+  <div class="reveal" style="margin-top:28px; display:flex; flex-direction:column; gap:14px; max-width:940px;">
+    <!-- LINHA-MODELO: copie um bloco destes para criar/editar uma fase -->
+    <div style="display:grid; grid-template-columns:190px 1fr 130px; align-items:center; gap:16px;">
+      <span style="font-weight:700; color:var(--navy); font-size:.92rem;">Fase 1 · Áreas/TOR</span>
+      <span style="height:16px; border-radius:8px; background:var(--navy); opacity:.35; width:70%; display:block;"></span>
+      <span class="mono" style="color:var(--muted); font-size:.82rem;">estratégico</span>
+    </div>
+    <div style="display:grid; grid-template-columns:190px 1fr 130px; align-items:center; gap:16px;">
+      <span style="font-weight:700; color:var(--blue); font-size:.92rem;">Fase 2 · Edital</span>
+      <span style="height:16px; border-radius:8px; background:var(--blue); width:50%; display:block;"></span>
+      <span class="mono" style="color:var(--muted); font-size:.82rem;">13 dias úteis</span>
+    </div>
+    <div style="display:grid; grid-template-columns:190px 1fr 130px; align-items:center; gap:16px;">
+      <span style="font-weight:700; color:var(--amber); font-size:.92rem;">Fase 3 · Triagem</span>
+      <span style="height:16px; border-radius:8px; background:var(--amber); width:23%; display:block;"></span>
+      <span class="mono" style="color:var(--muted); font-size:.82rem;">6 dias + contínuo</span>
+    </div>
+    <div style="display:grid; grid-template-columns:190px 1fr 130px; align-items:center; gap:16px;">
+      <span style="font-weight:700; color:var(--teal); font-size:.92rem;">Fase 4 · Comissão</span>
+      <span style="height:16px; border-radius:8px; background:var(--teal); width:92%; display:block;"></span>
+      <span class="mono" style="color:var(--muted); font-size:.82rem;">23 dias úteis</span>
+    </div>
+    <!-- Fase 5 destacada: dependência do Banco Mundial (gargalo) -->
+    <div style="display:grid; grid-template-columns:190px 1fr 130px; align-items:center; gap:16px;">
+      <span style="font-weight:700; color:var(--sand); font-size:.92rem;">Fase 5 · Resultados <span style="color:var(--teal);">/ BM</span></span>
+      <span style="display:flex; width:73%;">
+        <span style="height:16px; border-radius:8px 0 0 8px; background:var(--sand); width:50%; display:block;"></span>
+        <span style="height:16px; border-radius:0 8px 8px 0; background:var(--teal); width:50%; display:block; position:relative;"></span>
+      </span>
+      <span class="mono" style="color:var(--teal); font-size:.82rem; font-weight:600;">16 + até 15 (BM)</span>
+    </div>
+    <div style="display:grid; grid-template-columns:190px 1fr 130px; align-items:center; gap:16px;">
+      <span style="font-weight:700; color:var(--mist); font-size:.92rem;">Fase 6 · Formalização</span>
+      <span style="height:16px; border-radius:8px; background:var(--mist); width:100%; display:block;"></span>
+      <span class="mono" style="color:var(--muted); font-size:.82rem;">25 dias úteis</span>
+    </div>
+    <div style="display:grid; grid-template-columns:190px 1fr 130px; align-items:center; gap:16px;">
+      <span style="font-weight:700; color:var(--navy); font-size:.92rem;">Fase 7 · Contínuas</span>
+      <span style="height:16px; border-radius:8px; background:repeating-linear-gradient(90deg,var(--navy),var(--navy) 6px,transparent 6px,transparent 12px); opacity:.5; width:100%; display:block;"></span>
+      <span class="mono" style="color:var(--muted); font-size:.82rem;">todo o ciclo</span>
+    </div>
+  </div>
+
+  <!-- EDITÁVEL: total do ciclo + destaque do gargalo -->
+  <div class="reveal" style="margin-top:28px; display:flex; gap:16px; flex-wrap:wrap;">
+    <div style="background:var(--navy); color:#fff; border-radius:var(--radius-md); padding:16px 22px; min-width:220px;">
+      <div style="font-family:'Manrope'; font-size:1.9rem; font-weight:800;">83–98</div>
+      <div style="font-size:.82rem; opacity:.85;">dias úteis</div>
+    </div>
+    <div style="background:rgba(62,117,104,.1); border:1px solid rgba(62,117,104,.3); color:var(--teal); border-radius:var(--radius-md); padding:16px 22px; min-width:260px; display:flex; align-items:center; font-size:.9rem; line-height:1.5;">
+      <strong style="margin-right:6px;">Gargalo:</strong> o tempo de resposta do Banco Mundial é o principal fator de variação — daí a proposta de prazos pactuados e ponto focal.
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════
+     SÍNTESE (SLIDE 13)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s13">
+  <span class="watermark">13</span>
+  <span class="eyebrow reveal">13 — Síntese</span>
+  <h2 class="display reveal">Visão integrada das 7 fases do ciclo</h2>
+  <p class="lead reveal">Mapeamento sequencial mostrando como as 7 fases se conectam desde o alinhamento de escopo até a repatriação do conhecimento e relatório final.</p>
+
+  <div class="legend reveal" style="margin-top:10px;">
+    <span class="legend-item"><i style="background:var(--navy)"></i>Fase 1 — Áreas e TOR</span>
+    <span class="legend-item"><i style="background:var(--blue)"></i>Fase 2 — Edital</span>
+    <span class="legend-item"><i style="background:var(--amber)"></i>Fase 3 — Triagem</span>
+    <span class="legend-item"><i style="background:var(--teal)"></i>Fase 4 — Comissão</span>
+    <span class="legend-item"><i style="background:var(--sand)"></i>Fase 5 — Resultados</span>
+    <span class="legend-item"><i style="background:var(--mist)"></i>Fase 6 — Formalização</span>
+  </div>
+
+  <div class="synth-stat reveal">
+    <b>7 Fases Integradas</b>
+    <span>Governança com papéis delimitados para cada um dos atores envolvidos.</span>
+  </div>
+
+  <div class="hz-timeline reveal">
+    <div class="hz-row">
+      <div class="hz-track"><div class="hz-track-fill"></div></div>
+
+      <div class="hz-item">
+        <div class="hz-zone hz-zone--top">
+          <div class="hz-title">1. Escopo</div>
+          <div class="hz-desc">Áreas e TOR definidos.</div>
+        </div>
+        <div class="hz-stem"></div>
+        <div class="hz-num" style="--c:var(--navy)">01</div>
+        <div class="hz-stem"></div>
+        <div class="hz-zone hz-zone--bottom"></div>
+      </div>
+
+      <div class="hz-item">
+        <div class="hz-zone hz-zone--top"></div>
+        <div class="hz-stem"></div>
+        <div class="hz-num" style="--c:var(--blue)">02</div>
+        <div class="hz-stem"></div>
+        <div class="hz-zone hz-zone--bottom">
+          <div class="hz-title">2. Lançamento</div>
+          <div class="hz-desc">Edital no Sigepe e divulgação.</div>
+        </div>
+      </div>
+
+      <div class="hz-item">
+        <div class="hz-zone hz-zone--top">
+          <div class="hz-title">3. Triagem</div>
+          <div class="hz-desc">SIAPE e Recruta.Gov.</div>
+        </div>
+        <div class="hz-stem"></div>
+        <div class="hz-num" style="--c:var(--amber)">03</div>
+        <div class="hz-stem"></div>
+        <div class="hz-zone hz-zone--bottom"></div>
+      </div>
+
+      <div class="hz-item">
+        <div class="hz-zone hz-zone--top"></div>
+        <div class="hz-stem"></div>
+        <div class="hz-num" style="--c:var(--teal)">04</div>
+        <div class="hz-stem"></div>
+        <div class="hz-zone hz-zone--bottom">
+          <div class="hz-title">4. Avaliação</div>
+          <div class="hz-desc">Escolha cega e lista tríplice.</div>
+        </div>
+      </div>
+
+      <div class="hz-item">
+        <div class="hz-zone hz-zone--top">
+          <div class="hz-title">5. Resultados</div>
+          <div class="hz-desc">Publicação e escolha pelo WBG.</div>
+          
+        </div>
+        <div class="hz-stem"></div>
+        <div class="hz-num" style="--c:var(--sand)">05</div>
+        <div class="hz-stem"></div>
+        <div class="hz-zone hz-zone--bottom"></div>
+      </div>
+
+      <div class="hz-item">
+        <div class="hz-zone hz-zone--top"></div>
+        <div class="hz-stem"></div>
+        <div class="hz-num" style="--c:var(--mist)">06</div>
+        <div class="hz-stem"></div>
+        <div class="hz-zone hz-zone--bottom">
+          <div class="hz-title">6. Acordos</div>
+          <div class="hz-desc">MoA, Portaria DOU e Instrumento.</div>
+        </div>
+      </div>
+
+      <div class="hz-item">
+        <div class="hz-zone hz-zone--top">
+          <div class="hz-title">7. Missão & Retorno</div>
+          <div class="hz-desc">12 meses e relatório final.</div>
+        </div>
+        <div class="hz-stem"></div>
+        <div class="hz-num" style="--c:var(--mist)">07</div>
+        <div class="hz-stem"></div>
+        <div class="hz-zone hz-zone--bottom"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     NOVO SLIDE 14: FLUXOGRAMA DIDÁTICO COM IDAS E VINDAS (ATIVIDADE 1)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s14">
+  <span class="watermark">14</span>
+  <span class="eyebrow reveal">14 — Mapeamento de Rotas e Decisões</span>
+  <h2 class="display reveal">Engenharia do Fluxo: Avanços e Ciclos de Retorno</h2>
+  <p class="lead reveal">Representação dinâmica de quem executa cada marco, os pontos críticos de validação e as possibilidades de retroalimentação (idas e vindas) no processo.</p>
+
+  <div class="route-grid reveal">
+    <!-- Bloco 1 -->
+    <div class="route-card" style="--c:var(--navy)">
+      <div class="route-header"><span class="route-step-id" style="--c:var(--navy)">FASE 1</span><span class="mono" style="font-size:.75rem;color:var(--muted)">Início</span></div>
+      <div class="route-title">Pactuação e TOR</div>
+      <div class="route-desc">Negociação técnica entre o MGI e o Banco Mundial para definição de áreas, vagas e requisitos do Termo de Referência.</div>
+      <div class="route-paths">
+        <div class="path-item"><span class="path-icon path-advance">→</span><span class="path-advance">Avanço: TOR validado → Início da Instrução (Fase 2)</span></div>
+        <div class="path-item"><span class="path-icon path-return">↩</span><span class="path-return">Retorno: Divergência técnica no TOR ↩ Ajustes entre SE e BM</span></div>
+      </div>
+      <div class="route-actors"><span class="pill pill-se">SE</span><span class="pill pill-bm">Banco Mundial</span></div>
+    </div>
+
+    <!-- Bloco 2 -->
+    <div class="route-card" style="--c:var(--blue)">
+      <div class="route-header"><span class="route-step-id" style="--c:var(--blue)">FASE 2</span><span class="mono" style="font-size:.75rem;color:var(--muted)">Edital</span></div>
+      <div class="route-title">Lançamento e Publicidade</div>
+      <div class="route-desc">Modelagem do edital, cadastro em sistema, publicação oficial e mobilização dos canais de comunicação institucional.</div>
+      <div class="route-paths">
+        <div class="path-item"><span class="path-icon path-advance">→</span><span class="path-advance">Avanço: Edital publicado → Abertura de inscrições (Fase 3)</span></div>
+        <div class="path-item"><span class="path-icon path-return">↩</span><span class="path-return">Retorno: Ajuste normativo ↩ Revisão conjunta DEPRO/SE</span></div>
+      </div>
+      <div class="route-actors"><span class="pill pill-dgimp">DGIMP</span><span class="pill pill-depro">DEPRO</span><span class="pill pill-ascom">ASCOM</span></div>
+    </div>
+
+    <!-- Bloco 3 -->
+    <div class="route-card" style="--c:var(--amber)">
+      <div class="route-header"><span class="route-step-id" style="--c:var(--amber)">FASE 3</span><span class="mono" style="font-size:.75rem;color:var(--muted)">Triagem</span></div>
+      <div class="route-title">Inscrição e Análise Preliminar</div>
+      <div class="route-desc">Recepção de currículos, validação de vínculos no SIAPE, relatórios Recruta.Gov e filtro de requisitos eliminatórios.</div>
+      <div class="route-paths">
+        <div class="path-item"><span class="path-icon path-advance">→</span><span class="path-advance">Avanço: Perfil compatível → Envio à Comissão (Fase 4)</span></div>
+        <div class="path-item"><span class="path-icon path-return">↩</span><span class="path-return">Retorno: Incompatibilidade / Pendência ↩ Notificação ao candidato</span></div>
+      </div>
+      <div class="route-actors"><span class="pill pill-dgimp">DGIMP</span></div>
+    </div>
+
+    <!-- Bloco 4 -->
+    <div class="route-card" style="--c:var(--teal)">
+      <div class="route-header"><span class="route-step-id" style="--c:var(--teal)">FASE 4</span><span class="mono" style="font-size:.75rem;color:var(--muted)">Comissão</span></div>
+      <div class="route-title">Avaliação e Lista Tríplice</div>
+      <div class="route-desc">Portaria colegiada, briefing técnico, avaliação cega individual dos currículos e deliberação para formação da lista final.</div>
+      <div class="route-paths">
+        <div class="path-item"><span class="path-icon path-advance">→</span><span class="path-advance">Avanço: Lista definida → Publicação preliminar (Fase 5)</span></div>
+        <div class="path-item"><span class="path-icon path-return">↩</span><span class="path-return">Retorno: Empate / Divergência ↩ Nova reunião de deliberação</span></div>
+      </div>
+      <div class="route-actors"><span class="pill pill-comissao">Comissão</span><span class="pill pill-dgimp">DGIMP</span><span class="pill pill-se">SE</span></div>
+    </div>
+
+    <!-- Bloco 5 -->
+    <div class="route-card" style="--c:var(--sand)">
+      <div class="route-header"><span class="route-step-id" style="--c:var(--sand)">FASE 5</span><span class="mono" style="font-size:.75rem;color:var(--muted)">Seleção</span></div>
+      <div class="route-title">Resultados e Entrevistas WBG</div>
+      <div class="route-desc">Julgamento de recursos, envio de perfis em inglês ao Banco Mundial, entrevistas internacionais e comunicação do bolsista.</div>
+      <div class="route-paths">
+        <div class="path-item"><span class="path-icon path-advance">→</span><span class="path-advance">Avanço: Candidato aprovado pelo BM → Assinaturas (Fase 6)</span></div>
+        <div class="path-item"><span class="path-icon path-return">↩</span><span class="path-return">Retorno: Recurso deferido ↩ Revisão da lista pela DGIMP</span></div>
+        <div class="path-item"><span class="path-icon path-return">↩</span><span class="path-return">Retorno: Não seleção internacional ↩ Reabertura de Edital</span></div>
+      </div>
+      <div class="route-actors"><span class="pill pill-bm">Banco Mundial</span><span class="pill pill-dgimp">DGIMP</span><span class="pill pill-se">SE</span></div>
+    </div>
+
+    <!-- Bloco 6 -->
+    <div class="route-card" style="--c:var(--mist)">
+      <div class="route-header"><span class="route-step-id" style="--c:var(--mist)">FASE 6</span><span class="mono" style="font-size:.75rem;color:var(--muted)">Missão</span></div>
+      <div class="route-title">Formalização e Exercício</div>
+      <div class="route-desc">Assinatura do MoA, Portaria no DOU, Instrumento de Designação, cumprimento dos 12 meses no exterior e relatório final.</div>
+      <div class="route-paths">
+        <div class="path-item"><span class="path-icon path-advance">→</span><span class="path-advance">Avanço: Ciclo concluído → Aproveitamento de boas práticas</span></div>
+        <div class="path-item"><span class="path-icon path-return">↩</span><span class="path-return">Retorno: Ajuste de cláusula no MoA ↩ Revisão ASSINT / Órgão</span></div>
+      </div>
+      <div class="route-actors"><span class="pill pill-assint">ASSINT</span><span class="pill pill-orgao">Órgão</span><span class="pill pill-bolsista">Servidor</span><span class="pill pill-se">SE</span><span class="pill pill-depro">DEPRO</span></div>
+    </div>
+  </div>
+
+  <!-- Bloco Transversal -->
+  <div class="route-transversal reveal">
+    <div>
+      <h4>🔄 FASE 7 — Governança Transversal Contínua (Em todas as etapas acima)</h4>
+      <p>Suporte Institucional, Atendimento Normativo e Gestão Documental integral no SEI, com monitoramento de prazos e mediação de conflitos.</p>
+    </div>
+    <div style="display:flex;gap:8px;"><span class="pill pill-mgi">MGI · SGP</span><span class="pill pill-se">SE</span></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     EDITÁVEL: NOVO SLIDE — EVOLUÇÃO DO PROGRAMA (perspectivas)
+     id="sEvolucao". Três cartões: escala, embaixadas e novos parceiros.
+     Para editar, altere os títulos/textos de cada .quad-card abaixo.
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="sEvolucao">
+  <span class="watermark">↗</span>
+  <span class="eyebrow reveal">Perspectivas</span>
+  <h2 class="display reveal">Evolução do programa</h2>
+  <p class="lead reveal">Direções de aprimoramento discutidas para os próximos ciclos — mantendo, por ora, o foco na consolidação com o Banco Mundial.</p>
+
+  <div class="quad-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="quad-card reveal">
+      <div class="quad-icon"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 40V26M18 40V16M30 40V22M42 40V10"/></svg></div>
+      <div class="quad-title">Escala</div>
+      <div class="quad-desc">Ampliar o número de servidores enviados no próximo ciclo, aproveitando o aprendizado e a consolidação do fluxo. Meta a ser proposta ao Banco Mundial.</div>
+    </div>
+    <div class="quad-card reveal">
+      <div class="quad-icon"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><ellipse cx="24" cy="24" rx="8" ry="18"/><line x1="6" y1="24" x2="42" y2="24"/></svg></div>
+      <div class="quad-title">Embaixadas do Brasil</div>
+      <div class="quad-desc">Envolver as embaixadas nos países de destino como apoio local, informando e solicitando apoio institucional, se necessário.</div>
+    </div>
+    <div class="quad-card reveal">
+      <div class="quad-icon"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="14" cy="24" r="7"/><circle cx="34" cy="24" r="7"/><path d="M21 24h6"/></svg></div>
+      <div class="quad-title">Novos parceiros</div>
+      <div class="quad-desc">No futuro, ampliar o programa a outros organismos internacionais. Prioridade atual: consolidar o trabalho com o Banco Mundial antes de abrir novas frentes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ENCERRAMENTO (SLIDE 15) — ATIVIDADE 2: PALETA CLARA E FRASE IMPACTANTE
+     ══════════════════════════════════════════════════════════════ -->
+<section class="slide closing" id="s15">
+  <div class="closing-icon"><svg width="60" height="60" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 14h34a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H24l-9 8v-8H8a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4Z"/><circle cx="18" cy="26" r="1.6" fill="currentColor" stroke="none"/><circle cx="27" cy="26" r="1.6" fill="currentColor" stroke="none"/><circle cx="36" cy="26" r="1.6" fill="currentColor" stroke="none"/></svg></div>
+  <h1>A clareza de papéis e a padronização de procedimentos são os alicerces que transformam planejamento estratégico em excelência.</h1>
+  <p class="lead">· SGP · DEPRO · CGMOP · DGIMP · </p>
+  <div class="meta">Governança e Processos · WBG Fellowship Program · Brasília/DF, julho de 2026</div>
+  <span class="rgb-mark">RGB - ZDB</span>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SCRIPTS DE NAVEGAÇÃO E MODAL
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+// Funções do Modal Interativo
+function openModal(id) {
+  var m = document.getElementById(id);
+  if(m) { m.style.display = 'flex'; }
+}
+function closeModal(id) {
+  var m = document.getElementById(id);
+  if(m) { m.style.display = 'none'; }
+}
+function closeModalOnBg(e) {
+  if(e.target.classList.contains('modal-overlay')) {
+    e.target.style.display = 'none';
+  }
+}
+document.addEventListener('keydown', function(e) {
+  if(e.key === 'Escape') {
+    var modals = document.querySelectorAll('.modal-overlay');
+    modals.forEach(function(m) { m.style.display = 'none'; });
+  }
+});
+
+// Funções de Navegação e Animações da Apresentação
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var railDots = Array.prototype.slice.call(document.querySelectorAll('.rail-dot'));
+  var progressFill = document.getElementById('progressFill');
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-target]')).forEach(function(el){
+    el.addEventListener('click', function(){
+      var t = document.querySelector(el.getAttribute('data-target'));
+      if(t){ t.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  function updateProgress(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var p = h > 0 ? (window.scrollY / h) * 100 : 0;
+    progressFill.style.width = p + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  var activeObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = '#' + entry.target.id;
+        railDots.forEach(function(d){
+          d.classList.toggle('active', d.getAttribute('data-target') === id);
+        });
+      }
+    });
+  }, {threshold:0.5});
+  sections.forEach(function(s){ activeObserver.observe(s); });
+
+  var revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry, i){
+      if(entry.isIntersecting){
+        entry.target.style.transitionDelay = (i % 6) * 0.06 + 's';
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15, rootMargin:'0px 0px -8% 0px'});
+  Array.prototype.slice.call(document.querySelectorAll('.reveal')).forEach(function(el){
+    revealObserver.observe(el);
+  });
+
+  var lineObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, {threshold:0.35});
+  var macroEl = document.getElementById('macroTimeline');
+  if(macroEl) lineObserver.observe(macroEl);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'PageDown' && e.key !== 'PageUp') return;
+    e.preventDefault();
+    var mid = window.scrollY + window.innerHeight/2;
+    var idx = 0;
+    for(var i=0;i<sections.length;i++){
+      if(sections[i].offsetTop <= mid) idx = i;
+    }
+    var next = (e.key === 'ArrowDown' || e.key === 'PageDown') ? Math.min(idx+1, sections.length-1) : Math.max(idx-1, 0);
+    sections[next].scrollIntoView({behavior:'smooth', block:'start'});
+  });
+})();
+</script>
+</body>
+</html>

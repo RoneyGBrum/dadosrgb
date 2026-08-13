@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Movimentação de Pessoal — CGMOP · DEPRO · SGP · MGI</title>
+<meta name="description" content="Uma jornada pela transformação da mobilidade na Administração Pública Federal." />
+<style>
+  /* ============================================================
+     DESIGN TOKENS — Inspirado em Apple keynotes
+     ============================================================ */
+  :root {
+    --bg-light: #f5f5f7;
+    --bg-pure: #ffffff;
+    --bg-dark: #000000;
+    --bg-deep: #1d1d1f;
+
+    --text-primary-light: #1d1d1f;
+    --text-secondary-light: #6e6e73;
+    --text-tertiary-light: #86868b;
+
+    --text-primary-dark: #f5f5f7;
+    --text-secondary-dark: #a1a1a6;
+    --text-tertiary-dark: #6e6e73;
+
+    --accent: #0071e3;
+    --accent-soft: rgba(0, 113, 227, 0.12);
+    --accent-line: rgba(0, 113, 227, 0.35);
+
+    --border-light: rgba(0, 0, 0, 0.08);
+    --border-dark: rgba(255, 255, 255, 0.12);
+
+    --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+    --t-fast: 0.45s;
+    --t-med: 0.85s;
+    --t-slow: 1.2s;
+
+    --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                  "Helvetica Neue", "Inter", system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: var(--font-stack);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--bg-light);
+    color: var(--text-primary-light);
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ============================================================
+     DECK (scroll container)
+     ============================================================ */
+  #deck {
+    height: 100vh;
+    width: 100vw;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #deck::-webkit-scrollbar { display: none; }
+
+  .slide {
+    height: 100vh;
+    min-height: 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(2rem, 6vw, 6rem) clamp(1.5rem, 5vw, 5rem) clamp(5rem, 8vw, 7rem);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .slide.dark { background: var(--bg-dark); color: var(--text-primary-dark); }
+  .slide.deep { background: var(--bg-deep); color: var(--text-primary-dark); }
+  .slide.pure { background: var(--bg-pure); }
+
+  /* ============================================================
+     TYPOGRAPHY
+     ============================================================ */
+  .eyebrow {
+    font-size: clamp(0.72rem, 1vw, 0.88rem);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: clamp(1.25rem, 2.2vw, 2rem);
+  }
+
+  .title {
+    font-size: clamp(2.2rem, 5.5vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    max-width: 1100px;
+    color: inherit;
+  }
+
+  .title.xl {
+    font-size: clamp(2.6rem, 7vw, 6.5rem);
+    letter-spacing: -0.04em;
+  }
+
+  .title.hero {
+    font-size: clamp(2.8rem, 8vw, 7.5rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .subtitle {
+    font-size: clamp(1.05rem, 1.55vw, 1.45rem);
+    font-weight: 400;
+    color: var(--text-secondary-light);
+    margin-top: clamp(1rem, 2vw, 1.75rem);
+    max-width: 720px;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+
+  .slide.dark .subtitle, .slide.deep .subtitle { color: var(--text-secondary-dark); }
+
+  .caption {
+    font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+    color: var(--text-tertiary-light);
+    margin-top: 1rem;
+    max-width: 620px;
+    line-height: 1.55;
+  }
+  .slide.dark .caption, .slide.deep .caption { color: var(--text-tertiary-dark); }
+
+  .tag {
+    display: inline-block;
+    margin-top: clamp(1.5rem, 2.5vw, 2.25rem);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary-light);
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(8px);
+  }
+  .slide.dark .tag, .slide.deep .tag {
+    border-color: var(--border-dark);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary-dark);
+  }
+
+  /* ============================================================
+     ENTRANCE ANIMATIONS (triggered by .active class)
+     ============================================================ */
+  .slide .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity var(--t-slow) var(--ease-out),
+                transform var(--t-slow) var(--ease-out);
+  }
+  .slide.active .reveal { opacity: 1; transform: translateY(0); }
+
+  .slide.active .reveal[data-delay="1"] { transition-delay: 0.10s; }
+  .slide.active .reveal[data-delay="2"] { transition-delay: 0.25s; }
+  .slide.active .reveal[data-delay="3"] { transition-delay: 0.40s; }
+  .slide.active .reveal[data-delay="4"] { transition-delay: 0.55s; }
+  .slide.active .reveal[data-delay="5"] { transition-delay: 0.70s; }
+  .slide.active .reveal[data-delay="6"] { transition-delay: 0.85s; }
+
+  /* ============================================================
+     INSTITUTIONAL HIERARCHY (slides 2–5)
+     ============================================================ */
+  .hier {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.7rem, 1.4vw, 1.1rem);
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+  }
+  .hier .node {
+    padding: clamp(0.7rem, 1.2vw, 1rem) clamp(1.5rem, 2.5vw, 2.25rem);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    color: var(--text-secondary-dark);
+    letter-spacing: -0.005em;
+    background: rgba(255,255,255,0.02);
+    transition: all 0.7s var(--ease-out);
+    min-width: 280px;
+  }
+  .hier .node.faded { opacity: 0.35; }
+  .hier .node.current {
+    border-color: var(--accent);
+    color: var(--text-primary-dark);
+    background: var(--accent-soft);
+    box-shadow: 0 0 0 1px var(--accent-line), 0 18px 50px -20px var(--accent);
+    transform: scale(1.04);
+  }
+  .hier .node strong { color: #fff; font-weight: 600; }
+  .hier .connector {
+    width: 1px;
+    height: clamp(18px, 2.5vw, 28px);
+    background: linear-gradient(to bottom, var(--border-dark), transparent);
+  }
+
+  /* ============================================================
+     TIMELINE LAW SLIDES (8–13)
+     ============================================================ */
+  .law-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.8rem, 1.5vw, 1.2rem);
+    max-width: 900px;
+  }
+  .law-step {
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-tertiary-light);
+    font-weight: 500;
+  }
+  .slide.dark .law-step, .slide.deep .law-step { color: var(--text-tertiary-dark); }
+
+  .law-year {
+    font-size: clamp(6rem, 16vw, 14rem);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+    color: var(--text-primary-light);
+    font-variant-numeric: tabular-nums;
+  }
+  .slide.dark .law-year, .slide.deep .law-year { color: var(--text-primary-dark); }
+
+  .law-id {
+    font-size: clamp(1.25rem, 2.2vw, 1.85rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  .law-name {
+    font-size: clamp(1.75rem, 3.5vw, 2.85rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    max-width: 850px;
+  }
+  .law-desc {
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    color: var(--text-secondary-light);
+    line-height: 1.55;
+    max-width: 720px;
+    margin-top: 0.5rem;
+  }
+  .slide.dark .law-desc, .slide.deep .law-desc { color: var(--text-secondary-dark); }
+
+  /* ============================================================
+     BIG NUMBER STATS
+     ============================================================ */
+  .big-num {
+    font-size: clamp(5rem, 17vw, 16rem);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    line-height: 0.9;
+    color: var(--text-primary-light);
+    font-variant-numeric: tabular-nums;
+  }
+  .slide.dark .big-num, .slide.deep .big-num { color: var(--text-primary-dark); }
+
+  .num-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    width: 100%;
+    max-width: 1100px;
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+  }
+  .num-cell {
+    padding: clamp(1rem, 2vw, 1.5rem) 0;
+    border-top: 1px solid var(--border-light);
+    text-align: left;
+  }
+  .slide.dark .num-cell, .slide.deep .num-cell { border-top-color: var(--border-dark); }
+
+  .num-cell .n {
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .num-cell .l {
+    font-size: 0.95rem;
+    color: var(--text-secondary-light);
+    margin-top: 0.6rem;
+    line-height: 1.4;
+  }
+  .slide.dark .num-cell .l, .slide.deep .num-cell .l { color: var(--text-secondary-dark); }
+
+  /* ============================================================
+     4-PILLAR GRID
+     ============================================================ */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 1.8vw, 1.5rem);
+    width: 100%;
+    max-width: 1000px;
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+  }
+  @media (max-width: 760px) {
+    .pillars { grid-template-columns: 1fr; }
+  }
+  .pillar {
+    padding: clamp(1.5rem, 2.5vw, 2rem);
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    text-align: left;
+    background: rgba(255,255,255,0.5);
+    transition: all 0.6s var(--ease-out);
+  }
+  .slide.dark .pillar, .slide.deep .pillar {
+    border-color: var(--border-dark);
+    background: rgba(255,255,255,0.03);
+  }
+  .pillar .num {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+  }
+  .pillar .h {
+    font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+  }
+  .pillar .d {
+    font-size: clamp(0.92rem, 1.1vw, 1rem);
+    color: var(--text-secondary-light);
+    line-height: 1.55;
+  }
+  .slide.dark .pillar .d, .slide.deep .pillar .d { color: var(--text-secondary-dark); }
+
+  /* ============================================================
+     120 → 4 TRANSFORMATION
+     ============================================================ */
+  .transform {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    margin-top: clamp(2rem, 3vw, 2.5rem);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .transform .from {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--text-tertiary-light);
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    opacity: 0.55;
+  }
+  .transform .arrow {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--text-tertiary-light);
+    font-weight: 300;
+    align-self: center;
+  }
+  .transform .to {
+    font-size: clamp(6rem, 16vw, 14rem);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    color: var(--accent);
+    line-height: 0.9;
+  }
+  .transform-label {
+    margin-top: clamp(0.5rem, 1.5vw, 1rem);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    color: var(--text-secondary-light);
+  }
+  .slide.dark .transform-label, .slide.deep .transform-label { color: var(--text-secondary-dark); }
+
+  /* ============================================================
+     QUOTE / STAT EMPHASIS
+     ============================================================ */
+  .emph {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ============================================================
+     SCENE COUNTER (top-right of each slide)
+     ============================================================ */
+  .scene-count {
+    position: absolute;
+    top: clamp(1.5rem, 3vw, 2.5rem);
+    right: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--text-tertiary-light);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .slide.dark .scene-count, .slide.deep .scene-count { color: var(--text-tertiary-dark); }
+
+  /* ============================================================
+     CONTROL BAR (bottom)
+     ============================================================ */
+  #control-bar {
+    position: fixed;
+    bottom: clamp(1rem, 2.5vw, 1.75rem);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.65rem 1.1rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 999px;
+    box-shadow: 0 8px 32px -8px rgba(0,0,0,0.18);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+  #control-bar.dark-mode {
+    background: rgba(28, 28, 30, 0.72);
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px -8px rgba(0,0,0,0.6);
+  }
+
+  .ctrl-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-primary-light);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+    padding: 0;
+  }
+  #control-bar.dark-mode .ctrl-btn { color: var(--text-primary-dark); }
+  .ctrl-btn:hover { background: rgba(0,0,0,0.06); }
+  #control-bar.dark-mode .ctrl-btn:hover { background: rgba(255,255,255,0.1); }
+  .ctrl-btn:active { transform: scale(0.92); }
+  .ctrl-btn svg { width: 14px; height: 14px; fill: currentColor; }
+
+  .progress {
+    width: clamp(140px, 22vw, 240px);
+    height: 3px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  #control-bar.dark-mode .progress { background: rgba(255,255,255,0.12); }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    border-radius: 999px;
+    transition: width 0.2s linear;
+  }
+
+  .counter {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary-light);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    min-width: 48px;
+    text-align: center;
+  }
+  #control-bar.dark-mode .counter { color: var(--text-secondary-dark); }
+
+  /* ============================================================
+     FOOTER (footer line bottom-left)
+     ============================================================ */
+  .footer-mark {
+    position: absolute;
+    bottom: clamp(1.5rem, 3vw, 2.5rem);
+    left: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: 0.74rem;
+    letter-spacing: 0.22em;
+    color: var(--text-tertiary-light);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .slide.dark .footer-mark, .slide.deep .footer-mark { color: var(--text-tertiary-dark); }
+
+  /* ============================================================
+     ATMOSPHERIC BACKGROUNDS
+     ============================================================ */
+  .atmos {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.4s var(--ease-out);
+  }
+  .slide.active .atmos { opacity: 1; }
+
+  .atmos.glow-blue::before {
+    content: '';
+    position: absolute;
+    width: 70vw;
+    height: 70vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,113,227,0.15) 0%, transparent 60%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(40px);
+  }
+
+  .atmos.glow-soft::before {
+    content: '';
+    position: absolute;
+    width: 80vw;
+    height: 80vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,113,227,0.06) 0%, transparent 55%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Grain texture overlay for cinematic feel */
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============================================================
+     INTRO OVERLAY (initial countdown / fade)
+     ============================================================ */
+  #intro {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--bg-light);
+    display: grid;
+    place-items: center;
+    transition: opacity 1s var(--ease), visibility 0s linear 1s;
+  }
+  #intro.hidden { opacity: 0; visibility: hidden; }
+  #intro .pulse {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 1.4s var(--ease) infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(2.2); opacity: 0.35; }
+  }
+
+  /* Hide button labels visually but keep for SR */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* Focus outlines */
+  .ctrl-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ============================================================
+     RADAR CHARTS (slides 21 & 23)
+     ============================================================ */
+  .radar {
+    width: 100%;
+    max-width: clamp(280px, 32vw, 420px);
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
+  }
+  .radar .ring,
+  .radar .axis {
+    fill: none;
+    stroke: rgba(0,0,0,0.12);
+    stroke-width: 0.7;
+  }
+  .slide.dark .radar .ring, .slide.deep .radar .ring,
+  .slide.dark .radar .axis, .slide.deep .radar .axis {
+    stroke: rgba(255,255,255,0.14);
+  }
+  .radar .area-primary {
+    fill: rgba(0,113,227,0.20);
+    stroke: var(--accent);
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+    transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out);
+    transform-origin: 230px 230px;
+  }
+  .radar .area-secondary {
+    fill: rgba(52,199,89,0.18);
+    stroke: #34c759;
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+    transition: opacity 1.2s var(--ease-out) 0.3s, transform 1.2s var(--ease-out) 0.3s;
+    transform-origin: 230px 230px;
+  }
+  .slide:not(.active) .radar .area-primary,
+  .slide:not(.active) .radar .area-secondary {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  .radar .vertex {
+    fill: var(--accent);
+  }
+  .radar .vertex-secondary {
+    fill: #34c759;
+  }
+  .radar .label {
+    font-size: 12px;
+    font-weight: 600;
+    fill: var(--text-secondary-light);
+    letter-spacing: 0.02em;
+    font-family: var(--font-stack);
+  }
+  .slide.dark .radar .label, .slide.deep .radar .label {
+    fill: var(--text-secondary-dark);
+  }
+
+  /* ============================================================
+     SPLIT LAYOUT (slide 21 & 23: radar + content)
+     ============================================================ */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+    width: 100%;
+    max-width: 1180px;
+    margin-top: clamp(1.5rem, 2.5vw, 2.5rem);
+  }
+  @media (max-width: 860px) {
+    .split { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+
+  /* Compact pillars for split layout */
+  .pillars-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.7rem, 1.2vw, 1rem);
+  }
+  .pillars-stack .pillar {
+    padding: clamp(1rem, 1.8vw, 1.35rem) clamp(1.2rem, 2vw, 1.6rem);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.5);
+    text-align: left;
+  }
+  .slide.dark .pillars-stack .pillar, .slide.deep .pillars-stack .pillar {
+    border-color: var(--border-dark);
+    background: rgba(255,255,255,0.03);
+  }
+  .pillars-stack .pillar .num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+  .pillars-stack .pillar .h {
+    font-size: clamp(1rem, 1.35vw, 1.2rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+  }
+  .pillars-stack .pillar .d {
+    font-size: clamp(0.82rem, 0.95vw, 0.92rem);
+    color: var(--text-secondary-light);
+    line-height: 1.5;
+  }
+  .slide.dark .pillars-stack .pillar .d, .slide.deep .pillars-stack .pillar .d {
+    color: var(--text-secondary-dark);
+  }
+
+  /* ============================================================
+     RADAR LEGEND (slide 23)
+     ============================================================ */
+  .radar-legend {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 1.6vw, 1.35rem);
+    text-align: left;
+  }
+  .radar-legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+  .radar-legend-item .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 0.32rem;
+  }
+  .radar-legend-item .dot.mission { background: var(--accent); }
+  .radar-legend-item .dot.team { background: #34c759; }
+  .radar-legend-item .txt strong {
+    display: block;
+    font-size: clamp(1rem, 1.3vw, 1.15rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.15rem;
+  }
+  .radar-legend-item .txt span {
+    font-size: clamp(0.88rem, 1.05vw, 1rem);
+    color: var(--text-secondary-light);
+    line-height: 1.45;
+  }
+  .slide.dark .radar-legend-item .txt span,
+  .slide.deep .radar-legend-item .txt span { color: var(--text-secondary-dark); }
+
+  .gap-callout {
+    margin-top: 0.5rem;
+    padding: clamp(0.9rem, 1.4vw, 1.1rem) clamp(1rem, 1.6vw, 1.3rem);
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .gap-callout .gap-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .gap-callout .gap-text {
+    font-size: clamp(0.92rem, 1.1vw, 1.02rem);
+    line-height: 1.5;
+    color: var(--text-primary-light);
+  }
+  .slide.dark .gap-callout .gap-text,
+  .slide.deep .gap-callout .gap-text { color: var(--text-primary-dark); }
+
+  /* ============================================================
+     PDI HIGHLIGHTS (slide 26)
+     ============================================================ */
+  .pdi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.75rem);
+    width: 100%;
+    max-width: 880px;
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  @media (max-width: 700px) {
+    .pdi-grid { grid-template-columns: 1fr; }
+  }
+  .pdi-cell {
+    padding: clamp(1.1rem, 1.8vw, 1.5rem);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.03);
+    text-align: left;
+  }
+  .pdi-cell .n {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    color: var(--accent);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.4rem;
+  }
+  .pdi-cell .lbl {
+    font-size: 0.82rem;
+    color: var(--text-secondary-dark);
+    line-height: 1.45;
+  }
+</style>
+</head>
+<body>
+
+<!-- INTRO OVERLAY -->
+<div id="intro" role="status" aria-label="Carregando apresentação">
+  <div class="pulse"></div>
+</div>
+
+<!-- DECK -->
+<main id="deck" role="main">
+
+  <!-- ============================================================
+       PARTE 1 · LOCALIZAÇÃO INSTITUCIONAL
+       ============================================================ -->
+
+  <!-- 1 · ABERTURA -->
+  <section class="slide" data-duration="6500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">01 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Movimentação de Pessoal</span>
+    <h1 class="title hero reveal" data-delay="1">O fio que une<br/>memória, estratégia<br/>e inovação.</h1>
+    <p class="subtitle reveal" data-delay="2">Uma jornada pela transformação da mobilidade<br/>na Administração Pública Federal.</p>
+    <span class="footer-mark">MGI · SGP · DEPRO · CGMOP</span>
+  </section>
+
+  <!-- 2 · MGI -->
+  <section class="slide dark" data-duration="6000" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">02 / 33</span>
+    <div class="atmos glow-blue"></div>
+    <div class="grain"></div>
+    <span class="eyebrow reveal">Onde começa esta história</span>
+    <h2 class="title reveal" data-delay="1">Ministério da Gestão<br/>e da Inovação<br/>em Serviços Públicos</h2>
+    <div class="hier reveal" data-delay="2" aria-label="Hierarquia institucional">
+      <div class="node current"><strong>MGI</strong></div>
+    </div>
+  </section>
+
+  <!-- 3 · SGP -->
+  <section class="slide dark" data-duration="6000" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">03 / 33</span>
+    <div class="atmos glow-blue"></div>
+    <div class="grain"></div>
+    <span class="eyebrow reveal">Dentro do MGI</span>
+    <h2 class="title reveal" data-delay="1">Secretaria de<br/>Gestão de Pessoas</h2>
+    <div class="hier reveal" data-delay="2">
+      <div class="node faded">MGI</div>
+      <div class="connector"></div>
+      <div class="node current"><strong>SGP</strong></div>
+    </div>
+  </section>
+
+  <!-- 4 · DEPRO -->
+  <section class="slide dark" data-duration="6500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">04 / 33</span>
+    <div class="atmos glow-blue"></div>
+    <div class="grain"></div>
+    <span class="eyebrow reveal">Dentro da SGP</span>
+    <h2 class="title reveal" data-delay="1">Diretoria de Planejamento<br/>da Força de Trabalho</h2>
+    <div class="hier reveal" data-delay="2">
+      <div class="node faded">MGI</div>
+      <div class="connector"></div>
+      <div class="node faded">SGP</div>
+      <div class="connector"></div>
+      <div class="node current"><strong>DEPRO</strong></div>
+    </div>
+  </section>
+
+  <!-- 5 · CGMOP (DESTINO) -->
+  <section class="slide dark" data-duration="7500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">05 / 33</span>
+    <div class="atmos glow-blue"></div>
+    <div class="grain"></div>
+    <span class="eyebrow reveal">E aqui chegamos</span>
+    <h2 class="title reveal" data-delay="1">Coordenação-Geral de<br/>Movimentação de Pessoal</h2>
+    <p class="subtitle reveal" data-delay="2">CGMOP.</p>
+    <div class="hier reveal" data-delay="3">
+      <div class="node faded">MGI</div>
+      <div class="connector"></div>
+      <div class="node faded">SGP</div>
+      <div class="connector"></div>
+      <div class="node faded">DEPRO</div>
+      <div class="connector"></div>
+      <div class="node current"><strong>CGMOP</strong></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PARTE 2 · A TESE
+       ============================================================ -->
+
+  <!-- 6 · A TESE -->
+  <section class="slide pure" data-duration="7500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">06 / 33</span>
+    <span class="eyebrow reveal">CGMOP . DEPRO . SGP . MGI</span>
+    <h2 class="title xl reveal" data-delay="1">Movimentar pessoas<br/>é movimentar<br/>o Estado.</h2>
+    <p class="subtitle reveal" data-delay="2">Da burocracia cartorial à estratégia centrada em talentos —<br/>uma mudança de paradigma silenciosa, e profunda.</p>
+  </section>
+
+  <!-- ============================================================
+       PARTE 3 · EVOLUÇÃO NORMATIVA
+       ============================================================ -->
+
+  <!-- 7 · CAPÍTULO I -->
+  <section class="slide deep" data-duration="5500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">07 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Capítulo I</span>
+    <h2 class="title xl reveal" data-delay="1">Evolução<br/>Normativa.</h2>
+    <p class="subtitle reveal" data-delay="2">Seis marcos que reescreveram a gestão de pessoas<br/>no serviço público federal.</p>
+  </section>
+
+  <!-- 8 · Lei 8.112/1990 -->
+  <section class="slide" data-duration="7500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">08 / 33</span>
+    <div class="law-card">
+      <span class="law-step reveal">Marco 01 de 06</span>
+      <div class="law-year reveal" data-delay="1">1990</div>
+      <div class="law-id reveal" data-delay="2">Lei nº 8.112</div>
+      <div class="law-name reveal" data-delay="3">A lógica do cargo.</div>
+      <p class="law-desc reveal" data-delay="4">O Regime Jurídico Único plantava a semente da mobilidade — remoção, cessão, requisição — mas a cultura organizacional a mantinha em estado de latência. O cargo era uma âncora, não um ponto de partida.</p>
+    </div>
+  </section>
+
+  <!-- 9 · Portaria 193/2018 -->
+  <section class="slide" data-duration="7500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">09 / 33</span>
+    <div class="law-card">
+      <span class="law-step reveal">Marco 02 de 06</span>
+      <div class="law-year reveal" data-delay="1">2018</div>
+      <div class="law-id reveal" data-delay="2">Portaria nº 193</div>
+      <div class="law-name reveal" data-delay="3">A primeira flexibilidade.</div>
+      <p class="law-desc reveal" data-delay="4">Pela primeira vez, um normativo foi <strong>além da ocupação de cargos</strong>. Nascia o instituto da movimentação <strong>para compor força de trabalho</strong> — irrecusável, estratégica, voltada ao <strong>dimensionamento do Estado</strong>, e não ao mero preenchimento de vagas.</p>    </div>
+  </section>
+
+  <!-- 10 · Portaria 282/2020 -->
+  <section class="slide" data-duration="8000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">10 / 33</span>
+    <div class="law-card">
+      <span class="law-step reveal">Marco 03 de 06</span>
+      <div class="law-year reveal" data-delay="1">2020</div>
+      <div class="law-id reveal" data-delay="2">Portaria nº 282</div>
+      <div class="law-name reveal" data-delay="3">Proporcionalidade e irrecusabilidade.</div>
+      <p class="law-desc reveal" data-delay="4">Trouxe segurança jurídica e retirou das chefias o poder de barrar o desenvolvimento profissional. Os números deram um salto substancial — a mobilidade ganhava maturidade.</p>
+    </div>
+  </section>
+
+  <!-- 11 · Decreto 10.835/2021 -->
+  <section class="slide" data-duration="7500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">11 / 33</span>
+    <div class="law-card">
+      <span class="law-step reveal">Marco 04 de 06</span>
+      <div class="law-year reveal" data-delay="1">2021</div>
+      <div class="law-id reveal" data-delay="2">Decreto nº 10.835</div>
+      <div class="law-name reveal" data-delay="3">Política de Estado.</div>
+      <p class="law-desc reveal" data-delay="4">A mobilidade foi elevada à categoria de política de governo — com definição ampla, moderna e integrada dos institutos da cessão, requisição e alteração de exercício.</p>
+    </div>
+  </section>
+
+  <!-- 12 · Portaria 8.471/2022 -->
+  <section class="slide" data-duration="7500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">12 / 33</span>
+    <div class="law-card">
+    <span class="law-step reveal">Marco 05 de 06</span>
+    <div class="law-year reveal" data-delay="1">2022</div>
+    <div class="law-id reveal" data-delay="2">Portaria nº 8.471</div>
+    <div class="law-name reveal" data-delay="3">O marco estratégico.</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.5rem,3vw,2.5rem); max-width:1100px; width:100%; margin-top:0.5rem;">
+      <p class="law-desc reveal" data-delay="4" style="margin-top:0; max-width:none; text-align:left;">Estatuto moderno da movimentação no SIPEC. A mobilidade passa a ser vista como parte integrante do ciclo de vida laboral — conectando-se ao desenvolvimento, à retenção e à inovação.</p>
+      <p class="law-desc reveal" data-delay="5" style="margin-top:0; max-width:none; text-align:left;">E enfrenta, simultaneamente, <strong>quatro gargalos históricos</strong>: anuência, prazos, meritocracia e publicidade.</p>
+  </div>
+</div>
+  </section>
+
+  <!-- 13 · Portaria 619/2023 -->
+  <section class="slide" data-duration="7500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">13 / 33</span>
+    <div class="law-card">
+      <span class="law-step reveal">Marco 06 de 06</span>
+      <div class="law-year reveal" data-delay="1">2023</div>
+      <div class="law-id reveal" data-delay="2">Portaria nº 619</div>
+      <div class="law-name reveal" data-delay="3">Redistribuição equilibrada.</div>
+      <p class="law-desc reveal" data-delay="4">Novas orientações sobre redistribuição de cargos efetivos. A evidência de que o arcabouço jurídico da mobilidade é um organismo vivo — em permanente calibragem.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PARTE 4 · DIAGNÓSTICO E DADOS
+       ============================================================ -->
+
+  <!-- 14 · CAPÍTULO II -->
+  <section class="slide deep" data-duration="5500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">14 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Capítulo II</span>
+    <h2 class="title xl reveal" data-delay="1">Diagnóstico<br/>e dados.</h2>
+    <p class="subtitle reveal" data-delay="2">O que o Painel de Movimentação nos revela.</p>
+  </section>
+
+  <!-- 15 · 182.000 -->
+  <section class="slide pure" data-duration="8500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">15 / 33</span>
+    <span class="eyebrow reveal">Painel de Movimentação · 2025</span>
+    <div class="big-num reveal" data-delay="1" data-counter="199000" data-format="thousands">0</div>
+    <p class="subtitle reveal" data-delay="2"><strong style="color:var(--text-primary-light);font-weight:600;">movimentações registradas</strong><br/>em Órgãos da Administração Pública — das quais 51 mil estão ativas.</p>
+  </section>
+
+    <!-- 16 · Perfil sociodemográfico -->
+  <section class="slide" data-duration="10000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">16 / 33</span>
+    <span class="eyebrow reveal">Perfil dos agentes movimentados</span>
+    <h2 class="title reveal" data-delay="1" style="font-size:clamp(2rem,4.5vw,3.5rem);">Quem são os servidores<br/>em movimento.</h2>
+
+    <!-- Linha 1: idade · ensino · raça -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1.5rem,3vw,2.5rem); width:100%; max-width:1100px; margin-top:clamp(1.5rem,2.5vw,2rem);">
+      <div class="num-cell reveal" data-delay="2">
+        <div class="n">54</div>
+        <div class="l">anos · idade média</div>
+      </div>
+      <div class="num-cell reveal" data-delay="3">
+        <div class="n">50,3%</div>
+        <div class="l">possuem ensino superior</div>
+      </div>
+      <div class="num-cell reveal" data-delay="4">
+        <div class="n">49,9%</div>
+        <div class="l">pessoas negras <em style="color:var(--text-tertiary-light);font-style:normal;font-size:0.85em;">(pretas + pardas)</em></div>
+      </div>
+    </div>
+
+    <!-- Linha 2: homens · mulheres · PcD -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1.5rem,3vw,2.5rem); width:100%; max-width:1100px; margin-top:clamp(1.25rem,2vw,1.75rem);">
+      <div class="num-cell reveal" data-delay="5">
+        <div class="n">60,2%</div>
+        <div class="l">homens</div>
+      </div>
+      <div class="num-cell reveal" data-delay="6">
+        <div class="n">39,8%</div>
+        <div class="l">mulheres</div>
+      </div>
+      <div class="num-cell reveal" data-delay="6">
+        <div class="n">2,1%</div>
+        <div class="l">pessoas com deficiência</div>
+      </div>
+    </div>
+  </section>
+  <!-- 17 · Silva & Neiva -->
+  <section class="slide deep" data-duration="9500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">17 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Pesquisa Silva &amp; Neiva · 2025</span>
+    <h2 class="title reveal" data-delay="1">Por que partem?</h2>
+    <div class="emph reveal" data-delay="2" style="margin-top:clamp(1.5rem,3vw,2.5rem);">33,74%</div>
+    <p class="subtitle reveal" data-delay="3">dos servidores federais estão hoje em órgão diferente daquele em que prestaram concurso. Crescimento de <strong style="color:var(--text-primary-dark);font-weight:600;">66% nos últimos 10 anos</strong>.</p>
+    <p class="caption reveal" data-delay="4">As principais razões: desenvolvimento profissional, liderança despreparada, falta de suporte organizacional, saúde mental e assédio moral.</p>
+  </section>
+
+  <!-- 18 · Sandim -->
+  <section class="slide" data-duration="9000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">18 / 33</span>
+    <span class="eyebrow reveal">Pesquisa Sandim · 2025</span>
+    <h2 class="title reveal" data-delay="1">A disputa por talentos.</h2>
+    <p class="subtitle reveal" data-delay="2">Entrevistas com gestores e análise de 47 formulários revelaram que a movimentação ainda é, sobretudo, instrumento <strong style="color:var(--text-primary-light);font-weight:600;">quantitativo</strong> de recomposição de quadros — em detrimento da montagem estratégica por competências.</p>
+    <span class="tag reveal" data-delay="3">Realizada em parceria com a Enap</span>
+  </section>
+
+  <!-- ============================================================
+       PARTE 5 · INOVAÇÃO E TECNOLOGIA
+       ============================================================ -->
+
+  <!-- 19 · CAPÍTULO III -->
+  <section class="slide deep" data-duration="5500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">19 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Capítulo III</span>
+    <h2 class="title xl reveal" data-delay="1">Inovação e<br/>tecnologia.</h2>
+    <p class="subtitle reveal" data-delay="2">Quando a inteligência artificial encontra<br/>o serviço público.</p>
+  </section>
+
+ 
+  <!-- 20 · Recruta.Gov -->
+  <section class="slide pure" data-duration="10000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">20 / 33</span>
+    <span class="eyebrow reveal">Apresentando</span>
+    <h2 class="title hero reveal" data-delay="1">Recruta<span style="color:var(--accent);">.</span>Gov</h2>
+    <p class="subtitle reveal" data-delay="2">A plataforma que substitui<br/><em style="color:var(--text-primary-light);font-style:normal;font-weight:500;">"quem indica?"</em> por <em style="color:var(--text-primary-light);font-style:normal;font-weight:500;">"quem sabe fazer?"</em></p>
+    <p class="subtitle reveal" data-delay="3" style="margin-top:clamp(0.75rem,1.5vw,1.25rem);"><strong style="color:var(--accent);font-weight:600;">Proativa</strong>, <span style="color:var(--text-tertiary-light);text-decoration:line-through;text-decoration-thickness:1.5px;">não reativa</span>. <br/>Mapeia talentos antes da vaga existir.</p>
+  </section>
+
+  <!-- 21 · 4 Pilares Técnicos + Radar Ilustrativo -->
+  <section class="slide" data-duration="13500" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">21 / 33</span>
+    <span class="eyebrow reveal">Régua RADAR · 9 dimensões</span>
+    <h2 class="title reveal" data-delay="1" style="font-size:clamp(2rem,4.5vw,3.8rem);">Quatro pilares técnicos.</h2>
+    <div class="split">
+      <!-- LADO ESQUERDO: RADAR SVG -->
+      <div class="reveal" data-delay="2">
+        <svg class="radar" viewBox="0 0 460 460" role="img" aria-label="Gráfico radar ilustrativo das 9 dimensões da Régua RADAR">
+          <!-- Anéis concêntricos -->
+          <polygon class="ring" points="230,200 249.3,207 259.5,224.8 256,245 240.3,258.2 219.7,258.2 204,245 200.5,224.8 210.7,207"/>
+          <polygon class="ring" points="230,170 268.6,184 289.1,219.6 282,260 250.5,286.4 209.5,286.4 178,260 170.9,219.6 191.4,184"/>
+          <polygon class="ring" points="230,140 287.9,161.1 318.6,214.4 307.9,275 260.8,314.6 199.2,314.6 152.1,275 141.4,214.4 172.1,161.1"/>
+          <polygon class="ring" points="230,110 307.1,138.1 348.2,209.2 333.9,290 271,342.8 189,342.8 126.1,290 111.8,209.2 152.9,138.1"/>
+          <polygon class="ring" points="230,80 326.4,115.1 377.7,204 359.9,305 281.3,371 178.7,371 100.1,305 82.3,204 133.6,115.1"/>
+          <!-- Eixos -->
+          <line class="axis" x1="230" y1="230" x2="230" y2="80"/>
+          <line class="axis" x1="230" y1="230" x2="326.4" y2="115.1"/>
+          <line class="axis" x1="230" y1="230" x2="377.7" y2="204"/>
+          <line class="axis" x1="230" y1="230" x2="359.9" y2="305"/>
+          <line class="axis" x1="230" y1="230" x2="281.3" y2="371"/>
+          <line class="axis" x1="230" y1="230" x2="178.7" y2="371"/>
+          <line class="axis" x1="230" y1="230" x2="100.1" y2="305"/>
+          <line class="axis" x1="230" y1="230" x2="82.3" y2="204"/>
+          <line class="axis" x1="230" y1="230" x2="133.6" y2="115.1"/>
+          <!-- Polígono de pontuação do candidato (ilustrativo) -->
+          <polygon class="area-primary" points="230,110 316.8,126.6 333.4,211.8 307.9,275 271,342.8 194.1,328.7 126.1,290 97.1,206.6 152.9,138.1"/>
+          <!-- Vértices -->
+          <circle class="vertex" cx="230" cy="110" r="3"/>
+          <circle class="vertex" cx="316.8" cy="126.6" r="3"/>
+          <circle class="vertex" cx="333.4" cy="211.8" r="3"/>
+          <circle class="vertex" cx="307.9" cy="275" r="3"/>
+          <circle class="vertex" cx="271" cy="342.8" r="3"/>
+          <circle class="vertex" cx="194.1" cy="328.7" r="3"/>
+          <circle class="vertex" cx="126.1" cy="290" r="3"/>
+          <circle class="vertex" cx="97.1" cy="206.6" r="3"/>
+          <circle class="vertex" cx="152.9" cy="138.1" r="3"/>
+          <!-- Labels das 9 dimensões -->
+          <text class="label" x="230" y="60" text-anchor="middle">Técnica</text>
+          <text class="label" x="348" y="92" text-anchor="start">Digital</text>
+          <text class="label" x="395" y="202" text-anchor="start">Problemas</text>
+          <text class="label" x="378" y="322" text-anchor="start">Cidadão</text>
+          <text class="label" x="290" y="398" text-anchor="start">Sistêmica</text>
+          <text class="label" x="170" y="398" text-anchor="end">Sociais</text>
+          <text class="label" x="82" y="322" text-anchor="end">Flexibilidade</text>
+          <text class="label" x="65" y="202" text-anchor="end">Valores</text>
+          <text class="label" x="112" y="92" text-anchor="end">Alinhamento</text>
+        </svg>
+      </div>
+
+      <!-- LADO DIREITO: PILARES EMPILHADOS -->
+      <div class="pillars-stack">
+        <div class="pillar reveal" data-delay="3">
+          <div class="num">01</div>
+          <div class="h">Vetorização semântica</div>
+          <div class="d">Modelos como o Sentence-BERT convertem currículos e vagas em <em>embeddings</em>, encontrando similaridade por significado — não por palavras-chave.</div>
+        </div>
+        <div class="pillar reveal" data-delay="4">
+          <div class="num">02</div>
+          <div class="h">Régua RADAR</div>
+          <div class="d">Nove dimensões avaliam o perfil — das hard skills à mentalidade digital, do foco no cidadão ao alinhamento institucional.</div>
+        </div>
+        <div class="pillar reveal" data-delay="5">
+          <div class="num">03</div>
+          <div class="h">Regra de Inferência Zero</div>
+          <div class="d">A IA só atribui uma competência se encontrar evidência <strong>literal</strong> no currículo. Sem alucinação, com segurança jurídica.</div>
+        </div>
+        <div class="pillar reveal" data-delay="6">
+          <div class="num">04</div>
+          <div class="h">Execução on-premise</div>
+          <div class="d">Modelos abertos (Gemma 2, LLaMA) rodam em infraestrutura local do MGI. <strong>Zero tráfego</strong> de dados sensíveis para fora.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 22 · Escala do Ecossistema Recruta.gov -->
+  <section class="slide deep" data-duration="11000" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">22 / 33</span>
+    <div class="atmos glow-blue"></div>
+    <span class="eyebrow reveal">A escala do ecossistema</span>
+    <h2 class="title reveal" data-delay="1">Inteligência em<br/>números reais.</h2>
+    <div class="num-grid" style="max-width:1100px;">
+      <div class="num-cell reveal" data-delay="2">
+        <div class="n">250K+</div>
+        <div class="l">trajetórias de servidores vetorizadas e prontas para busca semântica</div>
+      </div>
+      <div class="num-cell reveal" data-delay="3">
+        <div class="n">227</div>
+        <div class="l">órgãos integrados ao ecossistema de dados (SouGov, SIAPE, SISDIP, Oportunidades)</div>
+      </div>
+      <div class="num-cell reveal" data-delay="4">
+        <div class="n">100%</div>
+        <div class="l">soberania local — operação on-premise, em estrita conformidade com a LGPD</div>
+      </div>
+      <div class="num-cell reveal" data-delay="5">
+        <div class="n">9</div>
+        <div class="l">dimensões auditadas em cada perfil, com regra de inferência zero (temperatura 0.0)</div>
+      </div>
+    </div>
+    <span class="tag reveal" data-delay="6">Powered by Gemma 2 · roneygbrum.github.io/Recruta</span>
+  </section>
+
+  <!-- 23 · DFT + Matchmaking — Radar Comparativo -->
+  <section class="slide" data-duration="14000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">23 / 33</span>
+    <span class="eyebrow reveal">DFT · Diagnóstico de Força de Trabalho</span>
+    <h2 class="title reveal" data-delay="1" style="font-size:clamp(2rem,4.5vw,3.5rem);">Raio-X institucional:<br/>teoria <em style="font-style:normal;color:var(--accent);">vs.</em> realidade.</h2>
+    <p class="subtitle reveal" data-delay="2" style="margin-top:clamp(0.75rem,1.5vw,1.25rem);max-width:880px;">O <strong style="color:var(--text-primary-light);font-weight:600;">Dimensionamento</strong> mapeia o que cada unidade declara como missão (SISDIP). O <strong style="color:var(--text-primary-light);font-weight:600;">Matchmaking</strong> compara com a capacidade real instalada. O resultado: gaps coletivos diagnosticados em tempo real.</p>
+
+    <div class="split">
+      <!-- LADO ESQUERDO: RADAR COMPARATIVO -->
+      <div class="reveal" data-delay="3">
+        <svg class="radar" viewBox="0 0 460 460" role="img" aria-label="Gráfico radar comparativo entre missão institucional e capacidade da equipe">
+          <!-- Anéis concêntricos -->
+          <polygon class="ring" points="230,200 249.3,207 259.5,224.8 256,245 240.3,258.2 219.7,258.2 204,245 200.5,224.8 210.7,207"/>
+          <polygon class="ring" points="230,170 268.6,184 289.1,219.6 282,260 250.5,286.4 209.5,286.4 178,260 170.9,219.6 191.4,184"/>
+          <polygon class="ring" points="230,140 287.9,161.1 318.6,214.4 307.9,275 260.8,314.6 199.2,314.6 152.1,275 141.4,214.4 172.1,161.1"/>
+          <polygon class="ring" points="230,110 307.1,138.1 348.2,209.2 333.9,290 271,342.8 189,342.8 126.1,290 111.8,209.2 152.9,138.1"/>
+          <polygon class="ring" points="230,80 326.4,115.1 377.7,204 359.9,305 281.3,371 178.7,371 100.1,305 82.3,204 133.6,115.1"/>
+          <!-- Eixos -->
+          <line class="axis" x1="230" y1="230" x2="230" y2="80"/>
+          <line class="axis" x1="230" y1="230" x2="326.4" y2="115.1"/>
+          <line class="axis" x1="230" y1="230" x2="377.7" y2="204"/>
+          <line class="axis" x1="230" y1="230" x2="359.9" y2="305"/>
+          <line class="axis" x1="230" y1="230" x2="281.3" y2="371"/>
+          <line class="axis" x1="230" y1="230" x2="178.7" y2="371"/>
+          <line class="axis" x1="230" y1="230" x2="100.1" y2="305"/>
+          <line class="axis" x1="230" y1="230" x2="82.3" y2="204"/>
+          <line class="axis" x1="230" y1="230" x2="133.6" y2="115.1"/>
+          <!-- Equipe atual (verde) — desenhada primeiro para ficar atrás -->
+          <polygon class="area-secondary" points="230,155 268.6,184 303.9,217 320.9,282.5 255.7,300.5 194.1,328.7 152.1,275 126.6,211.8 172.1,161.1"/>
+          <!-- Missão SISDIP (azul) — por cima -->
+          <polygon class="area-primary" points="230,95 326.4,115.1 362.9,206.6 320.9,282.5 276.2,356.9 199.2,314.6 126.1,290 111.8,209.2 143.2,126.6"/>
+          <!-- Vértices Missão -->
+          <circle class="vertex" cx="230" cy="95" r="3"/>
+          <circle class="vertex" cx="326.4" cy="115.1" r="3"/>
+          <circle class="vertex" cx="362.9" cy="206.6" r="3"/>
+          <circle class="vertex" cx="320.9" cy="282.5" r="3"/>
+          <circle class="vertex" cx="276.2" cy="356.9" r="3"/>
+          <circle class="vertex" cx="199.2" cy="314.6" r="3"/>
+          <circle class="vertex" cx="126.1" cy="290" r="3"/>
+          <circle class="vertex" cx="111.8" cy="209.2" r="3"/>
+          <circle class="vertex" cx="143.2" cy="126.6" r="3"/>
+          <!-- Labels -->
+          <text class="label" x="230" y="60" text-anchor="middle">Técnica</text>
+          <text class="label" x="348" y="92" text-anchor="start">Digital</text>
+          <text class="label" x="395" y="202" text-anchor="start">Problemas</text>
+          <text class="label" x="378" y="322" text-anchor="start">Cidadão</text>
+          <text class="label" x="290" y="398" text-anchor="start">Sistêmica</text>
+          <text class="label" x="170" y="398" text-anchor="end">Sociais</text>
+          <text class="label" x="82" y="322" text-anchor="end">Flexibilidade</text>
+          <text class="label" x="65" y="202" text-anchor="end">Valores</text>
+          <text class="label" x="112" y="92" text-anchor="end">Alinhamento</text>
+        </svg>
+      </div>
+
+      <!-- LADO DIREITO: LEGENDA + DIAGNÓSTICO -->
+      <div class="radar-legend">
+        <div class="radar-legend-item reveal" data-delay="4">
+          <span class="dot mission"></span>
+          <div class="txt">
+            <strong>Missão SISDIP</strong>
+            <span>O que a unidade declarou como entrega institucional.</span>
+          </div>
+        </div>
+        <div class="radar-legend-item reveal" data-delay="5">
+          <span class="dot team"></span>
+          <div class="txt">
+            <strong>Equipe atual</strong>
+            <span>A capacidade real instalada nos servidores lotados hoje.</span>
+          </div>
+        </div>
+        <div class="gap-callout reveal" data-delay="6">
+          <span class="gap-label">Diagnóstico IA · Gap detectado</span>
+          <p class="gap-text">Lacuna crítica em <strong>Mentalidade Digital</strong> e <strong>Competência Técnica</strong>. Recomendação: trilha de capacitação ou requisição de talentos de TI.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PARTE 6 · JUSTIÇA E PROTEÇÃO SOCIAL
+       ============================================================ -->
+
+  <!-- 24 · CAPÍTULO IV -->
+  <section class="slide deep" data-duration="5500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">24 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Capítulo IV</span>
+    <h2 class="title xl reveal" data-delay="1">Justiça e<br/>proteção social.</h2>
+    <p class="subtitle reveal" data-delay="2">A face mais humana da mobilidade.</p>
+  </section>
+
+  <!-- 25 · Portaria Conjunta 88/2025 -->
+  <section class="slide pure" data-duration="12000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">25 / 33</span>
+    <span class="eyebrow reveal">Portaria Conjunta MGI/MMulheres nº 88/2025</span>
+    <h2 class="title reveal" data-delay="1">Movimentação protetiva.</h2>
+    <p class="subtitle reveal" data-delay="2">Prioridade absoluta. Tratamento sigiloso. Direito à movimentação, remoção e redistribuição independentemente do interesse da Administração — bastando a comprovação do risco.</p>
+
+    <!-- Dois números: contexto · impacto -->
+    <div class="reveal" data-delay="3" style="display:flex; gap:clamp(2.5rem,6vw,5rem); margin-top:clamp(2rem,3vw,2.5rem); flex-wrap:wrap; justify-content:center; align-items:flex-start;">
+      <div style="text-align:center;">
+        <div class="emph" style="font-size:clamp(2rem,4vw,3rem); color:var(--text-primary-light);">1.568</div>
+        <div style="font-size:0.95rem; color:var(--text-tertiary-light); margin-top:0.5rem;">feminicídios em 2025</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="emph" style="font-size:clamp(2rem,4vw,3rem);">~50</div>
+        <div style="font-size:0.95rem; color:var(--text-tertiary-light); margin-top:0.5rem;">pessoas servidoras já protegidas pela portaria</div>
+      </div>
+    </div>
+
+    <p class="caption reveal" data-delay="4">Que nenhuma pessoa tenha de escolher entre sua carreira e sua vida.</p>
+  </section>
+
+  <!-- 26 · Reparação Histórica + PDI -->
+  <section class="slide deep" data-duration="13000" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">26 / 33</span>
+    <span class="eyebrow reveal">Lei nº 8.878/1994 · PDI · Lei nº 15.367/2026</span>
+    <h2 class="title reveal" data-delay="1">Reparação histórica<br/>em duas camadas.</h2>
+    <p class="subtitle reveal" data-delay="2" style="max-width:860px;">Aos anistiados do período Collor, a Lei 8.878/1994 devolveu o vínculo e o tempo de serviço. Em <strong style="color:var(--text-primary-dark);font-weight:600;">2026</strong>, o reposicionamento remuneratório os recoloca na progressão devida. E o novo <strong style="color:var(--text-primary-dark);font-weight:600;">Programa de Desligamento Incentivado</strong> oferece uma saída digna e financeiramente justa para quem dedicou uma vida ao Estado.</p>
+
+    <div class="pdi-grid">
+      <div class="pdi-cell reveal" data-delay="3">
+        <div class="n">75+</div>
+        <div class="lbl"><strong style="color:var(--text-primary-dark);font-weight:600;">anos de idade</strong><br/>e em exercício — requisito de adesão ao PDI</div>
+      </div>
+      <div class="pdi-cell reveal" data-delay="4">
+        <div class="n">+40%</div>
+        <div class="lbl"><strong style="color:var(--text-primary-dark);font-weight:600;">acréscimo</strong><br/>sobre o valor calculado por ano trabalhado após o retorno</div>
+      </div>
+      <div class="pdi-cell reveal" data-delay="5">
+        <div class="n">R$ 350K</div>
+        <div class="lbl"><strong style="color:var(--text-primary-dark);font-weight:600;">teto do incentivo</strong><br/>pago em parcela única, em conta de titularidade do servidor</div>
+      </div>
+    </div>
+
+    <span class="tag reveal" data-delay="6" style="border-color:var(--accent-line);color:var(--text-primary-dark);background:var(--accent-soft);">Vigência: a partir de 1º de abril de 2026</span>
+  </section>
+
+  <!-- ============================================================
+       PARTE 7 · RESILIÊNCIA E EMERGÊNCIAS
+       ============================================================ -->
+
+  <!-- 27 · CAPÍTULO V -->
+  <section class="slide deep" data-duration="5500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">27 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Capítulo V</span>
+    <h2 class="title xl reveal" data-delay="1">Resiliência e<br/>emergências.</h2>
+    <p class="subtitle reveal" data-delay="2">Quando o Estado precisa correr.</p>
+  </section>
+
+  <!-- 28 · 120 → 4 dias -->
+  <section class="slide pure" data-duration="10000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">28 / 33</span>
+    <span class="eyebrow reveal">Lições aprendidas · Yanomami → Rio Grande do Sul</span>
+    <h2 class="title reveal" data-delay="1">Tempo de resposta.</h2>
+    <div class="transform">
+      <span class="from reveal" data-delay="2">120</span>
+      <span class="arrow reveal" data-delay="3">→</span>
+      <span class="to reveal" data-delay="4">4</span>
+    </div>
+    <p class="transform-label reveal" data-delay="5">dias entre a deflagração da crise e a movimentação efetiva de servidores.</p>
+    <span class="tag reveal" data-delay="6">Times Volantes · Portaria MGI nº 3.179 / 2024</span>
+  </section>
+
+  <!-- ============================================================
+       PARTE 8 · VISÃO DE FUTURO
+       ============================================================ -->
+
+  <!-- 29 · CAPÍTULO VI -->
+  <section class="slide deep" data-duration="5500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">29 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Capítulo VI</span>
+    <h2 class="title xl reveal" data-delay="1">Visão de futuro.</h2>
+    <p class="subtitle reveal" data-delay="2">O Banco de Talentos.</p>
+  </section>
+
+  <!-- 30 · 4 Pilares Banco de Talentos -->
+  <section class="slide" data-duration="11000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">30 / 33</span>
+    <span class="eyebrow reveal">Banco de Talentos</span>
+    <h2 class="title reveal" data-delay="1">Uma plataforma.<br/>Quatro pilares.</h2>
+    <div class="pillars">
+      <div class="pillar reveal" data-delay="2">
+        <div class="num">Pilar 01</div>
+        <div class="h">DFT integrado</div>
+        <div class="d">Matchmaking algorítmico entre servidores elegíveis e vagas prioritárias, alimentado pelo Recruta.Gov.</div>
+      </div>
+      <div class="pillar reveal" data-delay="3">
+        <div class="num">Pilar 02</div>
+        <div class="h">Trilhas de carreira</div>
+        <div class="d">Servidores indicam intenção de participar de programas de rodízio ou projetos especiais.</div>
+      </div>
+      <div class="pillar reveal" data-delay="4">
+        <div class="num">Pilar 03</div>
+        <div class="h">Governança compartilhada</div>
+        <div class="d">Painel digital permite aos órgãos setoriais acompanhar, em tempo real, os pedidos de movimentação.</div>
+      </div>
+      <div class="pillar reveal" data-delay="5">
+        <div class="num">Pilar 04</div>
+        <div class="h">Mobilidade por competências</div>
+        <div class="d">Inclui competências comportamentais, disponibilidade geográfica e regime de trabalho.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 31 · Continuidade Administrativa -->
+  <section class="slide deep" data-duration="10500" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">31 / 33</span>
+    <span class="eyebrow reveal">Memória e futuro</span>
+    <h2 class="title reveal" data-delay="1">O ciclo de 12 meses.</h2>
+    <p class="subtitle reveal" data-delay="2">Se a avaliação de desempenho exige doze meses para se consolidar, a movimentação responsável não pode operar em prazos inferiores como regra. Gestão do conhecimento, memória institucional e continuidade administrativa são pilares inegociáveis.</p>
+  </section>
+
+  <!-- ============================================================
+       PARTE 9 · ENCERRAMENTO
+       ============================================================ -->
+
+  <!-- 32 · Síntese -->
+  <section class="slide pure" data-duration="20000" data-theme="light">
+    <span class="scene-count reveal" data-delay="1">32 / 33</span>
+    <div class="atmos glow-soft"></div>
+    <span class="eyebrow reveal">Síntese</span>
+    <h2 class="title hero reveal" data-delay="1">Movimentar pessoas<br/>é movimentar<br/>o Estado.</h2>
+    <p class="reveal" data-delay="2" style="font-size:clamp(1.4rem,3vw,2.4rem); font-weight:600; letter-spacing:-0.02em; line-height:1.3; margin-top:clamp(1.5rem,3vw,2.25rem); color:var(--text-primary-light); max-width:900px;">
+      É <span style="color:var(--accent);">gestão</span>.
+      É <span style="color:var(--accent);">proteção</span>.
+      É <span style="color:var(--accent);">inovação</span>.
+    </p>
+    <p class="subtitle reveal" data-delay="3" style="margin-top:clamp(1rem,2vw,1.5rem);">…em direção a um serviço público<br/>mais justo, eficiente e humano.</p>
+  </section>
+
+ <!-- 33 · Créditos -->
+  <section class="slide dark" data-duration="15000" data-theme="dark">
+    <span class="scene-count reveal" data-delay="1">33 / 33</span>
+    <div class="atmos glow-blue"></div>
+    <div class="grain"></div>
+    <span class="eyebrow reveal">Uma produção</span>
+    <h2 class="title xl reveal" data-delay="1">CGMOP</h2>
+    <p class="subtitle reveal" data-delay="2">Coordenação-Geral de<br/>Movimentação de Pessoal</p>
+    <span class="footer-mark reveal" data-delay="3" style="position:static;margin-top:clamp(3rem,5vw,4rem);">MGI · SGP · DEPRO · CGMOP</span>
+    <!-- Monograma do autor -->
+    <!-- Monograma do autor ajustado -->
+    <span class="reveal" data-delay="4" style="
+      display: block; 
+      margin-top: 0.5rem; 
+      font-size: 0.65rem; 
+      letter-spacing: 0.4em; 
+      color: var(--text-tertiary-dark); 
+      font-weight: 500; 
+      opacity: 0.55;">
+      RGB
+    </span>
+  </section>
+
+</main>
+
+<!-- CONTROL BAR -->
+<div id="control-bar" role="toolbar" aria-label="Controles da apresentação">
+  <button class="ctrl-btn" id="btn-prev" aria-label="Cena anterior" title="Cena anterior (↑)">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 2 L4 8 L10 14 L10 12 L6 8 L10 4 Z"/></svg>
+  </button>
+  <button class="ctrl-btn" id="btn-play" aria-label="Pausar reprodução automática" title="Pausar / Reproduzir (Espaço)">
+    <svg id="icon-play" viewBox="0 0 16 16" aria-hidden="true" style="display:none;"><path d="M4 2 L13 8 L4 14 Z"/></svg>
+    <svg id="icon-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2 H6 V14 H4 Z M10 2 H12 V14 H10 Z"/></svg>
+  </button>
+  <button class="ctrl-btn" id="btn-next" aria-label="Próxima cena" title="Próxima cena (↓)">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2 L12 8 L6 14 L6 12 L10 8 L6 4 Z"/></svg>
+  </button>
+  <div class="progress" aria-hidden="true">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+  <span class="counter" id="counter">01 / 33</span>
+  <button class="ctrl-btn" id="btn-restart" aria-label="Reiniciar apresentação" title="Reiniciar (Home)">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 A6 6 0 1 1 2.5 5.5 L4 5.5 A4.5 4.5 0 1 0 8 3.5 L8 6 L4.5 3 L8 0 Z"/></svg>
+  </button>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ===========================================================
+  // STATE
+  // ===========================================================
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const intro = document.getElementById('intro');
+  const controlBar = document.getElementById('control-bar');
+  const btnPlay = document.getElementById('btn-play');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const btnRestart = document.getElementById('btn-restart');
+  const iconPlay = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+  const progressFill = document.getElementById('progress-fill');
+  const counter = document.getElementById('counter');
+
+  const total = slides.length;
+  let currentIndex = 0;
+  let isPlaying = false;
+  let timerId = null;
+  let progressRAF = null;
+  let timerStart = 0;
+  let timerDuration = 0;
+  let manualNavLock = false;
+
+  // ===========================================================
+  // UTILS
+  // ===========================================================
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function formatNumber(n) {
+    return n.toLocaleString('pt-BR');
+  }
+
+  function updateCounter(i) {
+    counter.textContent = pad(i + 1) + ' / ' + pad(total);
+  }
+
+  function updateControlBarTheme(i) {
+    const theme = slides[i].dataset.theme;
+    if (theme === 'dark') {
+      controlBar.classList.add('dark-mode');
+    } else {
+      controlBar.classList.remove('dark-mode');
+    }
+  }
+
+  // ===========================================================
+  // SCENE ACTIVATION + ANIMATIONS
+  // ===========================================================
+  function setActive(i) {
+    slides.forEach((s, idx) => {
+      s.classList.toggle('active', idx === i);
+    });
+    updateCounter(i);
+    updateControlBarTheme(i);
+    currentIndex = i;
+    triggerSlideAnimations(i);
+  }
+
+  function triggerSlideAnimations(i) {
+    const slide = slides[i];
+    // Number counters
+    const counters = slide.querySelectorAll('[data-counter]');
+    counters.forEach(el => {
+      if (el.dataset.counted === 'true') return;
+      el.dataset.counted = 'true';
+      const target = parseInt(el.dataset.counter, 10);
+      animateCounter(el, target);
+    });
+  }
+
+  function animateCounter(el, target) {
+    const duration = 2200;
+    const startTime = performance.now();
+    const startVal = 0;
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const value = Math.round(startVal + (target - startVal) * eased);
+      el.textContent = formatNumber(value);
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = formatNumber(target);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ===========================================================
+  // SCROLL TO SLIDE
+  // ===========================================================
+  function scrollToSlide(i, behavior = 'smooth') {
+    if (i < 0 || i >= total) return;
+    manualNavLock = true;
+    deck.scrollTo({ top: i * window.innerHeight, behavior });
+    setTimeout(() => { manualNavLock = false; }, 900);
+  }
+
+  // ===========================================================
+  // AUTO-ADVANCE TIMER
+  // ===========================================================
+  function clearTimer() {
+    if (timerId) { clearTimeout(timerId); timerId = null; }
+    if (progressRAF) { cancelAnimationFrame(progressRAF); progressRAF = null; }
+  }
+
+  function startTimer() {
+    clearTimer();
+    if (!isPlaying) return;
+    if (currentIndex >= total - 1) {
+      // Last slide: don't advance, but keep progress bar full
+      progressFill.style.width = '100%';
+      return;
+    }
+    const slide = slides[currentIndex];
+    timerDuration = parseInt(slide.dataset.duration, 10) || 7000;
+    timerStart = performance.now();
+
+    timerId = setTimeout(() => {
+      if (isPlaying) {
+        scrollToSlide(currentIndex + 1);
+      }
+    }, timerDuration);
+
+    function updateProgress(now) {
+      const elapsed = now - timerStart;
+      const pct = Math.min(elapsed / timerDuration, 1) * 100;
+      progressFill.style.width = pct + '%';
+      if (pct < 100 && isPlaying) {
+        progressRAF = requestAnimationFrame(updateProgress);
+      }
+    }
+    progressRAF = requestAnimationFrame(updateProgress);
+  }
+
+  // ===========================================================
+  // PLAY / PAUSE
+  // ===========================================================
+  function play() {
+    isPlaying = true;
+    iconPlay.style.display = 'none';
+    iconPause.style.display = '';
+    btnPlay.setAttribute('aria-label', 'Pausar reprodução automática');
+    startTimer();
+  }
+
+  function pause() {
+    isPlaying = false;
+    iconPlay.style.display = '';
+    iconPause.style.display = 'none';
+    btnPlay.setAttribute('aria-label', 'Reproduzir');
+    clearTimer();
+  }
+
+  function togglePlay() { isPlaying ? pause() : play(); }
+
+  // ===========================================================
+  // NAVIGATION
+  // ===========================================================
+  function goNext() {
+    if (currentIndex < total - 1) scrollToSlide(currentIndex + 1);
+  }
+  function goPrev() {
+    if (currentIndex > 0) scrollToSlide(currentIndex - 1);
+  }
+  function restart() {
+    // Reset counter animations so they can run again
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      el.dataset.counted = 'false';
+      el.textContent = '0';
+    });
+    scrollToSlide(0);
+    if (!isPlaying) play();
+  }
+
+  // ===========================================================
+  // SCROLL DETECTION (sync state with manual scroll)
+  // ===========================================================
+  let scrollTimeout = null;
+  deck.addEventListener('scroll', () => {
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const i = Math.round(deck.scrollTop / window.innerHeight);
+      if (i !== currentIndex && i >= 0 && i < total) {
+        setActive(i);
+        if (isPlaying) startTimer();
+      }
+    }, 120);
+  }, { passive: true });
+
+  // ===========================================================
+  // KEYBOARD NAVIGATION
+  // ===========================================================
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'PageDown':
+      case 'j':
+        e.preventDefault(); goNext(); break;
+      case 'ArrowUp':
+      case 'PageUp':
+      case 'k':
+        e.preventDefault(); goPrev(); break;
+      case ' ':
+        e.preventDefault(); togglePlay(); break;
+      case 'Home':
+        e.preventDefault(); restart(); break;
+      case 'End':
+        e.preventDefault(); scrollToSlide(total - 1); break;
+    }
+  });
+
+  // ===========================================================
+  // CONTROL BAR EVENTS
+  // ===========================================================
+  btnPlay.addEventListener('click', togglePlay);
+  btnPrev.addEventListener('click', goPrev);
+  btnNext.addEventListener('click', goNext);
+  btnRestart.addEventListener('click', restart);
+
+  // Detect wheel/touch to allow user pacing without disabling autoplay
+  let userInteractionPause = null;
+  function pauseTemporarily() {
+    if (!isPlaying) return;
+    pause();
+    if (userInteractionPause) clearTimeout(userInteractionPause);
+    userInteractionPause = setTimeout(() => { play(); }, 3500);
+  }
+
+  // Resize handler — keep slide aligned
+  let resizeTimeout = null;
+  window.addEventListener('resize', () => {
+    if (resizeTimeout) clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      scrollToSlide(currentIndex, 'auto');
+    }, 150);
+  });
+
+  // ===========================================================
+  // INITIALIZATION
+  // ===========================================================
+  function init() {
+    setActive(0);
+    updateCounter(0);
+    updateControlBarTheme(0);
+
+    // Hide intro after delay, then start auto-play
+    setTimeout(() => {
+      intro.classList.add('hidden');
+      // Start auto-play after a small additional delay so first slide
+      // animations have time to play before the user is hurried along
+      setTimeout(() => {
+        play();
+      }, 1200);
+    }, 1500);
+  }
+
+  // Wait for DOM + fonts to be ready
+  if (document.readyState === 'complete') {
+    init();
+  } else {
+    window.addEventListener('load', init);
+  }
+})();
+</script>
+</body>
+</html>

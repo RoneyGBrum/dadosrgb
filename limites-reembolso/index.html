@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limites de Reembolso — MGI/SGP/DEPRO/CGMOP/DGIMP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#10243B; --ink-soft:#41556B; --paper:#FCFCFA; --panel:#F3F2EC;
+  --line:#E3E2DB; --blue:#1F5C8C; --blue2:#2E77B4; --green:#2F7D5B;
+  --amber:#C98A2E; --red:#B4402F; --dark:#0C1C2E; --dark2:#13293F;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+.deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.deck::-webkit-scrollbar{width:0}
+.slide{min-height:100vh;scroll-snap-align:start;position:relative;display:flex;flex-direction:column;justify-content:center;padding:6.5vh 8vw 9vh;overflow:hidden}
+@media(max-width:760px){.slide{padding:8vh 7vw 11vh}}
+
+/* ---------- shared type ---------- */
+.eyebrow{font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:.7em}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--blue);display:inline-block}
+h1{font-size:clamp(2.1rem,5.4vw,4.4rem);font-weight:600;line-height:1.04;letter-spacing:-.022em}
+h2{font-size:clamp(1.7rem,3.9vw,3.05rem);font-weight:600;line-height:1.08;letter-spacing:-.02em;max-width:16ch}
+.lead{font-size:clamp(1.05rem,1.7vw,1.4rem);line-height:1.5;color:var(--ink-soft);max-width:40ch;font-weight:400}
+.lead strong{color:var(--ink);font-weight:600}
+.tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.hl-b{color:var(--blue)} .hl-g{color:var(--green)} .hl-a{color:var(--amber)} .hl-r{color:var(--red)}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.slide.in .rv{opacity:1;transform:none}
+.slide.in .rv.d1{transition-delay:.09s}.slide.in .rv.d2{transition-delay:.18s}
+.slide.in .rv.d3{transition-delay:.27s}.slide.in .rv.d4{transition-delay:.36s}
+.slide.in .rv.d5{transition-delay:.45s}.slide.in .rv.d6{transition-delay:.54s}
+
+/* ---------- progress rail ---------- */
+.rail{position:fixed;right:2.4vw;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:11px}
+.rail button{width:8px;height:8px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;padding:0;transition:all .35s}
+.rail button.on{background:var(--blue);border-color:var(--blue);transform:scale(1.35)}
+.rail button:hover{border-color:var(--blue)}
+@media(max-width:760px){.rail{right:1.3vw;gap:8px}.rail button{width:6px;height:6px}}
+
+/* ---------- corner meta ---------- */
+.meta{position:fixed;left:2.6vw;bottom:2.4vh;z-index:50;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--ink-soft);display:flex;gap:.9em;align-items:center;mix-blend-mode:multiply}
+.meta .rgb{font-weight:600;letter-spacing:.05em}
+.meta .rgb span:nth-child(1){color:var(--red)}.meta .rgb span:nth-child(2){color:var(--green)}.meta .rgb span:nth-child(3){color:var(--blue2)}
+.counter{position:fixed;right:2.6vw;bottom:2.4vh;z-index:50;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--ink-soft)}
+@media(max-width:760px){.meta,.counter{font-size:.58rem}}
+
+.hint{position:fixed;left:50%;bottom:2.3vh;transform:translateX(-50%);z-index:40;font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;color:var(--ink-soft);opacity:.9;display:flex;align-items:center;gap:.6em;transition:opacity .5s}
+.hint.hide{opacity:0;pointer-events:none}
+.hint .k{border:1px solid var(--line);border-radius:4px;padding:1px 6px;background:#fff}
+
+/* ---------- timeline ruler (signature) ---------- */
+.ruler{display:flex;align-items:flex-end;gap:0;height:34px;margin-top:.4rem}
+.ruler .yr{flex:1;position:relative;border-left:1px solid var(--line);height:12px}
+.ruler .yr:last-child{border-right:1px solid var(--line)}
+.ruler .yr span{position:absolute;top:16px;left:-1px;font-family:var(--mono);font-size:.6rem;color:var(--ink-soft)}
+.ruler .yr.acc{height:22px;border-left-color:var(--blue)}
+.ruler .yr.acc span{color:var(--blue);font-weight:600}
+
+/* ---------- dark slide ---------- */
+.slide.dark{background:var(--dark);color:#EAF0F6}
+.slide.dark h1,.slide.dark h2{color:#fff}
+.slide.dark .lead{color:#A9BDD0}.slide.dark .lead strong{color:#fff}
+.slide.dark .eyebrow{color:#7FB2DE}.slide.dark .eyebrow::before{background:#7FB2DE}
+.slide.dark .tag{color:#8FA6BC}
+.slide.dark .panel{background:var(--dark2);border-color:#22405B}
+
+/* ---------- panels / grids ---------- */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(1.1rem,2.2vw,2rem)}
+.grid{display:grid;gap:clamp(.7rem,1.4vw,1.1rem)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,4vw,4.5rem);align-items:center}
+@media(max-width:860px){.two{grid-template-columns:1fr;gap:2rem}}
+.wide{max-width:1180px;margin:0 auto;width:100%}
+
+/* ---------- big stat ---------- */
+.bignum{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums;line-height:.95;letter-spacing:-.01em}
+
+/* flow diagram */
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.flow .node{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem}
+.flow .node .n-lab{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:.4rem}
+.flow .node .n-txt{font-size:.98rem;line-height:1.35;color:var(--ink)}
+.flow .arrow{display:flex;align-items:center;justify-content:center;padding:0 .5rem;color:var(--blue2);font-size:1.4rem}
+@media(max-width:760px){.flow{flex-direction:column}.flow .arrow{transform:rotate(90deg);padding:.3rem 0}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(.7rem,1.4vw,1.1rem)}
+@media(max-width:860px){.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.2rem;position:relative}
+.card .num{font-family:var(--mono);font-size:.9rem;font-weight:600;color:var(--blue);margin-bottom:.55rem}
+.card h3{font-size:1.02rem;font-weight:600;margin-bottom:.35rem;letter-spacing:-.01em}
+.card p{font-size:.86rem;line-height:1.4;color:var(--ink-soft)}
+
+/* simple table */
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.tbl th{background:var(--ink);color:#fff;text-align:left;padding:.6rem .8rem;font-weight:600;font-size:.82rem}
+.tbl th:last-child{text-align:right}
+.tbl td{padding:.5rem .8rem;border-bottom:1px solid var(--line)}
+.tbl td:last-child{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tbl tr:nth-child(even) td{background:#faf9f5}
+.pill{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:.12em .6em;border-radius:20px;font-weight:500}
+.pill.g{background:rgba(47,125,91,.13);color:var(--green)}
+.pill.a{background:rgba(201,138,46,.15);color:var(--amber)}
+.pill.r{background:rgba(180,64,47,.13);color:var(--red)}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:1rem;font-size:.82rem;color:var(--ink-soft)}
+.legend span{display:flex;align-items:center;gap:.45em}
+.legend i{width:22px;height:3px;border-radius:2px;display:inline-block}
+.legend i.dot{width:10px;height:10px;border-radius:50%}
+
+svg{display:block;width:100%;height:auto;overflow:visible}
+.chart-note{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--ink-soft);margin-top:.7rem}
+
+.callout{border-left:3px solid var(--amber);background:rgba(201,138,46,.07);border-radius:0 10px 10px 0;padding:.9rem 1.2rem;font-size:.95rem;line-height:1.5;color:var(--ink)}
+.callout.blue{border-color:var(--blue);background:rgba(31,92,140,.06)}
+.callout.green{border-color:var(--green);background:rgba(47,125,91,.07)}
+
+.kv{display:flex;gap:.6em;align-items:baseline;font-size:1rem;color:var(--ink-soft)}
+.kv b{font-family:var(--mono);color:var(--ink);font-weight:600}
+
+@media(prefers-reduced-motion:reduce){.rv{transition:none!important;opacity:1;transform:none}html{scroll-behavior:auto}.deck{scroll-behavior:auto}}
+
+
+/* ---------- cards de detalhamento das solicitações ---------- */
+.dwrap{width:100%;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.dscroll{max-height:66vh;overflow-y:auto;padding:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:900px){.dscroll{grid-template-columns:1fr}}
+.dcard{border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;background:#fdfdfb;break-inside:avoid}
+.dcard header{border-bottom:1px solid var(--line);padding-bottom:.6rem;margin-bottom:.7rem}
+.dcard h4{font-size:1rem;font-weight:600;letter-spacing:-.01em;color:var(--ink);margin-bottom:.25rem}
+.dcard .dproc{font-size:.68rem;color:var(--ink-soft);letter-spacing:.02em}
+.dcard .dped{font-size:.72rem;color:var(--blue);font-weight:600;margin-top:.2rem}
+.dl{display:flex;gap:.6rem;margin-bottom:.5rem;align-items:flex-start}
+.dk{flex:0 0 108px;font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blue2);padding-top:.15rem}
+.dv{flex:1;font-size:.8rem;line-height:1.45;color:var(--ink-soft)}
+
+/* ---------- tabela final de órgãos ---------- */
+.slide.tbl-slide{justify-content:flex-start;padding-top:5vh;padding-bottom:4vh}
+.tbl-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.2rem}
+.tbl-wrap{width:100%;max-width:1320px;margin:0 auto;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.tbl-scroll{max-height:70vh;overflow-y:auto}
+.ftbl{width:100%;border-collapse:collapse;font-size:.82rem;table-layout:fixed}
+.ftbl thead th{position:sticky;top:0;z-index:2;background:var(--ink);color:#fff;text-align:left;padding:.7rem .85rem;font-weight:600;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase}
+.ftbl col.c-og{width:20%}.ftbl col.c-vl{width:12%}.ftbl col.c-df{width:12%}.ftbl col.c-pc{width:8%}.ftbl col.c-ju{width:48%}
+.ftbl th.vl,.ftbl th.df,.ftbl th.pc{text-align:right}
+.ftbl td{padding:.6rem .85rem;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4}
+.ftbl tr:nth-child(even) td{background:#faf9f5}
+.ftbl td.og{font-weight:600;color:var(--ink);font-size:.86rem}
+.ftbl td.vl{text-align:right;font-weight:600;color:var(--ink);white-space:nowrap}
+.ftbl td.df{text-align:right;color:var(--ink-soft);white-space:nowrap}
+.ftbl td.pc{text-align:right}
+.ftbl td.ju{color:var(--ink-soft);font-size:.78rem}
+.ftbl .pill{font-size:.72rem;padding:.1em .55em}
+.ftbl tr.total td{background:var(--ink)!important;color:#fff;font-weight:700;border:none}
+.ftbl tr.total td.vl,.ftbl tr.total td.df{color:#fff}
+.legend-inline{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.76rem;color:var(--ink-soft);margin-top:.9rem}
+.legend-inline span{display:flex;align-items:center;gap:.4em}
+@media(max-width:820px){
+  .ftbl{font-size:.72rem}
+  .ftbl col.c-ju{width:0}
+  .ftbl th.ju,.ftbl td.ju{display:none}
+  .ftbl col.c-og{width:40%}.ftbl col.c-vl{width:24%}.ftbl col.c-df{width:22%}.ftbl col.c-pc{width:14%}
+}
+</style>
+</head>
+<body>
+<div class="rail" id="rail"></div>
+<div class="meta"><span class="rgb"><span>R</span><span>G</span><span>B</span></span><span>·</span><span>MGI · SGP</span></div>
+<div class="counter" id="counter">01 / 24</div>
+<div class="hint" id="hint"><span class="k">↓</span> ou <span class="k">→</span> para avançar</div>
+
+<div class="deck" id="deck">
+
+<!-- 01 · CAPA -->
+<section class="slide dark" data-title="Capa">
+  <div class="wide">
+    <div class="eyebrow rv">Ministério da Gestão e da Inovação · SGP</div>
+    <h1 class="rv d1" style="margin:1.1rem 0 1.4rem;max-width:20ch">Como dividimos<br><span style="color:#7FB2DE">R$&nbsp;137,6&nbsp;milhões</span><br>entre 47 órgãos</h1>
+    <p class="lead rv d2" style="color:#B7CADD">· Limites de reembolso de pessoal ·&nbsp;<br><br>Proposta baseada em até <strong>oito anos de dados</strong> — explicada do começo ao fim.</p>
+    <div class="rv d3" style="margin-top:2.6rem">
+      <div class="ruler" style="max-width:520px">
+        <div class="yr"><span>2019</span></div><div class="yr"><span>2020</span></div>
+        <div class="yr"><span>2021</span></div><div class="yr"><span>2022</span></div>
+        <div class="yr"><span>2023</span></div><div class="yr"><span>2024</span></div>
+        <div class="yr"><span>2025</span></div><div class="yr acc"><span>2026</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · O QUE É REEMBOLSO -->
+<section class="slide" data-title="O que é reembolso">
+  <div class="wide">
+    <div class="eyebrow rv">Antes de tudo</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.8rem">O que é um “limite de reembolso”?</h2>
+    <div class="flow rv d2">
+      <div class="node"><div class="n-lab">1 · Origem</div><div class="n-txt">Um empregado de uma estatal — <strong>Correios, Caixa, INFRAERO, Banco do Brasil</strong> — passa a trabalhar em um ministério.</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n-lab">2 · Salário</div><div class="n-txt">A estatal de origem <strong>continua pagando</strong> o salário dessa pessoa, normalmente.</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n-lab">3 · Reembolso</div><div class="n-txt">O ministério <strong>devolve esse valor</strong> à estatal. É o reembolso.</div></div>
+    </div>
+    <p class="lead rv d3" style="margin-top:2rem;max-width:52ch">É como <strong>emprestar um funcionário</strong> e acertar a conta todo mês. Cada órgão tem um <strong>teto anual</strong> — um valor máximo dentro do qual essas contas precisam caber. Definir esse teto é de competência do MGI e do MPO.</p>
+  </div>
+</section>
+
+<!-- 03 · O NÚMERO -->
+<section class="slide dark" data-title="O número">
+  <div class="wide">
+    <div class="eyebrow rv">O tamanho da decisão</div>
+    <div class="two" style="margin-top:1.6rem">
+      <div>
+        <div class="rv d1" style="margin-bottom:2rem">
+          <div class="tag" style="color:#8FA6BC">Tetos de hoje (soma dos 47 órgãos)</div>
+          <div class="bignum" style="font-size:clamp(2.2rem,5vw,3.6rem);color:#EAF0F6" data-count="1318888608" data-prefix="R$ ">R$ 0</div>
+        </div>
+        <div class="rv d2" style="margin-bottom:2rem">
+          <div class="tag" style="color:#8FA6BC">Acréscimo distribuído</div>
+          <div class="bignum" style="font-size:clamp(2.2rem,5vw,3.6rem);color:#7FD8AC" data-count="137573098" data-prefix="+ R$ ">+ R$ 0</div>
+        </div>
+        <div class="rv d3">
+          <div class="tag" style="color:#8FA6BC">Novo total</div>
+          <div class="bignum" style="font-size:clamp(2.6rem,6.2vw,4.6rem);color:#fff" data-count="1456461706" data-prefix="R$ ">R$ 0</div>
+        </div>
+      </div>
+      <div class="rv d4">
+        <div class="panel" style="background:var(--dark2);border-color:#22405B">
+          <p class="lead" style="color:#C3D4E4;max-width:none;margin-top:.8rem">cada real tem uma <strong>justificativa fundamentada</strong> — é isso que esta apresentação procura mostra.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · A PERGUNTA -->
+<section class="slide" data-title="A pergunta">
+  <div class="wide" style="max-width:1000px">
+    <div class="eyebrow rv">O desafio</div>
+    <h1 class="rv d1" style="margin:1.2rem 0 1.6rem;max-width:22ch">47 órgãos. Uns pedem mais. Outros gastam pouco.</h1>
+    <p class="lead rv d2" style="font-size:clamp(1.2rem,2vw,1.7rem);max-width:34ch">Como dividir R$&nbsp;137,6&nbsp;milhões de um jeito <strong>justo</strong> — e explicável, órgão por órgão?</p>
+    <p class="rv d3 mono" style="margin-top:2.4rem;font-size:.8rem;letter-spacing:.1em;color:var(--ink-soft)">A resposta em uma frase → o dinheiro vai para quem realmente usa, medido não por um ano, mas por até oito.</p>
+  </div>
+</section>
+
+<!-- 05 · A ARMADILHA -->
+<section class="slide" data-title="A armadilha do ano único">
+  <div class="wide">
+    <div class="two">
+      <div>
+        <div class="eyebrow rv">A armadilha</div>
+        <h2 class="rv d1" style="margin:1rem 0 1.4rem">Olhar só o ano atual engana.</h2>
+        <p class="lead rv d2">Em <strong>14 de julho de 2026</strong>, o ano só tinha andado <strong>53%</strong> — 195 de 365 dias.</p>
+        <p class="lead rv d3" style="margin-top:1rem">Julgar um órgão somente pelo que foi gasto até aqui é como dar a nota final de um aluno por uma <strong>prova feita pela metade</strong>.</p>
+        <p class="lead rv d3" style="margin-top:1rem">Isso não significa que 2026 não foi considerado, pelo contrário, tem grande peso na decisão.</p>
+      </div>
+      <div class="rv d4">
+        <div class="panel" style="text-align:center;padding:2.4rem 1.5rem">
+          <div class="tag" style="margin-bottom:1rem">Ano de 2026 até 14/07</div>
+          <svg viewBox="0 0 220 220" style="max-width:230px;margin:0 auto">
+            <circle cx="110" cy="110" r="88" fill="none" stroke="var(--line)" stroke-width="20"/>
+            <circle cx="110" cy="110" r="88" fill="none" stroke="var(--blue)" stroke-width="20" stroke-linecap="round"
+              stroke-dasharray="553" stroke-dashoffset="553" transform="rotate(-90 110 110)" class="ring"/>
+            <text x="110" y="100" text-anchor="middle" font-family="var(--mono)" font-size="42" font-weight="600" fill="var(--ink)">53%</text>
+            <text x="110" y="130" text-anchor="middle" font-family="var(--mono)" font-size="12" letter-spacing="2" fill="var(--ink-soft)">DO ANO</text>
+          </svg>
+          <p class="chart-note" style="margin-top:.4rem">195 de 365 dias decorridos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · A IDEIA: 8 ANOS -->
+<section class="slide dark" data-title="A ideia: 8 anos">
+  <div class="wide">
+    <div class="eyebrow rv">A ideia central</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.2rem;color:#fff">Então olhamos oito anos: 2019 a 2026.</h2>
+    <p class="lead rv d2" style="max-width:56ch;color:#B7CADD">A linha <strong style="color:#8FB9E0">azul</strong> é o teto autorizado a cada ano. A <strong style="color:#7FD8AC">verde</strong>, o que foi de fato gasto. Existe folga no sistema — mas ela não está distribuída por igual.</p>
+    <div class="rv d3" style="margin-top:1.6rem;max-width:1000px">
+      <div id="chart-sys"></div>
+      <div class="legend" style="margin-top:1rem;color:#A9BDD0">
+        <span><i style="background:#8FB9E0"></i>Teto autorizado</span>
+        <span><i style="background:#7FD8AC"></i>Gasto efetivo</span>
+        <span><i class="dot" style="background:var(--amber)"></i>Proposta</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · VELOCÍMETRO -->
+<section class="slide" data-title="Execução = velocímetro">
+  <div class="wide">
+    <div class="two">
+      <div>
+        <div class="eyebrow rv">Um conceito só</div>
+        <h2 class="rv d1" style="margin:1rem 0 1.4rem">“Executar” é usar o dinheiro.</h2>
+        <p class="lead rv d2">Pense num <strong>velocímetro</strong>: ele mostra o quanto o órgão “correu” com o orçamento no ano.</p>
+        <div class="rv d3" style="margin-top:1.4rem;display:flex;flex-direction:column;gap:.7rem">
+          <div class="kv"><b>100%</b> usou todo o teto — pode estar apertado</div>
+          <div class="kv"><b>50%</b> usou metade — ritmo tranquilo</div>
+          <div class="kv"><b>0%</b> não gastou nada — teto ocioso</div>
+        </div>
+      </div>
+      <div class="rv d4">
+        <div class="panel" style="text-align:center;padding:2.2rem 1.5rem">
+          <svg viewBox="0 0 260 180" style="max-width:300px;margin:0 auto">
+            <path d="M30 150 A100 100 0 0 1 230 150" fill="none" stroke="var(--line)" stroke-width="16" stroke-linecap="round"/>
+            <path d="M30 150 A100 100 0 0 1 152 55.5" fill="none" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="130" y1="150" x2="181" y2="86" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="130" cy="150" r="8" fill="var(--ink)"/>
+            <text x="26" y="170" font-family="var(--mono)" font-size="11" fill="var(--ink-soft)">0%</text>
+            <text x="234" y="170" font-family="var(--mono)" font-size="11" fill="var(--ink-soft)" text-anchor="end">100%</text>
+            <text x="130" y="130" text-anchor="middle" font-family="var(--mono)" font-size="15" letter-spacing="1" fill="var(--ink-soft)">EXECUÇÃO</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · O IHE -->
+<section class="slide" data-title="O IHE">
+  <div class="wide">
+    <div class="two" style="align-items:flex-start">
+      <div>
+        <div class="eyebrow rv">O indicador-chave. IHE - Índice Histórico de Execução</div>
+        <h2 class="rv d1" style="margin:1rem 0 1.2rem">Juntamos os 8 anos num número só: o&nbsp;IHE.</h2>
+        <p class="lead rv d2">Mas os anos <strong>não valem igual</strong>. O ano passado diz mais sobre o futuro do que 2019. Por isso, <strong>cada ano vale 60% do seguinte</strong>.</p>
+        <div class="rv d3 callout blue" style="margin-top:1.4rem">
+          Os <strong>três anos mais recentes</strong> já respondem por <strong class="mono">80%</strong> da nota. O passado distante influencia, mas não manda. 
+        </div>
+      </div>
+      <div class="rv d4">
+        <div class="tag" style="margin-bottom:.8rem">Quanto cada ano pesa no IHE</div>
+        <div id="chart-weights"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08b · COMO FUNCIONA O PESO DE 60% -->
+<section class="slide" data-title="A conta dos 60%">
+  <div class="wide">
+    <div class="eyebrow rv">Passo a passo — a conta dos pesos</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.2rem;max-width:22ch">Como um ano “vale 60% do seguinte”?</h2>
+    <p class="lead rv d2" style="max-width:60ch;margin-bottom:1.8rem">Imagine que você tem <strong>R$ 1,00 para apostar na importância de cada ano</strong>. Você aposta o valor cheio no ano passado. Para cada ano mais antigo, aposta só <strong>60% do anterior</strong> — a lembrança vai desbotando. No fim, reparte tudo para somar 100%.</p>
+    <div class="two rv d3" style="align-items:flex-start;gap:clamp(1.4rem,3vw,3rem)">
+      <div class="panel" style="padding:clamp(1rem,2vw,1.6rem)">
+        <div class="tag" style="margin-bottom:.9rem">Etapa 1 · o “peso bruto” de cada ano</div>
+        <div id="calc60"></div>
+        <div class="callout blue" style="margin-top:1.1rem;font-size:.9rem">Cada degrau é o anterior <strong>× 0,6</strong>. Some todos: dá <strong class="mono">2,458</strong>.</div>
+      </div>
+      <div>
+        <div class="panel" style="padding:clamp(1rem,2vw,1.6rem);margin-bottom:1.1rem">
+          <div class="tag" style="margin-bottom:.7rem">Etapa 2 · virar porcentagem</div>
+          <p class="lead" style="font-size:.98rem;max-width:none;margin-bottom:.8rem">Cada peso vira uma fatia da soma. É por isso que os pesos fecham em 100% — são fatias de um bolo só.</p>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="kv" style="font-size:.95rem"><b>2026:</b>&nbsp;1,000 ÷ 2,458 = <span class="mono hl-b">40,7%</span></div>
+            <div class="kv" style="font-size:.95rem"><b>2019:</b>&nbsp;0,028 ÷ 2,458 = <span class="mono hl-b">1,1%</span></div>
+          </div>
+        </div>
+        <div class="callout green" style="font-size:.92rem">
+          <strong>E com 4 anos?</strong> A regra “× 0,6” não muda — só o bolo fica menor. Somam-se apenas os 4 pesos (dá <strong class="mono">2,176</strong>) e refaz-se a divisão. Como o bolo encolheu, cada fatia cresce: <strong>2026 sobe de 40,7% para 46,0%</strong>. Ninguém é avaliado por anos em que não existia.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · IHE NA PRÁTICA -->
+<section class="slide dark" data-title="Exemplo: Cultura">
+  <div class="wide">
+    <div class="eyebrow rv">Por que isso importa — um exemplo real</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.6rem;color:#fff">O Ministério da Cultura quase foi cortado por engano.</h2>
+    <div class="two rv d2" style="align-items:center">
+      <div id="chart-cultura"></div>
+      <div>
+        <p class="lead" style="color:#B7CADD">Olhando <strong>só 2026</strong>, a Cultura gastou <strong style="color:var(--amber)">16%</strong> — pareceria candidata a corte.</p>
+        <p class="lead" style="color:#B7CADD;margin-top:1rem">Mas o <strong>histórico</strong> mostra <strong style="color:#7FD8AC">49%</strong>: gastou 50% em 2024 e 42% em 2025.</p>
+        <div class="callout green" style="margin-top:1.4rem;color:#EAF0F6;background:rgba(47,125,91,.15)">
+          Resultado: <strong>manteve o limite</strong>. O histórico corrigiu uma injustiça que a foto de um ano teria cometido.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · NEM TODOS TÊM 8 ANOS -->
+<section class="slide" data-title="Séries diferentes">
+  <div class="wide">
+    <div class="two" style="align-items:flex-start">
+      <div>
+        <div class="eyebrow rv">Uma ressalva honesta</div>
+        <h2 class="rv d1" style="margin:1rem 0 1.2rem">Nem todo órgão existe há oito anos.</h2>
+        <p class="lead rv d2"><strong>14 ministérios</strong> nasceram na reforma administrativa de 2023 — MGI, Cidades, Cultura, Esporte, Povos Indígenas e outros. Para eles, usamos <strong>só os anos que existem</strong>.</p>
+        <p class="lead rv d3" style="margin-top:1rem">Ninguém é avaliado por um tempo em que não existia.</p>
+      </div>
+      <div class="rv d4">
+        <table class="tbl" style="margin-bottom:1.2rem">
+          <thead><tr><th>Quando entrou na série</th><th>Órgãos</th></tr></thead>
+          <tbody>
+            <tr><td>Desde 2019 — série completa (8 anos)</td><td>30</td></tr>
+            <tr><td>Desde 2020 — 7 anos</td><td>1</td></tr>
+            <tr><td>Desde 2021 — 6 anos</td><td>2</td></tr>
+            <tr><td>Desde 2023 — 4 anos</td><td>14</td></tr>
+          </tbody>
+        </table>
+        <div class="callout green">Testamos: se usássemos só 2023–2026 para todos, <strong>apenas 2 dos 47</strong> mudariam de faixa. O método é robusto — a extensão da série não desequilibra a decisão.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · TENDÊNCIA -->
+<section class="slide" data-title="Tendência">
+  <div class="wide">
+    <div class="two">
+      <div>
+        <div class="eyebrow rv">O segundo sinal</div>
+        <h2 class="rv d1" style="margin:1rem 0 1.4rem">O IHE diz onde o órgão está. A tendência diz para onde ele vai.</h2>
+        <p class="lead rv d2">O <strong>Ministério das Cidades</strong> saiu de <strong class="mono">29%</strong> em 2023 para <strong class="mono">71%</strong> em 2026 — subindo forte, acompanhando o Novo&nbsp;PAC.</p>
+        <p class="lead rv d3" style="margin-top:1rem">A curva conta a história que o número sozinho não conta.</p>
+      </div>
+      <div class="rv d4">
+        <div class="tag" style="margin-bottom:.8rem">Cidades — execução ano a ano</div>
+        <div id="chart-cidades"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · AS QUATRO REGRAS -->
+<section class="slide dark" data-title="As 4 regras">
+  <div class="wide">
+    <div class="eyebrow rv">Como decidimos</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.8rem;color:#fff">Quatro regras, aplicadas nesta ordem.</h2>
+    <div class="cards">
+      <div class="card rv d2" style="background:var(--dark2);border-color:#22405B"><div class="num" style="color:#7FB2DE">01</div><h3 style="color:#fff">Atender quem pediu</h3><p style="color:#A9BDD0">Órgãos que abriram processo formal têm o pedido analisado à luz do histórico.</p></div>
+      <div class="card rv d3" style="background:var(--dark2);border-color:#22405B"><div class="num" style="color:#7FB2DE">02</div><h3 style="color:#fff">Premiar quem executa</h3><p style="color:#A9BDD0">Quem usa bem o teto recebe reajuste; quem quase não gasta é reduzido.</p></div>
+      <div class="card rv d4" style="background:var(--dark2);border-color:#22405B"><div class="num" style="color:#7FB2DE">03</div><h3 style="color:#fff">Olhar a tendência</h3><p style="color:#A9BDD0">Se a execução vem subindo, o corte é suavizado. A direção importa.</p></div>
+      <div class="card rv d5" style="background:var(--dark2);border-color:#22405B"><div class="num" style="color:#7FB2DE">04</div><h3 style="color:#fff">Caber no tamanho</h3><p style="color:#A9BDD0">O limite tem de ser compatível com o nº de pessoas — R$ 25 mil por pessoa/mês.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · FAIXAS DE IHE -->
+<section class="slide" data-title="Faixas de IHE">
+  <div class="wide" style="max-width:900px">
+    <div class="eyebrow rv">A régua, em detalhe</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.4rem">Para quem não pediu nada, a régua é o histórico.</h2>
+    <div class="rv d2">
+      <table class="tbl">
+        <thead><tr><th>Histórico de execução (IHE)</th><th>O que acontece</th></tr></thead>
+        <tbody>
+          <tr><td>Passa dos 95% — vive no limite</td><td><span class="pill g">reforço prioritário</span></td></tr>
+          <tr><td>Entre 55% e 95% — usa bem</td><td><span class="pill g">reajuste +4,6%</span></td></tr>
+          <tr><td>Entre 40% e 55% — mediano</td><td><span class="pill a">mantém o limite</span></td></tr>
+          <tr><td>Entre 20% e 40% — usa pouco</td><td><span class="pill r">reduz 10%</span></td></tr>
+          <tr><td>Abaixo de 20% — quase não usa</td><td><span class="pill r">reduz 15%</span></td></tr>
+          <tr><td>Perto de zero por anos seguidos</td><td><span class="pill r">piso de R$ 400 mil</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lead rv d3" style="margin-top:1.3rem;max-width:58ch;font-size:1.05rem">O reajuste de <strong>4,6%</strong> é a média dos acordos coletivos das quatro maiores estatais (INFRAERO, Caixa, Banco do Brasil e Correios) — repõe a variação de salário de quem está cedido.</p>
+  </div>
+</section>
+
+<!-- 14 · A PROVA (DISPERSÃO) -->
+<section class="slide dark" data-title="A prova visual">
+  <div class="wide">
+    <div class="eyebrow rv">A prova de que a regra é justa</div>
+    <h2 class="rv d1" style="margin:1rem 0 1rem;color:#fff">Cada ponto é um órgão. Quanto mais executa, mais recebe.</h2>
+    <div class="two rv d2" style="align-items:center;gap:2.5rem">
+      <div id="chart-scatter"></div>
+      <div>
+        <p class="lead" style="color:#B7CADD">A posição na horizontal é o <strong>histórico</strong>. Na vertical, o <strong>reajuste</strong>. A linha vermelha resume a regra de todos os pontos.</p>
+        <div class="callout blue" style="margin-top:1.2rem;color:#EAF0F6;background:rgba(127,178,222,.14);border-color:#7FB2DE">
+          <strong>Ponto de virada: 60%.</strong> Abaixo dele, o órgão tende a <strong>perder</strong> limite. Acima, tende a <strong>ganhar</strong>. Simples assim.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · r e R² -->
+<section class="slide" data-title="r e R²">
+  <div class="wide">
+    <div class="eyebrow rv">Dois números que assustam — mas são simples</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.8rem">O quanto podemos confiar nessa regra?</h2>
+    <div class="two" style="gap:3rem;align-items:flex-start">
+      <div class="rv d2 panel">
+        <div class="bignum hl-b" style="font-size:clamp(2.4rem,5vw,3.4rem)">r = 0,77</div>
+        <div class="tag" style="margin:.5rem 0 .9rem">Correlação</div>
+        <p class="lead" style="font-size:1.02rem;max-width:none">Mede se duas coisas andam juntas. Vai de -1 a 1. <strong>Quanto mais perto de 1, mais os pontos seguem a linha.</strong> 0,77 é uma ligação forte: executar mais e receber mais caminham juntos de verdade.</p>
+      </div>
+      <div class="rv d3 panel">
+        <div class="bignum hl-g" style="font-size:clamp(2.4rem,5vw,3.4rem)">R² = 0,60</div>
+        <div class="tag" style="margin:.5rem 0 .9rem">Poder de explicação</div>
+        <p class="lead" style="font-size:1.02rem;max-width:none"><strong>60% de tudo o que decidimos</strong> é explicado só pela execução histórica. O resto são detalhes de cada caso. Traduzindo: a distribuição <strong>não é sorte, é critério</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 · DE ONDE VEM -->
+<section class="slide" data-title="De onde vem">
+  <div class="wide">
+    <div class="eyebrow rv">Seguindo o dinheiro</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.6rem">De onde vêm os R$ 137,6 milhões.</h2>
+    <div class="two rv d2" style="align-items:center;gap:3rem">
+      <div id="chart-decomp"></div>
+      <div style="display:flex;flex-direction:column;gap:1.1rem">
+        <div><div class="bignum hl-b" style="font-size:1.9rem">+ R$ 106,8 mi</div><p class="lead" style="font-size:.98rem">para os órgãos que <strong>pediram</strong> formalmente — 78% do total.</p></div>
+        <div><div class="bignum" style="font-size:1.9rem;color:var(--blue2)">+ R$ 33,4 mi</div><p class="lead" style="font-size:.98rem">de <strong>reajuste e reforço</strong> para quem executa bem.</p></div>
+        <div><div class="bignum hl-r" style="font-size:1.9rem">− R$ 2,6 mi</div><p class="lead" style="font-size:.98rem"><strong>devolvidos</strong> por quem quase não gasta — e realocados.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 · CASO ANTT -->
+<section class="slide dark" data-title="Caso ANTT">
+  <div class="wide">
+    <div class="eyebrow rv">Um caso que mostra o método funcionando</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.2rem;color:#fff">A ANTT pediu R$ 9 milhões. Demos R$ 6,4 — e foi a decisão certa.</h2>
+    <div class="two rv d2" style="align-items:center;gap:2.5rem">
+      <div id="chart-antt"></div>
+      <div>
+        <p class="lead" style="color:#B7CADD">Até 2021, a ANTT usava <strong>quase todo</strong> o limite (91%). Em 2022 o teto <strong style="color:var(--amber)">dobrou</strong> — e a execução caiu para 42%, ficando lá quatro anos.</p>
+        <p class="lead" style="color:#B7CADD;margin-top:.9rem">Em 2026 voltou a subir (<strong style="color:#7FD8AC">53%</strong>). A própria Agência ofereceu uma alternativa de R$&nbsp;6,4&nbsp;mi.</p>
+        <div class="callout green" style="margin-top:1.2rem;color:#EAF0F6;background:rgba(47,125,91,.15)">Escolhemos a alternativa: cobre <strong>109% das necessidades reais</strong> e <strong>não repete o erro de 2022</strong>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 · PARÂMETRO R$25 MIL -->
+<section class="slide" data-title="R$ 25 mil validado">
+  <div class="wide">
+    <div class="two">
+      <div>
+        <div class="eyebrow rv">A quarta regra, confirmada</div>
+        <h2 class="rv d1" style="margin:1rem 0 1.4rem">O limite tem de caber no tamanho do órgão.</h2>
+        <p class="lead rv d2">Usamos um custo de referência de <strong>R$ 25 mil por pessoa/mês</strong> para checar se cada teto é compatível com o número de cedidos.</p>
+        <p class="lead rv d3" style="margin-top:1rem">A própria ANTT confirmou o número: informou <strong>R$ 29 mil</strong> por pessoa. Ou seja, fomos <strong>~6,5% conservadores</strong> — uma margem de segurança.</p>
+      </div>
+      <div class="rv d4">
+        <div class="panel">
+          <div class="tag" style="margin-bottom:1.2rem">Custo por pessoa/mês</div>
+          <div id="chart-param"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 · EXCEÇÃO AGU -->
+<section class="slide" data-title="Exceção AGU">
+  <div class="wide" style="max-width:920px">
+    <div class="eyebrow rv">Transparência</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.4rem">Uma exceção — assumida e registrada.</h2>
+    <p class="lead rv d2" style="max-width:56ch">A <strong>Advocacia-Geral da União</strong> tem o maior número de movimentados: <strong class="mono">1.119 pessoas</strong>. Cobrir todas pela nossa régua daria <strong class="mono">R$ 364 milhões</strong> — desproporcional diante do conjunto.</p>
+    <div class="rv d3" style="display:flex;gap:1.5rem;flex-wrap:wrap;margin:1.8rem 0">
+      <div class="panel" style="flex:1;min-width:220px"><div class="tag" style="margin-bottom:.4rem">Cobertura integral daria</div><div class="bignum hl-r" style="font-size:2.2rem">R$ 364 mi</div></div>
+      <div class="panel" style="flex:1;min-width:220px"><div class="tag" style="margin-bottom:.4rem">O que aplicamos (só reajuste)</div><div class="bignum hl-b" style="font-size:2.2rem">R$ 211 mi</div></div>
+    </div>
+    <p class="lead rv d4" style="max-width:60ch">Aplicamos apenas o reajuste de 4,6%, como aos demais. É uma <strong>escolha consciente</strong> — e está explicada na nota técnica.</p>
+  </div>
+</section>
+
+<!-- 20 · RESULTADO / FECHO -->
+<section class="slide dark" data-title="Resultado">
+  <div class="wide">
+    <div class="eyebrow rv">O resultado</div>
+    <div class="rv d1" style="display:flex;gap:clamp(1.5rem,5vw,4.5rem);flex-wrap:wrap;margin:1.6rem 0 2.4rem">
+      <div><div class="bignum" style="font-size:clamp(2.4rem,6vw,4rem);color:#7FD8AC" data-count="32" data-suffix="">0</div><div class="tag" style="color:#8FA6BC;margin-top:.4rem">órgãos com aumento</div></div>
+      <div><div class="bignum" style="font-size:clamp(2.4rem,6vw,4rem);color:#EAF0F6" data-count="9" data-suffix="">0</div><div class="tag" style="color:#8FA6BC;margin-top:.4rem">mantidos</div></div>
+      <div><div class="bignum" style="font-size:clamp(2.4rem,6vw,4rem);color:#F0A58C" data-count="6" data-suffix="">0</div><div class="tag" style="color:#8FA6BC;margin-top:.4rem">reduzidos</div></div>
+    </div>
+    <h2 class="rv d2" style="color:#fff;max-width:24ch;margin-bottom:1.4rem">Tudo fecha em R$ 1,46 bilhão.</h2>
+    <p class="lead rv d3" style="max-width:52ch;color:#B7CADD">E cada valor tem uma justificativa que qualquer pessoa pode conferir — a partir do histórico do próprio órgão. Isso é o que torna a proposta <strong>transparente</strong>.</p>
+    <div class="rv d4" style="margin-top:3rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
+      <div class="ruler" style="max-width:340px;flex:1;min-width:240px">
+        <div class="yr"></div><div class="yr"></div><div class="yr"></div><div class="yr"></div>
+        <div class="yr"></div><div class="yr"></div><div class="yr"></div><div class="yr acc"><span>2026</span></div>
+      </div>
+      <div class="mono" style="font-size:.7rem;letter-spacing:.14em;color:#8FA6BC">MGI · SGP · <span style="color:var(--red);font-weight:600">D</span><span style="color:var(--green);font-weight:600">E</span><span style="color:#7FB2DE;font-weight:600">P</span>R</span><span style="color:var(--green);font-weight:600">O</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 · INTRO DA TABELA FINAL -->
+<section class="slide dark" data-title="Valor final por órgão">
+  <div class="wide">
+    <div class="eyebrow rv">O detalhe completo</div>
+    <h2 class="rv d1" style="margin:1rem 0 1.4rem;max-width:26ch;color:#fff">O valor final de cada um dos 47 órgãos — com a justificativa.</h2>
+    <p class="lead rv d2" style="max-width:58ch">A seguir, a lista completa: quanto cada órgão receberá, a diferença em relação a hoje, o percentual e <strong>o porquê de cada número</strong>. Tudo ancorado no histórico de execução do próprio órgão.</p>
+    <div class="rv d3" style="display:flex;gap:clamp(1rem,4vw,3.5rem);flex-wrap:wrap;margin-top:2.4rem">
+      <div><div class="bignum" style="font-size:clamp(1.9rem,4vw,2.8rem);color:#7FD8AC">R$ 1,46 bi</div><div class="tag" style="color:#8FA6BC;margin-top:.4rem">novo total (soma dos 47)</div></div>
+      <div><div class="bignum" style="font-size:clamp(1.9rem,4vw,2.8rem);color:#8FB9E0">+ R$ 137,6 mi</div><div class="tag" style="color:#8FA6BC;margin-top:.4rem">acréscimo distribuído</div></div>
+          </div>
+    <div class="rv d4 legend-inline" style="margin-top:2rem;color:#8FA6BC">
+      <span><span class="pill g">+&nbsp;%</span> aumento</span>
+      <span><span class="pill a">0&nbsp;%</span> mantido</span>
+      <span><span class="pill r">−&nbsp;%</span> redução</span>
+      <span style="opacity:.8">· ordenado do maior para o menor limite ·</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- 21b · DETALHAMENTO DAS SOLICITAÇÕES -->
+<section class="slide tbl-slide" data-title="O que cada órgão pediu">
+  <div class="wide" style="max-width:1320px">
+    <div class="tbl-head">
+      <div>
+        <div class="eyebrow rv" style="margin-bottom:.5rem">Os 15 pedidos formais, em detalhe</div>
+        <h2 class="rv d1" style="font-size:clamp(1.3rem,2.6vw,1.9rem)">O que cada órgão pediu — e o que apresentou nos autos</h2>
+      </div>
+      <div class="rv d1 tag" style="align-self:flex-end">role para ver todos ↓</div>
+    </div>
+    <p class="lead rv d1" style="max-width:78ch;font-size:.95rem;margin-bottom:1rem">Cada pedido foi lido inteiro: o programa de governo invocado, as estruturas criadas, os concursos em andamento, a força de trabalho declarada e as movimentações já em curso. É esse conjunto que o histórico de execução veio confirmar — ou contradizer.</p>
+    <div class="dwrap rv d2">
+      <div class="dscroll">
+      <article class="dcard">
+        <header>
+          <h4>Ministério da Fazenda</h4>
+          <div class="dproc mono">10199.001288/2026-61 · Formulário SEI 61482065</div>
+          <div class="dped mono">Pedido: Limite vigente + R$ 50.000.000</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Mercado de Carbono, Transformação Ecológica e Regulamentação de Prêmios e Apostas — declarados no formulário como projetos prioritários de governo.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Criação da Secretaria de Prêmios e Apostas e da Secretaria Extraordinária do Mercado de Carbono, ambas sem quadro próprio constituído.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">Não informa concurso em andamento; a recomposição declarada apoia-se em movimentações.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">21.856 servidores no total, mais 534 terceirizados; 123 empregados e anistiados do quadro; 3.373 cedidos, requisitados ou em exercício descentralizado; 541 com ônus registrados.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">13 pedidos de movimentação em análise — 11 ainda com valor em apuração e 2 já apurados em cerca de R$ 500 mil. Prazo das movimentações declarado como indeterminado.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">O formulário registra a impossibilidade de prever integralmente a necessidade das áreas, dada a demanda por perfis específicos nas áreas econômicas e estratégicas.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Min. da Gestão e Inovação (MGI)</h4>
+          <div class="dproc mono">10199.006818/2026-67 · Formulário SEI 61610026</div>
+          <div class="dped mono">Pedido: R$ 152.173.604 (+R$ 11.953.804)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Carteira de Identidade Nacional (CIN), Concurso Público Nacional Unificado e Estratégia Nacional de Contratações Públicas para o Desenvolvimento Sustentável (ENCP), sob coordenação do Gabinete da Ministra.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Demanda decomposta por quatro unidades: SGP (DECIPEX, com gestão de aproximadamente 170.000 aposentados e pensionistas do RPPS federal), Gabinete da Ministra, SEGES e SEST.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">CPNU 2 autorizado em 2024, com 1.676 vagas e 1.076 nomeações realizadas, válido até 15/03/2027. Contratação temporária de 2024 com 200 vagas e 190 contratações, com contratos prorrogáveis até 2029.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">1.580 servidores em cessão e 1.263 em alteração de exercício; 476 com ônus registrados. Dimensionamento da Força de Trabalho (DFT) realizado em 2025.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">Perfis requeridos por unidade: gestão pública, governança, gestão de contratos e sistemas estruturantes (SEGES); contabilidade, finanças, ciências atuariais e economia (SEST).</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">As origens declaradas na SEGES são Caixa Econômica Federal, INFRAERO, Banco do Brasil e Governo do Distrito Federal.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ag. Nac. do Petróleo (ANP)</h4>
+          <div class="dproc mono">14021.037916/2026-29 · Ofício 379/2026/DG/ANP</div>
+          <div class="dped mono">Pedido: R$ 29.545.713 (+R$ 4.102.896)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Regulação, contratação e fiscalização do setor de petróleo, gás natural e biocombustíveis — atividades finalísticas com carreiras de geologia e geofísica e de fiscalização privativas de servidores efetivos (Lei nº 10.871/2004).</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Não há criação de unidade; a demanda decorre de déficit estrutural do quadro.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">Pedidos de concurso apresentados desde 2022 (nº 317/2022; nº 499/2023 para 128 vagas; 132 vagas em 2024; 143 em 2025). A Agência foi contemplada com apenas 90 vagas no CPNU 2 e prepara novo pedido de 68 vagas em 2026. Vacância registrada: 168 cargos.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">85 com ônus registrados; 103 movimentados no total. Dimensionamento da Força de Trabalho realizado com a Fundação Dom Cabral em 2018, aprimorado em 2021 (Decreto nº 11.072/2022) e estendido às Diretorias em 2023, apontando déficit superior a 379 profissionais.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">84 processos de movimentação já autorizados e 12 em andamento. Custo médio anual por formação: Direito R$ 373.217; Engenharia R$ 281.520; Contabilidade R$ 174.930; Administração R$ 103.640.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">Impacto quantificado dos acordos coletivos: INFRAERO (+4,26% mais INPC, cerca de R$ 571 mil) e EMGEPRON (+3,38%, cerca de R$ 281 mil). É o pedido mais bem documentado do conjunto.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Min. do Trabalho e Emprego (MTE)</h4>
+          <div class="dproc mono">14021.030441/2026-40 · Ofício 19779/2026/MTE</div>
+          <div class="dped mono">Pedido: R$ 26.000.000 (+R$ 8.000.000)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Seguro Pescador Artesanal (Seguro Defeso), cuja gestão foi transferida do INSS para o Ministério, e ampliação das competências da Secretaria de Proteção ao Trabalhador.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Nova estrutura ministerial com criação de unidades administrativas ainda desprovidas de pessoal.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">Sem concurso para a área administrativa desde 2014. Concurso autorizado para 900 cargos de Auditor-Fiscal do Trabalho (AFT), com possibilidade de ingresso de candidatos sub judice. O Banco de Candidatos em Lista de Espera (BACALE) não alcançou o resultado esperado, e há Processo Seletivo Simplificado (PSS) solicitado, ainda em análise no MGI.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">82 com ônus registrados.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">Necessidades quantificadas: cerca de 172 profissionais para o Seguro Defeso e cerca de 100 para a Diretoria de Prestação de Contas e a Secretaria-Executiva, em razão do volume crescente de Tomadas de Contas Especiais.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">O ingresso dos 900 AFTs amplia as atividades finalísticas e, por consequência, exige expansão proporcional do suporte administrativo.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Banco Central — COAF</h4>
+          <div class="dproc mono">18600.142034/2025-33 · Ofício 36734/2025-BCB/DEAFI e Ofício 1619/2025/COAF</div>
+          <div class="dped mono">Pedido: R$ 25.054.844 (+R$ 12.527.422 — dobro do limite)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Atribuições institucionais do Conselho de Controle de Atividades Financeiras (COAF) em prevenção e combate à lavagem de dinheiro e ao financiamento do terrorismo.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">O limite do Banco Central é integralmente destinado ao COAF, órgão vinculado à sua unidade orçamentária que não conta com quadro próprio de servidores.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">Sem efetivo próprio com ônus registrado; a integralidade do limite custeia servidores requisitados.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">Processos de requisição em andamento, além dos reajustes salariais já contratados, que comprometeriam cerca de R$ 12,5 milhões adicionais.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">O reembolso dos requisitados já compromete a totalidade do limite vigente, sem margem para novas requisições ou reajustes.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ag. Nac. de Aviação Civil (ANAC)</h4>
+          <div class="dproc mono">14021.026353/2026-43 · Ofício 3/2026/COART/GESP/SGP e Nota Técnica 3/2026</div>
+          <div class="dped mono">Pedido: R$ 20.000.000 (+R$ 5.612.204)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Regulação de novas tecnologias do setor aéreo, com destaque para drones e aeronaves eVTOL.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Não há criação de unidade; a demanda decorre da lacuna de mão de obra especializada.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">70 Técnicos em Regulação de Aviação Civil aprovados no CPNU, com nomeações previstas a partir de maio de 2026 — quantitativo que a Agência considera ainda muito aquém do efetivo legal.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">38 com ônus registrados. Origens declaradas: NAV Brasil (7 empregados, com reembolso anual individualizado), INFRAERO, Casa da Moeda e um diretor da Caixa Econômica Federal.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">Movimentações represadas estimadas em cerca de R$ 1,5 milhão.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">A Agência registra não dispor da prerrogativa legal de requisição, o que torna a cessão e a alteração de exercício instrumentos essenciais à continuidade das atividades.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ag. Nac. de Telecom. (ANATEL)</h4>
+          <div class="dproc mono">14021.036739/2026-63 · Ofício 33/2026/AFPE4/AFPE/SAF</div>
+          <div class="dped mono">Pedido: R$ 17.153.240 (+R$ 5.000.000)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Absorção do reembolso dos empregados da Telecomunicações Brasileiras S.A. (Telebrás) em exercício na Agência.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Decorre do contrato de gestão firmado em setembro de 2025, com base no Decreto nº 12.500/2025 e na Portaria Conjunta MGI/MPO/MF nº 57/2025, que estabelece a transição da Telebrás para a condição de não dependente do orçamento da União.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">Concurso com 50 vagas, com nomeações em preparação.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">26 com ônus registrados; 103 cedidos ou requisitados em exercício.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">Perfis requeridos: engenheiros e especialistas em tecnologia da informação e contabilidade.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">A Agência registra que o novo reembolso levará o gasto anual a atingir novamente o teto da portaria, inviabilizando novas movimentações sem readequação.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Min. Desenv., Indústria e Com. (MDIC)</h4>
+          <div class="dproc mono">52315.000177/2026-11 · Ofícios 776/2026 e 778/2026/MDIC</div>
+          <div class="dped mono">Pedido: R$ 12.979.675 (+R$ 1.300.000)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Demanda consolidada do Ministério e de suas entidades vinculadas.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Consolidação de INMETRO (limite próprio de R$ 1.010.000), SUFRAMA e INPI (limite próprio de R$ 1.380.000).</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">O INPI prevê 7 seleções externas para composição de força de trabalho.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">15 com ônus registrados no órgão setorial. A SUFRAMA declara 17 empregados da INFRAERO, com custo médio mensal de R$ 374.205,15 — cerca de R$ 22.012 por empregado ao mês.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">O INPI estima acréscimo de cerca de R$ 382 mil para o exercício.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">A consolidação foi feita por ofícios do órgão setorial às vinculadas, com prazo interno de manifestação em 15 de maio de 2026.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Min. do Planejamento e Orçamento (MPO)</h4>
+          <div class="dproc mono">10199.001288/2026-61 (ofício circular)</div>
+          <div class="dped mono">Pedido: R$ 11.270.000 (+R$ 1.026.683)</div>
+        </header>
+        <div class="dl"><span class="dk">Força de trabalho</span><span class="dv">10 com ônus registrados.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">A manifestação foi apresentada em resposta ao Ofício Circular nº 429/2026/MGI, sem peça de fundamentação individual; o número indicado corresponde ao processo do ofício circular, e não a processo próprio.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ministério das Cidades (MCID)</h4>
+          <div class="dproc mono">14021.035380/2026-15 · Formulário SEI 61534758</div>
+          <div class="dped mono">Pedido: R$ 10.000.000 (+R$ 4.700.000)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Novo PAC, com carteira de R$ 1,47 trilhão, dos quais cerca de R$ 625 bilhões no Minha Casa, Minha Vida; 14.514 contratos vigentes e aproximadamente R$ 122 bilhões sob monitoramento.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Ministério criado em 1º de janeiro de 2023 pelo Decreto nº 11.333/2023, com competências fixadas pelo Decreto nº 11.468/2023.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">O último concurso do extinto Ministério do Desenvolvimento Regional ocorreu há mais de dez anos; a última contratação temporária, em 2012/2013. Está em andamento a 2ª edição do CPNU, com 15 vagas autorizadas em 2025.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">9 com ônus registrados. Força de trabalho declarada: 142 servidores efetivos e 1 empregado do quadro; 99 em cessão, 31 em alteração de exercício e 192 em exercício descentralizado.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">A gestão dos contratos do Novo PAC é operada pela Caixa Econômica Federal na condição de mandatária da União, com reembolso a cargo do Ministério.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">A curva de execução acompanha a implantação do programa, saindo de 29% em 2023 para 71% em 2026.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Min. Desenv. e Assist. Social (MDS)</h4>
+          <div class="dproc mono">14021.003001/2026-10 e 14021.006691/2026-69 (cumulativos)</div>
+          <div class="dped mono">Pedido: R$ 9.653.162 (+R$ 1.600.000)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Programa Auxílio Gás do Povo e Benefício de Prestação Continuada (BPC), este último com ampliação de procedimentos e critérios pela Lei nº 15.077/2024.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Estrutura regimental do Decreto nº 11.392/2023 alterada pelo Decreto nº 12.786/2025, que criou a Secretaria Nacional de Integração e Articulação de Plataformas Sociais Eletrônicas; e Decreto nº 12.628/2025, que criou a Secretaria Nacional de Benefícios Assistenciais (SNBA).</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">11 com ônus registrados.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">O segundo processo trata de duas servidoras da SNAS cedidas ao Conselho Federal de Participação Social da Bacia do Rio Doce e Litoral Norte Capixaba, no âmbito do Acordo de Reparação do Rio Doce, cujo reembolso é obrigatório por força do art. 18 do Decreto nº 10.835/2021.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">Os dois pedidos são cumulativos e somam R$ 1,6 milhão.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ag. Nac. Transp. Terrestres (ANTT)</h4>
+          <div class="dproc mono">14021.052645/2026-31 · Ofício 24609/2026/DG-ANTT e Nota Técnica 6292/2026/SUSPI</div>
+          <div class="dped mono">Pedido: R$ 9.010.305 (principal) e R$ 6.406.437 (subsidiário)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Continuidade das atividades finalísticas de regulação da infraestrutura rodoviária e ferroviária e da prestação de serviços de transporte terrestre.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Não há criação de unidade; a demanda decorre de defasagem estrutural do quadro.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">Concurso autorizado em 2025 com 50 vagas e 44 nomeações realizadas, válido até 2027. Nomeações do CPNU 2, pedido de novo concurso para todos os cargos e transformação de cargos por adesão à Lei nº 14.204/2021 tramitaram em paralelo — razão declarada para o protocolo fora do prazo.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">9 com ônus registrados. Dos 1.705 cargos previstos na Lei nº 10.871/2004, apenas 932 estão ocupados (55%), com 773 vagos (45%). A força de trabalho total declarada é de 1.690 pessoas, e 30 servidores da própria Agência estão requisitados por outros órgãos.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">11 empregados públicos em exercício custam R$ 319 mil por mês, ou R$ 3.824.544 no ano — 77% do limite vigente. Há tratativas avançadas de cerca de R$ 730.000, que elevariam a utilização a aproximadamente 91%, e processos represados por falta de limite estimados em R$ 1.300.000. O formulário prevê o ingresso de mais 4 empregados.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">Histórico de limites: R$ 5.876.024 nas Portarias 61/2023 e 92/2024, reduzido para R$ 4.994.620 nas Portarias 37/2025 e 98/2025 — queda de 15%. Perfis requeridos: áreas de engenharia e administrativa.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ag. Nac. Transp. Aquaviários (ANTAQ)</h4>
+          <div class="dproc mono">14021.003783/2026-97 · Ofício 14/2026/DG-ANTAQ</div>
+          <div class="dped mono">Pedido: R$ 3.764.994 (+R$ 1.000.000)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Manutenção das movimentações já efetivadas e recomposição parcial da força de trabalho.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Não há criação de unidade.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">Sem previsão de concurso para a área administrativa no exercício seguinte.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">7 com ônus registrados. Origens declaradas com valor mensal: INFRAERO (6 empregados, R$ 128.216/mês), Correios (1, R$ 40.000/mês) e Companhia Docas do Rio de Janeiro (1, R$ 24.454/mês).</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">Planilha estimativa de reembolso anexada aos autos (SEI 2793425).</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">A Agência registra aposentadorias em curso, vacância em cargos inacumuláveis e devoluções a órgãos de origem como fatores de perda de força de trabalho.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ag. Nac. Saúde Suplementar (ANS)</h4>
+          <div class="dproc mono">14021.034923/2026-79 · Ofício 138/2026/PRESI e Nota Técnica 4/2026/GERH</div>
+          <div class="dped mono">Pedido: R$ 1.666.494 (+R$ 308.046)</div>
+        </header>
+        <div class="dl"><span class="dk">Programa ou política</span><span class="dv">Regulação do setor de saúde suplementar.</span></div><div class="dl"><span class="dk">Estrutura</span><span class="dv">Não há criação de unidade.</span></div><div class="dl"><span class="dk">Concurso / seleção</span><span class="dv">202 cargos vagos no quadro da Agência.</span></div><div class="dl"><span class="dk">Força de trabalho</span><span class="dv">3 empregadas públicas movimentadas para compor força de trabalho, com custo anual estimado em R$ 922.981,17.</span></div><div class="dl"><span class="dk">Movimentações</span><span class="dv">Previsão de ingresso de mais 2 empregados, o que eleva a necessidade a R$ 1.666.494.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">A Agência registra que o limite vigente é suficiente apenas para as despesas do mês corrente, sem margem para absorver os reajustes remuneratórios previstos para 2026. É o menor pedido do conjunto e o mais proporcional.</span></div>
+      </article>
+      <article class="dcard">
+        <header>
+          <h4>Ministério do Esporte</h4>
+          <div class="dproc mono">10199.001426/2026-10 (resposta ao ofício circular)</div>
+          <div class="dped mono">Pedido: R$ 3.562.000 (+R$ 1.000.000)</div>
+        </header>
+        <div class="dl"><span class="dk">Força de trabalho</span><span class="dv">2 com ônus registrados.</span></div><div class="dl"><span class="dk">Ressalva</span><span class="dv">Os autos contêm apenas o ofício circular de convocação e o recibo de protocolo, sem ofício próprio de motivação e sem o formulário do Anexo III preenchido. É o único pedido do conjunto sem fundamentação material.</span></div>
+      </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 22 · TABELA COMPLETA -->
+<section class="slide tbl-slide" data-title="Tabela — 47 órgãos">
+  <div class="wide" style="max-width:1320px">
+    <div class="tbl-head">
+      <div>
+        <div class="eyebrow rv" style="margin-bottom:.5rem">Proposta 2027 · valor, diferença e justificativa</div>
+        <h2 class="rv d1" style="font-size:clamp(1.3rem,2.6vw,1.9rem)">Os 47 órgãos, um a um</h2>
+      </div>
+      <div class="rv d1 tag" style="align-self:flex-end">role a tabela para ver todos ↓</div>
+    </div>
+    <div class="tbl-wrap rv d2">
+      <div class="tbl-scroll">
+        <table class="ftbl">
+          <colgroup><col class="c-og"><col class="c-vl"><col class="c-df"><col class="c-pc"><col class="c-ju"></colgroup>
+          <thead>
+            <tr><th class="og">Órgão</th><th class="vl">Valor 2027</th><th class="df">Diferença</th><th class="pc">%</th><th class="ju">Justificativa e embasamento</th></tr>
+          </thead>
+          <tbody>
+      <tr>
+        <td class="og">Ministério da Fazenda</td>
+        <td class="vl mono">R$ 337.890.806</td>
+        <td class="df mono">+R$ 48.188.183</td>
+        <td class="pc"><span class="pill g">+16,6%</span></td>
+        <td class="ju">Pedido ATENDIDO PARCIALMENTE (99.47% da solicitação de R$ 339.702.623). Histórico confirma integralmente a necessidade: IHE 83.8% (média ponderada de 8 anos, tendência +4.1 p.p./ano); limite ultrapassado em 2 anos da série. É o maior executor do sistema em valor absoluto. A diferença de R$ 1.811.817 corresponde a 0,54% do valor proposto e não compromete o atendimento: o limite proposto cobre 1,92 vez o custo de referência do efetivo e absorve integralmente as necessidades declaradas para as Secretarias de Prêmios e Apostas e do Mercado de Carbono, além dos 13 pedidos de movimentação em análise. Efetivo 541 (custo de referência R$ 175.825.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Advocacia-Geral da União (AGU)</td>
+        <td class="vl mono">R$ 211.239.230</td>
+        <td class="df mono">+R$ 9.289.679</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">AGU — exceção deliberada: IHE 80.1% (média ponderada de 8 anos, tendência -11.8 p.p./ano). O custeio pleno do efetivo (1119 empregados ≈ R$ 363.675.000) seria desproporcional; aplicado apenas o reajuste CCT de 4,6%.</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Gestão e Inovação (MGI)</td>
+        <td class="vl mono">R$ 152.123.604</td>
+        <td class="df mono">+R$ 11.953.804</td>
+        <td class="pc"><span class="pill g">+8,5%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 152.123.604). Histórico confirma a necessidade: IHE 76.2% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência -26.6 p.p./ano); limite ultrapassado em 1 ano(s) da série. Efetivo 476 (custo de referência R$ 154.700.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Presidência da República</td>
+        <td class="vl mono">R$ 133.250.800</td>
+        <td class="df mono">+R$ 5.859.978</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução alta e sustentada: IHE 80.3% (média ponderada de 8 anos, tendência -9.9 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 259 (ref. R$ 84.175.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Previdência Social</td>
+        <td class="vl mono">R$ 67.479.857</td>
+        <td class="df mono">+R$ 2.967.565</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 72.3% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência -12.6 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 24 (ref. R$ 7.800.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Justiça e Segurança Pública</td>
+        <td class="vl mono">R$ 64.111.207</td>
+        <td class="df mono">+R$ 2.819.422</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 66.7% (média ponderada de 8 anos, tendência -10.0 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 69 (ref. R$ 22.425.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério dos Transportes</td>
+        <td class="vl mono">R$ 48.755.276</td>
+        <td class="df mono">+R$ 2.144.113</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 70.9% (média ponderada de 8 anos, tendência -19.6 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 23 (ref. R$ 7.475.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério da Educação</td>
+        <td class="vl mono">R$ 46.375.124</td>
+        <td class="df mono">+R$ 2.039.441</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 73.1% (média ponderada de 8 anos, tendência -9.1 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 3 (ref. R$ 975.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. do Petróleo (ANP)</td>
+        <td class="vl mono">R$ 29.545.713</td>
+        <td class="df mono">+R$ 4.102.896</td>
+        <td class="pc"><span class="pill g">+16,1%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 29.545.713). Histórico confirma a necessidade: IHE 84.3% (média ponderada de 8 anos, tendência +9.0 p.p./ano); limite ultrapassado em 1 ano(s) da série. Efetivo 86 (custo de referência R$ 27.950.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério da Defesa</td>
+        <td class="vl mono">R$ 29.385.952</td>
+        <td class="df mono">+R$ 1.292.308</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 68.8% (média ponderada de 8 anos, tendência +0.8 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 33 (ref. R$ 10.725.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. do Trabalho e Emprego (MTE)</td>
+        <td class="vl mono">R$ 26.000.000</td>
+        <td class="df mono">+R$ 8.000.000</td>
+        <td class="pc"><span class="pill g">+44,4%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 26.000.000). Histórico confirma a necessidade: IHE 71.6% (média ponderada de 6 anos — órgão integra a série desde 2021, tendência -4.9 p.p./ano); limite ultrapassado em 1 ano(s) da série. Efetivo 82 (custo de referência R$ 26.650.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Ciência e Tecnologia (MCTI)</td>
+        <td class="vl mono">R$ 25.525.064</td>
+        <td class="df mono">+R$ 1.122.517</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução alta e sustentada: IHE 75.9% (média ponderada de 8 anos, tendência -23.9 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 23 (ref. R$ 7.475.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Banco Central — COAF</td>
+        <td class="vl mono">R$ 25.054.844</td>
+        <td class="df mono">+R$ 12.527.422</td>
+        <td class="pc"><span class="pill g">+100,0%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 25.054.844). Histórico confirma a necessidade: IHE 64.0% (média ponderada de 6 anos — órgão integra a série desde 2021, tendência +18.1 p.p./ano). Efetivo 0 (custo de referência R$ 0).</td>
+      </tr>
+      <tr>
+        <td class="og">Controladoria-Geral da União (CGU)</td>
+        <td class="vl mono">R$ 24.241.050</td>
+        <td class="df mono">+R$ 1.066.050</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução alta e sustentada: IHE 76.6% (média ponderada de 8 anos, tendência -25.4 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 46 (ref. R$ 14.950.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério da Saúde</td>
+        <td class="vl mono">R$ 20.140.482</td>
+        <td class="df mono">+R$ 1.758.935</td>
+        <td class="pc"><span class="pill g">+9,6%</span></td>
+        <td class="ju">RISCO DE EXAURIMENTO: IHE 101.4% (média ponderada de 8 anos, tendência +5.2 p.p./ano), com o limite ultrapassado em 4 dos 8 anos da série. Recebeu reajuste CCT de 4,6% mais o reforço prioritário do saldo disponível. Efetivo 14.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. de Aviação Civil (ANAC)</td>
+        <td class="vl mono">R$ 20.000.000</td>
+        <td class="df mono">+R$ 5.612.204</td>
+        <td class="pc"><span class="pill g">+39,0%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 20.000.000). Histórico confirma a necessidade: IHE 69.6% (média ponderada de 8 anos, tendência -2.6 p.p./ano). Efetivo 38 (custo de referência R$ 12.350.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. de Telecom. (ANATEL)</td>
+        <td class="vl mono">R$ 17.153.240</td>
+        <td class="df mono">+R$ 5.000.000</td>
+        <td class="pc"><span class="pill g">+41,1%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 17.153.240). Histórico confirma a necessidade: IHE 82.6% (média ponderada de 8 anos, tendência +1.3 p.p./ano); limite ultrapassado em 1 ano(s) da série. Efetivo 26 (custo de referência R$ 8.450.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. de Portos e Aeroportos</td>
+        <td class="vl mono">R$ 14.946.262</td>
+        <td class="df mono">+R$ 657.293</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 58.8% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +10.4 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 23 (ref. R$ 7.475.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. dos Direitos Humanos</td>
+        <td class="vl mono">R$ 13.680.738</td>
+        <td class="df mono">+R$ 601.639</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 61.7% (média ponderada de 8 anos, tendência -26.4 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 18 (ref. R$ 5.850.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. Desenv., Indústria e Com. (MDIC)</td>
+        <td class="vl mono">R$ 12.979.675</td>
+        <td class="df mono">+R$ 1.300.000</td>
+        <td class="pc"><span class="pill g">+11,1%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 12.979.675). Histórico confirma a necessidade: IHE 64.6% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência -1.5 p.p./ano). Efetivo 15 (custo de referência R$ 4.875.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. do Planejamento e Orçamento (MPO)</td>
+        <td class="vl mono">R$ 11.270.000</td>
+        <td class="df mono">+R$ 1.026.683</td>
+        <td class="pc"><span class="pill g">+10,0%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 11.270.000). Histórico confirma a necessidade: IHE 51.2% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência -3.9 p.p./ano). Efetivo 10 (custo de referência R$ 3.250.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Integração e Des. Regional</td>
+        <td class="vl mono">R$ 10.744.867</td>
+        <td class="df mono">+R$ 472.528</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 59.3% (média ponderada de 8 anos, tendência -22.0 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 7 (ref. R$ 2.275.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério das Cidades (MCID)</td>
+        <td class="vl mono">R$ 10.000.000</td>
+        <td class="df mono">+R$ 4.700.000</td>
+        <td class="pc"><span class="pill g">+88,7%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 10.000.000). Histórico confirma a necessidade: IHE 66.6% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +13.3 p.p./ano). Efetivo 8 (custo de referência R$ 2.600.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. do Meio Ambiente e Clima</td>
+        <td class="vl mono">R$ 9.678.636</td>
+        <td class="df mono">+R$ 425.638</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 60.3% (média ponderada de 8 anos, tendência -2.7 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 1 (ref. R$ 325.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. Desenv. e Assist. Social (MDS)</td>
+        <td class="vl mono">R$ 9.653.162</td>
+        <td class="df mono">+R$ 1.600.000</td>
+        <td class="pc"><span class="pill g">+19,9%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 9.653.162). Histórico confirma a necessidade: IHE 86.9% (média ponderada de 8 anos, tendência -2.1 p.p./ano); limite ultrapassado em 3 ano(s) da série. Efetivo 11 (custo de referência R$ 3.575.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério das Comunicações</td>
+        <td class="vl mono">R$ 9.414.000</td>
+        <td class="df mono">+R$ 414.000</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 62.6% (média ponderada de 7 anos — órgão integra a série desde 2020, tendência -8.5 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 14 (ref. R$ 4.550.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério da Cultura</td>
+        <td class="vl mono">R$ 8.912.250</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 49.0% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência -36.5 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 4.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. Vigilância Sanitária (ANVISA)</td>
+        <td class="vl mono">R$ 7.283.686</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 50.1% (média ponderada de 8 anos, tendência +4.4 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 24.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. Transp. Terrestres (ANTT)</td>
+        <td class="vl mono">R$ 6.406.437</td>
+        <td class="df mono">+R$ 1.411.817</td>
+        <td class="pc"><span class="pill g">+28,3%</span></td>
+        <td class="ju">Pedido SUBSIDIÁRIO acolhido integralmente (R$ 6.406.437, formulado pela própria Agência no Ofício 24609/2026/DG-ANTT). Protocolado em 13/07/2026, após o prazo do art. 7º da Portaria 61/2023 (31/05), foi admitido em razão da tempestividade da instrução e da consistência da fundamentação. Histórico: IHE 49.0% (média ponderada de 8 anos, tendência +3.7 p.p./ano), com execução em recuperação (53% anualizado em 2026 ante 39% em 2025). Necessidades documentadas somam R$ 5.854.544 (11 empregados em exercício = R$ 3.824.544; tratativas em curso = R$ 730.000; processos represados = R$ 1.300.000), integralmente cobertas. O pedido principal (R$ 9.010.305) equivaleria a 154% das necessidades documentadas e repetiria a ampliação de 2022, quando o limite dobrou e a execução caiu de 91% para 42%. Efetivo cadastrado 9; a Agência declara 11 em exercício e prevê 4 ingressos.</td>
+      </tr>
+      <tr>
+        <td class="og">Min. dos Povos Indígenas</td>
+        <td class="vl mono">R$ 5.700.000</td>
+        <td class="df mono">−R$ 300.000</td>
+        <td class="pc"><span class="pill r">-5,0%</span></td>
+        <td class="ju">Execução baixa: IHE 35.3% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +9.4 p.p./ano). Corte reduzido à metade (−5% em vez de −10%) porque a série indica recuperação consistente da capacidade de execução. Efetivo 0.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. de Águas (ANA)</td>
+        <td class="vl mono">R$ 5.200.046</td>
+        <td class="df mono">+R$ 228.683</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 62.0% (média ponderada de 8 anos, tendência +22.8 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 11 (ref. R$ 3.575.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. de Mineração (ANM)</td>
+        <td class="vl mono">R$ 4.875.362</td>
+        <td class="df mono">+R$ 214.404</td>
+        <td class="pc"><span class="pill g">+4,6%</span></td>
+        <td class="ju">Execução regular ao longo da série: IHE 66.9% (média ponderada de 8 anos, tendência +11.4 p.p./ano). Reajuste CCT de 4,6% sobre o limite vigente. Efetivo 16 (ref. R$ 5.200.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. de Minas e Energia</td>
+        <td class="vl mono">R$ 4.847.850</td>
+        <td class="df mono">−R$ 255.150</td>
+        <td class="pc"><span class="pill r">-5,0%</span></td>
+        <td class="ju">Execução baixa: IHE 34.4% (média ponderada de 8 anos, tendência +10.8 p.p./ano). Corte reduzido à metade (−5% em vez de −10%) porque a série indica recuperação consistente da capacidade de execução. Efetivo 0.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. de Energia Elétrica (ANEEL)</td>
+        <td class="vl mono">R$ 4.500.000</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 53.1% (média ponderada de 8 anos, tendência -2.2 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 7.</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério das Mulheres</td>
+        <td class="vl mono">R$ 4.090.000</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 48.7% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +12.2 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 3.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. Transp. Aquaviários (ANTAQ)</td>
+        <td class="vl mono">R$ 3.764.994</td>
+        <td class="df mono">+R$ 1.000.000</td>
+        <td class="pc"><span class="pill g">+36,2%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 3.764.994). Histórico confirma a necessidade: IHE 67.0% (média ponderada de 8 anos, tendência -4.4 p.p./ano); limite ultrapassado em 1 ano(s) da série. Efetivo 7 (custo de referência R$ 2.275.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Agricultura e Pecuária</td>
+        <td class="vl mono">R$ 3.333.473</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 49.0% (média ponderada de 8 anos, tendência -29.1 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 1.</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério do Esporte</td>
+        <td class="vl mono">R$ 2.662.000</td>
+        <td class="df mono">+R$ 100.000</td>
+        <td class="pc"><span class="pill g">+3,9%</span></td>
+        <td class="ju">Pedido atendido PARCIALMENTE (+R$ 100.000). O histórico não confirma a necessidade: IHE 20.1% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +7.2 p.p./ano), com 1 ano(s) de execução nula — a menor da série entre os solicitantes. Efetivo 2.</td>
+      </tr>
+      <tr>
+        <td class="og">Min. do Desenv. Agrário</td>
+        <td class="vl mono">R$ 2.625.000</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 46.7% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +18.5 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 1.</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Pesca e Aquicultura</td>
+        <td class="vl mono">R$ 2.280.000</td>
+        <td class="df mono">−R$ 120.000</td>
+        <td class="pc"><span class="pill r">-5,0%</span></td>
+        <td class="ju">Execução baixa: IHE 30.1% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +13.2 p.p./ano). Corte reduzido à metade (−5% em vez de −10%) porque a série indica recuperação consistente da capacidade de execução. Efetivo 2.</td>
+      </tr>
+      <tr>
+        <td class="og">Gab. da Vice-Presidência</td>
+        <td class="vl mono">R$ 2.059.142</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 51.4% (média ponderada de 8 anos, tendência -4.2 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 4.</td>
+      </tr>
+      <tr>
+        <td class="og">Min. da Igualdade Racial</td>
+        <td class="vl mono">R$ 2.023.000</td>
+        <td class="df mono">−R$ 357.000</td>
+        <td class="pc"><span class="pill r">-15,0%</span></td>
+        <td class="ju">Execução cronicamente baixa: IHE 18.1% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +0.9 p.p./ano), com 1 ano(s) de execução nula. Redução de 15% para realocar dotação ociosa (art. 4º da Portaria 61/2023). Efetivo 1.</td>
+      </tr>
+      <tr>
+        <td class="og">Conselho Administrativo de Defesa Econômica - Cade</td>
+        <td class="vl mono">R$ 1.792.383</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 54.7% (média ponderada de 8 anos, tendência -4.8 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 3.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. Saúde Suplementar (ANS)</td>
+        <td class="vl mono">R$ 1.666.494</td>
+        <td class="df mono">+R$ 308.046</td>
+        <td class="pc"><span class="pill g">+22,7%</span></td>
+        <td class="ju">Pedido ACOLHIDO INTEGRALMENTE (100% da solicitação de R$ 1.666.494). Histórico confirma a necessidade: IHE 57.5% (média ponderada de 8 anos, tendência -14.7 p.p./ano); limite ultrapassado em 1 ano(s) da série. Efetivo 3 (custo de referência R$ 975.000).</td>
+      </tr>
+      <tr>
+        <td class="og">Min. do Empreendedorismo</td>
+        <td class="vl mono">R$ 1.000.000</td>
+        <td class="df mono">+R$ 0</td>
+        <td class="pc"><span class="pill a">+0,0%</span></td>
+        <td class="ju">Execução moderada: IHE 46.1% (média ponderada de 4 anos — órgão integra a série desde 2023, tendência +11.8 p.p./ano). Limite mantido — nível insuficiente para reajuste, mas sem subexecução crônica que justifique corte. Efetivo 1.</td>
+      </tr>
+      <tr>
+        <td class="og">Ag. Nac. do Cinema (ANCINE)</td>
+        <td class="vl mono">R$ 400.000</td>
+        <td class="df mono">−R$ 800.000</td>
+        <td class="pc"><span class="pill r">-66,7%</span></td>
+        <td class="ju">Execução nula crônica: IHE 3.4% (média ponderada de 8 anos), com 5 dos 8 anos sem qualquer execução. Limite reduzido ao piso de cautela de R$ 400.000 (art. 4º da Portaria 61/2023). O piso preserva capacidade mínima de resposta caso o órgão volte a movimentar pessoal no exercício, evitando que a ausência de limite inviabilize movimentação pontual e necessária.</td>
+      </tr>
+      <tr>
+        <td class="og">Ministério do Turismo</td>
+        <td class="vl mono">R$ 400.000</td>
+        <td class="df mono">−R$ 800.000</td>
+        <td class="pc"><span class="pill r">-66,7%</span></td>
+        <td class="ju">Execução nula crônica: IHE 11.6% (média ponderada de 8 anos), com 4 dos 8 anos sem qualquer execução. Limite reduzido ao piso de cautela de R$ 400.000 (art. 4º da Portaria 61/2023). O piso preserva capacidade mínima de resposta caso o órgão volte a movimentar pessoal no exercício, evitando que a ausência de limite inviabilize movimentação pontual e necessária.</td>
+      </tr>
+            <tr class="total">
+              <td class="og">TOTAL — 47 órgãos</td>
+              <td class="vl mono">R$ 1.456.461.706</td>
+              <td class="df mono">+R$ 137.573.098</td>
+              <td class="pc">+10,4%</td>
+              <td class="ju">Soma exata dos limites propostos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const deck=document.getElementById('deck');
+  const slides=Array.from(deck.querySelectorAll('.slide'));
+  const rail=document.getElementById('rail');
+  const counter=document.getElementById('counter');
+  const hint=document.getElementById('hint');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pad=n=>String(n+1).padStart(2,'0');
+
+  // rail dots
+  slides.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','Ir ao slide '+(i+1)+': '+(s.dataset.title||''));
+    b.addEventListener('click',()=>slides[i].scrollIntoView());
+    rail.appendChild(b);
+  });
+  const dots=Array.from(rail.children);
+
+  let current=0;
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        const idx=slides.indexOf(e.target);
+        if(idx>-1){
+          current=idx;
+          dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+          counter.textContent=pad(idx)+' / '+pad(slides.length-1);
+          if(idx>0) hint.classList.add('hide'); else hint.classList.remove('hide');
+          runCounters(e.target);
+          drawCharts(e.target);
+        }
+      }
+    });
+  },{threshold:0.55});
+  slides.forEach(s=>io.observe(s));
+
+  // keyboard nav
+  window.addEventListener('keydown',(ev)=>{
+    if(['ArrowDown','ArrowRight',' ','PageDown'].includes(ev.key)){ev.preventDefault();if(current<slides.length-1)slides[current+1].scrollIntoView();}
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(ev.key)){ev.preventDefault();if(current>0)slides[current-1].scrollIntoView();}
+    else if(ev.key==='Home'){ev.preventDefault();slides[0].scrollIntoView();}
+    else if(ev.key==='End'){ev.preventDefault();slides[slides.length-1].scrollIntoView();}
+  });
+
+  // number count-up
+  function runCounters(scope){
+    scope.querySelectorAll('[data-count]').forEach(el=>{
+      if(el.dataset.done)return; el.dataset.done="1";
+      const target=+el.dataset.count, pre=el.dataset.prefix||"", suf=(el.dataset.suffix!==undefined?el.dataset.suffix:"");
+      if(reduce){el.textContent=pre+fmt(target)+suf;return;}
+      const dur=1150, t0=performance.now();
+      function tick(t){
+        const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3), v=Math.round(target*e);
+        el.textContent=pre+fmt(v)+suf;
+        if(p<1)requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+  function fmt(n){return n.toLocaleString('pt-BR');}
+
+  // ring animation (slide 05)
+  const ringObs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const r=e.target.querySelector('.ring');if(r&&!r.dataset.done){r.dataset.done="1";if(reduce){r.style.strokeDashoffset=553*(1-0.534);}else{r.style.transition='stroke-dashoffset 1.3s cubic-bezier(.3,.7,.2,1)';requestAnimationFrame(()=>{r.style.strokeDashoffset=553*(1-0.534);});}}}});},{threshold:.5});
+  slides.forEach(s=>{if(s.querySelector('.ring'))ringObs.observe(s);});
+
+  // ---------- SVG chart helpers ----------
+  const NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+  function svg(w,h){const s=el('svg',{viewBox:`0 0 ${w} ${h}`});return s;}
+  function txt(s,x,y,t,o={}){const e=el('text',{x,y,'font-family':'var(--mono)','font-size':o.size||11,fill:o.fill||'var(--ink-soft)','text-anchor':o.anchor||'start'});if(o.weight)e.setAttribute('font-weight',o.weight);if(o.ls)e.setAttribute('letter-spacing',o.ls);e.textContent=t;s.appendChild(e);return e;}
+  function animateStroke(p){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;if(reduce){p.style.strokeDashoffset=0;}else{p.style.transition='stroke-dashoffset 1.3s ease';requestAnimationFrame(()=>{p.style.strokeDashoffset=0;});}}
+  function grow(rect,to,vert){if(reduce){return;}if(vert){const y=+rect.getAttribute('y'),hh=+rect.getAttribute('height');rect.setAttribute('y',y+hh);rect.setAttribute('height',0);rect.style.transition='all .9s cubic-bezier(.3,.7,.2,1)';requestAnimationFrame(()=>{rect.setAttribute('y',y);rect.setAttribute('height',hh);});}else{const w=+rect.getAttribute('width');rect.setAttribute('width',0);rect.style.transition='width .9s cubic-bezier(.3,.7,.2,1)';requestAnimationFrame(()=>{rect.setAttribute('width',w);});}}
+
+  const drawn={};
+  function drawCharts(scope){
+    scope.querySelectorAll('[id^="chart-"]').forEach(c=>{
+      if(drawn[c.id])return; drawn[c.id]=1;
+      const fn=CHARTS[c.id]; if(fn)fn(c);
+    });
+  }
+
+  // ---------- DATA ----------
+  const SYS=[[2019,805,813],[2020,1221,893],[2021,1323,897],[2022,983,972],[2023,1208,1016],[2024,1242,1127],[2025,1319,953],[2026,1319,883]];
+  const WEIGHTS=[["2026",40.7],["2025",24.4],["2024",14.6],["2023",8.8],["2022",5.3],["2021",3.2],["2020",1.9],["2019",1.1]];
+  const SCAT=[[62,4.6],[53.1,0],[66.9,4.6],[50.1,0],[80.1,4.6],[54.7,0],[76.6,4.6],[51.4,0],[68.8,4.6],[73.1,4.6],[59.3,4.6],[66.7,4.6],[72.3,4.6],[62.6,4.6],[58.8,4.6],[46.7,0],[46.1,0],[60.3,4.6],[61.7,4.6],[70.9,4.6],[80.3,4.6]];
+  const SCAT_HL=[[101.4,9.6,"Saúde"],[3.4,-66.7,"ANCINE"],[11.6,-66.7,"Turismo"],[49,0,"Cultura"],[18.1,-15,"Ig. Racial"],[35.3,-5,"Povos Ind."]];
+  const ANTT=[[2019,2.7,2.7],[2020,2.8,3.03],[2021,2.8,2.56],[2022,5.88,2.48],[2023,5.88,2.38],[2024,5.88,2.38],[2025,4.99,1.95],[2026,4.99,2.67]];
+
+  const CHARTS={
+    // ----- calc dos pesos brutos (×0,6) -----
+    'calc60':(c)=>{
+      const D=[["2026",1.000],["2025",0.600],["2024",0.360],["2023",0.216],["2022",0.130],["2021",0.078],["2020",0.047],["2019",0.028]];
+      const rowH=30, W=440, H=D.length*rowH+6, lab=44, valW=118, max=1.0;
+      const s=svg(W,H);
+      D.forEach((d,i)=>{
+        const y=i*rowH+4; const bw=(W-lab-valW)*(d[1]/max);
+        txt(s,0,y+15,d[0],{fill:'var(--ink)',size:11.5,weight:500});
+        s.appendChild(el('rect',{x:lab,y:y+3,width:W-lab-valW,height:16,rx:4,fill:'var(--line)'}));
+        const r=el('rect',{x:lab,y:y+3,width:bw,height:16,rx:4,fill:i===0?'var(--blue)':(i<3?'var(--blue2)':'#9DBBD6')});s.appendChild(r);grow(r,bw,false);
+        const lbl = i===0 ? '1,000' : d[1].toFixed(3).replace('.',',')+ (i>0?'  (×0,6)':'');
+        txt(s,W,y+15,lbl,{anchor:'end',fill:i===0?'var(--ink)':'var(--ink-soft)',size:10.5,weight:i===0?600:400});
+      });
+      c.appendChild(s);
+    },
+    // ----- system evolution -----
+    'chart-sys':(c)=>{
+      const W=1000,H=380,pl=54,pr=30,pt=24,pb=44;
+      const s=svg(W,H); const xs=SYS.map(d=>d[0]);
+      const xmin=2019,xmax=2027, ymax=1650,ymin=400;
+      const X=v=>pl+(v-xmin)/(xmax-xmin)*(W-pl-pr);
+      const Y=v=>H-pb-(v-ymin)/(ymax-ymin)*(H-pt-pb);
+      [400,800,1200,1600].forEach(g=>{s.appendChild(el('line',{x1:pl,y1:Y(g),x2:W-pr,y2:Y(g),stroke:'#22405B','stroke-width':1}));txt(s,pl-8,Y(g)+4,g,{anchor:'end',fill:'#8FA6BC',size:11});});
+      SYS.forEach(d=>txt(s,X(d[0]),H-pb+22,d[0],{anchor:'middle',fill:'#8FA6BC',size:11}));
+      txt(s,X(2027),H-pb+22,'2027',{anchor:'middle',fill:'var(--amber)',size:11,weight:600});
+      const dLim='M'+SYS.map(d=>X(d[0])+' '+Y(d[1])).join(' L');
+      const dEmp='M'+SYS.map(d=>X(d[0])+' '+Y(d[2])).join(' L');
+      const pe=el('path',{d:dEmp,fill:'none',stroke:'#7FD8AC','stroke-width':3,'stroke-linejoin':'round','stroke-linecap':'round'});s.appendChild(pe);
+      const pli=el('path',{d:dLim,fill:'none',stroke:'#8FB9E0','stroke-width':3,'stroke-linejoin':'round','stroke-linecap':'round'});s.appendChild(pli);
+      SYS.forEach(d=>{s.appendChild(el('circle',{cx:X(d[0]),cy:Y(d[1]),r:4,fill:'#8FB9E0'}));s.appendChild(el('circle',{cx:X(d[0]),cy:Y(d[2]),r:4,fill:'#7FD8AC'}));});
+      // star 2027
+      s.appendChild(el('circle',{cx:X(2027),cy:Y(1456),r:7,fill:'var(--amber)'}));
+      txt(s,X(2027),Y(1456)-16,'R$ 1.456 mi',{anchor:'middle',fill:'var(--amber)',size:11,weight:600});
+      c.appendChild(s); animateStroke(pe); animateStroke(pli);
+    },
+    // ----- IHE weights -----
+    'chart-weights':(c)=>{
+      const rowH=34, W=460, H=WEIGHTS.length*rowH+10, lab=52, valW=64;
+      const s=svg(W,H); const max=42;
+      WEIGHTS.forEach((d,i)=>{
+        const y=i*rowH+6; const bw=(W-lab-valW)*(d[1]/max);
+        txt(s,0,y+16,d[0],{fill:'var(--ink)',size:12,weight:500});
+        s.appendChild(el('rect',{x:lab,y:y+4,width:W-lab-valW,height:18,rx:5,fill:'var(--line)'}));
+        const r=el('rect',{x:lab,y:y+4,width:bw,height:18,rx:5,fill:i===0?'var(--blue)':(i<3?'var(--blue2)':'#9DBBD6')});s.appendChild(r);grow(r,bw,false);
+        txt(s,W,y+16,d[1].toString().replace('.',',')+'%',{anchor:'end',fill:'var(--ink)',size:12,weight:600});
+      });
+      c.appendChild(s);
+    },
+    // ----- Cultura before/after -----
+    'chart-cultura':(c)=>{
+      const W=440,H=300,base=H-46,top=40,maxV=60,cx1=W*0.3,cx2=W*0.7,bw=88;
+      const s=svg(W,H);
+      s.appendChild(el('line',{x1:30,y1:base,x2:W-20,y2:base,stroke:'#22405B','stroke-width':1}));
+      const h1=(base-top)*(16/maxV), h2=(base-top)*(49/maxV);
+      const r1=el('rect',{x:cx1-bw/2,y:base-h1,width:bw,height:h1,rx:6,fill:'var(--amber)'});s.appendChild(r1);grow(r1,h1,true);
+      const r2=el('rect',{x:cx2-bw/2,y:base-h2,width:bw,height:h2,rx:6,fill:'#7FD8AC'});s.appendChild(r2);grow(r2,h2,true);
+      txt(s,cx1,base-h1-12,'16%',{anchor:'middle',fill:'var(--amber)',size:20,weight:600});
+      txt(s,cx2,base-h2-12,'49%',{anchor:'middle',fill:'#7FD8AC',size:20,weight:600});
+      txt(s,cx1,base+22,'Só 2026',{anchor:'middle',fill:'#A9BDD0',size:12});
+      txt(s,cx2,base+22,'Histórico (IHE)',{anchor:'middle',fill:'#A9BDD0',size:12});
+      c.appendChild(s);
+    },
+    // ----- Cidades line -----
+    'chart-cidades':(c)=>{
+      const D=[[2023,29],[2024,65],[2025,74],[2026,71]];
+      const W=460,H=280,pl=40,pr=30,pt=26,pb=40;
+      const s=svg(W,H); const X=v=>pl+(v-2023)/3*(W-pl-pr), Y=v=>H-pb-(v/100)*(H-pt-pb);
+      [0,50,100].forEach(g=>{s.appendChild(el('line',{x1:pl,y1:Y(g),x2:W-pr,y2:Y(g),stroke:'var(--line)','stroke-width':1}));txt(s,pl-8,Y(g)+4,g+'%',{anchor:'end',size:11});});
+      D.forEach(d=>txt(s,X(d[0]),H-pb+20,d[0],{anchor:'middle',size:11}));
+      const dp='M'+D.map(d=>X(d[0])+' '+Y(d[1])).join(' L');
+      const p=el('path',{d:dp,fill:'none',stroke:'var(--green)','stroke-width':3.4,'stroke-linejoin':'round','stroke-linecap':'round'});s.appendChild(p);
+      D.forEach(d=>{s.appendChild(el('circle',{cx:X(d[0]),cy:Y(d[1]),r:4.5,fill:'var(--green)'}));txt(s,X(d[0]),Y(d[1])-13,d[1]+'%',{anchor:'middle',fill:'var(--green)',size:12,weight:600});});
+      c.appendChild(s); animateStroke(p);
+    },
+    // ----- scatter -----
+    'chart-scatter':(c)=>{
+      const W=540,H=420,pl=46,pr=24,pt=24,pb=44;
+      const s=svg(W,H);
+      const X=v=>pl+(v/110)*(W-pl-pr), Y=v=>H-pb-((v+90)/135)*(H-pt-pb);
+      [0,20,40,60,80,100].forEach(g=>{s.appendChild(el('line',{x1:X(g),y1:pt,x2:X(g),y2:H-pb,stroke:'#22405B','stroke-width':g===60?0:1,opacity:.6}));txt(s,X(g),H-pb+20,g,{anchor:'middle',fill:'#8FA6BC',size:10});});
+      [-80,-40,0,40].forEach(g=>{s.appendChild(el('line',{x1:pl,y1:Y(g),x2:W-pr,y2:Y(g),stroke:'#22405B','stroke-width':1,opacity:.55}));txt(s,pl-8,Y(g)+4,(g>0?'+':'')+g+'%',{anchor:'end',fill:'#8FA6BC',size:10});});
+      // zero line + equilibrium
+      s.appendChild(el('line',{x1:pl,y1:Y(0),x2:W-pr,y2:Y(0),stroke:'#5E7286','stroke-width':1.4,'stroke-dasharray':'5 4'}));
+      s.appendChild(el('line',{x1:X(60),y1:pt,x2:X(60),y2:H-pb,stroke:'#7FD8AC','stroke-width':1.6,'stroke-dasharray':'5 4'}));
+      txt(s,X(60)+6,pt+14,'virada: 60%',{fill:'#7FD8AC',size:11,weight:600});
+      // regression line: -38.3 + 0.64x
+      const rx1=0,ry1=-38.3, rx2=110,ry2=-38.3+0.64*110;
+      const rl=el('line',{x1:X(rx1),y1:Y(ry1),x2:X(rx2),y2:Y(ry2),stroke:'#E8836B','stroke-width':2.6,'stroke-linecap':'round'});s.appendChild(rl);
+      // points
+      SCAT.forEach(d=>s.appendChild(el('circle',{cx:X(d[0]),cy:Y(d[1]),r:5,fill:'#7FB2DE',opacity:.9,stroke:'var(--dark)','stroke-width':1})));
+      SCAT_HL.forEach(d=>{s.appendChild(el('circle',{cx:X(d[0]),cy:Y(d[1]),r:6,fill:'#fff',stroke:'#E8836B','stroke-width':2}));txt(s,X(d[0])+9,Y(d[1])+4,d[2],{fill:'#EAF0F6',size:10});});
+      c.appendChild(s); animateStroke(rl);
+    },
+    // ----- decomposition -----
+    'chart-decomp':(c)=>{
+      const D=[["Pediram",106.8,'var(--blue)'],["Reajuste",33.4,'var(--blue2)'],["Devolvido",-2.6,'var(--red)'],["Total",137.6,'var(--green)']];
+      const W=480,H=340,pl=20,pr=20,pt=24,pb=48,base=H-pb,zero=base-((0+20)/160)*(base-pt);
+      const s=svg(W,H); const n=D.length, gap=26, bw=(W-pl-pr-gap*(n-1))/n;
+      const Y=v=>base-((v+20)/160)*(base-pt);
+      s.appendChild(el('line',{x1:pl,y1:Y(0),x2:W-pr,y2:Y(0),stroke:'var(--line)','stroke-width':1}));
+      D.forEach((d,i)=>{
+        const x=pl+i*(bw+gap); const yTop=d[1]>=0?Y(d[1]):Y(0); const hh=Math.abs(Y(d[1])-Y(0));
+        const r=el('rect',{x,y:yTop,width:bw,height:hh,rx:5,fill:d[2]});s.appendChild(r);grow(r,hh,true);
+        txt(s,x+bw/2,d[1]>=0?yTop-10:yTop+hh+18,(d[1]>0?'+':'')+d[1].toString().replace('.',',')+' mi',{anchor:'middle',fill:'var(--ink)',size:12,weight:600});
+        txt(s,x+bw/2,base+22,d[0],{anchor:'middle',fill:'var(--ink-soft)',size:11});
+      });
+      c.appendChild(s);
+    },
+    // ----- ANTT -----
+    'chart-antt':(c)=>{
+      const W=540,H=380,pl=42,pr=34,pt=26,pb=42;
+      const s=svg(W,H); const X=v=>pl+(v-2019)/(2027-2019)*(W-pl-pr), Y=v=>H-pb-(v/10)*(H-pt-pb);
+      [0,2.5,5,7.5,10].forEach(g=>{s.appendChild(el('line',{x1:pl,y1:Y(g),x2:W-pr,y2:Y(g),stroke:'#22405B','stroke-width':1,opacity:.55}));txt(s,pl-8,Y(g)+4,g,{anchor:'end',fill:'#8FA6BC',size:10});});
+      ANTT.forEach(d=>txt(s,X(d[0]),H-pb+20,d[0],{anchor:'middle',fill:'#8FA6BC',size:10}));
+      txt(s,X(2027),H-pb+20,'2027',{anchor:'middle',fill:'var(--amber)',size:10,weight:600});
+      const dLim='M'+ANTT.map(d=>X(d[0])+' '+Y(d[1])).join(' L');
+      const dEmp='M'+ANTT.map(d=>X(d[0])+' '+Y(d[2])).join(' L');
+      const pe=el('path',{d:dEmp,fill:'none',stroke:'#7FD8AC','stroke-width':3,'stroke-linejoin':'round','stroke-linecap':'round'});s.appendChild(pe);
+      const pl2=el('path',{d:dLim,fill:'none',stroke:'#8FB9E0','stroke-width':3,'stroke-linejoin':'round','stroke-linecap':'round'});s.appendChild(pl2);
+      ANTT.forEach(d=>{s.appendChild(el('circle',{cx:X(d[0]),cy:Y(d[1]),r:3.6,fill:'#8FB9E0'}));s.appendChild(el('circle',{cx:X(d[0]),cy:Y(d[2]),r:3.6,fill:'#7FD8AC'}));});
+      txt(s,X(2022)+4,Y(5.88)-10,'teto dobra',{fill:'var(--amber)',size:10,weight:600});
+      // 2027 markers
+      s.appendChild(el('path',{d:`M${X(2027)-6} ${Y(9.01)-6} L${X(2027)+6} ${Y(9.01)+6} M${X(2027)+6} ${Y(9.01)-6} L${X(2027)-6} ${Y(9.01)+6}`,stroke:'#8FA6BC','stroke-width':2}));
+      txt(s,X(2027)-10,Y(9.01)+4,'pedido 9,0',{anchor:'end',fill:'#8FA6BC',size:9.5});
+      s.appendChild(el('circle',{cx:X(2027),cy:Y(6.41),r:7,fill:'var(--amber)'}));
+      txt(s,X(2027)-11,Y(6.41)+4,'demos 6,4',{anchor:'end',fill:'var(--amber)',size:9.5,weight:600});
+      c.appendChild(s); animateStroke(pe); animateStroke(pl2);
+    },
+    // ----- parameter -----
+    'chart-param':(c)=>{
+      const D=[["Nossa referência",25,'var(--blue)'],["ANTT informou",29,'var(--green)']];
+      const W=440,H=200,pl=150,pr=70,max=32,rowH=64;
+      const s=svg(W,H);
+      D.forEach((d,i)=>{
+        const y=20+i*rowH; const bw=(W-pl-pr)*(d[1]/max);
+        txt(s,0,y+20,d[0],{fill:'var(--ink)',size:12.5,weight:500});
+        s.appendChild(el('rect',{x:pl,y:y+4,width:W-pl-pr,height:30,rx:6,fill:'var(--line)'}));
+        const r=el('rect',{x:pl,y:y+4,width:bw,height:30,rx:6,fill:d[2]});s.appendChild(r);grow(r,bw,false);
+        txt(s,pl+bw+10,y+24,'R$ '+d[1]+' mil',{fill:'var(--ink)',size:13,weight:600});
+      });
+      c.appendChild(s);
+    }
+  };
+
+  // draw the first slide's charts immediately if visible
+  drawCharts(slides[0]);
+})();
+</script>
+</body>
+</html>

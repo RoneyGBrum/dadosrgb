@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programa Fellowship — MGI × Banco Mundial</title>
+<style>
+  :root{
+    --navy:#0A2540; --navy2:#0E3A5C; --ocean:#1C7293; --ocean2:#2E8BA6;
+    --gold:#E9B949; --gold2:#F0C24B; --panel:#F4F7FB; --panelline:#DCE6F0;
+    --ink:#0A2540; --muted:#5B7085; --lightink:#EAF1F8; --lightmuted:#A9C0D6;
+    --green:#2E9E6B; --red:#C0552F; --amber:#D9902B;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    background:#05131f; color:var(--ink);
+    overflow:hidden; -webkit-font-smoothing:antialiased;
+  }
+  /* ---------- Deck stage ---------- */
+  #stage{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;}
+  .slide{
+    position:absolute; width:min(96vw,1280px); aspect-ratio:16/9; max-height:96vh;
+    border-radius:18px; overflow:hidden; opacity:0; transform:translateY(18px) scale(.99);
+    transition:opacity .45s ease, transform .45s ease; pointer-events:none;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+  }
+  .slide.active{opacity:1; transform:none; pointer-events:auto;}
+  .slide.prev{transform:translateY(-18px) scale(.99);}
+  .pad{position:absolute; inset:0; padding:clamp(28px,4.4vw,64px); display:flex; flex-direction:column;}
+
+  /* ---------- Themes ---------- */
+  .dark{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#134063 100%); color:var(--lightink);}
+  .light{background:var(--panel); color:var(--ink);}
+  .dark .kicker{color:var(--gold2);}
+  .light .kicker{color:var(--ocean);}
+
+  .kicker{font-size:clamp(12px,1.15vw,15px); font-weight:700; letter-spacing:.16em; text-transform:uppercase; margin-bottom:14px;}
+  h1{font-size:clamp(30px,4.6vw,60px); line-height:1.04; font-weight:800; letter-spacing:-.01em;}
+  h2{font-size:clamp(24px,3.1vw,40px); line-height:1.08; font-weight:800; letter-spacing:-.01em; margin-bottom:6px;}
+  .sub{font-size:clamp(14px,1.5vw,20px); color:var(--muted); font-weight:500;}
+  .dark .sub{color:var(--lightmuted);}
+  p{font-size:clamp(13px,1.35vw,18px); line-height:1.5;}
+
+  /* globe motif */
+  .motif{position:absolute; right:-140px; top:-120px; width:520px; height:520px; opacity:.13; pointer-events:none;}
+  .motif.bl{right:auto; top:auto; left:-160px; bottom:-160px; opacity:.09;}
+
+  /* ---------- Cover ---------- */
+  .cover-badge{display:inline-flex; align-items:center; gap:12px; padding:9px 16px; border:1px solid rgba(233,185,73,.5);
+    border-radius:999px; font-size:13px; font-weight:700; letter-spacing:.06em; color:var(--gold2); margin-bottom:26px; align-self:flex-start;}
+  .cover-badge .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);}
+  .cover-foot{margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;}
+  .cover-foot .org{font-weight:700; font-size:clamp(14px,1.5vw,19px); color:#fff;}
+  .cover-foot .org span{color:var(--lightmuted); font-weight:500;}
+  .rule{height:3px; width:96px; background:linear-gradient(90deg,var(--gold),transparent); border-radius:3px; margin:20px 0 26px;}
+
+  /* ---------- Grid helpers ---------- */
+  .grow{flex:1; min-height:0;}
+  .head-row{display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin-bottom:6px;}
+  .cards{display:grid; gap:clamp(12px,1.5vw,20px);}
+  .c2{grid-template-columns:repeat(2,1fr);} .c3{grid-template-columns:repeat(3,1fr);} .c4{grid-template-columns:repeat(4,1fr);}
+  .card{background:#fff; border:1px solid var(--panelline); border-radius:14px; padding:clamp(14px,1.6vw,22px);
+    display:flex; flex-direction:column; gap:8px; box-shadow:0 2px 10px rgba(10,37,64,.04);}
+  .dark .card{background:rgba(255,255,255,.055); border-color:rgba(255,255,255,.14); box-shadow:none;}
+  .card .ic{width:40px;height:40px;border-radius:11px;background:var(--ocean); color:#fff; display:flex;align-items:center;justify-content:center; font-weight:800; font-size:18px; flex:none;}
+  .card .ic.gold{background:linear-gradient(135deg,var(--gold),var(--amber)); color:#3a2a00;}
+  .card .ic.ocean{background:linear-gradient(135deg,var(--ocean),var(--ocean2));}
+  .card h3{font-size:clamp(15px,1.55vw,20px); font-weight:800; line-height:1.15;}
+  .card p{color:var(--muted); font-size:clamp(12px,1.2vw,15.5px);}
+  .dark .card p{color:var(--lightmuted);}
+
+  /* stat */
+  .stat{font-size:clamp(30px,4.4vw,56px); font-weight:800; line-height:1; letter-spacing:-.02em; color:var(--navy); font-variant-numeric:tabular-nums;}
+  .dark .stat{color:#fff;} .stat .u{font-size:.42em; color:var(--ocean); font-weight:700; margin-left:4px;}
+  .statlbl{font-size:clamp(11px,1.1vw,14px); color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.05em;}
+  .dark .statlbl{color:var(--lightmuted);}
+
+  /* chips */
+  .chips{display:flex; flex-wrap:wrap; gap:10px;}
+  .chip{background:#fff; border:1px solid var(--panelline); border-radius:999px; padding:9px 15px; font-size:clamp(12px,1.15vw,15px);
+    font-weight:600; color:var(--navy); display:flex; align-items:center; gap:9px;}
+  .chip .b{width:8px;height:8px;border-radius:50%; background:var(--ocean);}
+  .chip.hl{background:var(--navy); color:#fff; border-color:var(--navy);}
+  .chip.hl .b{background:var(--gold);}
+
+  /* two-pay columns */
+  .pay{display:grid; grid-template-columns:1fr 1fr; gap:18px; flex:1; min-height:0;}
+  .paycol{border-radius:14px; padding:clamp(16px,1.9vw,26px); display:flex; flex-direction:column; gap:10px;}
+  .paycol.wb{background:linear-gradient(150deg,#0E3A5C,#1C7293); color:#fff;}
+  .paycol.br{background:#fff; border:1px solid var(--panelline); color:var(--ink);}
+  .paycol .t{display:flex; align-items:center; gap:12px; margin-bottom:4px;}
+  .paycol .t .badge{font-weight:800; font-size:13px; letter-spacing:.05em; padding:6px 12px; border-radius:8px;}
+  .wb .badge{background:var(--gold); color:#2a1e00;} .br .badge{background:var(--navy); color:#fff;}
+  .paycol h3{font-size:clamp(16px,1.7vw,22px); font-weight:800;}
+  .li{display:flex; gap:11px; align-items:flex-start; font-size:clamp(12.5px,1.28vw,16.5px); line-height:1.4;}
+  .li .k{color:inherit; flex:none; margin-top:.28em; width:7px;height:7px;border-radius:50%; background:currentColor; opacity:.6;}
+  .wb .li{color:#EAF3F8;}
+
+  /* table */
+  table{width:100%; border-collapse:collapse; font-size:clamp(12px,1.25vw,16px);}
+  thead th{background:var(--navy); color:#fff; text-align:left; padding:11px 14px; font-weight:700; font-size:clamp(11.5px,1.15vw,14.5px); letter-spacing:.02em;}
+  thead th:first-child{border-radius:10px 0 0 0;} thead th:last-child{border-radius:0 10px 0 0;}
+  tbody td{padding:10px 14px; border-bottom:1px solid var(--panelline); background:#fff;}
+  tbody tr:nth-child(even) td{background:#EEF3F9;}
+  .tag{display:inline-block; padding:4px 10px; border-radius:999px; font-size:.82em; font-weight:700; white-space:nowrap;}
+  .t-ok{background:#E2F3EA; color:#1E7A4E;} .t-run{background:#FCF0DA; color:#9A6A16;}
+  .t-x{background:#F6E4DC; color:#A2401F;} .t-off{background:#E9EDF2; color:#5B7085;}
+  .mono{font-variant-numeric:tabular-nums; font-weight:700; color:var(--ocean);}
+
+  /* status board */
+  .board{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; flex:1; min-height:0;}
+  .stcard{background:#fff; border:1px solid var(--panelline); border-radius:14px; padding:clamp(13px,1.5vw,20px); display:flex; flex-direction:column; gap:8px; position:relative; overflow:hidden;}
+  .stcard .top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .flagm{width:38px;height:38px;border-radius:10px; display:flex;align-items:center;justify-content:center; font-weight:800; color:#fff; font-size:13px; letter-spacing:.02em; background:var(--ocean);}
+  .stcard h3{font-size:clamp(14px,1.45vw,19px); font-weight:800; line-height:1.1;}
+  .stcard .role{color:var(--muted); font-size:clamp(11.5px,1.15vw,14.5px); font-weight:600;}
+  .stcard .meta{margin-top:auto; font-size:clamp(11.5px,1.15vw,14px); color:var(--navy);}
+  .stcard .meta b{color:var(--ocean);}
+
+  /* timeline */
+  .tl{display:flex; flex-direction:column; gap:12px; flex:1; min-height:0; justify-content:center;}
+  .tlrow{display:grid; grid-template-columns:150px 1fr; gap:18px; align-items:center;}
+  .tlrow .when{font-weight:800; color:var(--ocean); font-size:clamp(13px,1.4vw,18px); text-align:right; font-variant-numeric:tabular-nums;}
+  .tlrow .what{background:#fff; border:1px solid var(--panelline); border-left:4px solid var(--ocean); border-radius:10px; padding:11px 16px; font-size:clamp(12.5px,1.3vw,16.5px); font-weight:600;}
+  .phase-tag{display:inline-block; background:var(--navy); color:#fff; font-weight:800; padding:6px 14px; border-radius:8px; font-size:clamp(12px,1.2vw,15px); margin-bottom:6px;}
+
+  /* actors */
+  .actors{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; flex:1; min-height:0;}
+  .actor{border-radius:14px; padding:clamp(13px,1.5vw,20px); display:flex; flex-direction:column; gap:10px; background:#fff; border:1px solid var(--panelline);}
+  .actor .h{display:flex; align-items:center; gap:11px;}
+  .actor .h .ic{width:38px;height:38px;border-radius:10px; display:flex;align-items:center;justify-content:center; color:#fff; font-weight:800; font-size:14px;}
+  .actor h3{font-size:clamp(13.5px,1.35vw,17px); font-weight:800; line-height:1.05;}
+  .actor ul{list-style:none; display:flex; flex-direction:column; gap:7px;}
+  .actor li{font-size:clamp(11px,1.12vw,14px); color:var(--muted); line-height:1.35; padding-left:14px; position:relative;}
+  .actor li::before{content:""; position:absolute; left:0; top:.55em; width:6px;height:6px;border-radius:50%; background:var(--ocean);}
+
+  /* doc cards */
+  .docs{display:flex; flex-direction:column; gap:14px; flex:1; min-height:0; justify-content:center;}
+  .doc{display:grid; grid-template-columns:64px 1fr auto; gap:18px; align-items:center; background:#fff; border:1px solid var(--panelline); border-radius:14px; padding:clamp(14px,1.6vw,20px);}
+  .doc .seal{width:64px;height:64px;border-radius:12px; background:linear-gradient(135deg,var(--navy),var(--ocean)); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; text-align:center; line-height:1.05;}
+  .doc h3{font-size:clamp(14px,1.5vw,19px); font-weight:800;}
+  .doc p{color:var(--muted); font-size:clamp(12px,1.2vw,15px); margin-top:3px;}
+  .doc .st{text-align:right;}
+  .doc .st .d{font-weight:800; color:var(--ocean); font-size:clamp(13px,1.35vw,17px); font-variant-numeric:tabular-nums;}
+
+  .lead{font-size:clamp(15px,1.75vw,23px); line-height:1.5; font-weight:500; color:var(--ink);}
+  .dark .lead{color:var(--lightink);}
+  .lead b{color:var(--ocean); font-weight:800;} .dark .lead b{color:var(--gold2);}
+
+  .note{margin-top:12px; font-size:clamp(11px,1.1vw,13.5px); color:var(--muted);}
+  .dark .note{color:var(--lightmuted);}
+
+  /* ---------- Chrome / navigation ---------- */
+  #bar{position:fixed; left:0; top:0; height:4px; background:linear-gradient(90deg,var(--gold),var(--ocean2)); width:0; z-index:40; transition:width .35s ease;}
+  #hud{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:40; display:flex; align-items:center; gap:14px;
+    background:rgba(6,18,30,.72); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.12); padding:8px 12px; border-radius:999px;}
+  #hud button{background:transparent; border:0; color:#dfe9f3; font-size:18px; cursor:pointer; width:30px;height:30px; border-radius:50%; display:flex;align-items:center;justify-content:center;}
+  #hud button:hover{background:rgba(255,255,255,.14);}
+  #dots{display:flex; gap:7px; align-items:center;}
+  #dots i{width:8px;height:8px;border-radius:50%; background:rgba(255,255,255,.32); cursor:pointer; transition:all .2s;}
+  #dots i.on{background:var(--gold); width:22px; border-radius:5px;}
+  #count{color:#cdd9e6; font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; min-width:44px; text-align:center;}
+  .side{position:fixed; top:0; height:100%; width:14%; z-index:30; cursor:pointer;}
+  .side.l{left:0;} .side.r{right:0;}
+  #hint{position:fixed; top:14px; right:16px; z-index:40; color:#9fb3c6; font-size:12px; background:rgba(6,18,30,.6); padding:6px 12px; border-radius:8px; border:1px solid rgba(255,255,255,.1);}
+
+  @media print{ body{overflow:visible;} #bar,#hud,.side,#hint{display:none;} #stage{position:static;} .slide{position:relative; opacity:1!important; transform:none!important; page-break-after:always; margin:0 auto 10px; box-shadow:none; width:100%;} }
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="hint">← → navegar · F tela cheia</div>
+<div class="side l" onclick="prev()"></div>
+<div class="side r" onclick="next()"></div>
+
+<div id="stage">
+
+  <!-- 1 · CAPA -->
+  <section class="slide dark active">
+    <svg class="motif" viewBox="0 0 200 200"><g fill="none" stroke="#E9B949" stroke-width="1"><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="80" transform="rotate(0 100 100)" stroke-dasharray="0"/><ellipse cx="100" cy="100" rx="34" ry="80"/><ellipse cx="100" cy="100" rx="62" ry="80"/><line x1="20" y1="100" x2="180" y2="100"/><path d="M28 62 H172 M28 138 H172"/></g></svg>
+    <div class="pad">
+      <div class="cover-badge"><span class="dot"></span> MGI · Secretaria de Gestão de Pessoas</div>
+      <h1>Programa Fellowship</h1>
+      <div class="rule"></div>
+      <p class="sub" style="max-width:760px">Intercâmbio técnico-profissional de servidores públicos federais — parceria entre o Governo Federal, por meio do MGI, e o Grupo Banco Mundial.</p>
+      <div class="cover-foot">
+        <div class="org">MGI <span>×</span> Banco Mundial (WBG)</div>
+        <div class="org" style="text-align:right"><span>Reunião de alinhamento</span><br>Julho de 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · O QUE É -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Visão geral</div>
+      <h2>O que é o Programa</h2>
+      <p class="lead" style="max-width:960px; margin:10px 0 20px">Uma cooperação que utiliza o <b>conhecimento técnico de servidores brasileiros</b> para apoiar outros países em desafios de desenvolvimento — promovendo troca estruturada de experiências e boas práticas entre nações que enfrentam transformações semelhantes.</p>
+      <div class="cards c4 grow" style="align-content:center">
+        <div class="card"><div class="ic gold">12</div><h3>Doze meses</h3><p>Missão ou estudo no exterior, improrrogável. Rescisão possível com aviso prévio de, no mínimo, 30 dias.</p></div>
+        <div class="card"><div class="ic ocean">₿</div><h3>Ônus limitado</h3><p>Passagens e diárias pelo Banco Mundial; salário e vantagens preservados pelo órgão de origem.</p></div>
+        <div class="card"><div class="ic">⚕</div><h3>Vínculo mantido</h3><p>O servidor segue vinculado ao cargo de origem e ao regime jurídico brasileiro durante todo o período.</p></div>
+        <div class="card"><div class="ic ocean">⌂</div><h3>Moradia apoiada</h3><p>O Banco Mundial oferece subsídio de alojamento e moradia equivalente a uma pessoa.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · QUEM PAGA O QUÊ -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Condições · ônus limitado</div>
+      <h2>Quem custeia o quê</h2>
+      <p class="sub" style="margin:6px 0 18px">Afastamento com ônus limitado, com fundamento no Decreto nº 1.387/1995 (art. 1º, incisos IV e V).</p>
+      <div class="pay">
+        <div class="paycol wb">
+          <div class="t"><span class="badge">BANCO MUNDIAL</span></div>
+          <h3>Custos do intercâmbio</h3>
+          <div class="li"><span class="k"></span> Passagens aéreas (ida e volta Brasil–destino)</div>
+          <div class="li"><span class="k"></span> Diárias e despesas de subsistência</div>
+          <div class="li"><span class="k"></span> Bolsa / subsídio de moradia (equivalente a 1 pessoa)</div>
+          <div class="li"><span class="k"></span> Treinamento e deslocamentos a serviço</div>
+        </div>
+        <div class="paycol br">
+          <div class="t"><span class="badge">GOVERNO BRASILEIRO</span></div>
+          <h3>Vínculo e proteção</h3>
+          <div class="li"><span class="k"></span> Salário, vencimentos e vantagens pessoais (folha do órgão de origem)</div>
+          <div class="li"><span class="k"></span> Seguro-saúde do servidor (IN nº 3/2015, art. 5º, §2º)</div>
+          <div class="li"><span class="k"></span> Manutenção do vínculo e do regime jurídico do cargo</div>
+          <div class="li"><span class="k"></span> Sujeição disciplinar durante a atuação no projeto</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · BASE LEGAL E INSTRUMENTOS -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Fundamentos</div>
+      <h2>Base legal e instrumentos</h2>
+      <div class="cards c2 grow" style="align-content:center; margin-top:12px">
+        <div class="card"><div class="ic">§</div><h3>Decreto nº 1.387/1995</h3><p>Afastamento para missão ou estudo no exterior, com ônus limitado (art. 1º, incisos IV e V).</p></div>
+        <div class="card"><div class="ic">§</div><h3>Instrução Normativa nº 3/2015</h3><p>Respaldo ao custeio do seguro-saúde pelo governo brasileiro (art. 5º, §2º).</p></div>
+        <div class="card"><div class="ic gold">MoU</div><h3>Memorando de Entendimento</h3><p>MGI × Banco Mundial, firmado em <b>21/08/2025</b> — arcabouço institucional do programa.</p></div>
+        <div class="card"><div class="ic ocean">MoA</div><h3>Memorando de Acordo</h3><p>Instrumento específico por vaga, entre o Banco Mundial e o órgão de exercício do servidor selecionado.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · ÁREAS DE INTERESSE -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Escopo temático</div>
+      <div class="head-row"><h2>Áreas de interesse</h2><span class="sub"><b style="color:var(--ocean)">15</b> áreas mapeadas pelo Brasil</span></div>
+      <div class="chips grow" style="align-content:center; margin-top:10px">
+        <span class="chip"><span class="b"></span>Clima, meio ambiente e desmatamento</span>
+        <span class="chip"><span class="b"></span>Saúde pública</span>
+        <span class="chip"><span class="b"></span>Proteção social</span>
+        <span class="chip hl"><span class="b"></span>Governo digital</span>
+        <span class="chip"><span class="b"></span>Gestão de riscos de desastres</span>
+        <span class="chip hl"><span class="b"></span>Recursos hídricos e energéticos</span>
+        <span class="chip"><span class="b"></span>Transporte e mobilidade urbana</span>
+        <span class="chip"><span class="b"></span>Planejamento urbano e habitação</span>
+        <span class="chip"><span class="b"></span>Licitações públicas</span>
+        <span class="chip"><span class="b"></span>Gestão de recursos humanos</span>
+        <span class="chip hl"><span class="b"></span>Infraestrutura</span>
+        <span class="chip"><span class="b"></span>Empresas estatais</span>
+        <span class="chip"><span class="b"></span>Arquivos públicos</span>
+        <span class="chip"><span class="b"></span>Serviços administrativos compartilhados</span>
+        <span class="chip"><span class="b"></span>Gestão e transformação do Estado</span>
+      </div>
+      <p class="note">Em destaque, as áreas efetivamente mobilizadas no 1º ciclo: Energia, Infraestrutura e Governo &amp; Transformação Digital.</p>
+    </div>
+  </section>
+
+  <!-- 6 · EDITAIS -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">1º ciclo · 2025–2026</div>
+      <div class="head-row"><h2>Editais de seleção</h2><span class="sub">5 editais em 2025 + 1 reabertura em 2026</span></div>
+      <div class="grow" style="margin-top:12px; display:flex; align-items:center">
+        <table>
+          <thead><tr><th>Edital</th><th>Vaga</th><th>Local</th><th>Área</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">1294/2025</td><td>Especialista Digital Sênior</td><td>Costa do Marfim</td><td>Gov. Digital</td></tr>
+            <tr><td class="mono">1295/2025</td><td>Especialista Digital Sênior</td><td>Ucrânia</td><td>Gov. Digital</td></tr>
+            <tr><td class="mono">1296/2025</td><td>Diretor de Infraestrutura</td><td>Guatemala</td><td>Infraestrutura</td></tr>
+            <tr><td class="mono">1297/2025</td><td>Especialista (Sênior) em Energia</td><td>Turquia (Ancara)</td><td>Energia</td></tr>
+            <tr><td class="mono">1298/2025</td><td>Especialista (Sênior) em Energia</td><td>Áustria (Viena)</td><td>Energia</td></tr>
+            <tr><td class="mono">357/2026</td><td>Especialista Digital Sênior</td><td>Costa do Marfim</td><td>Gov. Digital</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Perfis exigem domínio de inglês (e espanhol, na Guatemala), experiência técnica consolidada e competências de liderança e análise.</p>
+    </div>
+  </section>
+
+  <!-- 7 · STATUS ATUAL -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Onde estamos</div>
+      <div class="head-row"><h2>Status atual das vagas</h2><span class="sub">2 selecionados · 1 reaberta · 1 cancelada · 1 consolidada</span></div>
+      <div class="board" style="margin-top:12px">
+        <div class="stcard">
+          <div class="top"><h3>Guatemala</h3><span class="tag t-ok">Selecionado</span></div>
+          <div class="role">Diretor de Infraestrutura · Edital 1296/2025</div>
+          <div class="meta"><b>Dilso Marvell Marques</b> (MPO) · MoA assinado · início previsto <b>30/06/2026</b></div>
+        </div>
+        <div class="stcard">
+          <div class="top"><h3>Turquia — Ancara</h3><span class="tag t-ok">Selecionado</span></div>
+          <div class="role">Especialista Sênior em Energia · Edital 1297/2025</div>
+          <div class="meta"><b>Lucas Ribeiro</b> (ANEEL) · MoA assinado · início previsto <b>30/06/2026</b></div>
+        </div>
+        <div class="stcard">
+          <div class="top"><h3>Áustria — Viena</h3><span class="tag t-off">Consolidada em Ancara</span></div>
+          <div class="role">Especialista em Energia · Edital 1298/2025</div>
+          <div class="meta">Posição de energia consolidada em <b>Ancara</b>; demais candidatos fora de consideração.</div>
+        </div>
+        <div class="stcard">
+          <div class="top"><h3>Ucrânia</h3><span class="tag t-x">Cancelada</span></div>
+          <div class="role">Especialista Digital Sênior · Edital 1295/2025</div>
+          <div class="meta">Vaga cancelada pela unidade contratante do Banco Mundial.</div>
+        </div>
+        <div class="stcard" style="grid-column:1 / -1">
+          <div class="top"><h3>Costa do Marfim</h3><span class="tag t-run">Em andamento</span></div>
+          <div class="role">Especialista Digital Sênior · Edital 1294/2025 → reaberto pelo Edital 357/2026</div>
+          <div class="meta">Processo readvertido por barreira de idioma no 1º chamamento; nova seleção em curso.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · DOCUMENTOS FIRMADOS -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Instrumentos assinados</div>
+      <h2>Documentos firmados</h2>
+      <div class="docs" style="margin-top:6px">
+        <div class="doc">
+          <div class="seal">MoU</div>
+          <div><h3>Memorando de Entendimento — MGI × WBG</h3><p>Arcabouço institucional do Programa Fellowship. Base de todos os MoAs por vaga.</p></div>
+          <div class="st"><div class="d">21/08/2025</div><span class="tag t-ok">Vigente</span></div>
+        </div>
+        <div class="doc">
+          <div class="seal">MoA</div>
+          <div><h3>MoA — WBG × MPO (Guatemala)</h3><p>Bolsista Dilso Marvell Marques. Assinado pela Subsecretária de Administração e Gestão Estratégica do MPO e pelo WBG.</p></div>
+          <div class="st"><div class="d">08/06/2026</div><span class="tag t-ok">Assinado</span></div>
+        </div>
+        <div class="doc">
+          <div class="seal">MoA</div>
+          <div><h3>MoA — WBG × ANEEL (Ancara)</h3><p>Bolsista Lucas Ribeiro. Versões em português e inglês, assinadas via processo eletrônico (SEI 48500.012620/2026-24).</p></div>
+          <div class="st"><div class="d">19/06/2026</div><span class="tag t-ok">Assinado</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · ETAPAS -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Como funciona a seleção</div>
+      <h2>Etapas do processo</h2>
+      <div class="cards c2 grow" style="margin-top:14px; align-content:center">
+        <div class="card">
+          <span class="phase-tag">1ª Etapa — MGI e órgãos</span>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--ocean)"></span> Assinatura do MoU (Brasil × WBG)</div>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--ocean)"></span> Inscrição e análise curricular por comissões interministeriais</div>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--ocean)"></span> Resultado parcial, recursos e resultado final</div>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--ocean)"></span> Encaminhamento da <b style="color:var(--ocean)">lista tríplice</b> ao Banco Mundial</div>
+        </div>
+        <div class="card">
+          <span class="phase-tag" style="background:var(--ocean)">2ª Etapa — Banco Mundial</span>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--gold)"></span> Seleção do candidato (entrevista e verificação de antecedentes)</div>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--gold)"></span> Assinatura do MoA (WBG × órgão de exercício) e revisão pelo MGI</div>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--gold)"></span> Publicação do afastamento e procedimento de visto pelo órgão</div>
+          <div class="li" style="color:var(--muted)"><span class="k" style="background:var(--gold)"></span> Acordo específico servidor × Banco e início do intercâmbio</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · CRONOGRAMA -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Cronograma de referência · 2026</div>
+      <h2>Calendário da 1ª etapa</h2>
+      <div class="tl" style="margin-top:8px">
+        <div class="tlrow"><div class="when">1–10 abr</div><div class="what">Período de inscrição</div></div>
+        <div class="tlrow"><div class="when">14 abr – 1 mai</div><div class="what">Análise curricular pelas comissões</div></div>
+        <div class="tlrow"><div class="when">05 mai</div><div class="what">Resultado parcial</div></div>
+        <div class="tlrow"><div class="when">06 mai</div><div class="what">Prazo de recursos</div></div>
+        <div class="tlrow"><div class="when">08 mai</div><div class="what" style="border-left-color:var(--gold)">Resultado final — <b>lista tríplice</b> encaminhada ao Banco Mundial</div></div>
+        <div class="tlrow"><div class="when">a seguir</div><div class="what" style="border-left-color:var(--navy)">2ª etapa — entrevistas e seleção final pelo Banco Mundial</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · PAPÉIS -->
+  <section class="slide light">
+    <div class="pad">
+      <div class="kicker">Governança</div>
+      <h2>Papel de cada ator</h2>
+      <div class="actors" style="margin-top:12px">
+        <div class="actor">
+          <div class="h"><div class="ic" style="background:var(--navy)">MGI</div><h3>MGI</h3></div>
+          <ul>
+            <li>Celebra o MoU e coordena o processo seletivo</li>
+            <li>Media a elaboração dos instrumentos de afastamento</li>
+            <li>Instrui órgãos e servidores sobre os procedimentos</li>
+            <li>Acompanha o intercâmbio e os relatórios finais</li>
+          </ul>
+        </div>
+        <div class="actor">
+          <div class="h"><div class="ic" style="background:var(--ocean)">ÓE</div><h3>Órgão de exercício</h3></div>
+          <ul>
+            <li>Analisa e assina o MoA específico</li>
+            <li>Instrui o afastamento (Decreto 1.387/1995)</li>
+            <li>Emissão de visto e seguro exigido</li>
+            <li>Publica o afastamento no DOU</li>
+          </ul>
+        </div>
+        <div class="actor">
+          <div class="h"><div class="ic" style="background:var(--amber)">SV</div><h3>Servidor</h3></div>
+          <ul>
+            <li>Assina o instrumento de participação com o WBG</li>
+            <li>Acompanha o processo de afastamento</li>
+            <li>Redige relatório de execução ao final</li>
+          </ul>
+        </div>
+        <div class="actor">
+          <div class="h"><div class="ic" style="background:#0E3A5C">WB</div><h3>Banco Mundial</h3></div>
+          <ul>
+            <li>Dialoga com órgãos e servidores via MGI</li>
+            <li>Fornece informações sobre a participação</li>
+            <li>Custeia passagens, moradia, treinamento e diárias</li>
+            <li>Seleciona o candidato da lista tríplice</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 · ENCAMINHAMENTOS -->
+  <section class="slide dark">
+    <svg class="motif bl" viewBox="0 0 200 200"><g fill="none" stroke="#2E8BA6" stroke-width="1"><circle cx="100" cy="100" r="80"/><ellipse cx="100" cy="100" rx="34" ry="80"/><ellipse cx="100" cy="100" rx="62" ry="80"/><line x1="20" y1="100" x2="180" y2="100"/><path d="M28 62 H172 M28 138 H172"/></g></svg>
+    <div class="pad">
+      <div class="kicker">Próximos passos</div>
+      <h2 style="color:#fff">Encaminhamentos</h2>
+      <div class="cards c3 grow" style="align-content:center; margin-top:14px">
+        <div class="card"><div class="ic gold">1</div><h3 style="color:#fff">MoA aos órgãos</h3><p>Fechar as propostas de MoA e acordar prazos de análise com as consultorias jurídicas, devolvendo assinado.</p></div>
+        <div class="card"><div class="ic ocean">2</div><h3 style="color:#fff">Afastamento e visto</h3><p>Acordar prazos para portaria de autorização de afastamento e emissão de visto pelo órgão de exercício.</p></div>
+        <div class="card"><div class="ic">3</div><h3 style="color:#fff">Reabertura e monitoramento</h3><p>Conduzir a seleção da Costa do Marfim (Edital 357/2026) e monitorar publicações no DOU.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 · ENCERRAMENTO -->
+  <section class="slide dark">
+    <svg class="motif" viewBox="0 0 200 200"><g fill="none" stroke="#E9B949" stroke-width="1"><circle cx="100" cy="100" r="80"/><ellipse cx="100" cy="100" rx="34" ry="80"/><ellipse cx="100" cy="100" rx="62" ry="80"/><line x1="20" y1="100" x2="180" y2="100"/><path d="M28 62 H172 M28 138 H172"/></g></svg>
+    <div class="pad" style="justify-content:center">
+      <div class="cover-badge"><span class="dot"></span> Programa Fellowship · MGI × Banco Mundial</div>
+      <h1 style="font-size:clamp(34px,5vw,64px)">Obrigado.</h1>
+      <div class="rule"></div>
+      <p class="sub" style="max-width:720px">Cooperação técnica que projeta a expertise do serviço público brasileiro e fortalece o desenvolvimento profissional dos servidores.</p>
+      <div class="cover-foot"><div class="org">Secretaria de Gestão de Pessoas<span>· MGI</span></div></div>
+    </div>
+  </section>
+
+</div>
+
+<div id="hud">
+  <button onclick="prev()" aria-label="Anterior">‹</button>
+  <div id="dots"></div>
+  <span id="count"></span>
+  <button onclick="next()" aria-label="Próximo">›</button>
+  <button onclick="toggleFS()" aria-label="Tela cheia" title="Tela cheia (F)">⤢</button>
+</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=document.getElementById('dots');
+  const bar=document.getElementById('bar');
+  const count=document.getElementById('count');
+  let i=0;
+  slides.forEach((_,n)=>{const d=document.createElement('i'); d.onclick=()=>go(n); dots.appendChild(d);});
+  const dotEls=[...dots.children];
+  function render(){
+    slides.forEach((s,n)=>{ s.classList.toggle('active',n===i); s.classList.toggle('prev',n<i); });
+    dotEls.forEach((d,n)=>d.classList.toggle('on',n===i));
+    bar.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+  }
+  function go(n){ i=Math.max(0,Math.min(slides.length-1,n)); render(); }
+  function next(){ go(i+1); } function prev(){ go(i-1); }
+  function toggleFS(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();} else {document.exitFullscreen&&document.exitFullscreen();} }
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','ArrowDown'].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp','ArrowUp'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){toggleFS();}
+  });
+  let sx=null;
+  addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  addEventListener('touchend',e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50){dx<0?next():prev();} sx=null;},{passive:true});
+  setTimeout(()=>{const h=document.getElementById('hint'); if(h)h.style.transition='opacity .6s', h.style.opacity='0';},4200);
+  render();
+</script>
+</body>
+</html>

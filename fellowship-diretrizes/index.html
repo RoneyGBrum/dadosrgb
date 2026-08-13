@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<!--
+════════════════════════════════════════════════════════════════════════
+  PROPOSTA DE FLUXO DE TRABALHO — WBG FELLOWSHIP PROGRAM
+  Versão Executiva — Apresentação para o Banco Mundial
+════════════════════════════════════════════════════════════════════════
+-->
+<html lang="pt-BR">
+<head>
+<script>document.documentElement.className='js';</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Workflow Proposal — WBG Fellowship Program · MGI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ══════════════════════════════════════════════════════════════
+     PAINEL DE CORES
+     ══════════════════════════════════════════════════════════════ */
+  :root{
+    --navy:#16234A;   
+    --blue:#3D5C93;   
+    --amber:#BD6A2E;  
+    --teal:#3E7568;   
+    --sand:#A6916A;   
+    --mist:#6C7CA6;   
+
+    --paper:#EEF0F7;  
+    --card:#FFFFFF;   
+    --ink:#12172B;    
+    --muted:#5B6478;  
+    --line:#D8DCEC;   
+
+    --fs-eyebrow:.78rem;
+    --fs-h2:clamp(1.9rem,3.6vw,3.1rem);
+    --fs-body:clamp(1rem,1.2vw,1.15rem);
+    --fs-cover-h1:clamp(2.6rem,7vw,5.4rem);
+    --pad-slide-y:clamp(80px,10vw,120px);
+    --pad-slide-x:clamp(24px,6vw,96px);
+
+    --radius-sm:8px; --radius-md:14px; --radius-lg:22px;
+    --shadow-sm:0 1px 2px rgba(18,23,43,.06), 0 1px 1px rgba(18,23,43,.05);
+    --shadow-md:0 10px 30px rgba(18,23,43,.08);
+    --shadow-lg:0 28px 64px rgba(18,23,43,.16);
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    overflow-x:hidden; scroll-snap-type:y proximity;
+  }
+  ::selection{background:rgba(189,106,46,.22);}
+  h1,h2,h3{font-family:'Manrope',system-ui,sans-serif;margin:0;letter-spacing:-0.01em;}
+  p{margin:0;}
+  button{font-family:inherit;}
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  .progress-track{ position:fixed;top:0;left:0;right:0;height:3px; background:rgba(22,35,74,.12); z-index:60; }
+  .progress-fill{ height:100%;width:0%; background:linear-gradient(to right,var(--navy),var(--amber)); }
+  .rail-nav{ position:fixed;right:22px;top:50%;transform:translateY(-50%); z-index:60;display:flex;flex-direction:column;gap:10px; align-items:flex-end; }
+  .rail-dot{ display:flex;align-items:center;gap:10px;background:none;border:none; cursor:pointer;padding:3px; }
+  .rail-dot .dot{ width:8px;height:8px;border-radius:50%;background:rgba(22,35,74,.25); transition:all .35s var(--ease); }
+  .rail-dot .rail-label{ font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--navy); opacity:0;transform:translateX(6px);transition:all .3s var(--ease); white-space:nowrap;background:var(--card);padding:4px 10px;border-radius:6px; box-shadow:var(--shadow-sm); }
+  .rail-dot:hover .rail-label{opacity:1;transform:translateX(0);}
+  .rail-dot.active .dot{background:var(--amber);width:22px;border-radius:4px;}
+  @media (max-width:1024px){.rail-nav{display:none;}}
+
+  .slide{ scroll-snap-align:start; min-height:100svh; width:100%; max-width:1280px; margin:0 auto; padding:var(--pad-slide-y) var(--pad-slide-x) clamp(56px,8vw,96px); display:flex; flex-direction:column; justify-content:center; position:relative; }
+  .eyebrow{ display:inline-flex;align-items:center;gap:10px; font-family:'IBM Plex Mono',monospace;font-size:var(--fs-eyebrow);font-weight:500; letter-spacing:.14em;text-transform:uppercase;color:var(--amber); margin-bottom:18px; }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--amber);}
+  .display{ font-size:var(--fs-h2);font-weight:700;line-height:1.08; color:var(--navy);max-width:900px; }
+  .lead{ font-size:var(--fs-body);line-height:1.75;color:var(--muted); max-width:680px;margin-top:22px; }
+  .watermark{ position:absolute;right:clamp(0px,3vw,40px);top:clamp(20px,6vw,40px); font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(6rem,18vw,15rem); color:var(--navy);opacity:.045;line-height:1;user-select:none;pointer-events:none; z-index:0; }
+  .slide > *{position:relative;z-index:1;}
+  .js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .js .reveal.is-visible{opacity:1;transform:none;}
+
+  .cover{justify-content:center;align-items:flex-start;}
+  .cover .kicker{ font-family:'IBM Plex Mono',monospace;font-size:.8rem;letter-spacing:.1em; color:var(--navy);text-transform:uppercase;font-weight:600; }
+  .cover .kicker span{display:block;font-weight:400;color:var(--muted);letter-spacing:.02em; text-transform:none;margin-top:6px;font-size:.85rem;}
+  .cover .rule{width:64px;height:2px;background:var(--amber);margin:28px 0;}
+  .cover h1{font-size:var(--fs-cover-h1);font-weight:800;color:var(--navy);line-height:1.02;}
+  .cover h2{ font-size:clamp(1.15rem,2.4vw,1.7rem);font-weight:500;color:var(--teal);margin-top:14px; }
+  .cover .meta{ margin-top:56px;display:flex;gap:36px;flex-wrap:wrap; font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--muted); }
+  .scroll-cue{ position:absolute;bottom:40px;left:var(--pad-slide-x);display:flex;align-items:center;gap:10px; font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted); cursor:pointer;background:none;border:none; }
+  .scroll-cue svg{animation:bob 1.8s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+  .mini-tl{display:flex;gap:0;margin-top:44px;flex-wrap:wrap;}
+  .mini-tl-item{flex:1;min-width:160px;padding-right:24px;position:relative;}
+  .mini-tl-item:not(:last-child)::after{ content:'';position:absolute;top:6px;right:0;width:calc(100% - 0px);height:1px;background:var(--line); }
+  .mini-tl-dot{width:11px;height:11px;border-radius:50%;background:var(--amber);margin-bottom:14px;}
+  .mini-tl-date{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--navy);font-weight:600;}
+  .mini-tl-text{font-size:.86rem;color:var(--muted);margin-top:6px;line-height:1.5;}
+
+  .obj-list{margin-top:40px;display:flex;flex-direction:column;}
+  .obj-item{ display:grid;grid-template-columns:64px 1fr;gap:26px;padding:26px 0; border-top:1px solid var(--line); }
+  .obj-item:last-child{border-bottom:1px solid var(--line);}
+  .obj-num{font-family:'IBM Plex Mono',monospace;font-size:1.4rem;font-weight:600;color:var(--line);}
+  .obj-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:1.05rem;color:var(--navy);margin-bottom:6px;}
+  .obj-desc{font-size:.95rem;color:var(--muted);line-height:1.65;max-width:640px;}
+
+  .org-chart{margin-top:48px;display:flex;flex-direction:column;gap:28px;}
+  .org-tier{display:flex;gap:20px;flex-wrap:wrap;align-items:stretch;}
+  .org-box{ background:var(--card);border-radius:var(--radius-md);padding:18px 22px; box-shadow:var(--shadow-sm);border-top:3px solid transparent;min-width:180px; display:flex;flex-direction:column;gap:4px;justify-content:center; }
+  .org-box-label{font-family:'Manrope',sans-serif;font-weight:700;font-size:.98rem;color:var(--ink);}
+  .org-box-role{font-size:.78rem;color:var(--muted);line-height:1.4;}
+  .org-box--teal{border-top-color:var(--teal);}
+  .org-box--navy{border-top-color:var(--navy);}
+
+  .macro-timeline{position:relative;margin-top:54px;padding-top:22px;}
+  .macro-line-track{position:absolute;left:22px;right:22px;top:22px;height:2px;background:var(--line);}
+  .macro-line-fill{height:100%;width:0%;background:linear-gradient(to right,var(--navy),var(--blue),var(--amber),var(--teal),var(--sand),var(--mist),var(--navy));transform-origin:left;transition:width 1.6s var(--ease);}
+  .macro-timeline.in-view .macro-line-fill{width:100%;}
+  .macro-row{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;position:relative;}
+  .macro-node{ display:flex;flex-direction:column;align-items:center;gap:12px;background:none;border:none; cursor:pointer;text-align:center;padding:0 4px; }
+  .macro-num{ width:42px;height:42px;border-radius:50%;background:var(--c,var(--navy));color:#fff; display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace; font-weight:600;box-shadow:var(--shadow-sm);flex-shrink:0; }
+  .macro-label{font-size:.78rem;color:var(--ink);line-height:1.35;}
+  .macro-label b{display:block;font-family:'Manrope',sans-serif;font-weight:700;color:var(--navy);font-size:.88rem;margin-bottom:2px;}
+
+  .phase-grid{display:grid;grid-template-columns:320px 1fr;gap:56px;margin-top:36px;align-items:start;}
+  .phase-left{position:sticky;top:64px;}
+  .phase-tag{ display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.76rem;letter-spacing:.1em; text-transform:uppercase;color:#fff;background:var(--c,var(--navy));padding:6px 14px;border-radius:999px; margin-bottom:20px;font-weight:500; }
+  .phase-title{font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(1.6rem,2.6vw,2.2rem);color:var(--navy);line-height:1.12;}
+  .phase-desc{font-size:.96rem;color:var(--muted);line-height:1.65;margin-top:16px;}
+  
+  .steps-list{position:relative;}
+  .steps-list::before{content:'';position:absolute;left:27px;top:30px;bottom:30px;width:2px;background:var(--line);}
+  .step{display:grid;grid-template-columns:56px 1fr;gap:24px;padding:26px 0;position:relative;}
+  .step-num{ width:56px;height:56px;border-radius:50%;background:var(--c,var(--navy));color:#fff; display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace; font-weight:600;font-size:1.1rem;box-shadow:var(--shadow-sm);position:relative;z-index:1;flex-shrink:0; }
+  .step-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:1.02rem;color:var(--ink);margin-bottom:8px;}
+  .step-desc{font-size:.92rem;color:var(--muted);line-height:1.62;max-width:620px;}
+  .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{ display:inline-flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:.68rem; font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:5px 11px;border-radius:999px; border:1px solid transparent; }
+  
+  .pill-bm{background:rgba(62,117,104,.1);color:var(--teal);border-color:rgba(62,117,104,.26);}
+  .pill-mgi{background:rgba(22,35,74,.08);color:var(--navy);border-color:rgba(22,35,74,.2);}
+  .pill-prazo{background:rgba(18,23,43,.05);color:var(--ink);border-color:var(--line);}
+
+  @media (max-width:960px){
+    .macro-row{grid-template-columns:1fr;gap:20px;}
+    .macro-line-track{left:22px;right:auto;top:22px;bottom:22px;width:2px;height:auto;}
+    .macro-node{flex-direction:row;text-align:left;}
+    .phase-grid{grid-template-columns:1fr;gap:32px;}
+    .phase-left{position:relative;top:0;}
+  }
+
+  .closing{background:var(--paper);color:var(--ink);align-items:center;text-align:center;}
+  .closing-icon{color:var(--teal);margin-bottom:28px;}
+  .closing h2{font-family:'Manrope',sans-serif;font-weight:700;font-size:clamp(1.7rem,3.4vw,2.6rem);max-width:860px;margin:0 auto;color:var(--navy);line-height:1.15;}
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--paper);}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
+  .rgb-mark{
+    position:absolute;bottom:26px;right:var(--pad-slide-x);font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;letter-spacing:.16em;color:var(--muted);opacity:.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="rail-nav" id="railNav">
+  <button class="rail-dot" data-target="#s00"><span class="rail-label">Início</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s01"><span class="rail-label">Contexto</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s02"><span class="rail-label">Objetivos</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s05"><span class="rail-label">Visão Macro</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s06"><span class="rail-label">Fase 1 (WBG)</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s07"><span class="rail-label">Fases 2 a 4</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s10"><span class="rail-label">Fase 5 (WBG)</span><span class="dot"></span></button>
+  <button class="rail-dot" data-target="#s11"><span class="rail-label">Fases 6 e 7 (WBG)</span><span class="dot"></span></button>
+</nav>
+
+<main id="main">
+
+<!-- CAPA -->
+<section class="slide cover" id="s00">
+  <div class="kicker">Governo Federal do Brasil · MGI
+  </div>
+  <div class="rule"></div>
+  <h1>Diretrizes Operacionais</h1>
+  <h2>Programa de Bolsas — WBG Fellowship Program</h2>
+  <p class="lead">Estruturação do fluxo de trabalho conjunto, evidenciando os pontos de contato, governança e previsibilidade das etapas com o Grupo Banco Mundial.</p>
+  <div class="meta">
+    <span><b>Brasília/DF, Brasil</b></span>
+  </div>
+  <button class="scroll-cue" data-target="#s01">
+    Explorar fluxo
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+  </button>
+</section>
+
+<!-- CONTEXTUALIZAÇÃO -->
+<section class="slide" id="s01">
+  <span class="watermark">01</span>
+  <span class="eyebrow reveal">01 — Contextualização</span>
+  <h2 class="display reveal">Consolidação da Parceria</h2>
+  <p class="lead reveal">A partir do Memorando de Entendimento (MoU) firmado em 2025, o Governo Brasileiro enviou com sucesso seus primeiros servidores para atuar no Grupo Banco Mundial (WBG) no ciclo 2025–2026. Para escalar essa parceria e garantir total transparência e alinhamento, o MGI estruturou um fluxo operacional unificado.</p>
+
+  <div class="mini-tl reveal">
+    <div class="mini-tl-item"><div class="mini-tl-dot"></div><div class="mini-tl-date">AGO 2025</div><div class="mini-tl-text">Assinatura do MoU Brasil–WBG</div></div>
+    <div class="mini-tl-item"><div class="mini-tl-dot"></div><div class="mini-tl-date">2025–2026</div><div class="mini-tl-text">Sucesso do 1º Ciclo de Intercâmbio</div></div>
+    <div class="mini-tl-item"><div class="mini-tl-dot"></div><div class="mini-tl-date">Novo Ciclo</div><div class="mini-tl-text">Implementação de governança e prazos pactuados</div></div>
+  </div>
+</section>
+
+<!-- OBJETIVOS -->
+<section class="slide" id="s02">
+  <span class="watermark">02</span>
+  <span class="eyebrow reveal">02 — Objetivos da Proposta</span>
+  <h2 class="display reveal">Garantia de Previsibilidade</h2>
+  <div class="obj-list">
+    <div class="obj-item reveal"><div class="obj-num">01</div><div><div class="obj-title">Agilidade Institucional</div><div class="obj-desc">O MGI assumirá de forma centralizada e ágil toda a tramitação nacional (editais, comunicação, avaliações preliminares), entregando ao WBG apenas perfis qualificados</div></div></div>
+    <div class="obj-item reveal"><div class="obj-num">02</div><div><div class="obj-title">Sincronia de Prazos</div><div class="obj-desc">Estabelecer prazos claros de resposta para as fases de avaliação final e elaboração de TORs, otimizando o calendário de ambas as instituições.</div></div></div>
+    <div class="obj-item reveal"><div class="obj-num">03</div><div><div class="obj-title">Governança Integrada</div><div class="obj-desc">Definição de pontos focais para mediar rapidamente documentações, Memorandos de Acordo (MoA) e resultados.</div></div></div>
+  </div>
+</section>
+
+<!-- FLUXO MACRO -->
+<section class="slide" id="s05">
+  <span class="watermark">03</span>
+  <span class="eyebrow reveal">03 — Fluxo de Trabalho</span>
+  <h2 class="display reveal">O processo em 7 Fases</h2>
+  <p class="lead reveal">A maior parte do processo logístico e seletivo é executada internamente pelo Governo Brasileiro - Fases 2, 3 e 4.</p>
+
+  <div class="macro-timeline reveal" id="macroTimeline">
+    <div class="macro-line-track"><div class="macro-line-fill"></div></div>
+    <div class="macro-row">
+      <div class="macro-node" style="--c:var(--teal)"><span class="macro-num">01</span><span class="macro-label"><b>Fase 1</b>Áreas e TOR (Conjunta)</span></div>
+      <div class="macro-node" style="--c:var(--navy)"><span class="macro-num">02</span><span class="macro-label"><b>Fase 2</b>Edital (MGI)</span></div>
+      <div class="macro-node" style="--c:var(--navy)"><span class="macro-num">03</span><span class="macro-label"><b>Fase 3</b>Triagem (MGI)</span></div>
+      <div class="macro-node" style="--c:var(--navy)"><span class="macro-num">04</span><span class="macro-label"><b>Fase 4</b>Lista Tríplice (MGI)</span></div>
+      <div class="macro-node" style="--c:var(--teal)"><span class="macro-num">05</span><span class="macro-label"><b>Fase 5</b>Seleção (WBG)</span></div>
+      <div class="macro-node" style="--c:var(--teal)"><span class="macro-num">06</span><span class="macro-label"><b>Fase 6</b>Acordos (Conjunta)</span></div>
+      <div class="macro-node" style="--c:var(--navy)"><span class="macro-num">07</span><span class="macro-label"><b>Fase 7</b>Suporte Contínuo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 1 -->
+<section class="slide" id="s06">
+  <span class="watermark">F1</span>
+  <span class="eyebrow reveal">Ação Conjunta</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--teal)">Fase 1</span>
+      <div class="phase-title">Definição de Áreas e Termo de Referência (TOR)</div>
+      <p class="phase-desc">Início do ciclo focado no alinhamento estratégico das necessidades técnicas do Banco Mundial e interesses do Governo Brasileiro com os perfis de talentos do governo brasileiro.</p>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">01</div>
+        <div>
+          <div class="step-title">Alinhamento Temático</div>
+          <div class="step-desc">MGI e Banco Mundial definem setores prioritários de cooperação técnica (ex: Clima, Habitação, Saúde Pública, Governo Digital, Gestão de Pessoas).</div>
+          <div class="tag-row">
+            <span class="pill pill-mgi">Governo Brasileiro</span> 
+            <span class="pill pill-bm">Banco Mundial</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">02</div>
+        <div>
+          <div class="step-title">Elaboração e Validação do TOR</div>
+          <div class="step-desc">O Banco Mundial estrutura e envia o Termo de Referência detalhando as qualificações exigidas, localidade e atribuições da missão para cada vaga acordada.</div>
+          <div class="tag-row">
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-prazo">Prazo Estimado: 15 dias</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASES 2, 3 e 4 (Agrupadas/Resumidas) -->
+<section class="slide" id="s07">
+  <span class="watermark">MGI</span>
+  <span class="eyebrow reveal">Execução Interna do Governo Brasileiro</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--navy)">Fases 2, 3 e 4</span>
+      <div class="phase-title">Seleção Nacional, Publicidade e Triagem</div>
+      <p class="phase-desc">O MGI encarrega-se de ponta a ponta do processo seletivo brasileiro, garantindo a entrega ágil de finalistas compatíveis com os padrões exigidos pelo WBG.</p>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">F2</div>
+        <div>
+          <div class="step-title">Fase 2: Lançamento do Edital</div>
+          <div class="step-desc">Elaboração do edital normativo brasileiro, publicação em canais oficiais e ampla prospecção de talentos em toda a Administração Pública Federal.</div>
+          <div class="tag-row"><span class="pill pill-mgi">Execução Exclusiva MGI</span></div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">F3</div>
+        <div>
+          <div class="step-title">Fase 3: Triagem Documental e Funcional</div>
+          <div class="step-desc">Recepção dos currículos e checagem cruzada nos sistemas do governo para validar elegibilidade legal e tempo de serviço.</div>
+          <div class="tag-row"><span class="pill pill-mgi">Execução Exclusiva MGI</span></div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">F4</div>
+        <div>
+          <div class="step-title">Fase 4: Avaliação por Comissão e Lista Tríplice</div>
+          <div class="step-desc">Comitê especializado realiza avaliação técnica e cega dos perfis, definindo os três (3) melhores candidatos (Lista Tríplice) para cada posição do TOR.</div>
+          <div class="tag-row"><span class="pill pill-mgi">Execução MGI, em parceria com Órgãos Finalísticos</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 5 -->
+<section class="slide" id="s10">
+  <span class="watermark">F5</span>
+  <span class="eyebrow reveal">Ação Conjunta</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--teal)">Fase 5</span>
+      <div class="phase-title">Entrevistas e Decisão Final (WBG)</div>
+      <p class="phase-desc">O Banco Mundial recebe os candidatos pré-selecionados e realiza as avaliações finais para a escolha do <em>Fellow</em>.</p>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">01</div>
+        <div>
+          <div class="step-title">Encaminhamento da Lista Tríplice</div>
+          <div class="step-desc">O MGI envia oficialmente ao Banco Mundial os currículos dos três finalistas.</div>
+          <div class="tag-row"><span class="pill pill-mgi">Governo Brasileiro</span></div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">02</div>
+        <div>
+          <div class="step-title">Entrevistas e Seleção pelo Banco Mundial</div>
+          <div class="step-desc">Realização de painéis e entrevistas conduzidas exclusivamente pelos gestores do Banco Mundial, culminando na escolha oficial do candidato aprovado para a vaga.</div>
+          <div class="tag-row">
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-prazo">Prazo Estimado: até 15 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">03</div>
+        <div>
+          <div class="step-title">Comunicação e Ponto Focal</div>
+          <div class="step-desc">O WBG notifica o MGI sobre o resultado para que o governo brasileiro proceda com a comunicação de feedback aos candidatos, encerrando a seleção.</div>
+          <div class="tag-row"><span class="pill pill-bm">Banco Mundial</span> <span class="pill pill-mgi">Governo Brasileiro</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASES 6 e 7 -->
+<section class="slide" id="s11">
+  <span class="watermark">F6</span>
+  <span class="eyebrow reveal">Ação Conjunta</span>
+  <div class="phase-grid">
+    <div class="phase-left reveal">
+      <span class="phase-tag" style="--c:var(--teal)">Fases 6 e 7</span>
+      <div class="phase-title">Formalização, Missão e Monitoramento</div>
+      <p class="phase-desc">Assinatura dos acordos internacionais e o envio do servidor, garantindo segurança jurídica para ambas as partes durante o período da bolsa.</p>
+    </div>
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">01</div>
+        <div>
+          <div class="step-title">Assinatura do MoA (Memorandum of Agreement)</div>
+          <div class="step-desc">Celebração do acordo específico entre o Banco Mundial e a entidade governamental de origem do servidor selecionado, estabelecendo condições e custos preservados pelo Brasil.</div>
+          <div class="tag-row">
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-mgi">Governo Brasileiro</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--teal)">02</div>
+        <div>
+          <div class="step-title">Instrumento Individual de Designação</div>
+          <div class="step-desc">Assinatura do documento contratual direto entre o Banco Mundial (instituição anfitriã) e o servidor aprovado.</div>
+          <div class="tag-row">
+            <span class="pill pill-bm">Banco Mundial</span>
+            <span class="pill pill-mgi">Candidato</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num" style="--c:var(--navy)">03</div>
+        <div>
+          <div class="step-title">Missão e Retorno do Servidor</div>
+          <div class="step-desc">Realização dos 12 meses de bolsa (Missão Especial). Controle do prazo de afastamento. Apresentação de relatório final</div>
+          <div class="tag-row"><span class="pill pill-mgi">Governo Brasileiro</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENCERRAMENTO -->
+<section class="slide closing">
+  <div class="closing-icon"><svg width="60" height="60" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="32" cy="32" r="28"/><path d="M12 32h40M32 4c-8 0-14 12.5-14 28s6 28 14 28 14-12.5 14-28S40 4 32 4z"/></svg></div>
+  <h2 style="color:var(--teal);">Brasil & World Bank Group</h2>
+  <p class="lead" style="max-width:800px;">Uma parceria para intercâmbio de excelência.</p>
+  <span class="rgb-mark">RGB - ZDB</span>
+</section>
+
+  
+
+
+</main>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var railDots = Array.prototype.slice.call(document.querySelectorAll('.rail-dot'));
+  var progressFill = document.getElementById('progressFill');
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-target]')).forEach(function(el){
+    el.addEventListener('click', function(){
+      var t = document.querySelector(el.getAttribute('data-target'));
+      if(t){ t.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  function updateProgress(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var p = h > 0 ? (window.scrollY / h) * 100 : 0;
+    progressFill.style.width = p + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  var activeObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = '#' + entry.target.id;
+        railDots.forEach(function(d){
+          d.classList.toggle('active', d.getAttribute('data-target') === id);
+        });
+      }
+    });
+  }, {threshold:0.5});
+  sections.forEach(function(s){ activeObserver.observe(s); });
+
+  var revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry, i){
+      if(entry.isIntersecting){
+        entry.target.style.transitionDelay = (i % 6) * 0.06 + 's';
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15, rootMargin:'0px 0px -8% 0px'});
+  Array.prototype.slice.call(document.querySelectorAll('.reveal')).forEach(function(el){
+    revealObserver.observe(el);
+  });
+
+  var lineObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, {threshold:0.35});
+  var macroEl = document.getElementById('macroTimeline');
+  if(macroEl) lineObserver.observe(macroEl);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'PageDown' && e.key !== 'PageUp') return;
+    e.preventDefault();
+    var mid = window.scrollY + window.innerHeight/2;
+    var idx = 0;
+    for(var i=0;i<sections.length;i++){
+      if(sections[i].offsetTop <= mid) idx = i;
+    }
+    var next = (e.key === 'ArrowDown' || e.key === 'PageDown') ? Math.min(idx+1, sections.length-1) : Math.max(idx-1, 0);
+    sections[next].scrollIntoView({behavior:'smooth', block:'start'});
+  });
+})();
+</script>
+</body>
+</html>
