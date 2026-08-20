@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' rx='14' fill='%230E5C63'/><rect x='16' y='34' width='7' height='16' rx='2' fill='%23E5B25A'/><rect x='28' y='24' width='7' height='26' rx='2' fill='%23FFFFFF'/><rect x='40' y='16' width='7' height='34' rx='2' fill='%23E5B25A'/></svg>">
 <title>Impacto Financeiro do PDI</title>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -595,7 +596,7 @@ function idxToYM(i){const k=BASEIDX+i;const y=Math.floor((k-1)/12);const m=((k-1
 function ymLabel(y,m){return MESES[m-1]+'/'+String(y).slice(2);}
 
 // ---- state ----
-const S={pos:C.todayIdx-BASEIDX, minAge:75, ades:0.60, enc:0.11, hor:48, fator:1, org:-1, uf:-1};
+const S={pos:C.todayIdx-BASEIDX, minAge:75, ades:0.60, enc:0.1111, hor:48, fator:1, org:-1, uf:-1};
 const DEF={...S};
 
 function posYMD(){const ym=idxToYM(S.pos);return [ym[0],ym[1],20];}
