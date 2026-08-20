@@ -737,7 +737,8 @@ function chartValor(m){
 }
 
 function chartTempo(cron){
-  const d=cron,W=780,H=310,padL=66,padR=20,padT=18,padB=48;
+  
+  const d=cron,W=780,H=310,padL=95,padR=20,padT=18,padB=48;
   const iw=W-padL-padR,ih=H-padT-padB,max=Math.max(1,...d.map(x=>x.custoAcum));
   const X=i=>padL+(d.length>1?i/(d.length-1)*iw:0),Y=v=>padT+ih-v/max*ih;
   let area=`M ${X(0)} ${Y(0)}`,line=`M ${X(0)} ${Y(d[0].custoAcum)}`;
