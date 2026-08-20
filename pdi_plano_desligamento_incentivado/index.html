@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' rx='14' fill='%230E5C63'/><rect x='16' y='34' width='7' height='16' rx='2' fill='%23E5B25A'/><rect x='28' y='24' width='7' height='26' rx='2' fill='%23FFFFFF'/><rect x='40' y='16' width='7' height='34' rx='2' fill='%23E5B25A'/></svg>">
+<title>Impacto Financeiro do PDI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F4F6F4; --surface:#FFFFFF; --surface-2:#EEF2F0;
+  --ink:#15242A; --ink-2:#47575E; --muted:#7B898F; --border:#E3E8E4; --border-2:#D3DAD5;
+  --teal:#0E5C63; --teal-deep:#0A464C; --teal-soft:#5FA6AC; --teal-wash:#E3EDED;
+  --gold:#B87D22; --gold-soft:#E5B25A; --gold-wash:#F6ECD8;
+  --green:#2F8F57; --green-wash:#E4F0E8;
+  --clay:#B5462F; --clay-wash:#F5E4DE;
+  --ramp1:#0A464C; --ramp2:#2E7B82; --ramp3:#5FA6AC; --ramp4:#A7CDD0;
+  --shadow:0 1px 2px rgba(18,36,42,.04),0 8px 28px rgba(18,36,42,.07);
+  --shadow-lg:0 2px 6px rgba(18,36,42,.06),0 24px 60px rgba(18,36,42,.12);
+  --maxw:1120px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0D1618; --surface:#152329; --surface-2:#1B2C33;
+  --ink:#EAF1EE; --ink-2:#A7B5BA; --muted:#788A90; --border:#233842; --border-2:#2C444D;
+  --teal:#38ABB3; --teal-deep:#5FC3CA; --teal-soft:#3C8B92; --teal-wash:#14313A;
+  --gold:#E0AC55; --gold-soft:#F0C578; --gold-wash:#2C2415;
+  --green:#57B87C; --green-wash:#152E22;
+  --clay:#E07E5F; --clay-wash:#2E1B14;
+  --ramp1:#7ECBD1; --ramp2:#4FA5AD; --ramp3:#2E7B84; --ramp4:#1D555E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  --shadow-lg:0 2px 8px rgba(0,0,0,.4),0 28px 64px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --ground:#0D1618; --surface:#152329; --surface-2:#1B2C33;
+  --ink:#EAF1EE; --ink-2:#A7B5BA; --muted:#788A90; --border:#233842; --border-2:#2C444D;
+  --teal:#38ABB3; --teal-deep:#5FC3CA; --teal-soft:#3C8B92; --teal-wash:#14313A;
+  --gold:#E0AC55; --gold-soft:#F0C578; --gold-wash:#2C2415;
+  --green:#57B87C; --green-wash:#152E22;
+  --clay:#E07E5F; --clay-wash:#2E1B14;
+  --ramp1:#7ECBD1; --ramp2:#4FA5AD; --ramp3:#2E7B84; --ramp4:#1D555E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  --shadow-lg:0 2px 8px rgba(0,0,0,.4),0 28px 64px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{font-family:"Spectral",Georgia,serif;font-weight:600;line-height:1.12;text-wrap:balance;margin:0}
+p{margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.tnum{font-variant-numeric:tabular-nums}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+section{padding:76px 0;border-top:1px solid var(--border)}
+section:first-of-type{border-top:none}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ground) 86%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav .wrap{display:flex;align-items:center;gap:20px;height:56px}
+.brand{font-family:"Spectral",serif;font-weight:700;font-size:1.05rem;letter-spacing:.01em;color:var(--ink);white-space:nowrap}
+.brand b{color:var(--teal)}
+.nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav-links a{font-size:.82rem;color:var(--ink-2);text-decoration:none;padding:6px 10px;border-radius:7px;white-space:nowrap}
+.nav-links a:hover{background:var(--surface-2);color:var(--ink)}
+.tbtn{border:1px solid var(--border-2);background:var(--surface);color:var(--ink-2);
+  width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:1rem;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--teal);border-color:var(--teal)}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:64px 0 60px;
+  background:
+    radial-gradient(1100px 460px at 82% -8%, var(--teal-wash), transparent 60%),
+    radial-gradient(760px 360px at 6% 108%, var(--gold-wash), transparent 62%);
+  border-top:none}
+.hero .eyebrow{color:var(--teal)}
+.hero h1{font-size:clamp(2.1rem,5.4vw,3.65rem);letter-spacing:-.015em;margin:16px 0 0}
+.hero h1 em{font-style:italic;color:var(--teal);font-weight:600}
+.lede{font-size:clamp(1.05rem,2.1vw,1.28rem);color:var(--ink-2);max-width:60ch;margin-top:20px;line-height:1.5}
+.hero-meta{display:flex;gap:8px 22px;flex-wrap:wrap;margin-top:22px;font-size:.82rem;color:var(--muted)}
+.hero-meta span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--teal);flex:none}
+.dot.g{background:var(--gold)} .dot.k{background:var(--green)}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+@media(max-width:760px){.stat-row{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 18px;box-shadow:var(--shadow)}
+.stat .k{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:"Spectral",serif;font-weight:700;font-size:clamp(1.7rem,3.4vw,2.3rem);letter-spacing:-.02em;margin-top:8px;line-height:1}
+.stat .v small{font-size:.5em;font-weight:600;color:var(--ink-2);letter-spacing:0}
+.stat .s{font-size:.82rem;color:var(--ink-2);margin-top:8px}
+.stat.accent{background:linear-gradient(180deg,var(--teal),var(--teal-deep));border-color:transparent}
+.stat.accent .k{color:rgba(255,255,255,.72)} .stat.accent .v{color:#fff} .stat.accent .s{color:rgba(255,255,255,.85)}
+
+/* generic */
+.sec-head{max-width:64ch}
+.sec-head h2{font-size:clamp(1.6rem,3.4vw,2.35rem);letter-spacing:-.01em;margin-top:12px}
+.sec-head p.intro{color:var(--ink-2);font-size:1.05rem;margin-top:14px;line-height:1.55}
+.grid{display:grid;gap:18px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:24px;box-shadow:var(--shadow)}
+.card h3{font-size:1.18rem;letter-spacing:-.01em}
+.card .sub{color:var(--muted);font-size:.85rem;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--border-2);color:var(--ink-2);background:var(--surface-2)}
+
+/* formula */
+.formula{display:flex;flex-wrap:wrap;align-items:stretch;gap:12px;margin-top:8px}
+.fbox{flex:1 1 140px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-align:center}
+.fbox .lab{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fbox .val{font-family:"Spectral",serif;font-weight:600;font-size:1.15rem;margin-top:6px;color:var(--ink)}
+.op{display:grid;place-items:center;font-family:"Spectral",serif;font-size:1.6rem;color:var(--teal);flex:0 0 22px}
+.limits{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.limit{flex:1 1 200px;border-radius:12px;padding:14px 16px;border:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+.limit .ic{font-size:1.15rem;line-height:1;margin-top:2px}
+.limit.cap{background:var(--gold-wash);border-color:color-mix(in srgb,var(--gold) 30%,var(--border))}
+.limit.nofloor{background:var(--teal-wash);border-color:color-mix(in srgb,var(--teal) 24%,var(--border))}
+.limit b{font-weight:600}
+.limit .t{font-size:.86rem;color:var(--ink-2)}
+.limit .t strong{color:var(--ink)}
+
+/* charts */
+.chart-wrap{overflow-x:auto}
+svg{display:block;max-width:100%;height:auto}
+.axis text{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:var(--muted)}
+.barlabel{font-family:"IBM Plex Mono",monospace;font-size:12px;fill:var(--ink);font-weight:500}
+.barlabel.on{fill:#fff}
+.catlabel{font-family:"IBM Plex Sans",sans-serif;font-size:13px;fill:var(--ink-2)}
+.gridline{stroke:var(--border);stroke-width:1}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:.82rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:12px;height:12px;border-radius:3px;flex:none}
+
+/* controls */
+.controls{background:var(--surface);border:1px solid var(--border-2);border-radius:15px;padding:20px 22px;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:end}
+@media(max-width:680px){.controls{grid-template-columns:1fr}}
+.ctrl label{display:flex;justify-content:space-between;align-items:baseline;font-size:.82rem;color:var(--ink-2);margin-bottom:8px}
+.ctrl label b{font-family:"IBM Plex Mono",monospace;font-size:1.05rem;color:var(--teal);font-weight:600}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;
+  background:linear-gradient(90deg,var(--teal) var(--fill,50%),var(--surface-2) var(--fill,50%));outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--teal);border:3px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--teal);border:3px solid var(--surface);cursor:pointer}
+input[type=range]:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 35%,transparent)}
+.scale{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--muted);margin-top:6px}
+
+/* readout cards for scenarios */
+.reado{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+@media(max-width:680px){.reado{grid-template-columns:1fr}}
+.ro{border-radius:13px;padding:18px;border:1px solid var(--border)}
+.ro .k{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ro .v{font-family:"Spectral",serif;font-weight:700;font-size:1.85rem;letter-spacing:-.02em;margin-top:6px;line-height:1}
+.ro .s{font-size:.8rem;color:var(--ink-2);margin-top:6px}
+.ro.cost{background:var(--teal-wash)} .ro.cost .v{color:var(--teal-deep)}
+.ro.eco{background:var(--green-wash)} .ro.eco .v{color:var(--green)}
+.ro.net{background:var(--gold-wash)} .ro.net .v{color:var(--gold)}
+
+/* gain-loss */
+.gl{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+@media(max-width:680px){.gl{grid-template-columns:1fr}}
+.glcard{border-radius:15px;padding:24px;border:1.5px solid;position:relative;overflow:hidden}
+.glcard .tag{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:7px;font-weight:600}
+.glcard .big{font-family:"Spectral",serif;font-weight:700;font-size:2.7rem;letter-spacing:-.02em;margin:10px 0 2px;line-height:1}
+.glcard .desc{font-size:.9rem;margin-top:8px}
+.glcard.win{background:var(--green-wash);border-color:color-mix(in srgb,var(--green) 45%,transparent)}
+.glcard.win .tag,.glcard.win .big{color:var(--green)}
+.glcard.lose{background:var(--clay-wash);border-color:color-mix(in srgb,var(--clay) 42%,transparent)}
+.glcard.lose .tag,.glcard.lose .big{color:var(--clay)}
+.glcard .desc{color:var(--ink-2)}
+.delta-note{margin-top:16px;padding:16px 18px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);
+  font-size:.95rem;color:var(--ink-2);display:flex;gap:12px;align-items:center}
+.delta-note b{color:var(--ink);font-weight:600}
+.delta-note .amt{font-family:"Spectral",serif;font-size:1.4rem;font-weight:700;color:var(--clay)}
+
+/* payback bar */
+.pb{margin-top:8px}
+.pb-track{position:relative;height:52px;border-radius:12px;overflow:hidden;background:var(--surface-2);border:1px solid var(--border);display:flex}
+.pb-seg{display:flex;align-items:center;padding:0 14px;font-size:.82rem;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.pb-cost{background:var(--teal)} .pb-eco{background:var(--green)}
+.pb-scale{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--muted);margin-top:8px}
+
+/* personas */
+.persona{display:flex;flex-direction:column;gap:2px}
+.persona .role{font-family:"Spectral",serif;font-weight:600;font-size:1.15rem}
+.persona .meta{font-size:.8rem;color:var(--muted);margin-bottom:12px}
+.persona .amount{font-family:"Spectral",serif;font-weight:700;font-size:2.1rem;color:var(--teal);letter-spacing:-.02em;line-height:1}
+.persona .amount small{font-size:.42em;color:var(--ink-2);font-weight:600;letter-spacing:0}
+.persona .row{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink-2);padding:7px 0;border-top:1px solid var(--border)}
+.persona .row:first-of-type{margin-top:14px}
+.persona .row b{color:var(--ink);font-weight:600}
+
+/* behavioral */
+.beh{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:760px){.beh{grid-template-columns:1fr}}
+.bcard{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:12px;padding:18px 20px}
+.bcard h4{margin:0;font-family:"Spectral",serif;font-size:1.05rem;font-weight:600;color:var(--ink)}
+.bcard p{font-size:.88rem;color:var(--ink-2);margin-top:7px}
+.bcard .anchor{margin-top:10px;font-size:.82rem;color:var(--green);font-weight:500;display:flex;gap:7px;align-items:flex-start}
+.bcard .anchor::before{content:"▸";color:var(--gold)}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:6px}
+.tbl th,.tbl td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--border)}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl th{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.tbl tr:hover td{background:var(--surface-2)}
+.tbl .tnum{font-variant-numeric:tabular-nums}
+
+/* callout */
+.callout{background:linear-gradient(135deg,var(--teal),var(--teal-deep));color:#fff;border-radius:18px;padding:38px 34px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.callout::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.06)}
+.callout .eyebrow{color:var(--gold-soft)}
+.callout h2{color:#fff;font-size:clamp(1.5rem,3vw,2.1rem);margin-top:12px;max-width:24ch}
+.callout p{color:rgba(255,255,255,.9);margin-top:14px;max-width:56ch;font-size:1.02rem}
+
+/* footer */
+footer{border-top:1px solid var(--border);background:var(--surface-2)}
+footer .wrap{padding:40px 24px}
+footer h4{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:500}
+footer p,footer li{font-size:.82rem;color:var(--ink-2);line-height:1.6}
+footer ul{margin:0;padding-left:18px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr}}
+
+.tooltip{position:fixed;pointer-events:none;z-index:100;background:var(--ink);color:var(--ground);
+  font-size:.78rem;padding:7px 10px;border-radius:8px;box-shadow:var(--shadow-lg);opacity:0;transition:opacity .12s;
+  font-family:"IBM Plex Sans",sans-serif;white-space:nowrap;line-height:1.35}
+.tooltip b{color:var(--gold-soft)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+.fnote{font-size:.78rem;color:var(--muted);margin-top:12px}
+.hl-teal{color:var(--teal);font-weight:600}
+.hl-gold{color:var(--gold);font-weight:600}
+.hl-green{color:var(--green);font-weight:600}
+@media(max-width:860px){#retratoGrid{grid-template-columns:1fr!important}}
+@media(max-width:720px){#personasGrid{grid-template-columns:1fr!important}}
+@media(max-width:600px){.hero .stat-row{gap:10px}.wrap{padding:0 18px}section{padding:56px 0}}
+/* banner adesão */
+.window{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:22px;padding:12px 16px;border-radius:12px;
+  background:var(--green-wash);border:1px solid color-mix(in srgb,var(--green) 30%,var(--border));font-size:.88rem;color:var(--ink-2)}
+.window b{color:var(--green)} .window .live{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--green)}
+.window .live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 60%,transparent);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 55%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+/* simulador */
+.simgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 20px}
+@media(max-width:900px){.simgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.simgrid{grid-template-columns:1fr}}
+.field label{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;color:var(--ink-2);margin-bottom:7px;gap:8px}
+.field label b{font-family:"IBM Plex Mono",monospace;font-size:.95rem;color:var(--teal);font-weight:600;white-space:nowrap}
+.field select{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--border-2);background:var(--surface);color:var(--ink);
+  font-family:"IBM Plex Sans",sans-serif;font-size:.86rem;cursor:pointer}
+.field select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.seg{display:flex;border:1px solid var(--border-2);border-radius:9px;overflow:hidden}
+.seg button{flex:1;border:0;background:var(--surface);color:var(--ink-2);padding:8px 6px;font-size:.8rem;cursor:pointer;font-family:inherit}
+.seg button[aria-pressed="true"]{background:var(--teal);color:#fff;font-weight:600}
+.reset{margin-top:4px;border:1px solid var(--border-2);background:var(--surface);color:var(--ink-2);padding:9px 16px;border-radius:9px;
+  cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+.reset:hover{border-color:var(--teal);color:var(--teal)}
+.kpigrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+@media(max-width:820px){.kpigrid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:16px 16px}
+.kpi .k{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:"Spectral",serif;font-weight:700;font-size:1.62rem;letter-spacing:-.02em;margin-top:6px;line-height:1;color:var(--ink)}
+.kpi .v small{font-size:.5em;color:var(--ink-2);font-weight:600}
+.kpi .s{font-size:.74rem;color:var(--ink-2);margin-top:6px;min-height:1.1em}
+.kpi.hl{background:linear-gradient(180deg,var(--teal),var(--teal-deep));border-color:transparent}
+.kpi.hl .k{color:rgba(255,255,255,.72)} .kpi.hl .v{color:#fff} .kpi.hl .s{color:rgba(255,255,255,.85)}
+.kpi.warn{border-color:color-mix(in srgb,var(--clay) 45%,var(--border))}
+.budgetbar{margin-top:8px;height:9px;border-radius:999px;background:var(--surface-2);overflow:hidden;position:relative}
+.budgetbar i{display:block;height:100%;border-radius:999px;background:var(--gold)}
+.budgetbar .line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--clay)}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="wrap">
+    <span class="brand">PDI<b>·</b>Impacto</span>
+    <div class="nav-links">
+      <a href="#regra">A regra</a>
+      <a href="#simulador">Simulador</a>
+      <a href="#retrato">Retrato</a>
+      <a href="#janela">A janela</a>
+      <a href="#tempo">Linha do tempo</a>
+      <a href="#cenarios">Cenários</a>
+      <a href="#fiscal">Payback</a>
+      <a href="#casos">Casos-tipo</a>
+    </div>
+    <button class="tbtn" id="themeBtn" aria-label="Alternar tema">◐</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Programa de Desligamento Incentivado · Lei nº 15.367/2026</p>
+    <h1>Um incentivo proporcional ao tempo de serviço — e que se paga em menos de 20 meses.</h1>
+    <p class="lede">Impacto financeiro do PDI dos empregados anistiados (Lei 8.878/1994). Ao viabilizar o encerramento planejado do vínculo de quem já atingiu 75 anos, o Estado renova seus quadros e recupera o investimento em pouco tempo. Ajuste as variáveis e explore cada cenário.</p>
+    <div class="window">
+      <span class="live">Adesão aberta</span>
+      <span>1º Edital MGI · período de adesão <b>10/ago</b> a <b>25/set 2026</b>. Publicação em 03/ago/2026.</span>
+    </div>
+    <div class="stat-row" id="heroStats"></div>
+    <div class="hero-meta">
+      <span><span class="dot"></span> Base: <b class="tnum" id="m-base">—</b> anistiados mapeados</span>
+      <span><span class="dot g"></span> Vigência da lei: 30/mar/2026</span>
+      <span><span class="dot k"></span> Parcela única · isenta de IR</span>
+    </div>
+  </div>
+</header>
+
+<!-- A REGRA -->
+<section id="regra">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Como o valor é calculado</p>
+      <h2>Uma conta simples, feita para ser entendida de imediato.</h2>
+      <p class="intro">Quanto mais tempo de serviço após o retorno, maior o incentivo. Três elementos, uma multiplicação — sem letras miúdas.</p>
+    </div>
+    <div class="card" style="margin-top:26px">
+      <div class="formula">
+        <div class="fbox"><div class="lab">Salário-base</div><div class="val">R$ / mês</div></div>
+        <div class="op">×</div>
+        <div class="fbox"><div class="lab">Anos de serviço</div><div class="val">desde o retorno</div></div>
+        <div class="op">×</div>
+        <div class="fbox"><div class="lab">Fator</div><div class="val">1,40 <small style="font-size:.7rem;color:var(--muted)">(+40%)</small></div></div>
+        <div class="op">=</div>
+        <div class="fbox" style="background:var(--teal-wash);border-color:color-mix(in srgb,var(--teal) 24%,var(--border))"><div class="lab" style="color:var(--teal)">Incentivo</div><div class="val" style="color:var(--teal-deep)">parcela única</div></div>
+      </div>
+      <div class="limits">
+        <div class="limit cap"><div class="ic">🔝</div><div class="t"><strong>Teto de R$ 350.000</strong> por pessoa. É o único limite superior — protege o orçamento sem descaracterizar o benefício.</div></div>
+        <div class="limit nofloor"><div class="ic">＝</div><div class="t"><strong>Sem valor mínimo.</strong> Cada incentivo reflete fielmente o tempo de serviço de cada pessoa — nada é inflado artificialmente.</div></div>
+      </div>
+      <p class="fnote">Tempo de efetivo exercício contado a partir do retorno ao serviço público (Art. 76); fração ≥ 15 dias conta como mês integral; não se computam períodos de suspensão do contrato por benefício previdenciário. Verbas rescisórias (férias, 13º e saldo) são pagas à parte; não há multa de FGTS (desligamento a pedido). Adesão irrevogável após a publicação do ato (Arts. 77 e 82).</p>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULADOR -->
+<section id="simulador">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Simulador de cenários</p>
+      <h2>Mude as variáveis. Todo o estudo se recalcula na hora.</h2>
+      <p class="intro">Data de referência, idade mínima, percentual de adesão, benefícios considerados na economia, horizonte, fator do incentivo e recortes por órgão e UF. Combine-os livremente para desenhar o cenário que precisar.</p>
+    </div>
+
+    <div class="controls" style="margin-top:24px;display:block">
+      <div class="simgrid">
+        <div class="field">
+          <label>Data de referência <b id="lPos">20/08/2026</b></label>
+          <input type="range" id="cPos" min="0" max="128" step="1" value="4">
+          <div class="scale"><span>abr/26</span><span>2031</span><span>dez/36</span></div>
+        </div>
+        <div class="field">
+          <label>Idade mínima <b id="lAge">75</b></label>
+          <input type="range" id="cAge" min="75" max="90" step="1" value="75">
+          <div class="scale"><span>75</span><span>82</span><span>90</span></div>
+        </div>
+        <div class="field">
+          <label>% de adesão <b id="lAdes">60%</b></label>
+          <input type="range" id="cAdes" min="0" max="100" step="1" value="60">
+          <div class="scale"><span>0%</span><span>50%</span><span>100%</span></div>
+        </div>
+        <div class="field">
+          <label>Benefícios na economia <b id="lEnc">+11%</b></label>
+          <input type="range" id="cEnc" min="0" max="40" step="1" value="11">
+          <div class="scale"><span>só salário</span><span>+13º/férias</span><span>+alim.</span></div>
+        </div>
+        <div class="field">
+          <label>Horizonte evitado <b id="lHor">48 m</b></label>
+          <input type="range" id="cHor" min="12" max="72" step="1" value="48">
+          <div class="scale"><span>12 m</span><span>48 m</span><span>72 m</span></div>
+        </div>
+        <div class="field">
+          <label>Fator do incentivo <b id="lFat">100%</b></label>
+          <div class="seg" id="cFator"><button type="button" data-v="1" aria-pressed="true">1º ano · 100%</button><button type="button" data-v="0.8" aria-pressed="false">2º+ · 80%</button></div>
+        </div>
+        <div class="field">
+          <label>Órgão</label>
+          <select id="cOrg"><option value="-1">Todos os órgãos</option></select>
+        </div>
+        <div class="field">
+          <label>UF de exercício</label>
+          <select id="cUf"><option value="-1">Todas as UF</option></select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:10px">
+        <p class="fnote" style="margin:0" id="simEcho">—</p>
+        <button class="reset" id="cReset">↺ Restaurar padrão (hoje)</button>
+      </div>
+    </div>
+
+    <div class="kpigrid" id="simKpis"></div>
+  </div>
+</section>
+
+<!-- RETRATO -->
+<section id="retrato">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">O retrato do cenário</p>
+      <h2>Quem está elegível — e quanto isso representa.</h2>
+      <p class="intro">Composição do grupo elegível conforme o simulador. A grande maioria recebe valor proporcional ao tempo de casa; poucos alcançam o teto.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:1.05fr 1fr;margin-top:26px" id="retratoGrid">
+      <div class="card">
+        <h3>Incentivo por faixa etária</h3>
+        <p class="sub">Nº de elegíveis e custo do incentivo</p>
+        <div class="chart-wrap" id="chartFaixa"></div>
+        <div class="legend"><span><span class="sw" style="background:var(--ramp1)"></span>mais idosos</span><span><span class="sw" style="background:var(--ramp4)"></span>75–79</span><span style="margin-left:auto;color:var(--muted)">passe o mouse para detalhes</span></div>
+      </div>
+      <div class="card">
+        <h3>Onde estão os elegíveis</h3>
+        <p class="sub">Principais órgãos, por nº de elegíveis</p>
+        <div class="chart-wrap" id="chartOrgaos"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+        <div style="flex:1 1 260px">
+          <h3>Distribuição do valor</h3>
+          <p class="sub">A regra é concentrada: quase todos recebem valor proporcional; o teto atinge poucos.</p>
+        </div>
+        <div class="chart-wrap" style="flex:2 1 420px" id="chartValor"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- A JANELA -->
+<section id="janela">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">A janela do 1º ano</p>
+      <h2>Aderir cedo é receber o valor cheio. Esperar custa 20%.</h2>
+      <p class="intro">A lei recompensa a decisão antecipada. No primeiro ano de elegibilidade, o incentivo é integral. A partir do segundo, reaberturas passam a pagar 80%. O mesmo número, lido de dois jeitos:</p>
+    </div>
+    <div class="gl" style="margin-top:24px">
+      <div class="glcard win">
+        <span class="tag">✓ Agir no 1º ano</span>
+        <div class="big">100%</div>
+        <div class="desc">Valor integral do incentivo. O caminho mais simples e mais vantajoso.</div>
+      </div>
+      <div class="glcard lose">
+        <span class="tag">✕ Adiar para depois</span>
+        <div class="big">80%</div>
+        <div class="desc">Em reaberturas e novos PDIs, o parâmetro cai. Adiar significa abrir mão de uma parte do que já é seu.</div>
+      </div>
+    </div>
+    <div class="delta-note">
+      <span style="font-size:1.4rem">💡</span>
+      <div>Para o incentivo médio do cenário atual, esperar significa deixar cerca de <span class="amt" id="deltaMesa">—</span> <b>na mesa, por pessoa</b>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LINHA DO TEMPO -->
+<section id="tempo">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Linha do tempo — a partir da vigência da lei</p>
+      <h2>Da vigência em diante: mês a mês em 2026, depois ano a ano.</h2>
+      <p class="intro">A elegibilidade não é estática: quem hoje tem menos de 75 anos torna-se elegível adiante. A partir da vigência da lei (abr/2026), acompanhe a população elegível e o custo acumulado — mensalmente até dez/2026 e, na sequência, anualmente. Adiar amplia a população e o desembolso.</p>
+    </div>
+
+    <div class="card" style="margin-top:24px">
+      <div style="display:flex;flex-wrap:wrap;gap:16px 28px;margin-bottom:8px">
+        <div><div class="k" style="font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Elegíveis acumulados</div><div class="mono tnum" id="tAcumN" style="font-size:1.3rem;color:var(--teal);font-weight:600">—</div></div>
+        <div><div class="k" style="font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Custo acumulado (100%)</div><div class="mono tnum" id="tAcumC" style="font-size:1.3rem;color:var(--gold);font-weight:600">—</div></div>
+        <div><div class="k" style="font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Novos no período</div><div class="mono tnum" id="tNovos" style="font-size:1.3rem;color:var(--ink);font-weight:600">—</div></div>
+        <div style="margin-left:auto;align-self:center"><span class="pill">marcador = data de referência do simulador</span></div>
+      </div>
+      <div class="chart-wrap" id="chartTempo"></div>
+    </div>
+    <p class="fnote">Cada coorte é avaliada no momento em que se torna elegível (valor cheio). Recorte por órgão, UF e idade mínima também vale aqui. A janela inicial é o ponto de maior eficiência — para o empregado (valor cheio) e para o Estado (antecipa a economia de folha).</p>
+  </div>
+</section>
+
+<!-- CENARIOS -->
+<section id="cenarios">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Cenários de adesão × orçamento</p>
+      <h2>O orçamento de 2026 cobre parte da adesão. O resto exige suplementação.</h2>
+      <p class="intro">A LOA 2026 provisiona <b class="hl-gold">R$ 61,8 milhões</b>. A curva mostra o custo do incentivo conforme a adesão cresce; a linha marca o limite orçamentário. Em qualquer nível, o resultado líquido de médio prazo é positivo.</p>
+    </div>
+
+    <div class="reado" id="cenReado" style="margin-top:24px"></div>
+
+    <div class="card" style="margin-top:18px">
+      <h3>Custo do incentivo conforme o percentual de adesão</h3>
+      <p class="sub">Linha tracejada: teto orçamentário da LOA 2026 (R$ 61,8 mi). Marcador: adesão atual do simulador.</p>
+      <div class="chart-wrap" id="chartCenario"></div>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--teal)"></span>Custo do incentivo</span>
+        <span><span class="sw" style="background:var(--clay)"></span>Orçamento LOA 2026</span>
+        <span><span class="sw" style="background:var(--gold)"></span>Adesão selecionada</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FISCAL -->
+<section id="fiscal">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">O argumento fiscal</p>
+      <h2>O incentivo se paga rápido. O resto do horizonte é economia.</h2>
+      <p class="intro">O incentivo se recupera em <b class="hl-teal" id="pbTxt">18</b> meses (conforme os benefícios considerados). Como esses empregados permaneceriam, em média, ao menos <b id="horTxt">48</b> meses na folha, cada adesão libera uma folga fiscal relevante no médio prazo.</p>
+    </div>
+    <div class="card" style="margin-top:24px">
+      <div class="pb">
+        <div class="pb-track" id="pbTrack">
+          <div class="pb-seg pb-cost" id="pbCost">Payback</div>
+          <div class="pb-seg pb-eco" id="pbEco">Economia líquida</div>
+        </div>
+        <div class="pb-scale"><span>mês 0</span><span id="pbMid">mês 18</span><span id="pbEnd">mês 48</span></div>
+      </div>
+      <p class="fnote">Referência do briefing MGI: payback de ~16,3 meses considerando salário e auxílio-alimentação. Incluídos encargos patronais e demais benefícios, o retorno é ainda mais rápido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS -->
+<section id="casos">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Casos-tipo</p>
+      <h2>O que isso significa para uma pessoa concreta.</h2>
+      <p class="intro">Perfis representativos da base (valores medianos, anonimizados), calculados na data de hoje. Números reais tornam o benefício tangível.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:24px" id="personasGrid"></div>
+    <p class="fnote">Valores ilustrativos pela regra vigente; o valor individual definitivo consta da memória de cálculo de cada processo. A planilha do estudo permite filtrar caso a caso.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Sobre este estudo</h4>
+        <p>Impacto financeiro do Programa de Desligamento Incentivado (PDI) — Lei nº 15.367/2026 e 1º Edital MGI — dirigido aos empregados públicos anistiados da Lei nº 8.878/1994. Todos os valores recalculam conforme as variáveis do simulador. O detalhamento caso a caso, com filtros, está na planilha que acompanha o estudo.</p>
+      </div>
+      <div>
+        <h4>Premissas</h4>
+        <ul>
+          <li>Incentivo = salário × anos × 1,40; teto R$ 350 mil; sem piso.</li>
+          <li>Elegibilidade: 75+ em exercício, na data de referência.</li>
+          <li>Economia = salário + benefícios selecionados, no horizonte.</li>
+          <li>Orçamento LOA 2026: R$ 61,8 milhões provisionados.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Fontes e ressalvas</h4>
+        <ul>
+          <li>Lei nº 15.367/2026 — Cap. XXII (Arts. 70–82).</li>
+          <li>Edital MGI (1º ciclo) — adesão 10/ago a 25/set 2026.</li>
+          <li>Base cadastral de anistiados (Lei 8.878/1994).</li>
+          <li>Sujeito à decisão do STF no RE 1.519.008 (Tema 612).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="tooltip" id="tt"></div>
+
+<script id="pdidata" type="application/json">{"const":{"totalBase":2524,"teto":350000,"mult":1.4,"today":"20/08/2026","todayIdx":24320,"pubLei":"30/03/2026","pubLeiIdx":24316,"adesaoIni":"10/08/2026","adesaoFim":"25/09/2026","editalPub":"03/08/2026","budget":61800000,"officialCount":737,"paybackOficial":16.3,"orgList":["ABIN","ANM","C.AER","CM","CNEN","DNIT","FIOCRUZ","IFFLU","IFMA","INCRA","INSS","IPHAN","MAPA","MCID","MCOM","MCTI","MDA","MDS","MEC","MF","MGI","MIDR","MINC","MME","MPA","MPOR","MS","MT","MTE","UFRRJ"],"ufList":["AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PR","RJ","RN","RS","SC","SE","SP","TO"]},"default":{"elegiveis":799,"custo100":117363597.0},"pp":[[4077,19490909,20200706,0,5],[5334,19491026,20090712,0,5],[5334,19500327,20090723,0,5],[5334,19450511,20090930,0,5],[5334,19481011,20090707,0,5],[4712,19350914,20180514,0,5],[0,19490726,20090629,0,5],[17673,19350109,20090811,0,5],[0,19360212,20091228,0,5],[5334,19460418,20100429,0,5],[5334,19420801,20090722,0,5],[5334,19440604,20090727,0,5],[3814,19460122,20121022,1,5],[5334,19481004,20110824,1,5],[10126,19420710,20110208,1,5],[3814,19480817,20110210,1,5],[3814,19480715,20110913,1,5],[3814,19441124,20130118,1,5],[4885,19471212,20110217,1,5],[5334,19420131,20110204,1,5],[3814,19470113,20110831,1,5],[3814,19460727,20120523,1,5],[3814,19470916,20130529,1,5],[3814,19441125,20140703,1,5],[3814,19370604,20120523,1,5],[3814,19480830,20110216,1,5],[9001,19500221,20210125,1,5],[5334,19460913,20110128,1,5],[3814,19490727,20110131,1,5],[3814,19440718,20120601,1,5],[5334,19451022,20120523,1,5],[5334,19480618,20120518,1,5],[3814,19480829,20110829,1,5],[5334,19491228,20110722,1,5],[10126,19410813,20121005,1,5],[13995,19480422,20120531,1,5],[3814,19470820,20110721,1,5],[3814,19460331,20150610,1,5],[3814,19471115,20120120,1,5],[10126,19500125,20110201,1,5],[5334,19490306,20110128,1,5],[5334,19470620,20110128,1,5],[3814,19490217,20111116,1,5],[3814,19490106,20110919,1,5],[5334,19480430,20111116,1,5],[3814,19410723,20110720,1,5],[3814,19490621,20140218,1,5],[3814,19490503,20110202,1,5],[3814,19480302,20110803,1,5],[3814,19460310,20111117,1,5],[3814,19450817,20120530,1,5],[3814,19430530,20110207,1,5],[4128,19450315,20110720,1,5],[3814,19471207,20110718,1,5],[3814,19490615,20111116,1,5],[3814,19430301,20110201,1,5],[0,19450707,20110207,1,5],[3814,19320704,20110203,1,5],[3814,19480813,20120530,1,5],[5334,19470212,20110718,1,5],[3814,19461023,20111205,1,5],[5334,19490519,20110201,1,5],[3814,19431115,20140910,1,5],[3814,19450224,20221003,1,5],[10126,19420602,20110125,1,5],[3814,19391027,20120530,1,5],[3814,19470901,20110804,1,5],[10126,19480619,20110215,1,5],[3814,19461004,20110801,1,5],[3814,19430712,20151103,1,5],[3814,19460704,20140922,1,5],[3814,19480423,20210720,1,5],[3814,19490408,20120120,1,5],[10126,19430429,20120125,1,5],[3814,19480703,20111129,1,5],[3814,19451202,20111118,1,5],[5334,19390128,20110719,1,5],[5334,19400111,20120529,1,5],[3814,19460405,20151014,1,5],[10126,19420621,20110127,1,5],[3814,19490808,20110201,1,5],[5334,19480521,20110809,1,5],[10126,19451122,20120118,1,5],[5334,19420228,20110126,1,5],[10605,19450715,20110127,1,5],[3814,19480108,20110125,1,5],[5334,19470817,20120523,1,5],[3814,19490402,20140203,1,5],[5566,19461228,20110125,1,5],[3814,19440917,20130115,1,5],[3814,19480828,20110124,1,5],[3814,19450719,20110809,1,5],[3814,19390513,20120525,1,5],[5334,19481105,20120817,1,5],[3814,19481109,20110901,1,5],[5334,19470116,20120207,1,5],[3814,19471016,20110831,1,5],[3814,19460722,20110721,1,5],[3814,19470412,20120605,1,5],[3814,19500309,20170912,1,5],[3814,19461009,20140703,1,5],[6471,19460121,20111121,1,5],[5334,19460514,20110127,1,5],[3814,19480715,20111205,1,5],[3814,19471031,20111213,1,5],[5334,19480111,20110824,1,5],[5334,19491218,20110131,1,5],[3814,19410414,20120523,1,5],[3814,19500103,20120523,1,5],[5334,19480410,20111122,1,5],[3814,19460105,20120528,1,5],[3814,19441002,20110831,1,5],[5080,19491009,20110901,1,5],[0,19451227,20120119,1,5],[10126,19450204,20110125,1,5],[3814,19460405,20110922,1,5],[5334,19491102,20110201,1,5],[5334,19480410,20130531,1,5],[5334,19500409,20110913,1,5],[3814,19500306,20110721,1,5],[5334,19480828,20110824,1,5],[10126,19490130,20110815,1,5],[10126,19490413,20110128,1,5],[5334,19450405,20110912,1,5],[10126,19491029,20121101,1,5],[3814,19420702,20161017,1,5],[3814,19450609,20110720,1,5],[3814,19430510,20120523,1,5],[3814,19470914,20110725,1,5],[10126,19440310,20110128,1,5],[3814,19441220,20111205,1,5],[7706,19490607,20110128,1,5],[3814,19431117,20111111,1,5],[5334,19451002,20110131,1,5],[3814,19500110,20120523,1,5],[3418,19490723,20110801,1,5],[3814,19460819,20111118,1,5],[17230,19441108,20120116,1,5],[10126,19450415,20110125,1,5],[18372,19450405,20111123,1,5],[5334,19440215,20110720,1,5],[3814,19410615,20160111,1,5],[3814,19390120,20120601,1,5],[0,19490129,20130614,1,5],[3814,19450703,20111205,1,5],[3814,19491130,20110719,1,5],[0,19420929,20110906,1,5],[5334,19410901,20150126,1,5],[5334,19490219,20110214,1,5],[3814,19460909,20120809,1,5],[5334,19490806,20110831,1,5],[3814,19431007,20110829,1,5],[5334,19481115,20110201,1,5],[3814,19440615,20120112,1,5],[3814,19440218,20111124,1,5],[3814,19490719,20140717,1,5],[3814,19450321,20120116,1,5],[3814,19421220,20130115,1,5],[3814,19490212,20120123,1,5],[5334,19400810,20120424,2,21],[3814,19490703,20101122,4,9],[3736,19471022,20120110,6,16],[3418,19440316,20120125,6,16],[10126,19420322,20090715,9,8],[10126,19490531,20090323,9,8],[3814,19440513,20100304,9,8],[3814,19450227,20100304,9,8],[3814,19470722,20151103,9,8],[3814,19480602,20100304,9,8],[5334,19430803,20160502,9,8],[3814,19381106,20151103,9,8],[3814,19430710,20090504,9,8],[3814,19470314,20090427,9,8],[3814,19470409,20090429,9,8],[10126,19430330,20090427,9,5],[3814,19461120,20090428,9,8],[3814,19500217,20161101,9,8],[3814,19390821,20151103,9,8],[3814,19480404,20090427,9,8],[10126,19431115,20090323,9,8],[5334,19430218,20110101,10,5],[11082,19380714,20090312,12,13],[8701,19470303,20090102,12,13],[11064,19480726,20090120,12,12],[10126,19470928,20120718,21,5],[10126,19470118,20090102,12,17],[14997,19481231,20090119,12,5],[6648,19420328,20090521,12,5],[3814,19490503,20090112,12,5],[13593,19400813,20090108,12,9],[6337,19420713,20030805,12,17],[10126,19440924,20081222,12,3],[5334,19481222,20121008,12,10],[5980,19420203,20090415,12,13],[6056,19490128,20111227,12,5],[10126,19430801,20090720,21,5],[10126,19400921,20090401,12,7],[7115,19490517,20090112,12,3],[8634,19460902,20090107,12,3],[10253,19480503,20090112,12,18],[20029,19500312,20111223,12,19],[5334,19490723,20081219,12,5],[9500,19470704,20090106,12,3],[19377,19470916,20101222,12,3],[14466,19441118,20090113,12,21],[18543,19470824,20090102,12,13],[13382,19480706,20090116,12,5],[5334,19470724,20090114,12,18],[5334,19490920,20090102,12,4],[5648,19500219,20090109,12,6],[20095,19450909,20090430,12,3],[11524,19441206,20081230,12,5],[11347,19470127,20090107,12,9],[10348,19470526,20111201,12,4],[13212,19450207,20111201,12,19],[12437,19371121,20090112,12,19],[5334,19450807,20090105,12,18],[7524,19370618,20081229,12,5],[17031,19470910,20120910,12,5],[27181,19470710,20081218,12,15],[17029,19470718,20081222,12,5],[9581,19460328,20090102,12,13],[7245,19450114,20090119,12,6],[9584,19470621,20111111,12,5],[8434,19491020,20090105,12,7],[0,19400310,20081218,12,5],[6170,19500402,20090102,12,15],[16170,19451112,20100209,20,5],[11268,19460507,20140620,12,7],[18128,19380213,20120910,12,5],[5337,19401213,20090108,12,18],[20013,19480201,20210820,12,11],[10126,19441020,20100204,20,5],[5334,19490923,20090102,12,18],[5334,19480830,20020514,12,0],[16014,19500207,20090105,12,12],[14794,19460805,20120420,12,14],[19385,19440523,20221205,12,21],[2712,19481221,20200804,20,5],[5334,19470819,20100503,20,5],[26992,19400514,20110601,12,14],[5334,19461225,20090108,12,8],[14562,19420328,20081216,12,7],[11480,19480208,20090105,12,18],[10126,19491217,20160622,20,5],[14858,19440516,20090427,12,6],[3814,19470723,20081230,12,5],[10126,19420521,20100203,20,5],[24083,19400410,20090415,12,13],[13688,19420101,20090109,12,5],[5334,19491117,20120102,15,5],[15138,19440516,20090102,12,16],[15475,19440106,20120820,12,12],[11897,19390815,20090102,12,19],[6427,19451229,20090105,12,18],[9100,19480504,20090105,12,7],[3814,19490415,20120102,15,5],[3814,19451226,20110704,15,5],[5334,19410712,20081230,12,5],[6742,19430721,20090415,12,12],[11735,19460801,20090106,12,3],[19940,19480428,20081218,12,15],[6560,19430412,20081230,12,5],[28823,19410613,20120726,12,9],[17384,19451208,20090109,12,18],[16050,19500124,20150116,12,5],[3814,19471207,20110704,15,5],[6625,19480402,20081229,12,14],[13479,19500327,20120402,12,21],[3814,19390910,20120601,15,5],[10126,19410922,20110704,15,5],[3814,19490613,20121005,15,5],[10126,19480530,20081229,12,5],[3814,19431113,20130401,15,5],[3814,19490710,20110808,15,5],[9350,19430525,20100915,12,9],[5334,19391231,20081217,12,5],[10815,19341116,20090102,12,12],[11800,19480702,20090105,12,18],[11581,19470620,20081230,12,5],[10572,19460401,20140613,12,7],[17296,19450303,20081226,12,8],[5334,19420706,20090110,12,5],[3814,19480101,20110808,15,5],[9765,19460829,20120330,12,5],[5334,19480525,20090107,12,18],[3814,19450823,20111101,15,5],[10126,19480914,20090417,13,5],[3814,19490709,20141201,15,5],[10126,19480124,20100701,14,5],[3814,19500204,20110704,15,5],[12011,19460502,20090630,14,5],[10126,19410222,20100701,14,5],[3814,19480714,20111010,15,14],[5334,19480202,20130401,15,5],[3814,19390628,20130102,15,5],[3814,19450329,20110725,15,14],[3814,19490210,20100201,15,5],[3814,19480930,20110704,15,5],[3814,19460108,20110704,15,5],[3814,19461002,20141201,15,5],[3814,19481212,20110704,15,5],[19452,19460824,20110704,15,5],[3814,19481208,20110725,15,5],[5334,19490517,20111011,15,5],[5334,19450817,20110808,15,5],[3814,19450821,20120601,15,5],[17195,19441112,20120102,15,5],[3814,19430228,20110808,15,5],[5334,19500226,20110720,15,5],[3814,19440914,20100205,15,5],[13006,19430917,20120102,15,5],[5334,19490616,20100203,15,5],[5334,19490501,20120102,15,5],[3814,19490322,20111104,15,5],[3814,19411005,20130102,15,5],[5334,19410620,20100201,15,5],[3814,19500405,20140203,15,5],[5334,19410328,20120601,15,5],[5334,19460706,20120102,15,5],[3814,19500112,20110118,15,21],[3814,19480122,20141201,15,5],[3814,19440905,20120102,15,5],[10911,19440601,20110704,15,5],[10126,19440405,20110808,15,5],[3814,19450325,20110704,15,5],[3814,19401103,20110808,15,5],[10126,19470611,20140115,15,5],[5334,19400803,20110808,15,5],[5334,19471001,20120502,15,14],[10126,19481107,20110704,15,5],[5334,19481119,20110725,15,5],[11464,19500327,20090625,15,5],[12034,19491120,20090703,15,5],[3814,19480421,20111005,15,5],[3814,19441004,20110808,15,5],[10126,19471120,20120606,15,5],[3814,19411021,20110704,15,5],[5334,19440408,20120102,15,14],[5334,19481016,20120601,15,5],[5334,19410122,20110725,15,5],[5334,19470118,20100201,15,5],[3814,19480924,20131108,15,5],[7028,19491230,20110704,15,5],[10126,19381111,20110815,15,5],[3814,19420714,20120102,15,5],[4077,19470624,20231101,12,5],[15238,19480718,20090120,12,0],[5334,19490609,20110704,15,5],[10126,19471008,20100201,15,5],[9823,19420124,20081223,12,5],[5334,19490305,20111005,15,14],[15336,19430827,20081230,12,5],[12952,19420502,20090618,15,5],[3814,19460805,20100524,15,5],[21076,19471017,20081219,12,15],[5747,19440906,20090318,12,14],[3814,19490606,20120702,15,5],[5334,19440327,20120411,16,5],[16615,19441001,20110531,16,5],[10126,19470328,20120716,17,5],[13913,19471023,20081217,12,5],[14663,19461026,20081205,12,22],[14470,19441229,20090112,12,9],[11216,19480811,20090106,12,5],[12910,19470525,20090121,12,9],[5334,19391103,20101116,18,5],[5334,19430629,20100408,18,5],[14605,19450330,20090102,12,4],[4998,19490724,20081218,12,5],[5334,19460328,20100524,19,5],[10126,19491215,20100505,19,16],[5334,19450401,20100423,19,18],[5334,19500131,20100430,19,5],[10126,19350523,20100329,20,5],[5334,19490620,20100427,20,5],[10126,19420830,20081209,12,14],[5334,19480112,20100503,20,5],[23880,19461118,20081218,12,15],[5334,19470429,20090106,12,9],[5334,19400605,20100429,20,5],[5334,19491008,20090102,12,16],[5334,19440225,20151230,20,5],[3418,19390515,20150831,20,5],[5334,19410915,20090102,12,9],[10126,19470807,20230701,22,5],[5486,19491223,20220908,20,5],[10126,19360908,20230701,22,5],[5334,19470126,20230701,22,5],[10126,19491115,20230701,22,5],[10126,19440531,20100521,20,5],[5334,19420906,20090824,22,5],[3814,19400616,20090413,21,5],[10126,19450427,20090731,22,5],[10126,19500410,20090805,22,5],[3814,19380625,20090706,21,5],[10126,19481231,20081121,18,5],[5334,19461031,20090511,21,5],[10126,19450514,20110817,18,5],[10126,19480114,20090409,21,5],[3814,19420525,20090810,22,5],[10126,19491123,20090814,22,5],[3814,19440220,20090806,22,5],[10126,19320118,20090810,22,5],[10126,19450501,20230701,22,5],[5334,19491020,20230701,22,5],[5334,19490412,20230701,22,5],[10126,19420210,20090806,22,5],[3814,19480402,20130107,14,5],[10126,19500216,20230701,22,5],[3814,19450823,20090807,22,5],[5334,19420422,20090714,23,5],[10126,19361013,20090806,23,5],[5334,19480114,20120130,23,5],[10126,19491102,20141009,23,5],[10126,19460214,20150601,23,5],[5334,19490905,20111208,23,5],[10126,19410127,20090401,23,5],[5334,19480504,20120116,23,5],[5334,19491205,20111208,23,5],[5334,19440129,20120206,23,5],[5334,19491023,20090826,23,5],[5334,19500113,20090209,23,5],[10126,19411115,20090324,23,5],[5334,19410605,20090427,23,5],[10126,19391110,20140121,23,5],[5334,19491017,20111213,23,5],[10126,19440605,20090714,23,5],[10126,19490416,20090911,23,5],[5334,19400820,20091113,23,5],[5334,19391122,20090112,23,5],[10228,19490913,20140203,23,5],[10126,19410612,20090106,23,5],[5334,19490709,20090112,23,5],[5334,19420626,20210718,23,5],[0,19410815,20090528,23,5],[5334,19430222,20090513,23,5],[5334,19490328,20130118,23,5],[10126,19470714,20090205,23,5],[10126,19480921,20090717,23,5],[20567,19370806,20160114,23,5],[10126,19451230,20090401,23,5],[10126,19500218,20090203,23,5],[5334,19491017,20130118,23,5],[5334,19491103,20090112,23,5],[5334,19490410,20090519,23,5],[10126,19350625,20110829,23,5],[5334,19460503,20090107,23,5],[10126,19450116,20090804,23,5],[10126,19440410,20090112,23,5],[5334,19481220,20090209,23,5],[10126,19361122,20090210,23,5],[10126,19440104,20090529,23,5],[10126,19490520,20091203,23,5],[5334,19490725,20120206,23,5],[5334,19470624,20090203,23,5],[10255,19461003,20090320,23,5],[10126,19431212,20090820,23,5],[12379,19431215,20090513,23,5],[5334,19430907,20090824,23,5],[10126,19460319,20220809,23,5],[10126,19470427,20090129,23,5],[10336,19460526,20100414,23,5],[5334,19490708,20090817,23,5],[5334,19380627,20100419,23,5],[5334,19481023,20120206,23,5],[5334,19380906,20090408,23,5],[5334,19370927,20091127,23,5],[12851,19470329,20150601,23,5],[5334,19410825,20090109,23,5],[4885,19490528,20140921,23,5],[5334,19441020,20090922,23,5],[10126,19491103,20090204,23,5],[10126,19470110,20100517,23,5],[5334,19450806,20090105,23,5],[10126,19460206,20090625,23,5],[5334,19471105,20090521,23,5],[5334,19480722,20090313,23,5],[5334,19460810,20090901,23,5],[5334,19451222,20090216,23,5],[10126,19351220,20090513,23,5],[5334,19480624,20091118,23,5],[5334,19410724,20090813,23,5],[5334,19440513,20100430,23,5],[5334,19490602,20090519,23,5],[17471,19420506,20150610,23,5],[5334,19491107,20111208,23,5],[14734,19430524,20110208,23,5],[10126,19441211,20100414,23,5],[5334,19460327,20101029,23,5],[5334,19440312,20090204,23,5],[10126,19450706,20090325,23,5],[10126,19440911,20090519,23,5],[5334,19451127,20090203,23,5],[5334,19491005,20110117,23,5],[12415,19430429,20090401,23,5],[5334,19400107,20110210,23,5],[10366,19450923,20090109,23,5],[10126,19400618,20090528,23,5],[10126,19480803,20090106,23,5],[4885,19481222,20131125,23,5],[5334,19441006,20090519,23,5],[10126,19480802,20090109,23,5],[10126,19471124,20090125,23,5],[5334,19500113,20090108,23,5],[5334,19410624,20090211,23,5],[5334,19480528,20090112,23,5],[5334,19461229,20090721,23,5],[10126,19491129,20090323,23,5],[10126,19450401,20090511,23,5],[22374,19470910,20150821,24,5],[10126,19441130,20090401,23,5],[24659,19451111,20201101,25,5],[26109,19430510,20200424,25,5],[20429,19450504,20240201,25,5],[24997,19500115,20180723,25,5],[29110,19480510,20180101,25,5],[22975,19500312,20200101,25,5],[5334,19441231,20110110,27,5],[5334,19491117,20091214,27,5],[5334,19421027,20231101,27,5],[3814,19490331,20110721,27,5],[5334,19450127,20131101,27,5],[3814,19460418,20090630,27,5],[10126,19430521,20090413,27,5],[5334,19481007,20110106,27,5],[10126,19450802,20110124,27,5],[5334,19420710,20111201,27,5],[10126,19500330,20090827,27,5],[3814,19480831,20110124,27,5],[3814,19380301,20111206,27,5],[3814,19461213,20100423,27,5],[5334,19490514,20090731,27,5],[5334,19330309,20140822,27,5],[5334,19491129,20110304,27,5],[3814,19440920,20100805,27,5],[3814,19480808,20100719,27,5],[10126,19491224,20090810,27,5],[3814,19481214,20100427,27,5],[5334,19500310,20110310,27,5],[10126,19420505,20110117,27,5],[6175,19350715,20111202,27,5],[5334,19460122,20100628,27,5],[5334,19421128,20111024,27,5],[3814,19460723,20101013,27,5],[5334,19480513,20091014,27,5],[5334,19450709,20090819,27,5],[5334,19500221,20110801,27,5],[10126,19500228,20121108,27,5],[5334,19470815,20100106,27,5],[5334,19480723,20231101,27,5],[0,19380719,20130408,27,5],[5334,19480404,20100628,27,5],[5334,19481026,20100712,27,5],[5334,19471026,20091109,27,5],[3418,19490416,20100706,27,5],[10126,19490313,20090804,27,5],[5334,19491004,20090806,27,5],[5334,19481105,20120809,27,5],[5334,19470715,20100226,27,5],[5334,19370226,20140710,27,5],[3814,19481021,20110315,27,5],[3814,19481103,20120521,27,5],[3814,19490520,20090810,27,5],[3814,19460728,20100519,27,5],[3814,19480510,20110121,27,5],[5334,19500121,20140929,27,5],[3814,19480406,20100322,27,5],[5334,19451209,20100407,27,5],[5334,19430409,20091019,27,5],[5334,19391222,19800111,27,5],[10126,19450422,20100301,27,5],[5334,19451103,20131101,27,5],[10850,19500403,20140218,27,5],[11680,19390320,20231001,27,5],[3814,19400709,20140721,27,5],[3814,19480610,20100126,27,5],[3814,19450807,20120124,27,5],[3814,19470915,20210714,27,5],[3814,19470314,20121109,27,5],[5334,19490722,20090821,27,5],[5334,19470328,20110315,27,5],[5334,19441102,20091203,27,5],[8292,19370516,20110713,27,5],[5334,19450201,20091022,27,5],[10126,19401223,20090720,27,5],[5334,19480921,20110315,27,5],[5334,19491215,20090805,27,5],[3814,19430122,20150330,27,5],[6227,19340702,20231101,27,5],[5334,19441104,20100922,27,5],[10126,19470120,20111124,27,5],[12539,19460412,20090810,27,5],[5334,19460904,20100107,27,5],[5334,19491015,20110715,27,5],[3814,19471122,20101223,27,5],[3814,19490513,20150608,27,5],[18599,19500112,20210720,27,5],[5334,19491228,20090720,27,5],[5334,19471116,20110310,27,5],[5334,19490424,20110121,27,5],[3418,19400120,20231101,27,5],[3814,19470308,20090805,27,5],[10126,19480707,20091123,27,5],[3814,19430213,20091124,27,5],[3814,19500222,20090714,27,5],[3814,19480816,20091211,27,5],[15159,19490103,20091109,27,5],[5334,19460331,20100504,27,5],[4628,19401012,20120809,27,5],[10126,19441129,20091030,27,5],[5334,19490424,20090908,27,5],[5334,19470911,20090820,27,5],[5334,19390808,20231101,27,5],[5334,19480119,20101111,27,5],[5334,19490602,20100722,27,5],[5334,19470823,20190909,29,16],[5334,19470823,20190909,29,16],[5334,19590129,20090707,0,5],[4434,19560607,20210928,0,5],[5334,19600925,20090716,0,5],[5334,19601110,20090709,0,5],[5334,19561014,20090701,0,5],[5334,19600919,20090706,0,5],[5334,19600210,20091027,0,5],[5334,19540204,20090708,0,5],[5334,19510405,20150611,0,5],[5334,19511022,20090708,0,5],[5334,19601217,20100527,0,5],[5334,19580317,20090721,0,5],[5334,19530120,20090630,0,5],[5334,19601222,20090708,0,5],[5334,19540802,20150416,0,5],[5334,19550823,20090630,0,5],[5334,19580321,20090630,0,5],[5334,19580322,20090706,0,5],[4885,19550901,20111110,0,5],[5575,19600301,20100118,0,5],[5334,19600902,20090717,0,5],[4077,19580319,20160707,0,5],[5334,19560325,20090715,0,5],[5334,19570826,20090730,0,5],[5334,19540609,20090720,0,5],[5334,19591128,20090701,0,5],[5334,19600210,20090629,0,5],[5334,19600417,20090806,0,5],[4077,19500830,20170102,0,5],[4885,19600219,20130808,0,5],[5334,19520408,20090811,0,5],[4776,19600506,20240902,0,5],[6496,19591215,20200916,0,5],[5334,19601110,20090721,0,5],[5334,19540621,20090708,0,5],[6042,19600923,20190917,0,5],[5334,19601109,20090720,0,5],[5334,19590216,20090707,0,5],[5334,19580104,20090713,0,5],[5334,19550408,20090630,0,5],[5334,19531223,20090722,0,5],[5334,19510704,20090811,0,5],[5334,19590801,20090721,0,5],[5334,19550502,20090709,0,5],[4885,19500808,20100628,0,5],[5334,19550412,20090701,0,5],[5334,19560801,20090708,0,5],[5334,19571031,20090721,0,5],[5334,19530620,20090629,0,5],[5334,19570826,20090629,0,5],[5334,19500524,20090701,0,5],[5334,19600305,20090706,0,5],[5334,19600131,20090707,0,5],[5334,19591211,20100504,0,5],[5334,19511105,20090716,0,5],[5334,19581231,20090709,0,5],[5334,19590905,20090708,0,5],[4885,19550925,20120910,0,5],[4885,19581027,20100706,0,5],[5334,19610207,20100513,0,5],[10126,19510808,20090629,0,5],[5334,19590411,20091006,0,5],[5334,19581107,20090709,0,5],[5334,19600620,20090701,0,5],[5334,19600609,20090813,0,5],[5334,19570306,20090630,0,5],[5334,19560130,20150423,0,5],[5334,19510804,20110126,1,5],[10126,19500524,20160617,1,5],[5334,19520229,20110202,1,5],[5334,19510312,20110809,1,5],[3814,19520704,20110720,1,5],[3814,19501216,20130902,1,5],[3814,19510707,20110131,1,5],[3814,19510222,20120803,1,5],[3814,19560105,20110801,1,5],[5967,19560614,20110121,1,5],[5334,19530725,20110124,1,5],[3814,19531003,20110824,1,5],[3814,19500623,20111116,1,5],[10126,19540107,20110207,1,5],[3814,19540508,20240927,1,5],[5334,19610411,20110201,1,5],[5334,19510126,20110126,1,5],[5334,19500716,20110131,1,5],[15829,19551016,20120503,1,5],[3814,19540223,20110126,1,5],[5334,19561117,20110727,1,5],[3814,19560729,20110902,1,5],[3814,19500914,20111111,1,5],[3814,19580309,20111205,1,5],[3814,19540501,20110131,1,5],[3814,19540412,20110217,1,5],[3814,19530622,20110808,1,5],[3814,19531109,20111116,1,5],[3814,19510906,20110802,1,5],[5334,19560428,20130603,1,5],[3814,19590531,20110201,1,5],[3814,19530111,20140221,1,5],[10126,19500820,20110202,1,5],[10126,19520825,20110201,1,5],[3814,19540902,20120531,1,5],[3814,19580227,20140224,1,5],[10126,19501202,20110131,1,5],[3814,19530822,20131217,1,5],[10126,19520320,20160525,1,5],[3814,19520729,20120117,1,5],[3814,19501009,20120529,1,5],[3814,19551224,20110204,1,5],[5334,19510304,20111201,1,5],[5334,19570726,20110901,1,5],[5334,19550516,20110126,1,5],[3814,19600521,20111205,1,5],[5334,19510717,20110131,1,5],[5334,19550912,20110204,1,5],[5334,19561013,20110209,1,5],[10126,19501020,20110125,1,5],[3814,19601111,20111128,1,5],[5334,19600515,20110216,1,5],[5334,19520528,20110126,1,5],[5334,19581228,20111121,1,5],[3814,19520424,20130115,1,5],[3814,19570801,20111116,1,5],[3814,19590128,20130607,1,5],[5334,19511003,20110126,1,5],[3814,19520706,20110718,1,5],[3814,19590614,20110912,1,5],[3814,19510430,20140224,1,5],[3814,19511013,20110125,1,5],[8970,19500821,20110722,1,5],[3814,19520813,20110720,1,5],[3814,19590125,20111128,1,5],[3814,19570916,20160801,1,5],[5334,19570228,20130617,1,5],[5334,19590517,20110127,1,5],[3814,19600105,20161118,1,5],[4857,19520226,20110216,1,5],[5334,19531027,20140217,1,5],[5334,19581018,20110204,1,5],[11612,19570405,20110125,1,5],[5334,19561225,20150119,1,5],[3814,19510811,20111206,1,5],[3814,19560112,20120521,1,5],[5334,19591128,20110131,1,5],[3814,19501102,20110905,1,5],[5334,19600621,20110124,1,5],[5334,19540712,20130531,1,5],[3814,19511218,20120531,1,5],[3418,19581126,20110128,1,5],[5334,19550224,20110126,1,5],[3814,19510526,20160712,1,5],[3814,19601021,20110803,1,5],[10126,19521222,20131202,1,5],[5334,19520830,20110124,1,5],[3814,19510129,20110201,1,5],[3814,19591014,20120612,1,5],[9001,19530315,20120813,1,5],[5334,19610208,20111202,1,5],[5334,19560624,20110125,1,5],[5334,19540718,20110131,1,5],[5334,19551022,20111129,1,5],[3814,19540915,20110214,1,5],[3814,19590823,20110203,1,5],[3814,19550508,20110801,1,5],[3814,19550124,20150611,1,5],[5334,19520214,20140722,1,5],[5334,19520510,20150720,1,5],[5334,19530712,20110202,1,5],[3814,19600715,20110905,1,5],[3814,19550627,20111201,1,5],[5334,19581025,20110831,1,5],[3814,19580302,20110211,1,5],[3814,19571127,20111013,1,5],[3814,19500619,20120112,1,5],[3814,19550401,20110721,1,5],[10126,19520911,20110125,1,5],[3814,19541211,20111121,1,5],[6653,19530323,20110128,1,5],[5466,19560426,20110216,1,5],[5334,19550824,20111116,1,5],[10126,19530419,20111116,1,5],[5334,19520828,20110922,1,5],[3814,19580123,20110202,1,5],[10126,19561109,20160201,1,5],[3814,19600511,20110127,1,5],[3814,19551015,20130116,1,5],[3814,19511002,20110811,1,5],[3814,19610312,20110720,1,5],[3814,19510804,20111205,1,5],[3814,19521013,20110727,1,5],[3814,19530214,20110124,1,5],[5334,19500814,20110719,1,5],[3814,19600625,20110126,1,5],[3814,19581226,20111201,1,5],[3814,19580208,20111201,1,5],[5334,19520903,20120117,1,5],[5334,19590623,20110128,1,5],[5334,19521129,20140212,1,5],[3814,19601228,20110718,1,5],[5334,19531127,20120524,1,5],[3814,19520510,20111201,1,5],[3814,19511028,20110905,1,5],[3814,19510512,20111206,1,5],[3814,19541028,20160210,1,5],[3814,19591224,20110126,1,5],[3814,19530525,20140911,1,5],[5334,19500531,20111116,1,5],[3814,19500421,20110901,1,5],[3814,19570723,20110720,1,5],[3814,19520701,20140919,1,5],[5334,19560504,20110127,1,5],[3814,19601013,20110801,1,5],[5334,19560308,20110829,1,5],[3814,19590426,20130618,1,5],[3814,19501227,20130125,1,5],[5334,19511017,20110829,1,5],[3814,19560909,20110202,1,5],[3814,19530808,20110914,1,5],[3814,19560324,20111124,1,5],[3814,19590426,20110207,1,5],[3814,19541110,20120112,1,5],[3814,19550116,20111205,1,5],[3814,19530117,20120103,1,5],[3814,19580618,20110215,1,5],[3814,19520312,20110831,1,5],[3814,19531117,20110801,1,5],[3814,19590715,20110802,1,5],[3814,19510121,20201214,1,5],[5334,19531002,20130528,1,5],[3814,19581003,20110801,1,5],[5334,19600608,20151202,1,5],[3814,19500429,20110824,1,5],[3814,19550625,20110803,1,5],[5334,19510225,20161223,1,5],[5334,19520109,20111202,1,5],[3814,19531003,20111117,1,5],[3814,19501012,20110131,1,5],[3814,19520813,20110801,1,5],[3814,19541108,20111128,1,5],[3418,19610206,20170914,1,5],[5334,19501018,20110126,1,5],[3814,19510211,20110919,1,5],[5334,19590416,20110804,1,5],[3814,19520417,20110127,1,5],[0,19590901,20110908,1,5],[3814,19500807,20130524,1,5],[3814,19570818,20110217,1,5],[5334,19551011,20110218,1,5],[9001,19560810,20160126,1,5],[3814,19570125,20110913,1,5],[3814,19570604,20110125,1,5],[3814,19580302,20110802,1,5],[3814,19580907,20110831,1,5],[3814,19580502,20110207,1,5],[5334,19590924,20110718,1,5],[3814,19570831,20110801,1,5],[3814,19561111,20110128,1,5],[5334,19520228,20140417,1,5],[5334,19610218,20110214,1,5],[3814,19541123,20110202,1,5],[5334,19580922,20110126,1,5],[3418,19521213,20121105,1,5],[3814,19540201,20130614,1,5],[5334,19530415,20111116,1,5],[3814,19521205,20130521,1,5],[10126,19550909,20140227,1,5],[3814,19530306,20110922,1,5],[3814,19560120,20110923,1,5],[5334,19551121,20110201,1,5],[5334,19561116,20110214,1,5],[5334,19530501,20120525,1,5],[5334,19511023,20120612,1,5],[5334,19500923,20110808,1,5],[5334,19591003,20110203,1,5],[3418,19570313,20130920,1,5],[5334,19590421,20110124,1,5],[5334,19500530,20110915,1,5],[3814,19590712,20110131,1,5],[3814,19551008,20111205,1,5],[0,19591028,20150527,1,5],[5334,19540519,20110201,1,5],[3814,19590310,20140214,1,5],[3814,19511220,20170102,1,5],[3814,19540212,20120604,1,5],[5334,19520405,20110201,1,5],[10425,19600113,20210122,1,5],[5334,19520718,20110124,1,5],[4025,19570711,20110131,1,5],[5334,19551112,20110201,1,5],[3814,19560104,20120524,1,5],[3814,19541021,20110202,1,5],[5334,19600513,20120524,1,5],[3814,19571009,20111025,1,5],[5334,19580625,20110131,1,5],[5334,19540122,20110727,1,5],[3814,19510718,20110721,1,5],[3814,19590429,20161118,1,5],[3814,19500805,20210329,1,5],[10126,19570410,20110202,1,5],[3814,19530217,20110803,1,5],[5334,19530412,20110126,1,5],[3814,19530619,20111118,1,5],[3814,19520820,20130524,1,5],[3814,19540427,20110211,1,5],[3814,19511223,20110208,1,5],[3814,19540519,20110210,1,5],[3814,19500629,20110901,1,5],[3814,19510819,20140210,1,5],[5334,19570414,20111128,1,5],[5334,19570512,20120528,1,5],[5334,19550213,20110124,1,5],[3814,19540722,20110125,1,5],[5334,19610107,20110801,1,5],[5334,19551206,20110208,1,5],[5334,19590418,20110830,1,5],[3814,19540825,20120327,1,5],[5334,19590207,20111109,1,5],[3814,19550418,20111207,1,5],[19768,19570901,20111010,1,5],[10126,19500527,20110127,1,5],[5334,19520201,20110801,1,5],[5334,19520507,20151109,1,5],[3814,19560319,20111116,1,5],[5334,19530120,20110125,1,5],[5334,19550216,20160711,1,5],[3814,19550220,20120531,1,5],[3814,19540910,20110719,1,5],[5334,19561229,20110215,1,5],[3814,19550421,20111207,1,5],[5334,19560417,20110207,1,5],[3814,19580618,20110125,1,5],[3814,19561219,20111201,1,5],[3814,19531205,20110127,1,5],[5334,19540724,20110124,1,5],[3814,19510828,20120112,1,5],[3814,19600225,20110817,1,5],[3814,19520224,20110915,1,5],[3814,19520126,20111129,1,5],[3814,19560315,20110808,1,5],[3814,19570103,20110124,1,5],[3814,19500716,20120113,1,5],[3814,19521025,20110825,1,5],[5334,19540502,20120521,1,5],[5334,19530828,20110221,1,5],[5334,19560228,20110916,1,5],[5334,19570429,20110920,1,5],[3814,19501216,20110721,1,5],[3814,19590920,20120611,1,5],[5334,19550203,20110725,1,5],[3814,19600110,20110804,1,5],[3814,19530812,20110203,1,5],[3814,19500916,20120528,1,5],[4885,19600819,20190601,1,5],[4885,19560512,20121023,2,5],[5334,19591101,20100205,2,21],[5334,19530913,20110121,2,21],[10126,19580830,20100205,2,21],[3418,19580705,20150511,2,21],[5334,19570710,20100205,2,21],[3814,19511014,20100205,2,21],[5334,19581002,20111222,2,5],[3814,19560927,20130813,3,16],[5334,19550331,20130614,3,16],[3814,19590804,20111031,4,9],[3814,19590829,20111017,4,9],[3814,19560309,20111018,4,9],[10126,19550913,20130612,4,16],[10126,19541004,20191029,5,19],[3736,19501215,20120125,6,16],[3418,19590719,20150615,6,16],[3736,19540107,20120110,6,16],[5334,19510505,20191202,7,16],[5334,19610107,20190603,8,8],[10126,19530712,20240405,8,8],[5334,19530803,20100506,9,8],[3814,19610208,20090428,9,8],[5334,19530912,20090427,9,8],[10126,19570810,20121217,9,8],[3814,19550828,20091204,9,8],[3814,19591102,20090504,9,8],[5334,19500614,20090923,9,8],[5334,19540124,20090427,9,8],[3814,19500605,20090323,9,8],[3814,19580728,20090504,9,8],[5334,19600601,20090323,9,8],[3814,19520229,20090428,9,8],[5334,19590904,20090427,9,8],[5334,19560613,20090504,9,8],[3814,19600123,20090427,9,8],[3814,19561222,20090325,9,8],[5334,19570829,20090427,9,8],[5334,19531104,20090324,9,8],[10126,19560821,20090323,9,8],[3814,19581014,20100304,9,8],[3814,19560106,20090323,9,8],[3814,19570728,20090429,9,8],[5334,19580109,20090504,9,8],[5334,19520516,20090427,9,8],[3814,19560705,20090427,9,8],[5334,19550401,20091204,9,8],[3814,19531012,20090504,9,2],[5334,19521007,20090504,9,8],[5334,19530425,20090429,9,8],[3814,19590109,20180102,9,8],[3814,19501118,20090504,9,8],[5334,19530623,20090504,9,8],[5334,19600523,20090429,9,8],[10126,19540716,20090323,9,8],[3814,19541110,20090325,9,8],[3814,19520126,20151103,9,8],[5334,19600204,20110101,10,5],[5334,19590612,20110101,10,5],[5334,19600717,20110609,10,19],[4885,19590912,20141110,11,5],[5604,19551006,20090102,12,9],[5334,19550525,20190403,12,5],[7763,19530503,20090108,12,18],[5334,19501031,20090323,12,5],[3814,19591229,20090119,12,5],[10445,19540607,20090113,12,15],[13637,19520410,20121008,12,15],[10002,19530908,20090114,12,5],[5334,19600612,20090112,12,9],[6214,19550426,20090408,12,9],[10126,19520320,20090401,21,5],[5334,19521118,20110203,21,5],[5334,19580326,20090105,12,18],[8899,19540906,20111003,12,3],[7516,19511013,20090701,12,9],[10432,19540426,20210720,12,9],[5334,19590920,20090119,12,5],[5334,19600814,20090106,12,18],[8065,19590122,20190109,12,5],[5334,19570730,20020514,12,0],[5334,19580919,20090730,12,19],[5513,19510625,20090102,12,4],[5334,19591104,20110118,21,5],[3814,19560930,20081223,12,5],[6757,19581001,20111118,12,3],[4077,19500830,20210114,12,5],[10126,19551221,20110128,21,5],[5334,19560612,20090105,12,18],[10126,19540502,20090922,21,5],[5334,19580216,20080407,21,5],[5334,19540107,20240603,12,9],[3814,19560612,20090114,12,3],[5334,19551009,20090112,12,7],[8388,19560210,20081219,12,5],[5334,19570722,20081218,12,5],[5334,19550403,20090325,21,5],[10126,19571230,20090331,21,5],[11166,19530626,20090120,12,9],[5334,19601128,20090102,12,1],[7857,19511125,20090101,12,2],[5446,19601206,20111122,12,5],[10126,19520213,20111201,12,16],[5334,19550709,20090102,12,15],[10126,19601216,20110124,21,5],[7585,19551123,20090126,12,19],[5334,19600515,20090102,12,16],[5334,19580415,20090415,21,5],[14656,19551102,20090102,12,19],[10126,19510921,20090422,21,5],[5334,19570219,20090325,21,5],[5334,19580908,20090102,12,9],[8034,19590813,20020514,12,0],[4345,19591222,20210730,12,5],[9680,19520917,20120323,12,3],[10126,19570222,20090119,12,18],[5334,19560914,20090130,12,19],[6616,19570819,20160215,12,19],[5334,19590419,20090119,12,3],[5334,19591125,20090401,21,5],[5509,19560612,20110525,12,21],[9001,19550621,20230501,21,5],[9098,19530925,20090105,12,5],[6550,19530731,20081222,12,1],[5334,19560808,20120528,12,5],[16469,19540416,20190121,12,5],[9321,19580118,20221214,12,7],[7216,19600312,20131113,12,13],[9276,19580212,20101006,12,15],[13816,19520808,20120508,12,21],[5334,19530916,20081217,12,5],[5334,19550925,20090113,12,18],[5334,19530513,20090102,12,13],[5334,19600221,20110603,17,5],[8987,19560418,20020514,12,0],[5334,19580709,20090108,12,18],[5334,19600831,20110603,17,5],[6051,19550602,20081222,12,5],[5334,19560805,20090115,12,5],[5334,19570901,20090106,12,5],[7385,19551026,20090102,12,13],[6847,19530829,20090108,12,5],[5536,19600123,20090102,12,13],[5428,19530716,20111021,12,9],[9813,19530803,20090108,12,7],[10561,19530107,20081230,12,13],[10510,19560721,20081223,12,5],[5334,19530708,20081229,12,5],[4885,19520106,20150713,17,5],[4885,19561220,20140829,17,5],[9527,19530408,20081229,12,14],[7685,19561203,20081219,12,5],[6152,19601203,20120507,12,21],[5334,19601122,20081223,12,5],[5386,19580811,20090119,12,18],[8091,19581211,20160804,12,5],[10015,19510503,20090116,12,21],[5334,19601012,20110114,17,5],[5334,19600227,20090107,12,18],[4885,19580619,20231101,12,3],[7974,19590902,20090105,12,5],[15640,19530323,20241111,12,12],[13886,19550408,20210713,12,13],[5334,19520915,20101025,12,6],[7384,19560107,20081205,12,22],[5934,19590125,20090109,12,20],[4885,19570707,20150713,17,5],[6352,19590408,20090115,12,3],[5334,19541030,20090107,12,9],[9245,19540717,20090107,12,5],[5334,19571019,20081231,12,5],[10275,19580216,20111223,12,5],[3814,19580521,20090102,12,5],[13047,19570320,20190108,12,5],[11552,19560607,20231101,12,5],[5334,19600130,20090116,12,9],[8597,19591120,20090114,12,11],[7377,19590712,20090115,12,5],[5334,19540717,20090109,12,13],[9465,19601120,20081212,12,5],[5334,19600923,20090106,12,3],[9996,19560107,20090116,12,9],[5334,19560326,20081222,12,5],[5334,19570301,20090428,12,3],[7452,19500928,20090102,12,13],[5334,19600507,20090119,12,5],[5334,19591014,20090114,12,18],[5334,19561112,20100510,20,5],[5334,19540807,20180618,20,5],[0,19561025,20090105,12,18],[3814,19520123,20090107,12,5],[5334,19570109,20090108,12,18],[6041,19590729,20090129,12,7],[5506,19590922,20090105,12,3],[10902,19560527,20090108,12,3],[18792,19570623,20111226,12,15],[10126,19521230,20100209,20,5],[6617,19580331,20090102,12,4],[6781,19511028,20090102,12,4],[5334,19580403,20100506,20,5],[5334,19590615,20100427,20,5],[5334,19581226,20160606,20,5],[5334,19550822,20090109,12,12],[6287,19550727,20120329,12,5],[5334,19580325,20090102,12,16],[7363,19571019,20081222,12,5],[7283,19530301,20120601,12,9],[8272,19510528,20081222,12,5],[14440,19531223,20110624,12,18],[9269,19591024,20190121,12,5],[12204,19520518,20120329,12,5],[20865,19500803,20090119,12,5],[5334,19560821,20090403,12,6],[5334,19580815,20100203,20,5],[5334,19530919,20090114,12,5],[11123,19551002,20081216,12,5],[5334,19610112,20100428,20,5],[6012,19520509,20090116,12,21],[5334,19560112,20201218,20,5],[5334,19601202,20160707,20,5],[6140,19500428,20090106,12,9],[5334,19580829,20090109,12,12],[5334,19530407,20111201,12,4],[5334,19540327,20160601,20,5],[6742,19571127,20020514,12,0],[10185,19570208,20081219,12,8],[10126,19570922,20190726,12,16],[5334,19561010,20090112,12,18],[5938,19510427,20090102,12,13],[8159,19530528,20090115,12,20],[18734,19510301,20140102,12,5],[4049,19561224,20101220,12,5],[5334,19570319,20081229,12,5],[10419,19540412,20090107,12,9],[24209,19501019,20140116,12,15],[5334,19541113,20151130,20,5],[5997,19600306,20140716,12,8],[5334,19600927,20090102,12,16],[5334,19540203,20100507,20,5],[5334,19530130,20140203,20,5],[4077,19560316,20150702,12,5],[5334,19600730,20090107,12,5],[5334,19591130,20131122,20,5],[7860,19570628,20190118,12,5],[10126,19510707,20110204,12,5],[5334,19610303,20100521,20,5],[5334,19600818,20090108,12,5],[4077,19541007,20200928,12,10],[5334,19581202,20100505,20,5],[4885,19601111,20161128,20,5],[6988,19590628,20090108,12,18],[5334,19590812,20090105,12,18],[8431,19541221,20090102,12,13],[5334,19591121,20090114,12,18],[12235,19500912,20090108,12,18],[5334,19580702,20100503,20,5],[10126,19540907,20111227,12,4],[8387,19581002,20081223,12,5],[5334,19580713,19950211,12,5],[5806,19520923,20110926,12,4],[7250,19600531,20090112,12,21],[5334,19550906,20090102,12,17],[9962,19550612,20090102,12,12],[10126,19550315,20081223,12,15],[5334,19590126,20190618,20,5],[5334,19540418,20100430,20,5],[18220,19600126,20190110,12,5],[5334,19520605,20120329,12,13],[5334,19590429,20090102,12,1],[5626,19600414,20090129,12,3],[5334,19501226,20100511,20,5],[5334,19580818,20090102,12,13],[5334,19581112,20160602,20,5],[5334,19590216,20100505,20,5],[5334,19561202,20151203,20,5],[6960,19520325,20111018,12,5],[5334,19610126,20120821,12,4],[5334,19510922,20081229,12,14],[5334,19540816,20100430,20,5],[6560,19561230,20081230,12,5],[5334,19561105,20090109,12,12],[5334,19600208,20200406,20,5],[5334,19590827,20090102,12,13],[5334,19550509,20090417,12,5],[13418,19510205,20081219,12,5],[10126,19530324,20100203,20,5],[5334,19560823,20100430,20,5],[5513,19521216,20090105,12,8],[5334,19550928,20100503,20,5],[5334,19550905,20100503,20,5],[5334,19550414,20020514,12,0],[7509,19590102,20110819,12,18],[5334,19560710,20201218,20,5],[10126,19530818,20081218,12,15],[5334,19570616,20160722,20,5],[5334,19590812,20100505,20,5],[5334,19520718,20120504,12,6],[5513,19500711,20090121,12,5],[5334,19590304,20100428,20,5],[5334,19560809,20081216,12,5],[3814,19530330,20110704,15,5],[10040,19541113,20081229,12,5],[6066,19561123,20090109,12,12],[10353,19551225,20090105,12,7],[7851,19530929,20090119,12,18],[7374,19570828,20110603,12,9],[5509,19510510,20090120,12,12],[9864,19540924,20090108,12,18],[3814,19540926,20120102,15,5],[6166,19570803,20090112,12,5],[9004,19540331,20081229,12,5],[7319,19520531,20081218,12,19],[5334,19600511,20090116,12,9],[3814,19521025,20120102,15,5],[3814,19540418,20140203,15,5],[9030,19560713,20090115,12,20],[6560,19591011,20090106,12,5],[9864,19560310,20120420,12,15],[7263,19580825,20090126,12,19],[3814,19610113,20190401,12,5],[3814,19610303,20140204,12,5],[5916,19600603,20110701,12,7],[5513,19550629,20090102,12,9],[5334,19520626,20090102,12,4],[6622,19541128,20090109,12,5],[9311,19580217,20190111,12,5],[7551,19591021,20090120,12,3],[3814,19570421,20110808,15,5],[3814,19590905,20110711,15,5],[6688,19570926,20090119,12,6],[6136,19550624,20090102,12,4],[15852,19500629,20090204,12,19],[3814,19571205,20110704,15,5],[4885,19540406,20200728,12,5],[18840,19510820,20120528,12,6],[16003,19540913,20090107,12,9],[5334,19570620,20090116,12,14],[5334,19600408,20081229,12,5],[5334,19510123,20090105,12,5],[6737,19551014,20081216,12,5],[9326,19530503,20090122,12,16],[5334,19570601,20090105,12,18],[7385,19520301,20090102,12,9],[3814,19520428,20110704,15,5],[5334,19600802,20081230,12,10],[5800,19511221,20110725,15,5],[8311,19590529,20121009,12,10],[5334,19500610,20110725,15,5],[11110,19600523,20150106,12,5],[9070,19580731,20190114,12,5],[6224,19560703,20210922,12,16],[3814,19590205,20140701,15,5],[5334,19570302,20081219,12,5],[13566,19501026,20090102,12,12],[9132,19511108,20090122,12,7],[3814,19580924,20110704,15,5],[9146,19580917,20120524,12,5],[3814,19550409,20110808,15,5],[3814,19550331,20110808,15,5],[5334,19520507,20090601,12,5],[5334,19560221,20081218,12,5],[14107,19520404,20090327,12,9],[5243,19610130,20231101,12,5],[4554,19540203,20160601,15,5],[9661,19530214,20081220,12,15],[13036,19530224,20020514,12,0],[8129,19560623,20121008,12,15],[5334,19590219,20090109,12,19],[10126,19510204,20090102,12,16],[9559,19590523,20210727,12,10],[6950,19550926,20111128,12,3],[3814,19520616,20121009,15,5],[6108,19580306,20090120,12,9],[5334,19590125,20081229,12,14],[6998,19590719,20210106,12,5],[9010,19511206,20120828,12,17],[5862,19551115,20120924,12,5],[5334,19580319,20110704,15,5],[15631,19540320,20130113,15,5],[6166,19580120,20090112,12,5],[13668,19520111,20090105,12,7],[18289,19560614,20081229,12,5],[8293,19550327,20090416,12,6],[9492,19520131,20090105,12,18],[8651,19550827,20120913,12,7],[3814,19570727,20110704,15,5],[7183,19600510,19950111,12,10],[8434,19560701,20090107,12,21],[15190,19510901,20090105,12,7],[5334,19560324,20090601,12,9],[9972,19570921,20081230,12,5],[6784,19551125,20120417,12,21],[6290,19591123,20120508,12,7],[3814,19571101,20120614,15,5],[8899,19561123,20111201,12,21],[3814,19560913,20120104,15,5],[5564,19560223,20111201,12,4],[10126,19550305,20090414,13,5],[10126,19530920,20090813,14,5],[10126,19521218,20100107,14,5],[11807,19581008,20090708,14,5],[11807,19510410,20090811,14,5],[11018,19570612,20100705,14,5],[11487,19500908,20090706,14,5],[11585,19550219,20090901,14,5],[11464,19540705,20091201,14,5],[11267,19510612,20090701,14,5],[3814,19520820,20110704,15,5],[10996,19550430,20090701,14,5],[5334,19520710,20110704,15,5],[10126,19511119,20100705,14,5],[11873,19530519,20160829,14,5],[12063,19501011,20100616,14,5],[11768,19571208,20100414,14,5],[11487,19560912,20090630,14,5],[12168,19550623,20110110,14,5],[3814,19570428,20170801,15,5],[11487,19521019,20091201,14,5],[12034,19570608,20090901,14,5],[11389,19580124,20090708,14,5],[10126,19600216,20090901,14,5],[10126,19560420,20090813,14,5],[11487,19580401,20090818,14,5],[10126,19520630,20090706,14,5],[13645,19561019,20120420,14,5],[3814,19570419,20121005,14,5],[10126,19500709,20090629,14,5],[3814,19530425,20161201,15,5],[11366,19560610,20090708,14,5],[11487,19570329,20090701,14,5],[3814,19570607,20110704,15,5],[3814,19531107,20161201,15,5],[9207,19500924,20111101,15,5],[5334,19580730,20100202,15,5],[5334,19541119,20110704,15,5],[3814,19570113,20120102,15,5],[3814,19500528,20110725,15,5],[5334,19530408,20110725,15,14],[3814,19570117,20110704,15,5],[3814,19500807,20130102,15,5],[5334,19510108,20130401,15,5],[11765,19560725,20120601,15,5],[3814,19571106,20160601,15,5],[5334,19551212,20100526,15,5],[3814,19561201,20110704,15,5],[10126,19520119,20110725,15,5],[3814,19501108,20110704,15,5],[3814,19580328,20110808,15,5],[3814,19570130,20111104,15,5],[5377,19560420,20100201,15,5],[3814,19590327,20110704,15,5],[3814,19590530,20110704,15,5],[5334,19580613,20100201,15,5],[5334,19550120,20110915,15,5],[3814,19531209,20110725,15,5],[3814,19551005,20110808,15,5],[10126,19501103,20110704,15,5],[3814,19520917,20120702,15,5],[3814,19571007,20110704,15,5],[3814,19590821,20110704,15,5],[3814,19550718,20110706,15,5],[8413,19510808,20161201,15,5],[5334,19570422,20111106,15,5],[3814,19551020,20110704,15,5],[3814,19510704,20110808,15,5],[3814,19610402,20110704,15,5],[3814,19540531,20110725,15,5],[3418,19501230,20110704,15,5],[3814,19521220,20111103,15,5],[3814,19581124,20110704,15,5],[3869,19600725,20220125,15,21],[3814,19520620,20141201,15,5],[8723,19551027,20130902,15,5],[3814,19520327,20110725,15,5],[3814,19551101,20110704,15,5],[3814,19510515,20110808,15,5],[3814,19540204,20111101,15,5],[3814,19560520,20110708,15,5],[0,19540720,20100201,15,5],[3814,19591001,20140203,15,5],[4795,19531130,20110701,15,16],[5334,19601219,20110704,15,5],[3814,19511101,20111101,15,5],[3814,19571128,20110808,15,5],[3814,19571104,20110704,15,5],[3814,19550814,20111104,15,5],[3814,19590319,20120102,15,5],[7217,19571228,20110704,15,5],[5334,19580511,20110704,15,5],[5334,19571205,20100201,15,5],[3814,19510117,20110704,15,5],[3814,19510708,20110704,15,16],[5334,19600905,20100202,15,5],[3814,19531222,20140203,15,5],[3814,19530630,20110808,15,5],[3814,19580701,20110704,15,5],[13953,19510417,20110725,15,14],[3814,19610126,20161201,15,14],[5334,19581109,20100201,15,5],[3814,19571229,20130111,15,5],[4642,19520804,20110706,15,5],[3814,19510812,20110704,15,16],[13237,19511222,20161201,15,5],[3814,19530304,20110704,15,5],[3814,19520205,20110704,15,5],[3814,19580125,20110704,15,5],[3814,19570319,20110725,15,5],[3814,19590215,20110704,15,5],[3814,19570502,20110704,15,5],[3814,19590106,20110704,15,5],[3843,19570503,20110704,15,5],[4531,19520609,20120601,15,5],[5334,19590315,20100201,15,5],[5334,19511014,20110808,15,5],[5004,19581027,20200803,15,5],[0,19520316,20110704,15,5],[3814,19581016,20110704,15,5],[5334,19510625,20100201,15,5],[10126,19540302,20100525,15,5],[5334,19510422,20100201,15,5],[5334,19560804,20110704,15,5],[5334,19540924,20110725,15,5],[10126,19550421,20100202,15,5],[5334,19550714,20111103,15,5],[9001,19560515,20161201,15,5],[6694,19501011,20110704,15,5],[10126,19511119,20100518,15,16],[10126,19510113,20090708,15,5],[3814,19610412,20121005,15,5],[5334,19590726,20100201,15,5],[3814,19560525,20161201,15,5],[5334,19550817,20111103,15,5],[5334,19600522,20100201,15,5],[3814,19561019,20110704,15,5],[5334,19511002,20100204,15,5],[5403,19561224,20110808,15,5],[5334,19561224,20100201,15,5],[5334,19520324,20120104,15,5],[3814,19560310,20110704,15,5],[3814,19590109,20110704,15,5],[3814,19520604,20111011,15,14],[3814,19531116,20130107,15,5],[3814,19570107,20121005,15,5],[3814,19541222,20120502,15,14],[3814,19500710,20110704,15,5],[3814,19571119,20110704,15,5],[3814,19570807,20111101,15,5],[5334,19580208,20111101,15,5],[10126,19551209,20100201,15,21],[3814,19560810,20121010,15,5],[8391,19500917,20110707,15,5],[5334,19530629,20110704,15,5],[3814,19521116,20120102,15,5],[3814,19590111,20110711,15,16],[5334,19590321,20150708,15,5],[10974,19590730,20161201,15,5],[3814,19510223,20110704,15,5],[6300,19550410,20110704,15,5],[3814,19550316,20110704,15,5],[5334,19510502,20100201,15,5],[5334,19590807,20100201,15,5],[5334,19540605,20110725,15,5],[5334,19520612,20100201,15,5],[3814,19590820,20110704,15,16],[3814,19570704,20150701,15,5],[3814,19570212,20100201,15,5],[3814,19591224,20141201,15,5],[3814,19571122,20110704,15,5],[3814,19540105,20110704,15,5],[5334,19570512,20100201,15,5],[3814,19520717,20100201,15,5],[5334,19540425,20100201,15,5],[3814,19541020,20110725,15,14],[5334,19560603,20131202,15,5],[3814,19561009,20110704,15,5],[3814,19541115,20100201,15,5],[5334,19530329,20120528,15,5],[5334,19570220,20100201,15,5],[10126,19570522,20090618,15,5],[5334,19530319,20110704,15,5],[5334,19511201,20110725,15,5],[3814,19511213,20121001,15,16],[10126,19610226,20100514,15,16],[3814,19580828,20110704,15,5],[5334,19600225,20110725,15,5],[5334,19590805,20161201,15,5],[3814,19520408,20161201,15,5],[5334,19610122,20100201,15,5],[5334,19551014,20100201,15,5],[11830,19530407,20090622,15,5],[3814,19570130,20110704,15,5],[5334,19550215,20100526,15,5],[3814,19580815,20110704,15,5],[4885,19550514,20231101,12,7],[3814,19500805,20110704,15,16],[10004,19510809,20111110,12,9],[5334,19560929,20090105,12,5],[5334,19570617,20090120,12,21],[5334,19581207,20100201,15,5],[4885,19580921,20111004,15,5],[6397,19550601,20081219,12,15],[12406,19521119,20090102,12,9],[13165,19560101,20190121,12,5],[5334,19580208,20081226,12,5],[6001,19600617,20090102,12,13],[7951,19590402,20081219,12,5],[5334,19610412,20100205,15,5],[10126,19541106,20100203,15,5],[8521,19571113,20090105,12,18],[5808,19531108,20090107,12,7],[6773,19560223,20090112,12,5],[3418,19511208,20110112,15,5],[5334,19591005,20081222,12,5],[8157,19520701,20090112,12,20],[8963,19580725,20090112,12,21],[7819,19571202,20140623,12,9],[7422,19590628,20081219,12,5],[5334,19531008,20090112,12,20],[5334,19530113,20100223,15,21],[5334,19570430,20090102,12,5],[15348,19530402,20081218,12,15],[5334,19511022,20110729,15,14],[5334,19600628,20100201,15,5],[6131,19520906,20100412,12,8],[8263,19541116,20081222,12,5],[7233,19551129,20081226,12,5],[5334,19580622,20090115,12,20],[5445,19570926,20090112,12,5],[7520,19511011,20090102,12,4],[5334,19610108,20090105,12,1],[11300,19550312,20081218,12,5],[5334,19580803,20090109,12,21],[5334,19571222,20030326,12,7],[5334,19591230,20081223,12,5],[26914,19500731,20110601,16,5],[5334,19570915,20090105,12,18],[5334,19600309,20090126,16,5],[16056,19501009,20090109,16,5],[5830,19590316,20081230,12,5],[5334,19610122,20090112,12,21],[4885,19530611,20130307,17,5],[5334,19610215,20081224,12,5],[5334,19600614,20111205,12,5],[6166,19590725,20090115,12,21],[5547,19540724,20090102,12,16],[10126,19580525,20081231,12,5],[7805,19610308,20081217,12,5],[11684,19550109,20090518,12,21],[9934,19580221,20231101,12,5],[3814,19560802,20140922,18,5],[12543,19530321,20081222,12,5],[5679,19500915,20081229,12,14],[12141,19550701,20090102,12,4],[5334,19600117,20120319,18,5],[6255,19510322,20110110,12,5],[10051,19580808,20231101,12,5],[5934,19580423,20090105,12,18],[6416,19540923,20090105,12,18],[7182,19561025,20090105,12,5],[6284,19571206,20090128,12,5],[5334,19600731,20090112,12,21],[5446,19570228,20090107,12,5],[6542,19600213,20081230,12,5],[8944,19541025,20090128,12,5],[6804,19610323,20090102,12,16],[5334,19560605,20090106,12,5],[7374,19580614,20090423,12,6],[6760,19541105,20200728,12,5],[5334,19551228,20090108,12,5],[5334,19590831,20100503,18,5],[5334,19560121,20081222,12,5],[5334,19610329,20100503,19,5],[5334,19601011,20120605,19,5],[5334,19581124,20100427,19,5],[5334,19561019,20140714,19,5],[5334,19590430,20100623,19,5],[5334,19560820,20100503,19,5],[5334,19590510,20100705,19,18],[5334,19520626,20110103,19,3],[5334,19600109,20100428,19,16],[5334,19550221,20140709,19,5],[5334,19530303,20100507,19,5],[5334,19590511,20150612,19,16],[5334,19510321,20100426,19,5],[5334,19550812,20100524,19,5],[5334,19610313,20180509,19,5],[10126,19560217,20120604,19,5],[4077,19580214,20231120,19,18],[10240,19541218,20210223,19,5],[5334,19570920,20100428,19,5],[5334,19600919,20100513,19,5],[5334,19580918,20120604,19,5],[5334,19540823,20100423,19,5],[10126,19561026,20151009,19,14],[5334,19520909,20100507,19,5],[5334,19541130,20120801,19,18],[5334,19610318,20150707,19,18],[5334,19580317,20141103,19,18],[5334,19541217,20100512,19,5],[5334,19540919,20100422,19,5],[5334,19610128,20150707,19,18],[5334,19570715,20100503,19,16],[4077,19600217,20240711,19,5],[10126,19500604,20100712,19,4],[3869,19551225,20241213,19,18],[5334,19600927,20100415,19,5],[5334,19590629,20100527,19,5],[5334,19550831,20100505,19,5],[5334,19550722,20100527,19,5],[5334,19570728,20100303,19,5],[5334,19590928,20100507,19,5],[5334,19560531,20110103,19,3],[5334,19601008,20140701,19,18],[5334,19570222,20100507,19,5],[5334,19560402,20100719,19,3],[5334,19511219,20100506,19,18],[5334,19560325,20100423,19,5],[8229,19520218,20090106,12,9],[5334,19510827,20090113,12,5],[7520,19510721,20090107,12,9],[5334,19530315,20100505,20,5],[10126,19540716,20090109,12,5],[5648,19510107,20090106,12,5],[5334,19590205,20100430,20,5],[11038,19590614,20090112,12,7],[5334,19590908,20090102,12,16],[5334,19600731,20100510,20,5],[5334,19520418,20100420,20,5],[5334,19560525,20150813,20,5],[5334,19581204,20100503,20,5],[5334,19550914,20100426,20,5],[5334,19541230,20100422,20,5],[5334,19561206,20100507,20,5],[10126,19540825,20231101,12,5],[5334,19550921,20100514,20,5],[4885,19571005,20120910,20,5],[5334,19590107,20090106,12,21],[5334,19551211,20100428,20,5],[2712,19511024,20201202,20,5],[5334,19590302,20100511,20,5],[5334,19540326,20100803,20,5],[5334,19540418,20100512,20,5],[8076,19540630,20170418,12,5],[5334,19601111,20201218,20,5],[5334,19530303,20100422,20,5],[5334,19540605,20190611,20,5],[5334,19540419,20150126,20,5],[5334,19580817,20081222,12,5],[5334,19590517,20100505,20,5],[3814,19571222,20090115,12,18],[5334,19530904,20110621,20,5],[6214,19521106,20090415,12,9],[5334,19550111,20190614,20,5],[5334,19591125,20200723,20,5],[5799,19590615,20090105,12,18],[5334,19610317,20090114,12,21],[7317,19540410,20090102,12,9],[5334,19550310,20190611,20,5],[5334,19590425,20100514,20,5],[5659,19520101,20090102,12,16],[5334,19600313,20090109,12,21],[6259,19560210,20090113,12,5],[5334,19580711,20100504,20,5],[5983,19570403,20081219,12,5],[7354,19540421,20110603,12,5],[5556,19500928,20090413,12,5],[5334,19550326,20100503,20,5],[5334,19590804,20100427,20,5],[5378,19581009,20090102,12,16],[5334,19590305,20090107,12,18],[5562,19530508,20090105,12,7],[6142,19551217,20090105,12,7],[5334,19520705,20100506,20,5],[7296,19530201,20081226,12,5],[6055,19561221,20090105,12,18],[10126,19550608,20100604,20,5],[3814,19540530,20110110,20,5],[5334,19560723,20100430,20,5],[5334,19561024,20081223,12,5],[5334,19591022,20100505,20,5],[5334,19540623,20090120,12,18],[3814,19530308,20100507,20,5],[3869,19581216,20211109,20,5],[10126,19540705,20100823,20,5],[5334,19510813,20120625,20,5],[5334,19561202,20100420,20,5],[7282,19560125,20090115,12,5],[7415,19560402,20090106,12,5],[7076,19561126,20100325,12,21],[5334,19580629,20110606,20,5],[5334,19550118,20110915,20,5],[10126,19600715,20090202,12,5],[6757,19531105,20090115,12,5],[5334,19560527,20100429,20,5],[3814,19560629,20100422,20,5],[3814,19530706,20100415,20,5],[5334,19521021,20141201,20,5],[5334,19570915,20101223,20,5],[5334,19590226,20100602,20,5],[7676,19540309,20081219,12,5],[8086,19531101,20230213,20,5],[10126,19580427,20100604,20,5],[5334,19600229,20100501,20,5],[5334,19591106,20100507,20,5],[5334,19591010,20090824,22,5],[10126,19550825,20090803,22,5],[4885,19541011,20230701,22,5],[5334,19520726,20230701,22,5],[5334,19570105,20100520,20,5],[5334,19540802,20230701,22,5],[10126,19520309,20090806,22,5],[5334,19510313,20090812,22,5],[5334,19541227,20090811,22,5],[10126,19511228,20090811,22,5],[10126,19590228,20090414,21,5],[5334,19580306,20090805,22,5],[5334,19570220,20090413,21,5],[8001,19600924,20230701,22,5],[10126,19520304,20090903,21,5],[5334,19510613,20090824,22,5],[4885,19580317,20130429,18,5],[5334,19581017,20100407,18,5],[5334,19540505,20130930,18,5],[10126,19591006,20090406,21,5],[5334,19570725,20110812,18,5],[5334,19600510,20080318,21,5],[10126,19550125,20090409,21,5],[5334,19571211,20140211,18,5],[5334,19590516,20090401,21,5],[3869,19550807,20220718,18,5],[5334,19570825,20100325,18,5],[4885,19510403,20140409,18,5],[5334,19580523,20090820,22,5],[3814,19511025,20090828,22,5],[10126,19520419,20090811,22,5],[4885,19570122,20151028,18,5],[5334,19570717,20090810,22,5],[5334,19551110,20081121,18,5],[10126,19590611,20100325,18,5],[5334,19600420,20101018,18,5],[5334,19550202,20090803,22,5],[5334,19510707,20090825,22,5],[5334,19581028,20090810,22,5],[5334,19570604,20081121,18,5],[5334,19590324,20130117,18,5],[4885,19550831,20230701,22,5],[3814,19530515,20090805,22,5],[5334,19571211,20090813,22,5],[5334,19570630,20090105,24,5],[5334,19600909,19941212,26,5],[10126,19501223,20090821,22,5],[5334,19610127,19941101,26,5],[3814,19530729,20090812,22,5],[5334,19500910,20080114,23,5],[12034,19540711,20091210,14,5],[10126,19530810,20090706,14,5],[10126,19560323,20210802,14,5],[5334,19530428,20141030,23,5],[3814,19580608,20220713,14,5],[7926,19550218,20240111,14,5],[5334,19550816,20090701,23,5],[5334,19540902,20111208,23,5],[5334,19590713,20090311,23,5],[5334,19610312,20090217,23,5],[5334,19580320,20090203,23,5],[5334,19570105,20111208,23,5],[5334,19590720,20090202,23,5],[5334,19561008,20220725,23,5],[5334,19540323,20210809,23,5],[5334,19530612,20090106,23,5],[5334,19580530,20090206,23,5],[5334,19521129,20090211,23,5],[5334,19521116,20111208,23,5],[5334,19510419,20090512,23,5],[10126,19510801,20130610,23,5],[5334,19610410,20120206,23,5],[10126,19580720,20090407,23,5],[3173,19540322,20160617,23,5],[3814,19570324,20120912,23,5],[5334,19590505,20161109,23,5],[5334,19590228,20090106,23,5],[5334,19590205,20111208,23,5],[5334,19561015,20090209,23,5],[5334,19521218,20090107,23,5],[5334,19550627,20090203,23,5],[5334,19541107,20090204,23,5],[5334,19561211,20090129,23,5],[5334,19511104,20090213,23,5],[5334,19570830,20090109,23,5],[5334,19500707,20090209,23,5],[5334,19600501,20090210,23,5],[10126,19520310,20090204,23,5],[10126,19571121,20090206,23,5],[5334,19520824,20090107,23,5],[5334,19541106,20090129,23,5],[10945,19540313,20220914,23,5],[5334,19590316,20090203,23,5],[5334,19561023,20111205,23,5],[5334,19571226,20090210,23,5],[10126,19590602,20090403,23,5],[5334,19600323,20090327,23,5],[5334,19600626,20090210,23,5],[5334,19590917,20090126,23,5],[5334,19581109,20090210,23,5],[5334,19531019,20120206,23,5],[5334,19560129,20111208,23,5],[5334,19530724,20151130,23,5],[5334,19580802,20090515,23,5],[5334,19551130,20090108,23,5],[5334,19520613,20090506,23,5],[5334,19600914,20090107,23,5],[5334,19540925,20111208,23,5],[5334,19551108,20111208,23,5],[5334,19551016,20111208,23,5],[5334,19501106,20090209,23,5],[5334,19530414,20090212,23,5],[5334,19580204,20090702,23,5],[5334,19540618,20111209,23,5],[10126,19531203,20090319,23,5],[5334,19560414,20090108,23,5],[5334,19500717,20111208,23,5],[10126,19540923,20090114,23,5],[5334,19540527,20130221,23,5],[5334,19521212,20090624,23,5],[5334,19541114,20090106,23,5],[3418,19520513,20140212,23,5],[5334,19541024,20111208,23,5],[5334,19570131,20090127,23,5],[10126,19501226,20090302,23,5],[5334,19560718,20111208,23,5],[5334,19520114,20151123,23,5],[5334,19530112,20120102,23,5],[10126,19560420,20090402,23,5],[5334,19570307,20090518,23,5],[5334,19511020,20090209,23,5],[5334,19530504,20090312,23,5],[5334,19520923,20090210,23,5],[5334,19530523,20120206,23,5],[5334,19550329,20090304,23,5],[5334,19570701,20090203,23,5],[5334,19571216,20160628,23,5],[5334,19581220,20111208,23,5],[10126,19530523,20100204,23,5],[10126,19501231,20091201,23,5],[5334,19550523,20120206,23,5],[5334,19550527,20120206,23,5],[5334,19590816,20111212,23,5],[10126,19550404,20090107,23,5],[5334,19590513,20090701,23,5],[10126,19580103,20090331,23,5],[5334,19580529,20090210,23,5],[5334,19580510,20141103,23,5],[5334,19511010,20090108,23,5],[5334,19571002,20090119,23,5],[5334,19570324,20090107,23,5],[5334,19510715,20111208,23,5],[5334,19510415,20090515,23,5],[5334,19560522,20090122,23,5],[5334,19521101,20090817,23,5],[5334,19550803,20111205,23,5],[5334,19520426,20120130,23,5],[0,19511228,20090109,23,5],[5334,19550123,20111208,23,5],[5334,19560820,20120910,23,5],[5334,19570425,20090423,23,5],[5334,19520103,20090216,23,5],[5334,19580314,20090113,23,5],[5334,19610126,20090518,23,5],[4885,19521226,20131109,23,5],[5334,19511227,20090205,23,5],[10126,19581016,20090306,23,5],[3814,19610129,20121129,23,5],[5334,19560108,20120206,23,5],[10126,19560221,20090112,23,5],[5334,19561028,20111208,23,5],[5334,19581224,20201229,23,5],[5334,19590902,20111215,23,5],[5334,19570703,20111208,23,5],[5334,19530603,20090114,23,5],[5334,19501210,20080107,23,5],[10126,19560618,20151013,23,5],[5334,19550406,20090210,23,5],[10126,19570914,20090403,23,5],[5334,19541208,20220927,23,5],[5334,19551120,20090209,23,5],[5334,19510428,20090306,23,5],[5334,19560724,20090519,23,5],[5334,19560714,20091111,23,5],[5334,19550522,20090128,23,5],[5334,19531001,20090209,23,5],[5334,19551119,20090506,23,5],[3814,19550726,20100302,23,5],[5334,19520209,20090514,23,5],[5334,19570321,20090504,23,5],[5334,19510309,20120116,23,5],[5334,19541203,20110228,23,5],[5334,19510830,20130318,23,5],[5334,19561129,20130319,23,5],[5334,19540116,20220808,23,5],[5334,19590324,20090112,23,5],[5334,19610205,20090206,23,5],[10126,19500424,20090209,23,5],[5334,19571010,20090108,23,5],[5334,19580125,20090109,23,5],[5334,19550604,20090210,23,5],[5334,19540117,20150612,23,5],[5334,19560505,20090519,23,5],[5334,19521215,20111208,23,5],[5334,19580515,20090211,23,5],[5334,19520615,20130611,23,5],[5334,19550902,20120116,23,5],[5334,19601026,20090105,23,5],[5334,19520523,20090121,23,5],[5334,19521213,20090211,23,5],[5334,19550608,20111208,23,5],[5334,19530917,20120116,23,5],[4885,19570605,20140203,23,5],[5334,19510417,20111208,23,5],[5334,19521115,20090123,23,5],[5334,19570516,20100129,23,5],[5334,19590627,20090129,23,5],[5334,19541123,20120910,23,5],[5334,19500910,20090116,23,5],[5334,19551228,20111208,23,5],[5334,19541130,20120116,23,5],[5334,19601025,20090202,23,5],[10126,19550321,20090901,23,5],[5334,19501028,20111208,23,5],[4885,19580215,20131125,23,5],[5334,19580524,20121008,23,5],[5334,19601013,20090403,23,5],[5334,19570427,20090108,23,5],[10126,19570515,20090204,23,5],[10126,19501009,20090129,23,5],[5334,19500827,20090202,23,5],[10126,19511120,20090401,23,5],[5334,19500508,20090129,23,5],[5334,19540302,20151007,23,5],[5334,19520528,20090811,23,5],[5334,19540801,20191017,23,5],[5439,19521115,20090115,23,5],[5334,19510219,20120503,23,5],[5334,19590509,20090209,23,5],[5334,19580816,20111208,23,5],[10126,19600707,20090601,23,5],[5334,19551112,20090603,23,5],[5334,19560211,20090211,23,5],[5334,19580514,20111208,23,5],[10126,19530102,20090206,23,5],[5334,19591209,20090205,23,5],[5334,19560626,20090121,23,5],[5334,19550213,20090706,23,5],[3814,19600118,20200807,23,5],[5334,19580621,20120503,23,5],[10126,19580415,20090119,23,5],[5334,19530608,20090109,23,5],[5334,19580429,20090129,23,5],[5334,19570330,20130617,23,5],[5334,19580825,20090326,23,5],[5334,19551030,20090313,23,5],[5334,19570109,20090316,23,5],[5334,19581231,20090109,23,5],[4885,19560912,20141017,23,5],[5334,19550318,20090114,23,5],[5334,19560502,20120116,23,5],[10126,19520702,20140919,23,5],[5334,19610101,20081219,24,5],[5334,19591105,20090102,24,5],[5334,19580617,20090217,23,5],[5334,19530415,20111227,24,5],[5334,19530824,20081219,24,5],[5334,19531120,20090116,24,5],[5334,19601113,20081218,24,5],[10126,19520104,20071218,23,5],[5334,19541022,20090213,23,5],[39644,19570427,19900427,25,5],[3173,19541120,20160623,23,5],[39644,19560829,19900427,25,5],[26772,19561212,19900427,25,5],[5334,19590401,20090108,23,5],[8934,19521028,20201026,25,5],[20826,19510702,20180903,25,5],[20462,19550107,19900427,25,5],[29035,19560526,19900427,25,5],[30182,19580818,19900427,25,5],[31864,19590321,19900427,25,5],[16363,19590927,20231208,25,5],[24352,19570117,19900427,25,5],[14036,19520606,20181227,25,5],[37148,19510304,19900427,25,5],[21274,19540723,19900427,25,5],[20712,19570514,19900427,25,5],[30979,19510814,20190225,25,5],[10126,19560813,20091013,25,5],[10483,19510314,19900427,25,5],[21352,19530507,19900427,25,5],[17147,19580816,19900427,25,5],[21274,19530510,19900427,25,5],[21274,19541109,19900427,25,5],[32067,19560626,19900427,25,5],[20405,19520506,19900427,25,5],[5334,19540321,20140710,25,5],[5334,19540802,20151201,26,5],[5334,19601111,19941101,26,5],[4077,19561116,20160225,26,5],[5334,19570315,19941212,26,5],[28698,19540627,19900427,25,5],[26359,19520615,19900427,25,5],[10126,19570907,20141031,28,5],[5334,19600515,20110805,27,5],[5334,19570522,20090914,27,5],[3814,19560928,20100430,27,5],[5334,19520917,20100330,27,5],[5334,19520530,20090630,27,5],[3814,19501106,20131205,27,5],[3814,19530805,20091013,27,5],[3814,19520721,20100212,27,5],[5334,19590601,20090715,27,5],[5334,19610306,20090813,27,5],[3814,19520916,20091118,27,5],[5334,19520401,20120511,27,5],[3814,19570422,20100427,27,5],[5334,19511018,20100104,27,5],[5334,19520120,20091028,27,5],[3814,19550702,20131101,27,5],[3814,19590927,20100816,27,5],[5334,19560807,20131101,27,5],[3814,19530815,20110801,27,5],[3814,19590210,20091112,27,5],[3814,19540312,20131101,27,5],[3814,19570404,20231101,27,5],[5334,19571026,20150721,27,5],[5334,19500620,20210106,27,5],[3814,19510302,20090827,27,5],[10126,19550819,20141114,27,5],[10126,19540705,20100518,27,5],[5334,19510727,20100401,27,5],[4885,19560513,20231101,27,5],[3814,19551110,20100120,27,5],[3814,19580820,20100811,27,5],[3814,19521217,20091021,27,5],[3814,19540816,20110712,27,5],[3814,19551002,20231101,27,5],[3814,19590806,20091118,27,5],[5334,19560918,20090818,27,5],[5334,19591004,20090805,27,5],[3814,19570713,20120125,27,5],[5334,19581128,20131101,27,5],[3814,19560428,20090917,27,5],[3814,19520202,20211220,27,5],[3814,19591011,20110107,27,5],[3814,19540710,20070928,27,5],[3814,19570427,20101026,27,5],[10416,19561001,20200702,27,5],[3814,19540310,20150918,27,5],[5334,19520405,20090819,27,5],[5334,19521022,20090714,27,5],[3814,19610311,20140710,27,5],[3814,19610313,20091123,27,5],[3814,19580518,20100107,27,5],[5334,19550727,20131101,27,5],[10126,19610228,20090910,27,5],[3814,19590911,20100126,27,5],[5334,19561020,20090714,27,5],[5334,19570523,20120801,27,5],[3814,19540221,20091211,27,5],[5334,19521115,20100208,27,5],[5334,19541023,20100125,27,5],[5334,19590807,20090803,27,5],[7816,19560904,20131101,27,5],[3814,19591022,20091112,27,5],[3814,19580418,20140922,27,5],[3814,19510912,20110809,27,5],[5334,19581230,20090804,27,5],[5334,19570621,20090810,27,5],[5334,19540621,20090801,27,5],[5334,19531111,20071019,27,5],[10126,19530913,20091113,27,5],[5334,19530320,20100104,27,5],[5334,19510204,20100119,27,5],[5334,19520521,20090921,27,5],[5334,19570505,20090812,27,5],[3814,19550805,20091217,27,5],[3814,19590713,20090630,27,5],[3814,19580213,20091109,27,5],[5334,19560315,20091001,27,5],[3814,19580328,20110207,27,5],[5334,19560808,20091104,27,5],[3814,19560812,20100107,27,5],[3814,19540327,20091109,27,5],[5334,19570420,20090908,27,5],[3814,19580312,20091028,27,5],[5334,19520402,20100723,27,5],[3814,19551013,20100301,27,5],[3814,19550929,20130311,27,5],[3814,19550716,20100120,27,5],[5538,19520417,20090709,27,5],[3814,19570922,20100121,27,5],[4885,19570616,20110818,27,5],[5334,19570626,20091223,27,5],[5334,19560709,20091109,27,5],[5334,19540822,20150918,27,5],[5334,19550106,20090731,27,5],[3814,19531023,20090901,27,5],[5334,19610124,20091001,27,5],[3814,19580227,20131101,27,5],[3814,19601002,20121105,27,5],[3814,19571108,20231101,27,5],[3814,19530904,20111201,27,5],[3814,19570929,20101108,27,5],[3814,19521228,20110727,27,5],[4885,19610410,20110908,27,5],[0,19540820,20141118,27,5],[5334,19520817,20231101,27,5],[5334,19560117,20090731,27,5],[3814,19571226,20090903,27,5],[10126,19590525,20140822,27,5],[5334,19530202,20091028,27,5],[3814,19560102,20091015,27,5],[5334,19561114,20120719,27,5],[3814,19510414,20100810,27,5],[5334,19551223,20100105,27,5],[5334,19580425,20091105,27,5],[3814,19550705,20090908,27,5],[3814,19570411,20231101,27,5],[5334,19570111,20131101,27,5],[10126,19531005,20141022,27,5],[5334,19610220,20131206,27,5],[3814,19570307,20110722,27,5],[5334,19530914,20100219,27,5],[5334,19590422,20100226,27,5],[3418,19590429,20221116,27,5],[5334,19560506,20091001,27,5],[3814,19550921,20100115,27,5],[5334,19551022,20160128,27,5],[3814,19581025,20100810,27,5],[5334,19601117,20090714,27,5],[5334,19580810,20091030,27,5],[3724,19600530,20220901,27,5],[3814,19600822,20091001,27,5],[3814,19560528,20090630,27,5],[3814,19550311,20090803,27,5],[5334,19560310,20131210,27,5],[3814,19580906,20100209,27,5],[3814,19600319,20091109,27,5],[3418,19551205,20210802,27,5],[5334,19510904,20090810,27,5],[3814,19551028,20100201,27,5],[5334,19551212,20110719,27,5],[3814,19580219,20100115,27,5],[3814,19580831,20100811,27,5],[5334,19530809,20090714,27,5],[3814,19580629,20091118,27,5],[5334,19540609,20091110,27,5],[3814,19530707,20090714,27,5],[3814,19610120,20090713,27,5],[3992,19580927,20141117,27,5],[5334,19551222,20090811,27,5],[5334,19571006,20091113,27,5],[3814,19560516,20100325,27,5],[3814,19581103,20100811,27,5],[3814,19580425,20090713,27,5],[5334,19540730,20100423,27,5],[3814,19520516,20161101,27,5],[3814,19590405,20090901,27,5],[5334,19590518,20090804,27,5],[3814,19570620,20150918,27,5],[3814,19590513,20100308,27,5],[3814,19550918,20100128,27,5],[3814,19590312,20091217,27,5],[5334,19540506,20231101,27,5],[3814,19580522,20100326,27,5],[3418,19600918,20201122,27,5],[5334,19550928,20131101,27,5],[5334,19520104,20130429,27,5],[3814,19600326,20100120,27,5],[5334,19510503,20110304,27,5],[10126,19540617,20100705,27,5],[10126,19580515,20120717,27,5],[3814,19570911,20130722,27,5],[5334,19540828,20090714,27,5],[3814,19571009,20101214,27,5],[5334,19601116,20110113,27,5],[5334,19550421,20100108,27,5],[3814,19570310,20121101,27,5],[5334,19601218,20091104,27,5],[5334,19540117,20091106,27,5],[5334,19521117,20091013,27,5],[5334,19510205,20100126,27,5],[11200,19510829,20231101,27,5],[4230,19581021,20200702,27,5],[3814,19560709,20100121,27,5],[5334,19531101,20090415,27,5],[5334,19531217,20090921,27,5],[5334,19580628,20091001,27,5],[3814,19580620,20101007,27,5],[5334,19530323,20091217,27,5],[5785,19540127,20200703,27,5],[3814,19600905,20090803,27,5],[3814,19560801,20120118,27,5],[3814,19570729,20130116,27,5],[3814,19520504,20120124,27,5],[10126,19540701,20111222,27,5],[5334,19550802,20091104,27,5],[3814,19520430,20150918,27,5],[5334,19550423,20091019,27,5],[3814,19580319,20100923,27,5],[3814,19581017,20100105,27,5],[3814,19580814,20091217,27,5],[5334,19510101,20091124,27,5],[3814,19550427,20090803,27,5],[3814,19590106,20091001,27,5],[3814,19600505,20091116,27,5],[5334,19560907,20090803,27,5],[3814,19510801,20100511,27,5],[3814,19560508,20090901,27,5],[3814,19600719,20090713,27,5],[3814,19560925,20090904,27,5],[3814,19600811,20131101,27,5],[3814,19500507,20101228,27,5],[5334,19581001,20101026,27,5],[3814,19561203,20100727,27,5],[5334,19591204,20110204,27,5],[14060,19540629,20210112,27,5],[5334,19521018,20100520,27,5],[3814,19580720,20110117,27,5],[3814,19590319,20120515,27,5],[5334,19570313,20090713,27,5],[3814,19591206,20090901,27,5],[3814,19560511,20111107,27,5],[5334,19570412,20100805,27,5],[3814,19551120,20100226,27,5],[5334,19590210,20140707,27,5],[10126,19580320,20091030,27,5],[5334,19540705,20090901,27,5],[3814,19590829,20091019,27,5],[3814,19571230,20100126,27,5],[5334,19600724,20100802,27,5],[3814,19581220,20100128,27,5],[3814,19580725,20100107,27,5],[3814,19580128,20100729,27,5],[5334,19530811,20090910,27,5],[5334,19560817,20090910,27,5],[5334,19540108,20131101,27,5],[3418,19560212,20110121,27,5],[3814,19541115,20160812,27,5],[3814,19500617,20111107,27,5],[5334,19520501,20090902,27,5],[3814,19600905,20110819,27,5],[3814,19560415,20130116,27,5],[10126,19530224,20100330,27,5],[5334,19580501,20090901,27,5],[3814,19570330,20150918,27,5],[3814,19570103,20091001,27,5],[3814,19500608,20091015,27,5],[5334,19590302,20090803,27,5],[5334,19600213,20100607,27,5],[3814,19581201,20100705,27,5],[3814,19591202,20100609,27,5],[5334,19551003,20100126,27,5],[5334,19601127,20090805,27,5],[3814,19580107,20090805,27,5],[5334,19580303,20100126,27,5],[5334,19500419,20100922,27,5],[5334,19530226,20090908,27,5],[3814,19601105,20091001,27,5],[10126,19590216,20091022,27,5],[3814,19560411,20130425,27,5],[5334,19500527,20090331,27,5],[5334,19580624,20090805,27,5],[5334,19550110,20090714,27,5],[5334,19571112,20131101,27,5],[5334,19540424,20091103,27,5],[10126,19531201,20090409,27,5],[3814,19540703,20130116,27,5],[5334,19560119,20101015,27,5],[5334,19581212,20100105,27,5],[5334,19520305,20090817,27,5],[3814,19570621,20090803,27,5],[5334,19570226,20100121,27,5],[3814,19550121,20110207,27,5],[10126,19540515,20100802,27,5],[5334,19521122,20100329,27,5],[5334,19560101,20090921,27,5],[3814,19551212,20090803,27,5],[5334,19530808,20221219,27,5],[3814,19570828,20100503,27,5],[3814,19540814,20211005,27,5],[5334,19590307,20100126,27,5],[5334,19580203,20090713,27,5],[5334,19580503,20091005,27,5],[3814,19581103,20091217,27,5],[3814,19600515,20090921,27,5],[3814,19501207,20140704,27,5],[5334,19510816,20091001,27,5],[3814,19560824,20090921,27,5],[3814,19590605,20140721,27,5],[3814,19510207,20140717,27,5],[3814,19600903,20090813,27,5],[3814,19531109,20090901,27,5],[3814,19530424,20091030,27,5],[3814,19591219,20090408,27,5],[5334,19520831,20090818,27,5],[5334,19520113,20090805,27,5],[3814,19550720,20090714,27,5],[4885,19610202,20201215,27,5],[0,19590710,20091112,27,5],[3814,19531014,20130412,27,5],[5334,19600422,20131101,27,5],[3814,19590518,20100226,27,5],[3814,19600817,20141103,27,5],[5334,19500923,20110105,27,5],[10126,19520502,20100322,27,5],[5334,19571124,20090805,27,5],[10126,19520411,20120515,27,5],[3814,19550509,20100706,27,5],[3814,19560202,20091110,27,5],[10126,19571104,20091027,27,5],[5334,19510611,20140101,27,5],[4662,19590328,20240201,27,5],[5334,19580614,20141110,27,5],[3814,19590828,20090908,27,5],[0,19580115,20201217,27,5],[7061,19580925,20200227,27,5],[5788,19521205,20190204,27,5],[3814,19520820,20090918,27,5],[5334,19600621,20091027,27,5],[3814,19561209,20090817,27,5],[3814,19560411,20091001,27,5],[3814,19570818,20100928,27,5],[5334,19501106,20100107,27,5],[3814,19551218,20120508,27,5],[5334,19541020,20100407,27,5],[3814,19581123,20131101,27,5],[3814,19591127,20170117,27,5],[3814,19510726,20140929,27,5],[5334,19570330,20090903,27,5],[3814,19501126,20091008,27,5],[10126,19540927,20091103,27,5],[5334,19571207,20100125,27,5],[3814,19600221,20231101,27,5],[5334,19601230,20090921,27,5],[5334,19600209,20091116,27,5],[5334,19570320,20120723,27,5],[5334,19530207,20100202,27,5],[3814,19570220,20110114,27,5],[5334,19511015,20231101,27,5],[10126,19540716,20090818,27,5],[3814,19580929,20130123,27,5],[3814,19540926,20091001,27,5],[5334,19521206,20100510,27,5],[5334,19530715,20131101,27,5],[10126,19511127,20110117,27,5],[5334,19560111,20120511,27,5],[3814,19591029,20091123,27,5],[5334,19560202,20090803,27,5],[3814,19510330,20091229,27,5],[5334,19550127,20100316,27,5],[5334,19581210,20090717,27,5],[3814,19601110,20100201,27,5],[5334,19580123,20090713,27,5],[3814,19550730,20091016,27,5],[3814,19580224,20100106,27,5],[3814,19520527,20100126,27,5],[3814,19580304,20100809,27,5],[5334,19570923,20140714,27,5],[3814,19540715,20110727,27,5],[3814,19590801,20110802,27,5],[5334,19580330,20120515,27,5],[3814,19540213,20100105,27,5],[3814,19550325,20091109,27,5],[3814,19601020,20110901,27,5],[5334,19540731,20091106,27,5],[5334,19550924,20140827,27,5],[2712,19540425,20230801,27,5],[5334,19590528,20091001,27,5],[5334,19571019,20100120,27,5],[5334,19580810,20090909,27,5],[3814,19551016,20110715,27,5],[0,19570617,20000606,27,5],[5334,19510611,20100921,27,5],[3814,19560606,20091004,27,5],[5334,19601030,20110729,27,5],[5334,19540617,20090729,27,5],[5334,19580621,20161118,27,5],[3814,19600113,20090821,27,5],[5334,19590522,20091118,27,5],[5334,19610209,20090908,27,5],[3869,19610307,20211014,27,5],[3814,19591231,20120510,27,5],[5334,19540121,20090713,27,5],[3814,19600326,20100721,27,5],[3418,19610314,20210113,27,5],[5334,19551002,20140822,27,5],[5334,19580702,20191129,27,5],[5334,19550907,20100104,27,5],[3814,19570106,20091001,27,5],[3814,19540312,20100309,27,5],[5334,19560731,20090716,27,5],[5334,19500418,20100305,27,5],[3418,19590703,20240216,27,5],[3814,19600214,20110106,27,5],[3814,19520315,20091023,27,5],[10126,19510519,20141114,27,5],[5334,19540728,20091105,27,5],[9001,19530116,20250203,27,5],[5334,19600122,20091001,27,5],[3814,19550606,20131101,27,5],[5334,19580315,20090921,27,5],[3814,19561220,20091001,27,5],[3814,19591006,20090713,27,5],[5334,19570916,20091110,27,5],[5334,19520917,20131108,27,5],[10126,19501107,20120802,27,5],[3814,19610130,20130109,27,5],[3814,19550613,20131101,27,5],[5334,19501113,20090806,27,5],[5334,19530204,20120530,27,5],[5334,19590924,20091201,27,5],[5334,19560302,20091109,27,5],[3814,19610112,20091001,27,5],[3814,19571108,20110815,27,5],[3814,19580802,20091118,27,5],[3814,19511219,20130731,27,5],[5334,19531029,20110817,27,5],[5334,19540523,20090731,27,5],[4885,19570923,20150415,27,5],[5334,19570819,20100125,27,5],[5334,19510413,20141111,27,5],[5334,19510706,20091130,27,5],[5334,19501114,20090921,27,5],[5334,19610325,20091007,27,5],[5334,19530119,20090803,27,5],[10126,19600708,20110110,27,5],[5334,19530918,20110826,27,5],[5334,19521006,20090904,27,5],[3814,19550514,20091001,27,5],[3814,19591123,20090714,27,5],[3814,19520617,20090817,27,5],[3814,19530628,20100802,27,5],[5334,19520526,20090716,27,5],[5334,19591115,20090827,27,5],[5334,19581228,20110715,27,5],[3814,19590911,20091221,27,5],[3814,19601022,20120102,27,5],[5334,19520114,20090813,27,5],[5334,19560214,20140929,27,5],[5334,19590124,20091001,27,5],[5334,19580917,20100416,27,5],[5334,19591112,20191111,29,16],[5334,19581117,20191111,29,16],[5334,19560420,20191111,29,16],[5334,19560429,20191111,29,16]],"personas":[{"titulo":"Assistente administrativo","salario":7524.0,"anos":18.0,"incentivo":185204.0},{"titulo":"Motorista","salario":3814.0,"anos":16.0,"incentivo":83199.0},{"titulo":"Engenheiro(a)","salario":10126.0,"anos":17.0,"incentivo":237456.0}]}</script>
+<script>
+const RAW=JSON.parse(document.getElementById('pdidata').textContent);
+const C=RAW.const, PP=RAW.pp, ORG=C.orgList, UFL=C.ufList;
+const MULT=C.mult, TETO=C.teto, BUDGET=C.budget;
+const brl=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(n);
+const mi=n=>(n/1e6).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' mi';
+const int=n=>new Intl.NumberFormat('pt-BR').format(Math.round(n));
+const MESES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const tt=document.getElementById('tt');
+function showTT(h,e){tt.innerHTML=h;tt.style.opacity='1';moveTT(e);}
+function moveTT(e){const p=12;let x=e.clientX+p,y=e.clientY+p;if(x+tt.offsetWidth>innerWidth-8)x=e.clientX-tt.offsetWidth-p;if(y+tt.offsetHeight>innerHeight-8)y=e.clientY-tt.offsetHeight-p;tt.style.left=x+'px';tt.style.top=y+'px';}
+function hideTT(){tt.style.opacity='0';}
+const rampFor=i=>['var(--ramp1)','var(--ramp2)','var(--ramp3)','var(--ramp4)'][i];
+
+// ---- date helpers on yyyymmdd ----
+function ymd(v){return [Math.floor(v/10000),Math.floor((v%10000)/100),v%100];}
+function ageAt(b,py,pm,pd){const a=ymd(b);let y=py-a[0];if(pm<a[1]||(pm===a[1]&&pd<a[2]))y--;return y;}
+function monthsAt(r,ay,am,ad){const a=ymd(r);let t=(ay-a[0])*12+(am-a[1]);if(ad-a[2]>=15)t++;return Math.max(0,t);}
+// posição index -> [y,m] (day fixed 20). base index 0 = abr/2026
+const BASEIDX=C.pubLeiIdx; // 2026*12+4
+function idxToYM(i){const k=BASEIDX+i;const y=Math.floor((k-1)/12);const m=((k-1)%12)+1;return [y,m];}
+function ymLabel(y,m){return MESES[m-1]+'/'+String(y).slice(2);}
+
+// ---- state ----
+const S={pos:C.todayIdx-BASEIDX, minAge:75, ades:0.60, enc:0.11, hor:48, fator:1, org:-1, uf:-1};
+const DEF={...S};
+
+function posYMD(){const ym=idxToYM(S.pos);return [ym[0],ym[1],20];}
+
+function computeModel(){
+  const P=posYMD(),py=P[0],pm=P[1],pd=P[2];
+  let N=0,custo=0,econMes=0,teto=0,prop=0;
+  const faixa={'75-79':[0,0],'80-84':[0,0],'85-89':[0,0],'90+':[0,0]};
+  const orgAgg={};
+  for(let k=0;k<PP.length;k++){const p=PP[k];
+    if(S.org>=0&&p[3]!==S.org)continue;
+    if(S.uf>=0&&p[4]!==S.uf)continue;
+    const age=ageAt(p[1],py,pm,pd);
+    if(age<S.minAge)continue;
+    const ten=monthsAt(p[2],py,pm,pd);
+    const inc=Math.min(TETO,p[0]*(ten/12)*MULT*S.fator);
+    N++;custo+=inc;econMes+=p[0]*(1+S.enc);
+    const band=age<80?'75-79':age<85?'80-84':age<90?'85-89':'90+';
+    faixa[band][0]++;faixa[band][1]+=inc;
+    orgAgg[p[3]]=orgAgg[p[3]]||[0,0];orgAgg[p[3]][0]++;orgAgg[p[3]][1]+=inc;
+    if(inc>=TETO-1)teto++;else if(inc>0)prop++;
+  }
+  const economia=econMes*S.hor, liquido=economia-custo, payback=econMes>0?custo/econMes:0;
+  const orgArr=Object.keys(orgAgg).map(i=>({sig:ORG[+i],n:orgAgg[i][0],custo:orgAgg[i][1]})).sort((a,b)=>b.n-a.n).slice(0,8);
+  const faixaArr=Object.keys(faixa).map(b=>({band:b,n:faixa[b][0],custo:faixa[b][1]}));
+  return {N,custo,econMes,economia,liquido,payback,teto,prop,faixaArr,orgArr,
+    custoAdes:custo*S.ades,economiaAdes:economia*S.ades,liquidoAdes:liquido*S.ades,nAdes:Math.round(N*S.ades),
+    budgetPct:custo>0?BUDGET/custo:0,py,pm,pd};
+}
+
+// ---- cronograma (mensal abr-dez/26, depois anual) ----
+function computeCronograma(){
+  const buckets=[]; // {key, label, isMonth}
+  for(let m=4;m<=12;m++)buckets.push({y:2026,m,label:ymLabel(2026,m),isMonth:true});
+  for(let y=2027;y<=2036;y++)buckets.push({y,m:0,label:String(y),isMonth:false});
+  const bidx=(y,m)=>{ if(y===2026)return Math.max(0,m-4); return 9+(y-2027); };
+  const novos=new Array(buckets.length).fill(0), custoB=new Array(buckets.length).fill(0);
+  const pubY=2026,pubM=4,pubD=1;
+  for(let k=0;k<PP.length;k++){const p=PP[k];
+    if(S.org>=0&&p[3]!==S.org)continue;
+    if(S.uf>=0&&p[4]!==S.uf)continue;
+    const b=ymd(p[1]); const ey=b[0]+S.minAge, em=b[1], ed=b[2];
+    // data de elegibilidade = max(vigência, aniversário na idade mínima)
+    let dy=ey,dm=em,dd=ed;
+    if(ey<pubY||(ey===pubY&&em<pubM)){dy=pubY;dm=pubM;dd=pubD;}
+    if(dy>2036)continue; // fora do horizonte
+    let bi; if(dy<=2026)bi=bidx(2026,Math.max(4,dm)); else bi=bidx(dy,dm);
+    if(bi<0||bi>=buckets.length)continue;
+    const ten=monthsAt(p[2],dy,dm,dd);
+    const inc=Math.min(TETO,p[0]*(ten/12)*MULT); // valor cheio na elegibilidade
+    novos[bi]++; custoB[bi]+=inc;
+  }
+  let aN=0,aC=0; const out=[];
+  for(let i=0;i<buckets.length;i++){aN+=novos[i];aC+=custoB[i];
+    out.push({label:buckets[i].label,isMonth:buckets[i].isMonth,novos:novos[i],acumN:aN,custoAcum:aC});}
+  return out;
+}
+
+// ============ RENDER ============
+function renderHero(){
+  // snapshot na data de referência atual
+  const m=computeModel();
+  document.getElementById('m-base').textContent=int(C.totalBase);
+  const P=posYMD(); const dstr=(S.pos===C.todayIdx-BASEIDX)?('hoje · '+C.today):(String(P[2]).padStart(2,'0')+'/'+String(P[1]).padStart(2,'0')+'/'+P[0]);
+  const stats=[
+    {k:'Elegíveis ('+dstr+')',v:int(m.N),s:S.minAge+'+ anos, em exercício',hl:false},
+    {k:'Investimento (100%)',v:'R$ '+mi(m.custo),s:m.teto+' no teto · '+m.prop+' proporcionais',hl:false},
+    {k:'Economia de folha',v:'R$ '+mi(m.economia),s:'em '+S.hor+' meses',hl:false},
+    {k:'Payback médio',v:m.payback.toFixed(1).replace('.',',')+' <small>meses</small>',s:'salário + benefícios',hl:true},
+  ];
+  document.getElementById('heroStats').innerHTML=stats.map(s=>`<div class="stat ${s.hl?'accent':''}"><div class="k">${s.k}</div><div class="v tnum">${s.v}</div><div class="s">${s.s}</div></div>`).join('');
+}
+
+function renderKpis(m){
+  const bpct=Math.min(1,m.budgetPct);
+  const fits=m.custoAdes<=BUDGET;
+  const kpis=[
+    {k:'Elegíveis no cenário',v:int(m.N),s:'na data e nos recortes',cls:''},
+    {k:'Adesões estimadas',v:int(m.nAdes),s:Math.round(S.ades*100)+'% de adesão',cls:''},
+    {k:'Custo do incentivo',v:'R$ '+mi(m.custoAdes),s:'100%: R$ '+mi(m.custo),cls:''},
+    {k:'Impacto líquido',v:'R$ '+mi(m.liquidoAdes),s:'economia − incentivo',cls:'hl'},
+  ];
+  let html=kpis.map(x=>`<div class="kpi ${x.cls}"><div class="k">${x.k}</div><div class="v tnum">${x.v}</div><div class="s">${x.s}</div></div>`).join('');
+  // budget kpi
+  html+=`<div class="kpi ${fits?'':'warn'}" style="grid-column:1/-1">
+    <div class="k">Aderência ao orçamento LOA 2026 (R$ 61,8 mi)</div>
+    <div class="v tnum">${fits?'Dentro do orçamento':'Excede em R$ '+mi(m.custoAdes-BUDGET)}</div>
+    <div class="budgetbar"><i style="width:${Math.min(100,m.custoAdes/BUDGET*100).toFixed(1)}%"></i></div>
+    <div class="s">O orçamento cobre até <b>${Math.round(m.budgetPct*100)}%</b> de adesão do grupo elegível (${int(Math.round(m.N*Math.min(1,m.budgetPct)))} pessoas).</div>
+  </div>`;
+  document.getElementById('simKpis').innerHTML=html;
+  // echo
+  const P=posYMD();
+  document.getElementById('simEcho').textContent=`Cenário: ${String(P[2]).padStart(2,'0')}/${String(P[1]).padStart(2,'0')}/${P[0]} · idade ${S.minAge}+ · adesão ${Math.round(S.ades*100)}% · benefícios +${Math.round(S.enc*100)}% · horizonte ${S.hor} m · fator ${Math.round(S.fator*100)}% · ${S.org<0?'todos os órgãos':ORG[S.org]} · ${S.uf<0?'todas as UF':UFL[S.uf]}`;
+}
+
+function chartFaixa(m){
+  const d=m.faixaArr, W=520,rowH=46,padL=70,padR=64,H=d.length*rowH+16;
+  const max=Math.max(1,...d.map(x=>x.n)),bw=W-padL-padR;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elegíveis por faixa etária">`;
+  d.forEach((x,i)=>{const y=i*rowH+12,w=Math.max(2,x.n/max*bw),col=rampFor(3-i);
+    s+=`<text class="catlabel" x="${padL-10}" y="${y+rowH/2-6}" text-anchor="end" dominant-baseline="middle">${x.band}</text>`;
+    s+=`<rect x="${padL}" y="${y}" width="${w}" height="${rowH-18}" rx="4" style="fill:${col};cursor:pointer" data-i="${i}"/>`;
+    s+=`<text class="barlabel" x="${padL+w+8}" y="${y+(rowH-18)/2}" dominant-baseline="middle">${int(x.n)}</text>`;});
+  s+=`</svg>`;const el=document.getElementById('chartFaixa');el.innerHTML=s;
+  el.querySelectorAll('rect').forEach(r=>{const x=d[+r.dataset.i];
+    r.addEventListener('mousemove',e=>showTT(`<b>${x.band} anos</b><br>${int(x.n)} elegíveis<br>Custo: <b>R$ ${mi(x.custo)}</b>`,e));
+    r.addEventListener('mouseleave',hideTT);});
+}
+function chartOrgaos(m){
+  const d=m.orgArr,W=520,rowH=34,padL=64,padR=48,H=Math.max(1,d.length)*rowH+12;
+  const max=Math.max(1,...d.map(x=>x.n)),bw=W-padL-padR;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elegíveis por órgão">`;
+  if(!d.length)s+=`<text class="catlabel" x="${W/2}" y="30" text-anchor="middle">Sem elegíveis neste recorte</text>`;
+  d.forEach((x,i)=>{const y=i*rowH+8,w=Math.max(2,x.n/max*bw);
+    s+=`<text class="catlabel" x="${padL-10}" y="${y+(rowH-14)/2}" text-anchor="end" dominant-baseline="middle" style="font-size:12px">${x.sig}</text>`;
+    s+=`<rect x="${padL}" y="${y}" width="${w}" height="${rowH-16}" rx="3.5" style="fill:var(--teal);cursor:pointer" data-i="${i}"/>`;
+    s+=`<text class="barlabel" x="${padL+w+7}" y="${y+(rowH-16)/2}" dominant-baseline="middle" style="font-size:11.5px">${int(x.n)}</text>`;});
+  s+=`</svg>`;const el=document.getElementById('chartOrgaos');el.innerHTML=s;
+  el.querySelectorAll('rect').forEach(r=>{const x=d[+r.dataset.i];
+    r.addEventListener('mousemove',e=>showTT(`<b>${x.sig}</b><br>${int(x.n)} elegíveis<br>Custo: <b>R$ ${mi(x.custo)}</b>`,e));
+    r.addEventListener('mouseleave',hideTT);});
+}
+function chartValor(m){
+  const d=[{band:'Proporcional',n:m.prop,custo:m.custo-m.teto*TETO},{band:'No teto',n:m.teto,custo:m.teto*TETO}];
+  const total=Math.max(1,m.prop+m.teto),W=560,H=64,bw=W;
+  let x0=0,s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribuição do valor">`;
+  const cols=['var(--teal-soft)','var(--gold)'],short=['Proporcional','No teto'];
+  d.forEach((x,i)=>{const w=x.n/total*bw-(i<d.length-1?3:0);
+    s+=`<rect x="${x0}" y="8" width="${Math.max(2,w)}" height="34" rx="5" style="fill:${cols[i]};cursor:pointer" data-i="${i}"/>`;
+    const pct=x.n/total*100,lx=i===d.length-1?x0+Math.max(2,w)+6:x0+Math.max(2,w)/2,anc=i===d.length-1?'start':'middle';
+    s+=`<text x="${lx}" y="56" text-anchor="${anc}" class="axis" style="fill:var(--ink-2);font-size:11.5px">${short[i]} · ${pct.toFixed(pct<5?1:0)}% (${int(x.n)})</text>`;
+    x0+=x.n/total*bw;});
+  s+=`</svg>`;const el=document.getElementById('chartValor');el.innerHTML=s;
+  el.querySelectorAll('rect').forEach(r=>{const x=d[+r.dataset.i];
+    r.addEventListener('mousemove',e=>showTT(`<b>${x.band}</b><br>${int(x.n)} pessoas`,e));
+    r.addEventListener('mouseleave',hideTT);});
+}
+
+function chartTempo(cron){
+  const d=cron,W=780,H=310,padL=66,padR=20,padT=18,padB=48;
+  const iw=W-padL-padR,ih=H-padT-padB,max=Math.max(1,...d.map(x=>x.custoAcum));
+  const X=i=>padL+(d.length>1?i/(d.length-1)*iw:0),Y=v=>padT+ih-v/max*ih;
+  let area=`M ${X(0)} ${Y(0)}`,line=`M ${X(0)} ${Y(d[0].custoAcum)}`;
+  d.forEach((x,i)=>{area+=` L ${X(i)} ${Y(x.custoAcum)}`;});area+=` L ${X(d.length-1)} ${Y(0)} Z`;
+  d.forEach((x,i)=>{if(i>0)line+=` L ${X(i)} ${Y(x.custoAcum)}`;});
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Custo acumulado ao longo do tempo">`;
+  for(let g=0;g<=4;g++){const v=max*g/4,y=Y(v);s+=`<line class="gridline" x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}"/>`;
+    s+=`<text class="axis" x="${padL-8}" y="${y+4}" text-anchor="end">${g===0?'0':'R$ '+mi(v)}</text>`;}
+  d.forEach((x,i)=>{if(i%2===0||i===d.length-1){s+=`<text class="axis" x="${X(i)}" y="${H-padB+18}" text-anchor="middle" style="font-size:10px">${x.label}</text>`;}});
+  // separador mensal/anual
+  const sep=d.findIndex(x=>!x.isMonth); if(sep>0){const xs=(X(sep-1)+X(sep))/2;s+=`<line x1="${xs}" y1="${padT}" x2="${xs}" y2="${H-padB}" stroke="var(--border-2)" stroke-width="1" stroke-dasharray="2 3"/>`;
+    s+=`<text class="axis" x="${X(1)}" y="${padT+2}" style="font-size:9.5px">◄ mensal 2026</text><text class="axis" x="${X(d.length-1)}" y="${padT+2}" text-anchor="end" style="font-size:9.5px">anual ►</text>`;}
+  s+=`<defs><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--teal)" stop-opacity="0.28"/><stop offset="1" stop-color="var(--teal)" stop-opacity="0.02"/></linearGradient></defs>`;
+  s+=`<path d="${area}" fill="url(#ga)"/><path d="${line}" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  // orçamento
+  const yb=Y(BUDGET); if(BUDGET<=max)s+=`<line x1="${padL}" y1="${yb}" x2="${W-padR}" y2="${yb}" stroke="var(--clay)" stroke-width="1.5" stroke-dasharray="5 3"/><text class="axis" x="${W-padR}" y="${yb-5}" text-anchor="end" style="fill:var(--clay);font-size:10px">LOA 2026</text>`;
+  // marcador na posição
+  let mi_=0; const P=posYMD();
+  if(P[0]===2026)mi_=Math.max(0,Math.min(8,P[1]-4)); else mi_=Math.min(d.length-1,9+(P[0]-2027));
+  const mx=X(mi_),myv=Y(d[mi_].custoAcum);
+  s+=`<line x1="${mx}" y1="${padT}" x2="${mx}" y2="${H-padB}" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 3"/><circle cx="${mx}" cy="${myv}" r="6" fill="var(--gold)" stroke="var(--surface)" stroke-width="2.5"/>`;
+  d.forEach((x,i)=>{s+=`<circle cx="${X(i)}" cy="${Y(x.custoAcum)}" r="11" fill="transparent" style="cursor:pointer" data-i="${i}"/>`;});
+  s+=`</svg>`;const el=document.getElementById('chartTempo');el.innerHTML=s;
+  el.querySelectorAll('circle[data-i]').forEach(c=>{const x=d[+c.dataset.i];
+    c.addEventListener('mousemove',e=>showTT(`<b>${x.label}</b><br>${int(x.acumN)} elegíveis acum.<br>Custo acum.: <b>R$ ${mi(x.custoAcum)}</b><br>+${int(x.novos)} no período`,e));
+    c.addEventListener('mouseleave',hideTT);});
+  // readout do bucket selecionado
+  document.getElementById('tAcumN').textContent=int(d[mi_].acumN);
+  document.getElementById('tAcumC').textContent='R$ '+mi(d[mi_].custoAcum);
+  document.getElementById('tNovos').textContent='+'+int(d[mi_].novos);
+}
+
+function chartCenario(m){
+  const W=780,H=280,padL=70,padR=24,padT=16,padB=42;
+  const iw=W-padL-padR,ih=H-padT-padB,max=Math.max(m.custo,BUDGET)*1.05;
+  const X=p=>padL+p*iw,Y=v=>padT+ih-v/max*ih;
+  let area=`M ${X(0)} ${Y(0)}`,line=`M ${X(0)} ${Y(0)}`;
+  for(let p=0;p<=1.0001;p+=0.05){area+=` L ${X(p)} ${Y(m.custo*p)}`;line+=` L ${X(p)} ${Y(m.custo*p)}`;}
+  area+=` L ${X(1)} ${Y(0)} Z`;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Custo por adesão">`;
+  for(let g=0;g<=4;g++){const v=max*g/4,y=Y(v);s+=`<line class="gridline" x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}"/><text class="axis" x="${padL-8}" y="${y+4}" text-anchor="end">${g===0?'0':'R$ '+mi(v)}</text>`;}
+  for(let p=0;p<=1.001;p+=0.25){s+=`<text class="axis" x="${X(p)}" y="${H-padB+18}" text-anchor="middle">${Math.round(p*100)}%</text>`;}
+  s+=`<defs><linearGradient id="gc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--teal)" stop-opacity="0.26"/><stop offset="1" stop-color="var(--teal)" stop-opacity="0.02"/></linearGradient></defs>`;
+  s+=`<path d="${area}" fill="url(#gc)"/><path d="${line}" fill="none" stroke="var(--teal)" stroke-width="2.5"/>`;
+  const yb=Y(BUDGET);if(BUDGET<=max)s+=`<line x1="${padL}" y1="${yb}" x2="${W-padR}" y2="${yb}" stroke="var(--clay)" stroke-width="1.5" stroke-dasharray="5 3"/><text class="axis" x="${padL+4}" y="${yb-5}" style="fill:var(--clay);font-size:10px">Orçamento LOA 2026 · R$ 61,8 mi</text>`;
+  // marcador adesão atual
+  const mx=X(S.ades),myv=Y(m.custoAdes);
+  s+=`<line x1="${mx}" y1="${padT}" x2="${mx}" y2="${H-padB}" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 3"/><circle cx="${mx}" cy="${myv}" r="6" fill="var(--gold)" stroke="var(--surface)" stroke-width="2.5"/>`;
+  s+=`<text class="axis" x="${mx}" y="${padT+2}" text-anchor="${S.ades>0.8?'end':'middle'}" style="fill:var(--gold);font-weight:600">${Math.round(S.ades*100)}% · R$ ${mi(m.custoAdes)}</text>`;
+  s+=`</svg>`;document.getElementById('chartCenario').innerHTML=s;
+}
+
+function renderCenarios(m){
+  const fits=m.custoAdes<=BUDGET;
+  document.getElementById('cenReado').innerHTML=`
+    <div class="ro cost"><div class="k">Custo do incentivo</div><div class="v tnum">R$ ${mi(m.custoAdes)}</div><div class="s">${int(m.nAdes)} adesões (${Math.round(S.ades*100)}%)</div></div>
+    <div class="ro eco"><div class="k">Economia de folha</div><div class="v tnum">R$ ${mi(m.economiaAdes)}</div><div class="s">em ${S.hor} meses</div></div>
+    <div class="ro net"><div class="k">Cobertura do orçamento</div><div class="v tnum">${Math.round(m.budgetPct*100)}%</div><div class="s">${fits?'cabe na LOA 2026':'requer suplementação'}</div></div>`;
+  chartCenario(m);
+}
+
+function renderPayback(m){
+  const pb=m.payback,hor=S.hor,pct=Math.min(100,pb/hor*100);
+  document.getElementById('pbCost').style.flex=`0 0 ${pct}%`;
+  document.getElementById('pbEco').style.flex=`1 1 ${100-pct}%`;
+  document.getElementById('pbCost').textContent=`Payback · ${pb.toFixed(1).replace('.',',')} m`;
+  document.getElementById('pbEco').textContent=`Economia líquida · ${Math.max(0,hor-pb).toFixed(0)} m`;
+  document.getElementById('pbMid').textContent=`mês ${Math.round(pb)}`;
+  document.getElementById('pbEnd').textContent=`mês ${hor}`;
+  document.getElementById('pbTxt').textContent=Math.round(pb);
+  document.getElementById('horTxt').textContent=hor;
+}
+
+function renderJanela(m){
+  const media=m.N>0?m.custo/m.N:0;
+  document.getElementById('deltaMesa').textContent=brl(media*0.20);
+}
+
+function renderPersonas(){
+  document.getElementById('personasGrid').innerHTML=RAW.personas.map(p=>`
+    <div class="card persona">
+      <div class="role">${p.titulo}</div>
+      <div class="meta">salário-base ${brl(p.salario)}/mês · ${int(p.anos)} anos de serviço</div>
+      <div class="amount">${brl(p.incentivo)}<br><small>incentivo em parcela única</small></div>
+      <div class="row"><span>Forma de pagamento</span><b>Parcela única</b></div>
+      <div class="row"><span>Imposto de renda</span><b>Isento</b></div>
+      <div class="row"><span>Verbas rescisórias</span><b>À parte</b></div>
+    </div>`).join('');
+}
+
+function renderAll(){
+  const m=computeModel();
+  renderHero();
+  renderKpis(m);
+  chartFaixa(m);chartOrgaos(m);chartValor(m);
+  chartTempo(computeCronograma());
+  renderCenarios(m);
+  renderPayback(m);
+  renderJanela(m);
+}
+
+// ---- controls ----
+function fillSelect(id,list,label){const el=document.getElementById(id);list.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v;el.appendChild(o);});}
+fillSelect('cOrg',ORG);fillSelect('cUf',UFL);
+function setFill(el){const min=+el.min,max=+el.max;el.style.setProperty('--fill',((el.value-min)/(max-min)*100)+'%');}
+const cPos=document.getElementById('cPos'),cAge=document.getElementById('cAge'),cAdes=document.getElementById('cAdes'),
+  cEnc=document.getElementById('cEnc'),cHor=document.getElementById('cHor'),cOrg=document.getElementById('cOrg'),cUf=document.getElementById('cUf');
+cPos.max=String(BASEIDX+128 - BASEIDX); // 128
+cPos.value=String(S.pos);
+function updPosLabel(){const P=posYMD();const isToday=(S.pos===C.todayIdx-BASEIDX);
+  document.getElementById('lPos').textContent=isToday?('hoje · '+C.today):(String(P[2]).padStart(2,'0')+'/'+String(P[1]).padStart(2,'0')+'/'+P[0]);}
+cPos.addEventListener('input',()=>{S.pos=+cPos.value;setFill(cPos);updPosLabel();renderAll();});
+cAge.addEventListener('input',()=>{S.minAge=+cAge.value;setFill(cAge);document.getElementById('lAge').textContent=cAge.value;renderAll();});
+cAdes.addEventListener('input',()=>{S.ades=+cAdes.value/100;setFill(cAdes);document.getElementById('lAdes').textContent=cAdes.value+'%';renderAll();});
+cEnc.addEventListener('input',()=>{S.enc=+cEnc.value/100;setFill(cEnc);document.getElementById('lEnc').textContent='+'+cEnc.value+'%';renderAll();});
+cHor.addEventListener('input',()=>{S.hor=+cHor.value;setFill(cHor);document.getElementById('lHor').textContent=cHor.value+' m';renderAll();});
+document.querySelectorAll('#cFator button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#cFator button').forEach(x=>x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');S.fator=+b.dataset.v;document.getElementById('lFat').textContent=Math.round(S.fator*100)+'%';renderAll();}));
+cOrg.addEventListener('change',()=>{S.org=+cOrg.value;renderAll();});
+cUf.addEventListener('change',()=>{S.uf=+cUf.value;renderAll();});
+document.getElementById('cReset').addEventListener('click',()=>{
+  Object.assign(S,DEF);
+  cPos.value=S.pos;cAge.value=S.minAge;cAdes.value=Math.round(S.ades*100);cEnc.value=Math.round(S.enc*100);cHor.value=S.hor;cOrg.value=-1;cUf.value=-1;
+  document.querySelectorAll('#cFator button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='1'?'true':'false'));
+  document.getElementById('lAge').textContent=S.minAge;document.getElementById('lAdes').textContent=Math.round(S.ades*100)+'%';
+  document.getElementById('lEnc').textContent='+'+Math.round(S.enc*100)+'%';document.getElementById('lHor').textContent=S.hor+' m';document.getElementById('lFat').textContent='100%';
+  [cPos,cAge,cAdes,cEnc,cHor].forEach(setFill);updPosLabel();renderAll();});
+
+// init
+[cPos,cAge,cAdes,cEnc,cHor].forEach(setFill);updPosLabel();
+renderPersonas();renderAll();
+window.addEventListener('resize',renderAll);
+
+// theme
+const tb=document.getElementById('themeBtn');
+function curTheme(){const a=document.documentElement.getAttribute('data-theme');if(a)return a;return matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+tb.addEventListener('click',()=>{document.documentElement.setAttribute('data-theme',curTheme()==='dark'?'light':'dark');renderAll();});
+
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.06});
+document.querySelectorAll('section .card, .stat, .glcard, .kpi').forEach(el=>{el.classList.add('reveal');io.observe(el);});
+</script>
+
+</body>
+</html>
