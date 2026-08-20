@@ -251,16 +251,7 @@ body.dark .row-alert td{background:#2d1a1a !important;}
         <option value="">Todos os órgãos</option>
       </select>
     </div>
-    <div class="filter-group">
-      <span class="filter-label">Status Geral</span>
-      <select id="vg-status" onchange="renderVisaoGeral()">
-        <option value="">Todos os status</option>
-        <option value="CONFORME">Conformes</option>
-        <option value="PENDÊNCIA">Com Pendências</option>
-        <option value="PENDÊNCIA CLASSE">Pendência Classe</option>
-        <option value="PENDÊNCIA SALÁRIO">Pendência Salário</option>
-      </select>
-    </div>
+    
     <button class="filter-btn filter-btn-reset" onclick="resetFilters('vg')">✕ Limpar</button>
     <span class="filter-result" id="vg-result"></span>
   </div>
@@ -312,23 +303,7 @@ body.dark .row-alert td{background:#2d1a1a !important;}
         <option value="">Todos</option>
       </select>
     </div>
-    <div class="filter-group">
-      <span class="filter-label">Conformidade Piso</span>
-      <select id="sal-piso" onchange="renderSalario()">
-        <option value="">Todos</option>
-        <option value="ok">Cumpre Piso</option>
-        <option value="nok">Não Cumpre</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <span class="filter-label">Variação Pré→Pós</span>
-      <select id="sal-vari" onchange="renderSalario()">
-        <option value="">Todos</option>
-        <option value="up">Aumentou</option>
-        <option value="down">Reduziu</option>
-        <option value="eq">Sem variação</option>
-      </select>
-    </div>
+    
     <button class="filter-btn filter-btn-reset" onclick="resetFilters('sal')">✕ Limpar</button>
     <span class="filter-result" id="sal-result"></span>
   </div>
@@ -382,26 +357,7 @@ body.dark .row-alert td{background:#2d1a1a !important;}
         <option value="">Todos</option>
       </select>
     </div>
-    <div class="filter-group">
-      <span class="filter-label">Status Classe</span>
-      <select id="cls-status" onchange="renderClasse()">
-        <option value="">Todos</option>
-        <option value="ok">OK (conforme)</option>
-        <option value="irregular">Irregular</option>
-        <option value="superior">Classe Superior</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <span class="filter-label">Classe Jul/2026</span>
-      <select id="cls-classe" onchange="renderClasse()">
-        <option value="">Todas</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-        <option value="D">D</option>
-        <option value="S">S</option>
-      </select>
-    </div>
+    
     <button class="filter-btn filter-btn-reset" onclick="resetFilters('cls')">✕ Limpar</button>
     <span class="filter-result" id="cls-result"></span>
   </div>
