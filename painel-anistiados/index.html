@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Monitoramento — Lei nº 15.367/2026 | Anistiados</title>
+<style>
+:root{
+  --bg:#f0f2f5;--surface:#ffffff;--surface2:#f8f9fb;--surface3:#eef0f3;
+  --border:#dde1e7;--border2:#c8cdd5;
+  --text:#1a1d23;--text2:#4b5563;--text3:#9ca3af;
+  --green:#16a34a;--green-bg:#dcfce7;--green-text:#15803d;
+  --red:#dc2626;--red-bg:#fee2e2;--red-text:#b91c1c;
+  --yellow:#ca8a04;--yellow-bg:#fef9c3;--yellow-text:#a16207;
+  --blue:#2563eb;--blue-bg:#dbeafe;--blue-text:#1d4ed8;
+  --purple:#7c3aed;--purple-bg:#ede9fe;--purple-text:#6d28d9;
+  --orange:#ea580c;--orange-bg:#ffedd5;--orange-text:#c2410c;
+  --teal:#0d9488;--teal-bg:#ccfbf1;--teal-text:#0f766e;
+  --radius:6px;--radius-lg:10px;
+  --topbar-h:52px;--navtabs-h:42px;--header-total:94px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -2px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.5;}
+
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:8px;height:var(--topbar-h);position:sticky;top:0;z-index:200;box-shadow:var(--shadow);}
+.topbar-logo{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;}
+.topbar-sep{color:var(--border2);margin:0 2px;}
+.topbar-title{font-size:13px;color:var(--text);font-weight:600;}
+.topbar-badge{margin-left:auto;background:var(--blue-bg);color:var(--blue-text);font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;border:1px solid #93c5fd;}
+.topbar-rgb{font-size:10px;color:var(--text3);margin-left:10px;letter-spacing:.12em;font-weight:600;}
+.topbar-theme{margin-left:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-weight:500;}
+
+/* NAVTABS */
+.navtabs{background:var(--surface);border-bottom:2px solid var(--border);display:flex;padding:0 24px;gap:0;position:sticky;top:var(--topbar-h);z-index:190;}
+.navtab{padding:10px 14px;font-size:12px;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;font-weight:500;}
+.navtab:hover{color:var(--text);background:var(--surface2);}
+.navtab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:700;}
+
+/* FILTER BAR */
+.filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;box-shadow:var(--shadow);}
+.filter-group{display:flex;flex-direction:column;gap:4px;}
+.filter-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;}
+.filter-bar input,.filter-bar select{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:7px 11px;font-size:12px;outline:none;min-width:160px;}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-bg);}
+.filter-bar input{min-width:200px;}
+.filter-btn{padding:7px 16px;border:1px solid var(--border2);border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;height:34px;align-self:flex-end;}
+.filter-btn-primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.filter-btn-primary:hover{background:#1d4ed8;}
+.filter-btn-reset{background:var(--surface);color:var(--text2);}
+.filter-btn-reset:hover{background:var(--surface3);color:var(--text);}
+.filter-tag{display:inline-flex;align-items:center;gap:4px;background:var(--blue-bg);color:var(--blue-text);font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #93c5fd;}
+.filter-result{font-size:12px;color:var(--text2);align-self:flex-end;padding-bottom:2px;}
+
+/* MAIN */
+.main{max-width:1440px;margin:0 auto;padding:20px 24px;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* CARDS */
+.cards-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:12px;margin-bottom:20px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow);transition:.15s;}
+.card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.card-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:6px;}
+.card-value{font-size:28px;font-weight:800;line-height:1;color:var(--text);}
+.card-sub{font-size:11px;color:var(--text2);margin-top:5px;}
+.card-bar{height:3px;border-radius:2px;margin-top:10px;background:var(--border);}
+.card-bar-fill{height:100%;border-radius:2px;}
+.c-green .card-value{color:var(--green-text);}
+.c-green .card-bar-fill{background:var(--green);}
+.c-red .card-value{color:var(--red-text);}
+.c-red .card-bar-fill{background:var(--red);}
+.c-yellow .card-value{color:var(--yellow-text);}
+.c-yellow .card-bar-fill{background:var(--yellow);}
+.c-blue .card-value{color:var(--blue-text);}
+.c-blue .card-bar-fill{background:var(--blue);}
+.c-purple .card-value{color:var(--purple-text);}
+.c-purple .card-bar-fill{background:var(--purple);}
+.c-orange .card-value{color:var(--orange-text);}
+.c-orange .card-bar-fill{background:var(--orange);}
+.c-teal .card-value{color:var(--teal-text);}
+.c-teal .card-bar-fill{background:var(--teal);}
+
+/* SECTION */
+.section{margin-bottom:24px;}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.section-title{font-size:12px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;}
+.section-divider{flex:1;height:1px;background:var(--border);}
+.section-count{font-size:11px;color:var(--text3);white-space:nowrap;}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;}
+@media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+/* BOX */
+.box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow);}
+.box-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+
+/* PILL BAR */
+.pill-bar{display:flex;flex-direction:column;gap:8px;}
+.pill-item{display:flex;align-items:center;gap:8px;}
+.pill-label{font-size:12px;color:var(--text2);flex:1;min-width:0;}
+.pill-track{flex:2;height:8px;background:var(--surface3);border-radius:4px;overflow:hidden;}
+.pill-fill{height:100%;border-radius:4px;transition:width .4s;}
+.pill-val{font-size:12px;font-weight:700;min-width:48px;text-align:right;}
+.pill-pct{font-size:11px;color:var(--text3);min-width:40px;text-align:right;}
+
+/* HBAR */
+.hbar-wrap{display:flex;flex-direction:column;gap:7px;}
+.hbar-row{display:flex;align-items:center;gap:8px;}
+.hbar-lbl{font-size:11px;color:var(--text2);min-width:80px;font-weight:600;}
+.hbar-track{flex:1;height:20px;background:var(--surface3);border-radius:4px;overflow:hidden;}
+.hbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:7px;font-size:11px;font-weight:700;color:#fff;transition:width .4s;}
+.hbar-num{font-size:11px;color:var(--text2);min-width:50px;text-align:right;font-weight:600;}
+
+/* TABLE — CRITICAL: no sticky on thead, instead use scrollable wrapper with correct offset */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);}
+.tbl-scroll{max-height:500px;overflow-y:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:var(--surface2);color:var(--text2);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:10px 12px;text-align:left;white-space:nowrap;border-bottom:2px solid var(--border2);position:sticky;top:0;z-index:10;}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--surface2);}
+td{padding:9px 12px;font-size:12px;white-space:nowrap;vertical-align:middle;}
+.td-orgao{font-weight:700;color:var(--blue-text);cursor:pointer;}
+.td-orgao:hover{text-decoration:underline;}
+.td-total{font-weight:700;color:var(--text);}
+.td-num{text-align:right;font-variant-numeric:tabular-nums;}
+th.sortable{cursor:pointer;user-select:none;}
+th.sortable:hover{background:var(--surface3);}
+th.sort-asc::after{content:' ↑';color:var(--blue);}
+th.sort-desc::after{content:' ↓';color:var(--blue);}
+
+/* BADGE */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;line-height:1.4;}
+.b-green{background:var(--green-bg);color:var(--green-text);}
+.b-red{background:var(--red-bg);color:var(--red-text);}
+.b-yellow{background:var(--yellow-bg);color:var(--yellow-text);}
+.b-blue{background:var(--blue-bg);color:var(--blue-text);}
+.b-purple{background:var(--purple-bg);color:var(--purple-text);}
+.b-orange{background:var(--orange-bg);color:var(--orange-text);}
+.b-teal{background:var(--teal-bg);color:var(--teal-text);}
+.b-gray{background:var(--surface3);color:var(--text2);}
+
+/* CLS badge */
+.cls{display:inline-block;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;font-size:11px;font-weight:800;}
+.cls-A{background:#7c3aed;color:#fff;}
+.cls-B{background:#2563eb;color:#fff;}
+.cls-C{background:#16a34a;color:#fff;}
+.cls-D{background:#ca8a04;color:#fff;}
+.cls-S{background:#6b7280;color:#fff;}
+
+/* STACKED BAR */
+.sbar{height:28px;border-radius:var(--radius);overflow:hidden;display:flex;margin-bottom:8px;border:1px solid var(--border);}
+.sbar-seg{height:100%;transition:width .3s;}
+
+/* TIMELINE */
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);margin-bottom:16px;box-shadow:var(--shadow);}
+.tl-seg{padding:16px 10px;text-align:center;border-right:1px solid var(--border);background:var(--surface);}
+.tl-seg:last-child{border-right:none;}
+.tl-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;font-weight:700;}
+.tl-val{font-size:24px;font-weight:800;line-height:1;}
+.tl-pct{font-size:11px;margin-top:3px;font-weight:600;}
+.tl-impact{font-size:10px;margin-top:3px;color:var(--text3);}
+
+/* DRILL DOWN */
+.orgao-detail{background:var(--surface2);border:2px solid var(--blue);border-radius:var(--radius-lg);padding:20px;margin-top:16px;box-shadow:var(--shadow-md);}
+.od-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-top:14px;}
+.od-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;}
+.od-key{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-weight:700;}
+.od-val{font-size:18px;font-weight:800;color:var(--text);}
+
+/* EVO TABLE */
+.evo-table{border-collapse:collapse;width:100%;}
+.evo-table th,.evo-table td{padding:10px 14px;text-align:center;font-size:12px;border:1px solid var(--border);}
+.evo-table th{background:var(--surface2);color:var(--text2);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.06em;}
+.evo-cell-high{background:var(--green-bg);color:var(--green-text);font-weight:700;}
+.evo-cell-low{background:var(--red-bg);color:var(--red-text);}
+.evo-cell-med{background:var(--yellow-bg);color:var(--yellow-text);}
+.evo-row-label{text-align:left;font-weight:700;color:var(--text);}
+
+/* INFOBOX */
+.infobox{background:var(--blue-bg);border:1px solid #93c5fd;border-radius:var(--radius-lg);padding:14px 18px;font-size:12px;color:var(--blue-text);line-height:1.7;margin-bottom:20px;}
+.infobox code{background:#fff;border:1px solid #93c5fd;border-radius:3px;padding:1px 5px;font-family:'SF Mono',Consolas,monospace;color:var(--text);}
+.warnbox{background:var(--yellow-bg);border:1px solid #fde68a;border-radius:var(--radius-lg);padding:12px 16px;font-size:12px;color:var(--yellow-text);margin-top:12px;}
+
+/* MINI PCT */
+.mini-pct{font-size:11px;color:var(--text3);}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);margin-top:40px;padding:20px 0;text-align:center;color:var(--text3);font-size:11px;background:var(--surface);}
+
+/* DARK MODE */
+body.dark{
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c2230;--surface3:#232d3d;
+  --border:#21293a;--border2:#2d3748;
+  --text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+  --green-bg:#1a3a27;--green-text:#56d364;
+  --red-bg:#3d1a1d;--red-text:#f85149;
+  --yellow-bg:#3a2a0a;--yellow-text:#e3b341;
+  --blue-bg:#0d2244;--blue-text:#79c0ff;
+  --purple-bg:#1e1440;--purple-text:#d2a8ff;
+  --orange-bg:#321a00;--orange-text:#ffa657;
+  --teal-bg:#0d2d2a;--teal-text:#2dd4bf;
+  --shadow:0 1px 3px rgba(0,0,0,.4);--shadow-md:0 4px 12px rgba(0,0,0,.5);
+}
+body.dark .topbar-theme{background:var(--surface2);}
+body.dark thead th{background:var(--surface2);}
+body.dark tbody tr:hover{background:var(--surface2);}
+body.dark .tbl-wrap{background:var(--surface);}
+
+/* PISO URGENCY highlight */
+.row-alert td{background:#fff5f5 !important;}
+body.dark .row-alert td{background:#2d1a1a !important;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-logo">CGMOP · DEPRO · SGP</span>
+  <span class="topbar-sep">›</span>
+  <span class="topbar-title">Painel de Monitoramento — Lei nº 15.367/2026 | Anistiados</span>
+  <span class="topbar-badge" id="badge-count">3.327 servidores · Jul/2026</span>
+  <button class="topbar-theme" onclick="toggleTheme()" id="btn-theme">🌙 Escuro</button>
+  <span class="topbar-rgb">RGB</span>
+</div>
+
+<div class="navtabs" id="navtabs">
+  <div class="navtab active" data-panel="visao-geral">📊 Visão Geral</div>
+  <div class="navtab" data-panel="salario">💰 Salário</div>
+  <div class="navtab" data-panel="classe">🎓 Classe</div>
+  <div class="navtab" data-panel="evolucao">📈 Evolução</div>
+  <div class="navtab" data-panel="pdi">⏱ PDI</div>
+  <div class="navtab" data-panel="por-orgao">🏛 Por Órgão</div>
+  <div class="navtab" data-panel="perfil">👥 Perfil</div>
+  <div class="navtab" data-panel="dados">📋 Dados Brutos</div>
+  <div class="navtab" data-panel="importar">📥 Como Importar</div>
+</div>
+
+<div class="main">
+
+<!-- ==================== VISÃO GERAL ==================== -->
+<div class="panel active" id="panel-visao-geral">
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Órgão</span>
+      <select id="vg-orgao" onchange="renderVisaoGeral()">
+        <option value="">Todos os órgãos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Status Geral</span>
+      <select id="vg-status" onchange="renderVisaoGeral()">
+        <option value="">Todos os status</option>
+        <option value="CONFORME">Conformes</option>
+        <option value="PENDÊNCIA">Com Pendências</option>
+        <option value="PENDÊNCIA CLASSE">Pendência Classe</option>
+        <option value="PENDÊNCIA SALÁRIO">Pendência Salário</option>
+      </select>
+    </div>
+    <button class="filter-btn filter-btn-reset" onclick="resetFilters('vg')">✕ Limpar</button>
+    <span class="filter-result" id="vg-result"></span>
+  </div>
+
+  <div id="vg-kpis" class="cards-row"></div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Status Geral da Implementação</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="box">
+      <div class="sbar" id="sbar-geral"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text2);margin-bottom:14px;" id="sbar-legend"></div>
+      <div class="pill-bar" id="pills-geral"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="box-title">Situação Inicial (Histórico Pré-Implementação)</div>
+      <div class="pill-bar" id="pills-inicial"></div>
+    </div>
+    <div class="box">
+      <div class="box-title">Evolução do Salário Médio — Fev a Jul/2026</div>
+      <div class="hbar-wrap" id="bars-monthly"></div>
+      <p style="font-size:11px;color:var(--text3);margin-top:8px;">Média simples; inclui registros sem dados salariais.</p>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="box-title">Top 10 Órgãos — Maior Universo</div>
+      <div class="hbar-wrap" id="bars-orgao-vol"></div>
+    </div>
+    <div class="box">
+      <div class="box-title">Top 10 Órgãos — Mais Pendências</div>
+      <div class="hbar-wrap" id="bars-orgao-pend"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SALÁRIO ==================== -->
+<div class="panel" id="panel-salario">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Órgão</span>
+      <select id="sal-orgao" onchange="renderSalario()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Conformidade Piso</span>
+      <select id="sal-piso" onchange="renderSalario()">
+        <option value="">Todos</option>
+        <option value="ok">Cumpre Piso</option>
+        <option value="nok">Não Cumpre</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Variação Pré→Pós</span>
+      <select id="sal-vari" onchange="renderSalario()">
+        <option value="">Todos</option>
+        <option value="up">Aumentou</option>
+        <option value="down">Reduziu</option>
+        <option value="eq">Sem variação</option>
+      </select>
+    </div>
+    <button class="filter-btn filter-btn-reset" onclick="resetFilters('sal')">✕ Limpar</button>
+    <span class="filter-result" id="sal-result"></span>
+  </div>
+
+  <div id="sal-kpis" class="cards-row"></div>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="box-title">Status Salário — Lei nº 15.367/2026</div>
+      <div class="pill-bar" id="pills-salario"></div>
+    </div>
+    <div class="box">
+      <div class="box-title">Órgãos com Mais Irregularidades no Piso</div>
+      <div class="hbar-wrap" id="bars-sal-orgao"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Tabela Detalhada — Salário por Órgão</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="sortable" data-col="orgao">Órgão</th>
+              <th class="sortable" data-col="total">Total</th>
+              <th class="sortable" data-col="cumpre">Cumpre Piso</th>
+              <th class="sortable" data-col="ncumpre">Não Cumpre</th>
+              <th class="sortable" data-col="pct">% Conformidade</th>
+              <th class="sortable" data-col="pre">Sal. Médio (Pré)</th>
+              <th class="sortable" data-col="pos">Sal. Médio (Pós)</th>
+              <th class="sortable" data-col="vari">Variação</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-salario"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CLASSE ==================== -->
+<div class="panel" id="panel-classe">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Órgão</span>
+      <select id="cls-orgao" onchange="renderClasse()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Status Classe</span>
+      <select id="cls-status" onchange="renderClasse()">
+        <option value="">Todos</option>
+        <option value="ok">OK (conforme)</option>
+        <option value="irregular">Irregular</option>
+        <option value="superior">Classe Superior</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Classe Jul/2026</span>
+      <select id="cls-classe" onchange="renderClasse()">
+        <option value="">Todas</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="S">S</option>
+      </select>
+    </div>
+    <button class="filter-btn filter-btn-reset" onclick="resetFilters('cls')">✕ Limpar</button>
+    <span class="filter-result" id="cls-result"></span>
+  </div>
+
+  <div id="cls-kpis" class="cards-row"></div>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="box-title">Status Classe — Lei nº 15.367/2026</div>
+      <div class="pill-bar" id="pills-classe"></div>
+    </div>
+    <div class="box">
+      <div class="box-title">Distribuição de Classes — Jul/2026</div>
+      <div class="hbar-wrap" id="bars-classe-jun"></div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--text2);">
+        <span><span class="cls cls-A">A</span> Superior</span>
+        <span><span class="cls cls-B">B</span> Intermediária</span>
+        <span><span class="cls cls-C">C</span> Básica</span>
+        <span><span class="cls cls-D">D</span> Padrão</span>
+        <span><span class="cls cls-S">S</span> Especial</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Matriz de Evolução de Classe — Mar/2026 → Jul/2026</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="box">
+      <p style="font-size:12px;color:var(--text2);margin-bottom:14px;">Linha = Classe em Mar/2026 · Coluna = Classe em Jun/2026 · <span style="background:var(--green-bg);color:var(--green-text);padding:1px 6px;border-radius:3px;font-size:11px;font-weight:700;">Verde</span> = manteve · <span style="background:var(--red-bg);color:var(--red-text);padding:1px 6px;border-radius:3px;font-size:11px;font-weight:700;">Vermelho</span> = mudou</p>
+      <div class="tbl-wrap">
+        <table class="evo-table" id="evo-table"></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Top Trajetórias de Classe (Mar→Abr→Mai→Jun→Jul)</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="box">
+      <div class="hbar-wrap" id="bars-mudanca"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Situação por Órgão</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr>
+            <th>Órgão</th><th>Total</th>
+            <th>OK s/Alt.</th><th>Corrigida</th>
+            <th>Irregular</th><th>Superior</th>
+            <th>% OK</th>
+          </tr></thead>
+          <tbody id="tbody-classe"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EVOLUÇÃO DA IMPLEMENTAÇÃO ==================== -->
+<div class="panel" id="panel-evolucao">
+  <div class="infobox">
+    <strong>Evolução da implementação da Lei nº 15.367/2026 — mês a mês.</strong>
+    Desde a vigência (1º/abr/2026), o painel acompanha as duas correções previstas: o
+    <span style="color:var(--blue-text);font-weight:700">reposicionamento na classe</span> (art. 310-B) e o
+    <span style="color:var(--green-text);font-weight:700">posicionamento no salário</span> (art. 310-A).
+    Cada <strong>barra</strong> conta os servidores que tiveram alteração em relação ao mês anterior; a
+    <strong>linha</strong> mostra o total acumulado no período.
+  </div>
+
+  <div id="evo-kpis" class="cards-row"></div>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="box-title">🎓 Reposicionamento na Classe — correções por mês</div>
+      <div id="chart-classe"></div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--text2);margin-top:8px;">
+        <span><span style="display:inline-block;width:11px;height:11px;background:var(--blue);border-radius:2px;vertical-align:middle"></span> Correções no mês</span>
+        <span><span style="display:inline-block;width:14px;height:3px;background:var(--purple);vertical-align:middle"></span> Acumulado</span>
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-title">💰 Posicionamento no Salário — correções por mês</div>
+      <div id="chart-salario"></div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--text2);margin-top:8px;">
+        <span><span style="display:inline-block;width:11px;height:11px;background:var(--green);border-radius:2px;vertical-align:middle"></span> Correções no mês</span>
+        <span><span style="display:inline-block;width:14px;height:3px;background:var(--teal);vertical-align:middle"></span> Acumulado</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Correções aplicadas — mês a mês</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="box">
+      <div class="tbl-wrap">
+        <table class="evo-table" id="evo-impl-table"></table>
+      </div>
+      <p style="font-size:11px;color:var(--text3);margin-top:12px;line-height:1.6;">
+        <strong>Metodologia.</strong> Reposicionamento na classe = servidor cuja classe (A/B/C/D) mudou em relação ao mês anterior
+        (colunas <code>CLASSE_MAR…JUL_2026</code>). Posicionamento no salário = servidor cuja remuneração variou em relação ao mês anterior
+        (colunas <code>Fev…Jul 2026</code>). O grande volume de <em>abr/2026</em> reflete a entrada em vigor da política em 1º/abr/2026.
+        Um mesmo servidor pode ser corrigido em mais de um mês; por isso o total de correções é maior que o de servidores distintos.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PDI ==================== -->
+<div class="panel" id="panel-pdi">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Órgão</span>
+      <select id="pdi-orgao" onchange="renderPDI()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Horizonte de Elegibilidade</span>
+      <select id="pdi-horizonte" onchange="renderPDI()">
+        <option value="">Todos</option>
+        <option value="ja">Já Elegível (urgente)</option>
+        <option value="1ano">Menos de 1 ano</option>
+        <option value="1a5">1–5 Anos</option>
+        <option value="5a10">5–10 Anos</option>
+        <option value="10mais">10+ Anos</option>
+      </select>
+    </div>
+    <button class="filter-btn filter-btn-reset" onclick="resetFilters('pdi')">✕ Limpar</button>
+    <span class="filter-result" id="pdi-result"></span>
+  </div>
+
+  <div id="pdi-kpis" class="cards-row"></div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Linha do Tempo de Elegibilidade PDI</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="timeline" id="pdi-timeline"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="box-title">Top 15 Órgãos — Impacto Financeiro Total PDI</div>
+      <div class="hbar-wrap" id="bars-pdi-fin"></div>
+    </div>
+    <div class="box">
+      <div class="box-title">Top 15 Órgãos — Elegíveis Imediatos (≥75 anos)</div>
+      <div class="hbar-wrap" id="bars-pdi-elegivel"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">PDI por Faixa Etária</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="box">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Faixa Etária</th><th>Total</th>
+            <th>Já Elegível</th><th>&lt; 1 Ano</th>
+            <th>1–5 Anos</th><th>5–10 Anos</th><th>10+ Anos</th>
+          </tr></thead>
+          <tbody id="tbody-pdi-idade"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Tabela Completa PDI por Órgão</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr>
+            <th>Órgão</th><th>Total</th>
+            <th>Já Elegível</th><th>&lt; 1 Ano</th>
+            <th>1–5 Anos</th><th>5–10 Anos</th><th>10+ Anos</th>
+            <th>Impacto Imediato</th>
+            <th>Impacto Total</th>
+          </tr></thead>
+          <tbody id="tbody-pdi-orgao"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== POR ÓRGÃO ==================== -->
+<div class="panel" id="panel-por-orgao">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Buscar órgão</span>
+      <input type="text" id="orgao-search" placeholder="Ex: MAPA, ANM, MT..." oninput="renderOrgaoTable()"/>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Status Geral</span>
+      <select id="orgao-filter-status" onchange="renderOrgaoTable()">
+        <option value="all">Todos</option>
+        <option value="ok">100% Conformes</option>
+        <option value="pend">Com Pendências</option>
+        <option value="pend-classe">Pend. Classe</option>
+        <option value="pend-sal">Pend. Salário</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">PDI Urgente</span>
+      <select id="orgao-filter-pdi" onchange="renderOrgaoTable()">
+        <option value="all">Todos</option>
+        <option value="pdi">Com elegíveis imediatos</option>
+        <option value="no-pdi">Sem elegíveis imediatos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Ordenar por</span>
+      <select id="orgao-sort" onchange="renderOrgaoTable()">
+        <option value="total">Total servidores</option>
+        <option value="pend">Pendências</option>
+        <option value="pdi">PDI imediato</option>
+        <option value="orgao">Sigla A→Z</option>
+        <option value="pct">% Conformidade</option>
+      </select>
+    </div>
+    <button class="filter-btn filter-btn-reset" onclick="resetFilters('orgao')">✕ Limpar</button>
+    <span class="filter-result" id="orgao-result"></span>
+  </div>
+
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th>Órgão</th><th>Total</th>
+          <th>Conforme</th><th>% OK</th>
+          <th>P. Classe</th><th>P. Salário</th><th>P. Dados</th>
+          <th>Cumpre Piso</th><th>Não Cumpre</th>
+          <th>Sal.Pré</th><th>Sal.Pós</th>
+          <th>Cl.Irr.</th><th>PDI ≥75</th>
+          <th>Impacto PDI Imediato</th>
+          <th>M</th><th>F</th>
+        </tr></thead>
+        <tbody id="tbody-orgao"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="orgao-drill" class="orgao-detail" style="display:none">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="font-size:24px;font-weight:800;color:var(--blue-text)" id="drill-nome"></div>
+      <div id="drill-badges" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      <button onclick="document.getElementById('orgao-drill').style.display='none'" style="margin-left:auto;background:var(--surface3);border:1px solid var(--border);color:var(--text2);padding:5px 12px;border-radius:var(--radius);cursor:pointer;font-size:12px;">✕ Fechar</button>
+    </div>
+    <div class="od-grid" id="drill-grid"></div>
+  </div>
+</div>
+
+<!-- ==================== PERFIL ==================== -->
+<div class="panel" id="panel-perfil">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Órgão</span>
+      <select id="perf-orgao" onchange="renderPerfil()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Sexo</span>
+      <select id="perf-sexo" onchange="renderPerfil()">
+        <option value="">Ambos</option>
+        <option value="M">Masculino</option>
+        <option value="F">Feminino</option>
+      </select>
+    </div>
+    <button class="filter-btn filter-btn-reset" onclick="resetFilters('perf')">✕ Limpar</button>
+    <span class="filter-result" id="perf-result"></span>
+  </div>
+
+  <div id="perf-kpis" class="cards-row"></div>
+
+  <div class="grid3">
+    <div class="box">
+      <div class="box-title">Distribuição por Sexo</div>
+      <div id="perf-sexo-chart"></div>
+    </div>
+    <div class="box" style="grid-column:span 2">
+      <div class="box-title">Distribuição por Faixa Etária</div>
+      <div class="hbar-wrap" id="bars-idade"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Perfil por Órgão — Composição de Gênero</span>
+      <div class="section-divider"></div>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr>
+            <th>Órgão</th><th>Total</th>
+            <th>Masculino</th><th>% M</th>
+            <th>Feminino</th><th>% F</th>
+            <th>Proporção Visual</th>
+          </tr></thead>
+          <tbody id="tbody-perfil-sexo"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DADOS BRUTOS ==================== -->
+<div class="panel" id="panel-dados">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Órgão</span>
+      <select id="db-orgao" onchange="renderDados()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Status Geral</span>
+      <select id="db-status" onchange="renderDados()">
+        <option value="">Todos</option>
+        <option value="CONFORME">Conforme</option>
+        <option value="PENDÊNCIA CLASSE">Pend. Classe</option>
+        <option value="PENDÊNCIA SALÁRIO">Pend. Salário</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Cumpre Piso</span>
+      <select id="db-piso" onchange="renderDados()">
+        <option value="">Todos</option>
+        <option value="true">Sim</option>
+        <option value="false">Não</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">PDI Elegibilidade</span>
+      <select id="db-pdi" onchange="renderDados()">
+        <option value="">Todas</option>
+        <option value="JÁ TEM">Já Elegível</option>
+        <option value="MESES">Menos de 1 ano</option>
+      </select>
+    </div>
+    <button class="filter-btn filter-btn-reset" onclick="resetFilters('db')">✕ Limpar</button>
+    <span class="filter-result" id="db-result"></span>
+  </div>
+
+  <div class="infobox">
+    <strong>Amostra de dados reais (10 registros).</strong> O banco original contém 3.327 servidores. Para visualizar o total, consulte o Excel e siga as instruções na aba "Como Importar".
+  </div>
+
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Órgão</th><th>Sexo</th><th>Faixa Etária</th><th>Cargo</th>
+          <th>Status Geral</th><th>Status Salário</th><th>Status Classe</th>
+          <th>Cl.Mar</th><th>Cl.Jul</th><th>Sit.Inicial</th>
+          <th>Piso</th><th>Status PDI</th>
+          <th>Sal.Pré</th><th>Sal.Pós</th><th>Piso Tab.</th>
+          <th>Impacto PDI</th>
+        </tr></thead>
+        <tbody id="tbody-dados"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== COMO IMPORTAR ==================== -->
+<div class="panel" id="panel-importar">
+  <div class="infobox">
+    <strong>Como adicionar linhas a este painel.</strong> Todos os dados estão embutidos na variável <code>DATA</code> no bloco <code>&lt;script&gt;</code> deste arquivo. Para acrescentar registros na seção "Dados Brutos", siga os passos abaixo.
+  </div>
+
+  <div class="box section">
+    <div class="box-title">Passo 1 — Copiar do Excel</div>
+    <ol style="padding-left:20px;font-size:13px;color:var(--text2);display:flex;flex-direction:column;gap:8px;line-height:1.7;">
+      <li>Abra <code>Banco_de_Dados.xlsx</code> no Excel ou Google Sheets.</li>
+      <li>Selecione as linhas desejadas (mínimo as colunas listadas abaixo).</li>
+      <li>Copie e cole em um editor de texto para extrair os valores separados.</li>
+    </ol>
+  </div>
+
+  <div class="box section">
+    <div class="box-title">Passo 2 — Colunas utilizadas neste painel</div>
+    <div class="tbl-wrap" style="margin-top:8px">
+      <table><thead><tr><th>Coluna no Excel</th><th>Descrição</th><th>Tipo</th></tr></thead>
+      <tbody>
+        <tr><td><code>SIGLA ORGAO REFERENCIA</code></td><td>Sigla do órgão</td><td>Texto</td></tr>
+        <tr><td><code>IT-CO-SEXO</code></td><td>M ou F</td><td>Texto</td></tr>
+        <tr><td><code>FAIXA ETARIA</code></td><td>Ex: "66 a 70 anos"</td><td>Texto</td></tr>
+        <tr><td><code>CARGO</code></td><td>Nome do cargo</td><td>Texto</td></tr>
+        <tr><td><code>STATUS_GERAL</code></td><td>CONFORME / PENDÊNCIA CLASSE / etc.</td><td>Texto</td></tr>
+        <tr><td><code>STATUS_SALARIO_LEI</code></td><td>CONFORME / IRREGULAR - ABAIXO DO PISO</td><td>Texto</td></tr>
+        <tr><td><code>STATUS_CLASSE_LEI</code></td><td>OK / IRREGULAR - CLASSE INFERIOR / etc.</td><td>Texto</td></tr>
+        <tr><td><code>CLASSE_MAR_2026</code></td><td>A, B, C, D ou S</td><td>Texto</td></tr>
+        <tr><td><code>CLASSE_JUN_2026</code></td><td>A, B, C, D ou S</td><td>Texto</td></tr>
+        <tr><td><code>SITUAÇÃO INICIAL</code></td><td>CONFORME / REPOSICIONAMENTO / etc.</td><td>Texto</td></tr>
+        <tr><td><code>CUMPRE_PISO</code></td><td>TRUE ou FALSE</td><td>Booleano</td></tr>
+        <tr><td><code>STATUS_PDI</code></td><td>ELEGÍVEL - JÁ TEM 75+ / etc.</td><td>Texto</td></tr>
+        <tr><td><code>IMPACTO_FINANCEIRO_PDI</code></td><td>Projeção financeira do PDI</td><td>Número</td></tr>
+        <tr><td><code>SALARIO_PRE</code></td><td>Salário antes da Lei</td><td>Número</td></tr>
+        <tr><td><code>SALARIO_POS</code></td><td>Salário depois da Lei</td><td>Número</td></tr>
+        <tr><td><code>PISO_TABELA</code></td><td>Piso salarial da classe</td><td>Número</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="box section">
+    <div class="box-title">Passo 3 — Formato JSON de cada registro</div>
+    <pre style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--text);">{
+  "SIGLA ORGAO REFERENCIA": "MT",
+  "IT-CO-SEXO": "M",
+  "FAIXA ETARIA": "66 a 70 anos",
+  "CARGO": "ENGENHEIRO",
+  "STATUS_GERAL": "CONFORME",
+  "STATUS_SALARIO_LEI": "CONFORME",
+  "STATUS_CLASSE_LEI": "OK - JÁ ESTAVA NA CLASSE CORRETA (SEM ALTERAÇÃO)",
+  "CLASSE_MAR_2026": "D",
+  "CLASSE_JUN_2026": "D",
+  "SITUAÇÃO INICIAL": "CONFORME",
+  "CUMPRE_PISO": true,
+  "STATUS_PDI": "ELEGÍVEL EM 5-10 ANOS",
+  "IMPACTO_FINANCEIRO_PDI": 180000.00,
+  "SALARIO_PRE": 7200.00,
+  "SALARIO_POS": 7200.00,
+  "PISO_TABELA": 5333.97
+}</pre>
+  </div>
+
+  <div class="box section">
+    <div class="box-title">Passo 4 — Onde inserir no HTML</div>
+    <ol style="padding-left:20px;font-size:13px;color:var(--text2);display:flex;flex-direction:column;gap:6px;line-height:1.7;">
+      <li>Abra este arquivo <code>index.html</code> em editor de texto (VS Code, Notepad++).</li>
+      <li>Use Ctrl+F e busque por <code>"sample_rows":[</code>.</li>
+      <li>Adicione novos objetos JSON separados por vírgula dentro do array.</li>
+      <li>Salve e reabra no navegador — os registros aparecem automaticamente.</li>
+    </ol>
+    <div class="warnbox">⚠️ Os KPIs, gráficos e totais são pré-calculados. Para atualizá-los com novos dados do Excel, é necessário rodar novamente o script Python gerador deste painel.</div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  CGMOP · DEPRO · SGP · Ministério da Gestão e da Inovação em Serviços Públicos &nbsp;|&nbsp;
+  Conferência 4.xlsx · Jul/2026 · Lei nº 15.367/2026 &nbsp;|&nbsp;
+  <span style="letter-spacing:.1em;font-weight:700;">RGB</span>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const DATA = {"total_servidores":3327,"referencia":"Jul/2026","status_geral":{"CONFORME":2681,"PENDÊNCIA CLASSE":342,"PENDÊNCIA SALÁRIO":218,"PENDÊNCIA CLASSE + PENDÊNCIA SALÁRIO":46,"PENDÊNCIA DADOS INCOMPLETOS":37,"PENDÊNCIA SALÁRIO + PENDÊNCIA DADOS INCOMPLETOS":3},"status_salario":{"CONFORME":3033,"IRREGULAR - ABAIXO DO PISO":233,"SEM DADOS PARA AVALIAR":27,"IRREGULAR - HOUVE DECESSO (ART. 310-A §4º)":18,"IRREGULAR - ABAIXO DO PISO E COM DECESSO":16},"status_classe":{"OK - JÁ ESTAVA NA CLASSE CORRETA (SEM ALTERAÇÃO)":1944,"OK - CLASSE CORRETA (ALTERADA CONFORME LEI)":909,"IRREGULAR - CLASSE INFERIOR À EXIGIDA":388,"OK - CLASSE SUPERIOR À EXIGIDA":46,"SEM DADOS PARA AVALIAR":40},"sit_inicial":{"CONFORME":1784,"REPOSICIONAMENTO":1267,"POSICIONAMENTO":191,"POSICIONAMENTO + REPOSICIONAMENTO":76,"S/I":9},"orgaos":{"ABIN":{"total":138,"conforme":123,"pend_classe":12,"pend_salario":4,"pend_dados":1,"cumpre_piso":134,"nao_cumpre_piso":4,"sal_pre_media":6737.32,"sal_pos_media":6733.49,"pdi_impacto_total":32160469.52,"pdi_ja_elegivel":12,"pdi_menos_1ano":4,"pdi_1_5anos":11,"pdi_5_10anos":35,"pdi_10mais":76,"classe_ok_sem_alt":47,"classe_ok_alterada":73,"classe_irregular":12,"classe_superior":5,"masc":108,"fem":30},"ANM":{"total":471,"conforme":383,"pend_classe":21,"pend_salario":70,"pend_dados":4,"cumpre_piso":399,"nao_cumpre_piso":72,"sal_pre_media":4539.59,"sal_pos_media":4691.03,"pdi_impacto_total":59383155.54,"pdi_ja_elegivel":170,"pdi_menos_1ano":33,"pdi_1_5anos":110,"pdi_5_10anos":97,"pdi_10mais":61,"classe_ok_sem_alt":380,"classe_ok_alterada":61,"classe_irregular":21,"classe_superior":5,"masc":414,"fem":57},"C.AER":{"total":26,"conforme":24,"pend_classe":2,"pend_salario":1,"pend_dados":0,"cumpre_piso":25,"nao_cumpre_piso":1,"sal_pre_media":4824.39,"sal_pos_media":5217.95,"pdi_impacto_total":4917635.14,"pdi_ja_elegivel":1,"pdi_menos_1ano":1,"pdi_1_5anos":1,"pdi_5_10anos":6,"pdi_10mais":17,"classe_ok_sem_alt":12,"classe_ok_alterada":11,"classe_irregular":2,"classe_superior":1,"masc":20,"fem":6},"CM":{"total":7,"conforme":3,"pend_classe":3,"pend_salario":1,"pend_dados":0,"cumpre_piso":6,"nao_cumpre_piso":1,"sal_pre_media":4321.37,"sal_pos_media":4321.37,"pdi_impacto_total":1670743.94,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":1,"pdi_5_10anos":2,"pdi_10mais":4,"classe_ok_sem_alt":4,"classe_ok_alterada":0,"classe_irregular":3,"classe_superior":0,"masc":2,"fem":5},"CNEN":{"total":9,"conforme":8,"pend_classe":1,"pend_salario":0,"pend_dados":0,"cumpre_piso":9,"nao_cumpre_piso":0,"sal_pre_media":7607.69,"sal_pos_media":7732.7,"pdi_impacto_total":1864044.14,"pdi_ja_elegivel":1,"pdi_menos_1ano":0,"pdi_1_5anos":2,"pdi_5_10anos":3,"pdi_10mais":3,"classe_ok_sem_alt":2,"classe_ok_alterada":6,"classe_irregular":1,"classe_superior":0,"masc":9,"fem":0},"CNPQ":{"total":1,"conforme":1,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":13602.0,"sal_pos_media":13602.0,"pdi_impacto_total":350000.0,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":0,"pdi_10mais":1,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":1,"fem":0},"CVM":{"total":1,"conforme":1,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":8147.66,"sal_pos_media":8147.66,"pdi_impacto_total":350000.0,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":0,"pdi_10mais":1,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":1,"fem":0},"DNIT":{"total":1,"conforme":1,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":10126.05,"sal_pos_media":10126.05,"pdi_impacto_total":140813.78,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":1,"pdi_5_10anos":0,"pdi_10mais":0,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":1,"fem":0},"ENAP":{"total":6,"conforme":6,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":6,"nao_cumpre_piso":0,"sal_pre_media":8642.89,"sal_pos_media":8642.98,"pdi_impacto_total":2100000.0,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":2,"pdi_10mais":4,"classe_ok_sem_alt":6,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":5,"fem":1},"FIOCRUZ":{"total":13,"conforme":0,"pend_classe":12,"pend_salario":1,"pend_dados":1,"cumpre_piso":11,"nao_cumpre_piso":2,"sal_pre_media":4136.9,"sal_pos_media":4136.9,"pdi_impacto_total":1955254.92,"pdi_ja_elegivel":2,"pdi_menos_1ano":0,"pdi_1_5anos":1,"pdi_5_10anos":1,"pdi_10mais":9,"classe_ok_sem_alt":0,"classe_ok_alterada":0,"classe_irregular":12,"classe_superior":0,"masc":2,"fem":11},"FUNAI":{"total":2,"conforme":1,"pend_classe":1,"pend_salario":0,"pend_dados":0,"cumpre_piso":2,"nao_cumpre_piso":0,"sal_pre_media":5090.29,"sal_pos_media":5090.29,"pdi_impacto_total":545661.06,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":0,"pdi_10mais":2,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":1,"classe_superior":0,"masc":2,"fem":0},"FUNASA":{"total":1,"conforme":0,"pend_classe":1,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":3868.63,"sal_pos_media":3868.63,"pdi_impacto_total":85159.64,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":1,"pdi_10mais":0,"classe_ok_sem_alt":0,"classe_ok_alterada":0,"classe_irregular":1,"classe_superior":0,"masc":1,"fem":0},"IBGE":{"total":2,"conforme":1,"pend_classe":0,"pend_salario":0,"pend_dados":1,"cumpre_piso":1,"nao_cumpre_piso":1,"sal_pre_media":13873.71,"sal_pos_media":7168.56,"pdi_impacto_total":350000.0,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":1,"pdi_10mais":1,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":2,"fem":0},"IFFLU":{"total":1,"conforme":1,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":5333.97,"sal_pos_media":5333.97,"pdi_impacto_total":47964.11,"pdi_ja_elegivel":0,"pdi_menos_1ano":1,"pdi_1_5anos":0,"pdi_5_10anos":0,"pdi_10mais":0,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":0,"fem":1},"IFMA":{"total":2,"conforme":1,"pend_classe":1,"pend_salario":0,"pend_dados":0,"cumpre_piso":2,"nao_cumpre_piso":0,"sal_pre_media":7505.57,"sal_pos_media":7505.57,"pdi_impacto_total":174017.75,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":1,"pdi_5_10anos":1,"pdi_10mais":0,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":1,"classe_superior":0,"masc":2,"fem":0},"INCRA":{"total":103,"conforme":83,"pend_classe":18,"pend_salario":1,"pend_dados":2,"cumpre_piso":101,"nao_cumpre_piso":2,"sal_pre_media":6137.73,"sal_pos_media":6147.36,"pdi_impacto_total":22838877.89,"pdi_ja_elegivel":20,"pdi_menos_1ano":2,"pdi_1_5anos":16,"pdi_5_10anos":31,"pdi_10mais":34,"classe_ok_sem_alt":82,"classe_ok_alterada":1,"classe_irregular":18,"classe_superior":0,"masc":74,"fem":29},"INSS":{"total":20,"conforme":9,"pend_classe":11,"pend_salario":0,"pend_dados":0,"cumpre_piso":20,"nao_cumpre_piso":0,"sal_pre_media":8148.66,"sal_pos_media":8148.66,"pdi_impacto_total":4726822.93,"pdi_ja_elegivel":1,"pdi_menos_1ano":0,"pdi_1_5anos":2,"pdi_5_10anos":4,"pdi_10mais":13,"classe_ok_sem_alt":9,"classe_ok_alterada":0,"classe_irregular":11,"classe_superior":0,"masc":9,"fem":11},"IPHAN":{"total":1,"conforme":0,"pend_classe":1,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":3868.63,"sal_pos_media":3868.63,"pdi_impacto_total":107446.76,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":1,"pdi_10mais":0,"classe_ok_sem_alt":0,"classe_ok_alterada":0,"classe_irregular":1,"classe_superior":0,"masc":1,"fem":0},"MAPA":{"total":518,"conforme":405,"pend_classe":89,"pend_salario":28,"pend_dados":4,"cumpre_piso":487,"nao_cumpre_piso":31,"sal_pre_media":10200.54,"sal_pos_media":10249.57,"pdi_impacto_total":130343962.39,"pdi_ja_elegivel":116,"pdi_menos_1ano":28,"pdi_1_5anos":124,"pdi_5_10anos":183,"pdi_10mais":67,"classe_ok_sem_alt":295,"classe_ok_alterada":120,"classe_irregular":89,"classe_superior":10,"masc":381,"fem":137},"MCID":{"total":1,"conforme":1,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":10126.05,"sal_pos_media":10126.05,"pdi_impacto_total":296143.64,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":1,"pdi_5_10anos":0,"pdi_10mais":0,"classe_ok_sem_alt":1,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":1,"fem":0},"MCOM":{"total":257,"conforme":155,"pend_classe":78,"pend_salario":29,"pend_dados":0,"cumpre_piso":230,"nao_cumpre_piso":27,"sal_pre_media":5752.44,"sal_pos_media":5758.08,"pdi_impacto_total":37607837.93,"pdi_ja_elegivel":82,"pdi_menos_1ano":21,"pdi_1_5anos":62,"pdi_5_10anos":76,"pdi_10mais":16,"classe_ok_sem_alt":179,"classe_ok_alterada":0,"classe_irregular":78,"classe_superior":0,"masc":184,"fem":73},"MCTI":{"total":113,"conforme":104,"pend_classe":6,"pend_salario":4,"pend_dados":1,"cumpre_piso":108,"nao_cumpre_piso":5,"sal_pre_media":5281.95,"sal_pos_media":5346.55,"pdi_impacto_total":21945095.55,"pdi_ja_elegivel":7,"pdi_menos_1ano":6,"pdi_1_5anos":12,"pdi_5_10anos":21,"pdi_10mais":67,"classe_ok_sem_alt":7,"classe_ok_alterada":99,"classe_irregular":6,"classe_superior":0,"masc":61,"fem":52},"MDA":{"total":7,"conforme":3,"pend_classe":1,"pend_salario":3,"pend_dados":0,"cumpre_piso":7,"nao_cumpre_piso":0,"sal_pre_media":16034.4,"sal_pos_media":11125.3,"pdi_impacto_total":1716180.27,"pdi_ja_elegivel":4,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":1,"pdi_10mais":2,"classe_ok_sem_alt":4,"classe_ok_alterada":2,"classe_irregular":1,"classe_superior":0,"masc":5,"fem":2},"MDS":{"total":20,"conforme":20,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":20,"nao_cumpre_piso":0,"sal_pre_media":5606.68,"sal_pos_media":5606.68,"pdi_impacto_total":3591980.43,"pdi_ja_elegivel":1,"pdi_menos_1ano":1,"pdi_1_5anos":1,"pdi_5_10anos":5,"pdi_10mais":12,"classe_ok_sem_alt":0,"classe_ok_alterada":20,"classe_irregular":0,"classe_superior":0,"masc":5,"fem":15},"MEC":{"total":36,"conforme":26,"pend_classe":8,"pend_salario":5,"pend_dados":0,"cumpre_piso":31,"nao_cumpre_piso":5,"sal_pre_media":4580.88,"sal_pos_media":4706.01,"pdi_impacto_total":6211474.78,"pdi_ja_elegivel":3,"pdi_menos_1ano":1,"pdi_1_5anos":3,"pdi_5_10anos":13,"pdi_10mais":16,"classe_ok_sem_alt":11,"classe_ok_alterada":15,"classe_irregular":8,"classe_superior":2,"masc":15,"fem":21},"MF":{"total":92,"conforme":87,"pend_classe":4,"pend_salario":1,"pend_dados":0,"cumpre_piso":92,"nao_cumpre_piso":0,"sal_pre_media":6258.7,"sal_pos_media":6294.35,"pdi_impacto_total":18000583.14,"pdi_ja_elegivel":6,"pdi_menos_1ano":1,"pdi_1_5anos":17,"pdi_5_10anos":29,"pdi_10mais":39,"classe_ok_sem_alt":56,"classe_ok_alterada":31,"classe_irregular":4,"classe_superior":1,"masc":55,"fem":37},"MGI":{"total":130,"conforme":110,"pend_classe":8,"pend_salario":15,"pend_dados":2,"cumpre_piso":113,"nao_cumpre_piso":17,"sal_pre_media":5269.13,"sal_pos_media":5269.13,"pdi_impacto_total":20847042.68,"pdi_ja_elegivel":14,"pdi_menos_1ano":3,"pdi_1_5anos":35,"pdi_5_10anos":46,"pdi_10mais":32,"classe_ok_sem_alt":87,"classe_ok_alterada":33,"classe_irregular":8,"classe_superior":0,"masc":72,"fem":58},"MIDR":{"total":38,"conforme":32,"pend_classe":0,"pend_salario":6,"pend_dados":0,"cumpre_piso":32,"nao_cumpre_piso":6,"sal_pre_media":5933.47,"sal_pos_media":6097.34,"pdi_impacto_total":7931050.98,"pdi_ja_elegivel":4,"pdi_menos_1ano":3,"pdi_1_5anos":6,"pdi_5_10anos":12,"pdi_10mais":13,"classe_ok_sem_alt":16,"classe_ok_alterada":21,"classe_irregular":0,"classe_superior":1,"masc":15,"fem":23},"MINC":{"total":45,"conforme":29,"pend_classe":15,"pend_salario":1,"pend_dados":0,"cumpre_piso":44,"nao_cumpre_piso":1,"sal_pre_media":6023.23,"sal_pos_media":6168.41,"pdi_impacto_total":5626845.45,"pdi_ja_elegivel":18,"pdi_menos_1ano":6,"pdi_1_5anos":9,"pdi_5_10anos":7,"pdi_10mais":5,"classe_ok_sem_alt":30,"classe_ok_alterada":0,"classe_irregular":15,"classe_superior":0,"masc":31,"fem":14},"MME":{"total":371,"conforme":269,"pend_classe":65,"pend_salario":37,"pend_dados":9,"cumpre_piso":333,"nao_cumpre_piso":38,"sal_pre_media":5951.45,"sal_pos_media":6002.23,"pdi_impacto_total":66568749.25,"pdi_ja_elegivel":108,"pdi_menos_1ano":18,"pdi_1_5anos":82,"pdi_5_10anos":95,"pdi_10mais":68,"classe_ok_sem_alt":160,"classe_ok_alterada":135,"classe_irregular":65,"classe_superior":2,"masc":213,"fem":158},"MPA":{"total":10,"conforme":8,"pend_classe":1,"pend_salario":1,"pend_dados":0,"cumpre_piso":10,"nao_cumpre_piso":0,"sal_pre_media":10089.12,"sal_pos_media":10055.3,"pdi_impacto_total":2552871.28,"pdi_ja_elegivel":1,"pdi_menos_1ano":0,"pdi_1_5anos":3,"pdi_5_10anos":4,"pdi_10mais":2,"classe_ok_sem_alt":3,"classe_ok_alterada":5,"classe_irregular":1,"classe_superior":1,"masc":6,"fem":4},"MPOR":{"total":39,"conforme":32,"pend_classe":4,"pend_salario":3,"pend_dados":1,"cumpre_piso":37,"nao_cumpre_piso":2,"sal_pre_media":23179.31,"sal_pos_media":23147.13,"pdi_impacto_total":11470099.76,"pdi_ja_elegivel":8,"pdi_menos_1ano":2,"pdi_1_5anos":11,"pdi_5_10anos":13,"pdi_10mais":5,"classe_ok_sem_alt":34,"classe_ok_alterada":0,"classe_irregular":4,"classe_superior":0,"masc":32,"fem":7},"MPS":{"total":1,"conforme":0,"pend_classe":1,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":8565.66,"sal_pos_media":8565.66,"pdi_impacto_total":320474.11,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":0,"pdi_10mais":1,"classe_ok_sem_alt":0,"classe_ok_alterada":0,"classe_irregular":1,"classe_superior":0,"masc":0,"fem":1},"MS":{"total":166,"conforme":152,"pend_classe":3,"pend_salario":12,"pend_dados":1,"cumpre_piso":159,"nao_cumpre_piso":7,"sal_pre_media":6435.81,"sal_pos_media":6419.28,"pdi_impacto_total":53123442.77,"pdi_ja_elegivel":0,"pdi_menos_1ano":1,"pdi_1_5anos":11,"pdi_5_10anos":28,"pdi_10mais":126,"classe_ok_sem_alt":155,"classe_ok_alterada":7,"classe_irregular":3,"classe_superior":0,"masc":73,"fem":93},"MT":{"total":669,"conforme":594,"pend_classe":20,"pend_salario":44,"pend_dados":13,"cumpre_piso":615,"nao_cumpre_piso":54,"sal_pre_media":4648.46,"sal_pos_media":4625.72,"pdi_impacto_total":93785659.99,"pdi_ja_elegivel":110,"pdi_menos_1ano":28,"pdi_1_5anos":142,"pdi_5_10anos":218,"pdi_10mais":171,"classe_ok_sem_alt":350,"classe_ok_alterada":268,"classe_irregular":20,"classe_superior":18,"masc":597,"fem":72},"MTE":{"total":1,"conforme":1,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":9000.94,"sal_pos_media":10126.05,"pdi_impacto_total":253099.96,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":1,"pdi_10mais":0,"classe_ok_sem_alt":0,"classe_ok_alterada":1,"classe_irregular":0,"classe_superior":0,"masc":1,"fem":0},"SUFRAMA":{"total":3,"conforme":3,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":3,"nao_cumpre_piso":0,"sal_pre_media":15070.81,"sal_pos_media":15070.81,"pdi_impacto_total":1050000.0,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":0,"pdi_10mais":3,"classe_ok_sem_alt":3,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":1,"fem":2},"UFRRJ":{"total":4,"conforme":4,"pend_classe":0,"pend_salario":0,"pend_dados":0,"cumpre_piso":4,"nao_cumpre_piso":0,"sal_pre_media":5333.97,"sal_pos_media":5333.97,"pdi_impacto_total":387740.55,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":4,"pdi_10mais":0,"classe_ok_sem_alt":4,"classe_ok_alterada":0,"classe_irregular":0,"classe_superior":0,"masc":4,"fem":0},"UNB":{"total":1,"conforme":0,"pend_classe":1,"pend_salario":0,"pend_dados":0,"cumpre_piso":1,"nao_cumpre_piso":0,"sal_pre_media":3868.63,"sal_pos_media":3868.63,"pdi_impacto_total":166879.09,"pdi_ja_elegivel":0,"pdi_menos_1ano":0,"pdi_1_5anos":0,"pdi_5_10anos":0,"pdi_10mais":1,"classe_ok_sem_alt":0,"classe_ok_alterada":0,"classe_irregular":1,"classe_superior":0,"masc":0,"fem":1}},"sex_total":{"M":2406,"F":921},"age_dist":{"51 a 55 anos":14,"56 a 60 anos":286,"61 a 65 anos":705,"66 a 70 anos":967,"71 a 74 anos":639,"75 a 80 anos":509,"81 a 85 anos":160,"86 a 90 anos":41,"91 a 95 anos":6},"class_evo":{"A":{"A":69,"B":3,"C":36,"D":198,"S":0},"B":{"A":0,"B":105,"C":16,"D":241,"S":0},"C":{"A":0,"B":1,"C":211,"D":471,"S":0},"D":{"A":1,"B":3,"C":41,"D":1672,"S":0},"S":{"A":0,"B":0,"C":0,"D":0,"S":219}},"class_dist_final":{"A":71,"B":112,"C":305,"D":2593,"S":219},"monthly_sal":{"Fev 2026":5733.3,"Mar 2026":5750.62,"Abr 2026":6093.02,"Mai 2026":6348.03,"Jun 2026":6397.83,"Jul 2026":6425.03},"pdi_groups":{"5-10 anos":941,"10+ anos":872,"Já Elegível":689,"1-5 anos":665,"< 1 ano":160},"pdi_fin_orgao":{"MAPA":130343962.39,"MT":93785659.99,"MME":66568749.25,"ANM":59383155.54,"MS":53123442.77,"MCOM":37607837.93,"ABIN":32160469.52,"INCRA":22838877.89,"MCTI":21945095.55,"MGI":20847042.68,"MF":18000583.14,"MPOR":11470099.76,"MIDR":7931050.98,"MEC":6211474.78,"MINC":5626845.45,"C.AER":4917635.14,"INSS":4726822.93,"MDS":3591980.43,"MPA":2552871.28,"ENAP":2100000.0,"FIOCRUZ":1955254.92,"CNEN":1864044.14,"MDA":1716180.27,"CM":1670743.94,"SUFRAMA":1050000.0,"FUNAI":545661.06,"UFRRJ":387740.55,"CNPQ":350000.0,"CVM":350000.0,"IBGE":350000.0,"MPS":320474.11,"MCID":296143.64,"MTE":253099.96,"IFMA":174017.75,"UNB":166879.09,"DNIT":140813.78,"IPHAN":107446.76,"FUNASA":85159.64,"IFFLU":47964.11},"age_pdi":[{"f":"51 a 55 anos","t":14,"ja":0,"m1":0,"_15":0,"_510":0,"_10":14},{"f":"56 a 60 anos","t":286,"ja":0,"m1":0,"_15":0,"_510":0,"_10":286},{"f":"61 a 65 anos","t":705,"ja":0,"m1":0,"_15":0,"_510":133,"_10":572},{"f":"66 a 70 anos","t":967,"ja":0,"m1":0,"_15":159,"_510":808,"_10":0},{"f":"71 a 74 anos","t":639,"ja":0,"m1":133,"_15":506,"_510":0,"_10":0},{"f":"75 a 80 anos","t":509,"ja":482,"m1":27,"_15":0,"_510":0,"_10":0},{"f":"81 a 85 anos","t":160,"ja":160,"m1":0,"_15":0,"_510":0,"_10":0},{"f":"86 a 90 anos","t":41,"ja":41,"m1":0,"_15":0,"_510":0,"_10":0},{"f":"91 a 95 anos","t":6,"ja":6,"m1":0,"_15":0,"_510":0,"_10":0}],"mudanca_classe_top":{"D -> D -> D -> D -> D":1889,"C -> C -> C -> C -> C":211,"C -> D -> D -> D -> D":211,"C -> C -> D -> D -> D":128,"B -> D -> D -> D -> D":116,"B -> B -> B -> B -> B":105,"A -> A -> D -> D -> D":96,"C -> C -> C -> D -> D":88,"B -> B -> D -> D -> D":71,"A -> A -> A -> A -> A":67,"A -> D -> D -> D -> D":63,"C -> C -> C -> C -> D":44,"B -> B -> B -> D -> D":35,"D -> D -> C -> C -> C":35,"A -> A -> C -> C -> C":23},"monthly_impl":{"months":["Abr/2026","Mai/2026","Jun/2026","Jul/2026"],"classe":[412,376,159,84],"salario":[2960,662,196,233],"classe_cum":[412,788,947,1031],"salario_cum":[2960,3622,3818,4051],"distintos_classe":1023,"distintos_salario":3127},"kpi":{"decesso":34,"decesso_a":18,"decesso_b":16,"sal_sem_dados":27,"cls_sem_dados":40,"acima_75":716,"faixa_dom":"66 a 70 anos","faixa_dom_pct":29.1},"sample_rows":[{"SIGLA ORGAO REFERENCIA":"MS","IT-CO-SEXO":"F","FAIXA ETARIA":"56 a 60 anos","CARGO":"AGENTE ADMINISTRATIVO","STATUS_GERAL":"CONFORME","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"OK - JÁ ESTAVA NA CLASSE CORRETA (SEM ALTERAÇÃO)","CLASSE_MAR_2026":"S","CLASSE_JUN_2026":"S","SITUAÇÃO INICIAL":"CONFORME","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL EM 10+ ANOS","IMPACTO_FINANCEIRO_PDI":350000.0,"SALARIO_PRE":6063.05,"SALARIO_POS":6063.05,"PISO_TABELA":5333.97},{"SIGLA ORGAO REFERENCIA":"MME","IT-CO-SEXO":"M","FAIXA ETARIA":"81 a 85 anos","CARGO":"AUDITOR II","STATUS_GERAL":"CONFORME","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"OK - JÁ ESTAVA NA CLASSE CORRETA (SEM ALTERAÇÃO)","CLASSE_MAR_2026":"D","CLASSE_JUN_2026":"D","SITUAÇÃO INICIAL":"CONFORME","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL - JÁ TEM 75+","IMPACTO_FINANCEIRO_PDI":235471.17,"SALARIO_PRE":10126.05,"SALARIO_POS":10126.05,"PISO_TABELA":10126.05},{"SIGLA ORGAO REFERENCIA":"MF","IT-CO-SEXO":"F","FAIXA ETARIA":"56 a 60 anos","CARGO":"PROGRAMADOR","STATUS_GERAL":"CONFORME","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"OK - CLASSE CORRETA (ALTERADA CONFORME LEI)","CLASSE_MAR_2026":"A","CLASSE_JUN_2026":"D","SITUAÇÃO INICIAL":"REPOSICIONAMENTO","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL EM 10+ ANOS","IMPACTO_FINANCEIRO_PDI":249307.06,"SALARIO_PRE":5333.97,"SALARIO_POS":5333.97,"PISO_TABELA":5333.97},{"SIGLA ORGAO REFERENCIA":"MT","IT-CO-SEXO":"F","FAIXA ETARIA":"56 a 60 anos","CARGO":"RECEPCIONISTA","STATUS_GERAL":"CONFORME","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"OK - CLASSE CORRETA (ALTERADA CONFORME LEI)","CLASSE_MAR_2026":"A","CLASSE_JUN_2026":"D","SITUAÇÃO INICIAL":"REPOSICIONAMENTO","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL EM 10+ ANOS","IMPACTO_FINANCEIRO_PDI":185348.38,"SALARIO_PRE":3813.57,"SALARIO_POS":3813.57,"PISO_TABELA":3813.57},{"SIGLA ORGAO REFERENCIA":"MME","IT-CO-SEXO":"F","FAIXA ETARIA":"75 a 80 anos","CARGO":"BIBLIOTECARIO","STATUS_GERAL":"PENDÊNCIA CLASSE","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"IRREGULAR - CLASSE INFERIOR À EXIGIDA","CLASSE_MAR_2026":"C","CLASSE_JUN_2026":"C","SITUAÇÃO INICIAL":"REPOSICIONAMENTO","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL - JÁ TEM 75+","IMPACTO_FINANCEIRO_PDI":204588.75,"SALARIO_PRE":13493.52,"SALARIO_POS":13493.52,"PISO_TABELA":9000.94},{"SIGLA ORGAO REFERENCIA":"MME","IT-CO-SEXO":"M","FAIXA ETARIA":"81 a 85 anos","CARGO":"ECONOMISTA","STATUS_GERAL":"PENDÊNCIA CLASSE","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"IRREGULAR - CLASSE INFERIOR À EXIGIDA","CLASSE_MAR_2026":"C","CLASSE_JUN_2026":"C","SITUAÇÃO INICIAL":"REPOSICIONAMENTO","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL - JÁ TEM 75+","IMPACTO_FINANCEIRO_PDI":343910.46,"SALARIO_PRE":22724.36,"SALARIO_POS":22724.36,"PISO_TABELA":9000.94},{"SIGLA ORGAO REFERENCIA":"MME","IT-CO-SEXO":"M","FAIXA ETARIA":"86 a 90 anos","CARGO":"CONTADOR I","STATUS_GERAL":"PENDÊNCIA SALÁRIO","STATUS_SALARIO_LEI":"IRREGULAR - ABAIXO DO PISO","STATUS_CLASSE_LEI":"OK - JÁ ESTAVA NA CLASSE CORRETA (SEM ALTERAÇÃO)","CLASSE_MAR_2026":"D","CLASSE_JUN_2026":"D","SITUAÇÃO INICIAL":"POSICIONAMENTO","CUMPRE_PISO":false,"STATUS_PDI":"ELEGÍVEL - JÁ TEM 75+","IMPACTO_FINANCEIRO_PDI":206834.7,"SALARIO_PRE":0.0,"SALARIO_POS":0.0,"PISO_TABELA":10126.05},{"SIGLA ORGAO REFERENCIA":"MCOM","IT-CO-SEXO":"F","FAIXA ETARIA":"81 a 85 anos","CARGO":"AUXILIAR ADMINISTRATIVO","STATUS_GERAL":"PENDÊNCIA SALÁRIO","STATUS_SALARIO_LEI":"IRREGULAR - ABAIXO DO PISO","STATUS_CLASSE_LEI":"OK - JÁ ESTAVA NA CLASSE CORRETA (SEM ALTERAÇÃO)","CLASSE_MAR_2026":"D","CLASSE_JUN_2026":"D","SITUAÇÃO INICIAL":"POSICIONAMENTO","CUMPRE_PISO":false,"STATUS_PDI":"ELEGÍVEL - JÁ TEM 75+","IMPACTO_FINANCEIRO_PDI":78216.32,"SALARIO_PRE":0.0,"SALARIO_POS":0.0,"PISO_TABELA":3813.57},{"SIGLA ORGAO REFERENCIA":"MT","IT-CO-SEXO":"M","FAIXA ETARIA":"56 a 60 anos","CARGO":"AGENTE DE ADMINISTRACAO","STATUS_GERAL":"CONFORME","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"OK - CLASSE SUPERIOR À EXIGIDA","CLASSE_MAR_2026":"A","CLASSE_JUN_2026":"D","SITUAÇÃO INICIAL":"REPOSICIONAMENTO","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL EM 10+ ANOS","IMPACTO_FINANCEIRO_PDI":227349.06,"SALARIO_PRE":5333.97,"SALARIO_POS":5333.97,"PISO_TABELA":5333.97},{"SIGLA ORGAO REFERENCIA":"MT","IT-CO-SEXO":"M","FAIXA ETARIA":"56 a 60 anos","CARGO":"AGENTE DE ADMINISTRACAO","STATUS_GERAL":"CONFORME","STATUS_SALARIO_LEI":"CONFORME","STATUS_CLASSE_LEI":"OK - CLASSE SUPERIOR À EXIGIDA","CLASSE_MAR_2026":"A","CLASSE_JUN_2026":"C","SITUAÇÃO INICIAL":"REPOSICIONAMENTO","CUMPRE_PISO":true,"STATUS_PDI":"ELEGÍVEL EM 10+ ANOS","IMPACTO_FINANCEIRO_PDI":177733.38,"SALARIO_PRE":4885.1,"SALARIO_POS":4885.1,"PISO_TABELA":4885.1}]};
+
+// ============================================================
+// HELPERS
+// ============================================================
+const fmt = (n,d=0) => n==null?'—':n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtR = v => v==null||v===0?'—':'R$ '+fmt(v,2);
+const fmtM = v => {
+  if(v==null) return '—';
+  if(v>=1e9) return 'R$ '+fmt(v/1e9,2)+'B';
+  if(v>=1e6) return 'R$ '+fmt(v/1e6,2)+'M';
+  if(v>=1e3) return 'R$ '+fmt(v/1e3,1)+'k';
+  return fmtR(v);
+};
+const pct = (v,t) => t?(v/t*100).toFixed(1)+'%':'0%';
+const pctN = (v,t) => t?v/t*100:0;
+
+const STATUS_COLORS = {
+  'CONFORME':'#16a34a','PENDÊNCIA CLASSE':'#ca8a04','PENDÊNCIA SALÁRIO':'#ea580c',
+  'PENDÊNCIA CLASSE + PENDÊNCIA SALÁRIO':'#dc2626','PENDÊNCIA DADOS INCOMPLETOS':'#7c3aed',
+  'PENDÊNCIA SALÁRIO + PENDÊNCIA DADOS INCOMPLETOS':'#6b7280'
+};
+const STATUS_SHORT = {
+  'CONFORME':'Conforme','PENDÊNCIA CLASSE':'Pend. Classe','PENDÊNCIA SALÁRIO':'Pend. Salário',
+  'PENDÊNCIA CLASSE + PENDÊNCIA SALÁRIO':'Pend. Cl.+Sal.','PENDÊNCIA DADOS INCOMPLETOS':'Pend. Dados',
+  'PENDÊNCIA SALÁRIO + PENDÊNCIA DADOS INCOMPLETOS':'Pend. Sal.+Dados'
+};
+
+// PDI immediate impact = proportional estimate
+function pdiImmediateImpact(v) {
+  if(!v.total) return 0;
+  return Math.round(v.pdi_impacto_total * v.pdi_ja_elegivel / v.total);
+}
+
+// Filter orgaos
+function filterOrgaos(filters) {
+  return Object.entries(DATA.orgaos).filter(([k,v]) => {
+    if(filters.orgao && k !== filters.orgao) return false;
+    if(filters.status === 'CONFORME' && v.conforme !== v.total) return false;
+    if(filters.status === 'PENDÊNCIA' && v.conforme === v.total) return false;
+    if(filters.status === 'PENDÊNCIA CLASSE' && v.pend_classe === 0) return false;
+    if(filters.status === 'PENDÊNCIA SALÁRIO' && v.pend_salario === 0) return false;
+    if(filters.piso === 'ok' && v.nao_cumpre_piso > 0) return false;
+    if(filters.piso === 'nok' && v.nao_cumpre_piso === 0) return false;
+    if(filters.vari === 'up' && v.sal_pos_media <= v.sal_pre_media) return false;
+    if(filters.vari === 'down' && v.sal_pos_media >= v.sal_pre_media) return false;
+    if(filters.vari === 'eq' && v.sal_pos_media !== v.sal_pre_media) return false;
+    if(filters.cls_status === 'ok' && v.classe_irregular > 0) return false;
+    if(filters.cls_status === 'irregular' && v.classe_irregular === 0) return false;
+    if(filters.cls_status === 'superior' && v.classe_superior === 0) return false;
+    if(filters.pdi === 'ja' && v.pdi_ja_elegivel === 0) return false;
+    if(filters.pdi === '1ano' && v.pdi_menos_1ano === 0) return false;
+    if(filters.pdi === '1a5' && v.pdi_1_5anos === 0) return false;
+    if(filters.pdi === '5a10' && v.pdi_5_10anos === 0) return false;
+    if(filters.pdi === '10mais' && v.pdi_10mais === 0) return false;
+    if(filters.sexo === 'M') { /* can't fully filter by sex with aggregated data */ }
+    if(filters.search && !k.toLowerCase().includes(filters.search.toLowerCase())) return false;
+    return true;
+  });
+}
+
+// Populate orgao dropdowns
+function populateOrgaoSelects() {
+  const orgaos = Object.keys(DATA.orgaos).sort();
+  document.querySelectorAll('select[id$="-orgao"], #orgao-filter-status ~ select, #perf-orgao').forEach(sel => {});
+  ['vg-orgao','sal-orgao','cls-orgao','pdi-orgao','perf-orgao','db-orgao'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    orgaos.forEach(k => {
+      const opt = document.createElement('option');
+      opt.value = k; opt.textContent = k;
+      el.appendChild(opt);
+    });
+  });
+}
+
+// TABS
+document.querySelectorAll('.navtab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.navtab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-'+t.dataset.panel).classList.add('active');
+  });
+});
+
+// THEME TOGGLE
+function toggleTheme() {
+  const isDark = document.body.classList.toggle('dark');
+  document.getElementById('btn-theme').textContent = isDark ? '☀️ Claro' : '🌙 Escuro';
+}
+
+// RESET FILTERS
+function resetFilters(prefix) {
+  document.querySelectorAll('[id^="'+prefix+'-"]').forEach(el => {
+    if(el.tagName==='SELECT') el.value='';
+    else if(el.tagName==='INPUT') el.value='';
+  });
+  if(prefix==='vg') renderVisaoGeral();
+  else if(prefix==='sal') renderSalario();
+  else if(prefix==='cls') renderClasse();
+  else if(prefix==='pdi') renderPDI();
+  else if(prefix==='orgao') renderOrgaoTable();
+  else if(prefix==='perf') renderPerfil();
+  else if(prefix==='db') renderDados();
+}
+
+// ============================================================
+// RENDER HELPERS
+// ============================================================
+function makeCard(label, value, sub, cls, barPct) {
+  return `<div class="card ${cls||''}">
+    <div class="card-label">${label}</div>
+    <div class="card-value">${value}</div>
+    <div class="card-sub">${sub||''}</div>
+    ${barPct!=null?`<div class="card-bar"><div class="card-bar-fill" style="width:${barPct}%"></div></div>`:''}
+  </div>`;
+}
+
+function makePills(data, containerId, colorMap, total) {
+  const max = Math.max(...Object.values(data));
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = Object.entries(data).map(([k,v]) => {
+    const color = colorMap?.[k]||'var(--blue)';
+    return `<div class="pill-item">
+      <span class="pill-label" title="${k}">${k}</span>
+      <div class="pill-track"><div class="pill-fill" style="width:${(v/max*100).toFixed(1)}%;background:${color}"></div></div>
+      <span class="pill-val" style="color:${color}">${fmt(v)}</span>
+      <span class="pill-pct">${total?pct(v,total):''}</span>
+    </div>`;
+  }).join('');
+}
+
+function makeHBars(entries, containerId, color, fmtFn) {
+  const max = Math.max(...entries.map(x=>x[1]));
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const fn = fmtFn||fmt;
+  el.innerHTML = entries.map(([k,v]) => {
+    const w = max?(v/max*100).toFixed(1):0;
+    return `<div class="hbar-row">
+      <span class="hbar-lbl">${k}</span>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${w}%;background:${color}">${w>25?fn(v):''}</div></div>
+      <span class="hbar-num">${fn(v)}</span>
+    </div>`;
+  }).join('');
+}
+
+function setResult(id, total, filtered) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = filtered < total
+    ? `${fmt(filtered)} de ${fmt(total)} órgãos exibidos`
+    : `${fmt(total)} órgãos`;
+}
+
+// ============================================================
+// VISÃO GERAL
+// ============================================================
+function renderVisaoGeral() {
+  const orgaoF = document.getElementById('vg-orgao')?.value||'';
+  const statusF = document.getElementById('vg-status')?.value||'';
+  const filtered = filterOrgaos({orgao:orgaoF, status:statusF});
+
+  // KPIs
+  const total = filtered.reduce((a,[,v])=>a+v.total,0);
+  const conf = filtered.reduce((a,[,v])=>a+v.conforme,0);
+  const pend = total-conf;
+  const pend_cls = filtered.reduce((a,[,v])=>a+v.pend_classe,0);
+  const piso_err = filtered.reduce((a,[,v])=>a+v.nao_cumpre_piso,0);
+  const pdi_imm = filtered.reduce((a,[,v])=>a+v.pdi_ja_elegivel,0);
+  const pdi_total_impact = filtered.reduce((a,[,v])=>a+v.pdi_impacto_total,0);
+
+  const kpis = document.getElementById('vg-kpis');
+  if(kpis) kpis.innerHTML =
+    makeCard('Total Servidores',fmt(total),'Universo monitorado','',100)+
+    makeCard('Conformes',fmt(conf),pct(conf,total)+' do total','c-green',pctN(conf,total))+
+    makeCard('Com Pendências',fmt(pend),pct(pend,total)+' — ação necessária','c-red',pctN(pend,total))+
+    makeCard('Pend. Classe',fmt(pend_cls),'Classe inferior à exigida','c-yellow',pctN(pend_cls,total))+
+    makeCard('Abaixo do Piso',fmt(piso_err),'Irregulares no salário mínimo','c-orange',pctN(piso_err,total))+
+    makeCard('PDI Imediato',fmt(pdi_imm),'Elegíveis agora (≥75 anos)','c-red',pctN(pdi_imm,total))+
+    makeCard('Impacto PDI Total',fmtM(pdi_total_impact),'Projeção financeira (todos os elegíveis)','c-purple',null);
+
+  setResult('vg-result', Object.keys(DATA.orgaos).length, filtered.length);
+
+  // Stacked bar (global always)
+  const sbar = document.getElementById('sbar-geral');
+  const leg = document.getElementById('sbar-legend');
+  if(sbar) {
+    sbar.innerHTML = Object.entries(DATA.status_geral).map(([k,v])=>
+      `<div class="sbar-seg" style="width:${(v/DATA.total_servidores*100).toFixed(2)}%;background:${STATUS_COLORS[k]}" title="${k}: ${v}"></div>`
+    ).join('');
+    leg.innerHTML = Object.entries(DATA.status_geral).map(([k,v])=>
+      `<span style="color:${STATUS_COLORS[k]};display:flex;align-items:center;gap:3px"><span style="font-size:14px">■</span> ${STATUS_SHORT[k]||k} (${fmt(v)})</span>`
+    ).join('');
+  }
+  makePills(DATA.status_geral,'pills-geral',STATUS_COLORS,DATA.total_servidores);
+  makePills(DATA.sit_inicial,'pills-inicial',null,DATA.total_servidores);
+
+  // Monthly bars
+  const monthly = document.getElementById('bars-monthly');
+  if(monthly) {
+    const max = Math.max(...Object.values(DATA.monthly_sal));
+    monthly.innerHTML = Object.entries(DATA.monthly_sal).map(([k,v])=>{
+      const w = (v/max*100).toFixed(1);
+      return `<div class="hbar-row">
+        <span class="hbar-lbl">${k}</span>
+        <div class="hbar-track"><div class="hbar-fill" style="width:${w}%;background:var(--blue)">R$ ${fmt(v,2)}</div></div>
+      </div>`;
+    }).join('');
+  }
+
+  const topVol = Object.entries(DATA.orgaos).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+  makeHBars(topVol.map(([k,v])=>[k,v.total]),'bars-orgao-vol','var(--blue)');
+  const topPend = Object.entries(DATA.orgaos).map(([k,v])=>[k,v.total-v.conforme]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  makeHBars(topPend,'bars-orgao-pend','var(--red)');
+}
+
+// ============================================================
+// SALÁRIO
+// ============================================================
+function renderSalario() {
+  const orgaoF = document.getElementById('sal-orgao')?.value||'';
+  const pisoF = document.getElementById('sal-piso')?.value||'';
+  const variF = document.getElementById('sal-vari')?.value||'';
+  const filtered = filterOrgaos({orgao:orgaoF, piso:pisoF, vari:variF});
+
+  const total = filtered.reduce((a,[,v])=>a+v.total,0);
+  const cumpre = filtered.reduce((a,[,v])=>a+v.cumpre_piso,0);
+  const ncumpre = filtered.reduce((a,[,v])=>a+v.nao_cumpre_piso,0);
+
+  const kpis = document.getElementById('sal-kpis');
+  if(kpis) kpis.innerHTML =
+    makeCard('Cumprem Piso',fmt(cumpre),pct(cumpre,total)+' do filtro','c-green',pctN(cumpre,total))+
+    makeCard('Abaixo do Piso',fmt(ncumpre),'Art. 310-A — irregular','c-red',pctN(ncumpre,total))+
+    makeCard('Houve Decesso',fmt(DATA.kpi.decesso),'Art. 310-A §4º — '+DATA.kpi.decesso_a+'+'+DATA.kpi.decesso_b+' casos','c-orange',null)+
+    makeCard('Sem Dados',fmt(DATA.kpi.sal_sem_dados),'Remuneração não disponível','c-yellow',null);
+
+  setResult('sal-result', Object.keys(DATA.orgaos).length, filtered.length);
+  makePills(DATA.status_salario,'pills-salario',{'CONFORME':'#16a34a','IRREGULAR - ABAIXO DO PISO':'#dc2626','IRREGULAR - HOUVE DECESSO (ART. 310-A §4º)':'#ea580c','SEM DADOS PARA AVALIAR':'#9ca3af','IRREGULAR - ABAIXO DO PISO E COM DECESSO':'#b91c1c'},DATA.total_servidores);
+
+  const topNcumpre = Object.entries(DATA.orgaos).map(([k,v])=>[k,v.nao_cumpre_piso]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  makeHBars(topNcumpre,'bars-sal-orgao','var(--orange)');
+
+  const tbody = document.getElementById('tbody-salario');
+  if(!tbody) return;
+  tbody.innerHTML = filtered.sort((a,b)=>b[1].total-a[1].total).map(([k,v])=>{
+    const p = v.total?(v.cumpre_piso/v.total*100):0;
+    const pc = p>=90?'var(--green-text)':p>=70?'var(--yellow-text)':'var(--red-text)';
+    const vari = v.sal_pos_media - v.sal_pre_media;
+    const vc = vari>0?'var(--green-text)':vari<0?'var(--red-text)':'var(--text2)';
+    const alertRow = v.nao_cumpre_piso > 0 ? ' class="row-alert"' : '';
+    return `<tr${alertRow}>
+      <td class="td-orgao" onclick="switchToOrgao('${k}')">${k}</td>
+      <td class="td-total">${fmt(v.total)}</td>
+      <td><span class="badge b-green">${fmt(v.cumpre_piso)}</span></td>
+      <td>${v.nao_cumpre_piso>0?`<span class="badge b-red">${fmt(v.nao_cumpre_piso)}</span>`:'<span class="badge b-green">0</span>'}</td>
+      <td style="color:${pc};font-weight:700">${p.toFixed(1)}%</td>
+      <td>${fmtR(v.sal_pre_media)}</td>
+      <td>${fmtR(v.sal_pos_media)}</td>
+      <td style="color:${vc};font-weight:600">${vari===0?'—':(vari>0?'+':'')+fmtR(vari)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================================================
+// CLASSE
+// ============================================================
+function renderClasse() {
+  const orgaoF = document.getElementById('cls-orgao')?.value||'';
+  const statusF = document.getElementById('cls-status')?.value||'';
+  const filtered = filterOrgaos({orgao:orgaoF, cls_status:statusF});
+
+  const total = filtered.reduce((a,[,v])=>a+v.total,0);
+  const ok1 = filtered.reduce((a,[,v])=>a+v.classe_ok_sem_alt,0);
+  const ok2 = filtered.reduce((a,[,v])=>a+v.classe_ok_alterada,0);
+  const irr = filtered.reduce((a,[,v])=>a+v.classe_irregular,0);
+  const sup = filtered.reduce((a,[,v])=>a+v.classe_superior,0);
+
+  const kpis = document.getElementById('cls-kpis');
+  if(kpis) kpis.innerHTML =
+    makeCard('OK (sem alteração)',fmt(ok1),pct(ok1,total)+' — já estava correta','c-green',pctN(ok1,total))+
+    makeCard('Corrigida pela Lei',fmt(ok2),pct(ok2,total)+' — alterada conforme','c-blue',pctN(ok2,total))+
+    makeCard('Irregular',fmt(irr),pct(irr,total)+' — inferior à exigida','c-red',pctN(irr,total))+
+    makeCard('Classe Superior',fmt(sup),'Superior à exigida','c-purple',pctN(sup,total))+
+    makeCard('Sem Dados',fmt(DATA.kpi.cls_sem_dados),'Não foi possível avaliar','c-yellow',null);
+
+  setResult('cls-result', Object.keys(DATA.orgaos).length, filtered.length);
+  makePills(DATA.status_classe,'pills-classe',{'OK - JÁ ESTAVA NA CLASSE CORRETA (SEM ALTERAÇÃO)':'#16a34a','OK - CLASSE CORRETA (ALTERADA CONFORME LEI)':'#2563eb','IRREGULAR - CLASSE INFERIOR À EXIGIDA':'#dc2626','OK - CLASSE SUPERIOR À EXIGIDA':'#7c3aed','SEM DADOS PARA AVALIAR':'#9ca3af'},DATA.total_servidores);
+
+  const classeJun = DATA.class_dist_final;
+  const totalJ = Object.values(classeJun).reduce((a,b)=>a+b,0);
+  const clsColors = {A:'var(--purple)',B:'var(--blue)',C:'var(--green)',D:'var(--yellow)',S:'#6b7280'};
+  makeHBars(Object.entries(classeJun).map(([k,v])=>[`Classe ${k}`,v]),'bars-classe-jun','var(--blue)',v=>fmt(v));
+  const el = document.getElementById('bars-classe-jun');
+  if(el) el.innerHTML = Object.entries(classeJun).map(([k,v])=>{
+    const max=Math.max(...Object.values(classeJun)); const w=(v/max*100).toFixed(1);
+    return `<div class="hbar-row">
+      <span class="hbar-lbl"><span class="cls cls-${k}">${k}</span> Classe ${k}</span>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${w}%;background:${clsColors[k]}">${w>15?fmt(v):''}</div></div>
+      <span class="hbar-num">${fmt(v)} <span class="mini-pct">(${pct(v,totalJ)})</span></span>
+    </div>`;
+  }).join('');
+
+  // Evo matrix
+  const tbl = document.getElementById('evo-table');
+  if(tbl) {
+    const classes = ['A','B','C','D','S'];
+    let h = '<thead><tr><th>Mar ↓ / Jul →</th>'+classes.map(c=>`<th><span class="cls cls-${c}">${c}</span></th>`).join('')+'<th>Total</th></tr></thead><tbody>';
+    classes.forEach(r => {
+      const rd = DATA.class_evo[r]||{};
+      const rt = Object.values(rd).reduce((a,b)=>a+b,0);
+      h += `<tr><td class="evo-row-label"><span class="cls cls-${r}">${r}</span> (${rt})</td>`;
+      classes.forEach(c => {
+        const v = rd[c]||0;
+        const cc = r===c&&v>0?'evo-cell-high':v>50?'evo-cell-med':v>0&&r!==c?'evo-cell-low':'';
+        h += `<td class="${cc}">${v>0?fmt(v):'—'}</td>`;
+      });
+      h += `<td style="font-weight:700">${fmt(rt)}</td></tr>`;
+    });
+    tbl.innerHTML = h+'</tbody>';
+  }
+
+  const mudMax = Math.max(...Object.values(DATA.mudanca_classe_top));
+  const mudEl = document.getElementById('bars-mudanca');
+  if(mudEl) mudEl.innerHTML = Object.entries(DATA.mudanca_classe_top).map(([k,v])=>{
+    const stable = k.split(' -> ').every((x,_,a)=>x===a[0]);
+    const w = (v/mudMax*100).toFixed(1);
+    const color = stable?'var(--green)':'var(--yellow)';
+    return `<div class="hbar-row">
+      <span class="hbar-lbl" style="min-width:165px;font-family:monospace;font-size:11px">${k}</span>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${w}%;background:${color}">${w>25?fmt(v):''}</div></div>
+      <span class="hbar-num">${fmt(v)}</span>
+    </div>`;
+  }).join('');
+
+  const tbody = document.getElementById('tbody-classe');
+  if(!tbody) return;
+  tbody.innerHTML = filtered.sort((a,b)=>b[1].total-a[1].total).map(([k,v])=>{
+    const ok = v.classe_ok_sem_alt+v.classe_ok_alterada;
+    const p = v.total?(ok/v.total*100):0;
+    const pc = p>=90?'var(--green-text)':p>=70?'var(--yellow-text)':'var(--red-text)';
+    return `<tr>
+      <td class="td-orgao" onclick="switchToOrgao('${k}')">${k}</td>
+      <td class="td-total">${fmt(v.total)}</td>
+      <td><span class="badge b-green">${fmt(v.classe_ok_sem_alt)}</span></td>
+      <td><span class="badge b-blue">${fmt(v.classe_ok_alterada)}</span></td>
+      <td>${v.classe_irregular>0?`<span class="badge b-red">${fmt(v.classe_irregular)}</span>`:'<span class="badge b-green">0</span>'}</td>
+      <td>${v.classe_superior>0?`<span class="badge b-purple">${fmt(v.classe_superior)}</span>`:'—'}</td>
+      <td style="color:${pc};font-weight:700">${p.toFixed(1)}%</td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================================================
+// PDI
+// ============================================================
+function renderPDI() {
+  const orgaoF = document.getElementById('pdi-orgao')?.value||'';
+  const horizF = document.getElementById('pdi-horizonte')?.value||'';
+  const filters = {orgao:orgaoF};
+  if(horizF) filters.pdi = horizF;
+  const filtered = filterOrgaos(filters);
+
+  const total = filtered.reduce((a,[,v])=>a+v.total,0);
+  const ja = filtered.reduce((a,[,v])=>a+v.pdi_ja_elegivel,0);
+  const m1 = filtered.reduce((a,[,v])=>a+v.pdi_menos_1ano,0);
+  const _15 = filtered.reduce((a,[,v])=>a+v.pdi_1_5anos,0);
+  const _510 = filtered.reduce((a,[,v])=>a+v.pdi_5_10anos,0);
+  const _10 = filtered.reduce((a,[,v])=>a+v.pdi_10mais,0);
+  const impTotal = filtered.reduce((a,[,v])=>a+v.pdi_impacto_total,0);
+  const impImm = filtered.reduce((a,[,v])=>a+pdiImmediateImpact(v),0);
+
+  const kpis = document.getElementById('pdi-kpis');
+  if(kpis) kpis.innerHTML =
+    makeCard('Já Elegíveis (75+)',fmt(ja),'PDI imediato — ação urgente','c-red',pctN(ja,total))+
+    makeCard('Elegíveis < 1 Ano',fmt(m1),'Completam 75 anos em até 12 meses','c-orange',pctN(m1,total))+
+    makeCard('Elegíveis 1–5 Anos',fmt(_15),'Horizonte de curto prazo','c-yellow',pctN(_15,total))+
+    makeCard('Elegíveis 5–10 Anos',fmt(_510),'Maior grupo — médio prazo','c-blue',pctN(_510,total))+
+    makeCard('Elegíveis 10+ Anos',fmt(_10),'Planejamento de longo prazo','c-purple',pctN(_10,total))+
+    makeCard('Impacto Imediato',fmtM(impImm),'Estimativa proporcional para elegíveis ≥75','c-red',null)+
+    makeCard('Impacto Total',fmtM(impTotal),'Projeção para todos os horizontes','c-teal',null);
+
+  setResult('pdi-result', Object.keys(DATA.orgaos).length, filtered.length);
+
+  // Timeline
+  const tl = document.getElementById('pdi-timeline');
+  if(tl) tl.innerHTML = [
+    {lbl:'Já Elegível',v:ja,p:pct(ja,DATA.total_servidores),color:'var(--red-text)',bg:'var(--red-bg)',imp:impImm},
+    {lbl:'< 1 Ano',v:m1,p:pct(m1,DATA.total_servidores),color:'var(--orange-text)',bg:'var(--orange-bg)',imp:null},
+    {lbl:'1–5 Anos',v:_15,p:pct(_15,DATA.total_servidores),color:'var(--yellow-text)',bg:'var(--yellow-bg)',imp:null},
+    {lbl:'5–10 Anos',v:_510,p:pct(_510,DATA.total_servidores),color:'var(--blue-text)',bg:'var(--blue-bg)',imp:null},
+    {lbl:'10+ Anos',v:_10,p:pct(_10,DATA.total_servidores),color:'var(--purple-text)',bg:'var(--purple-bg)',imp:null}
+  ].map(x=>`<div class="tl-seg" style="background:${x.bg}">
+    <div class="tl-label">${x.lbl}</div>
+    <div class="tl-val" style="color:${x.color}">${fmt(x.v)}</div>
+    <div class="tl-pct" style="color:${x.color}">${x.p}</div>
+    ${x.imp?`<div class="tl-impact">Impacto imediato:<br><strong style="color:${x.color}">${fmtM(x.imp)}</strong></div>`:''}
+  </div>`).join('');
+
+  // Bars
+  const topFin = Object.entries(DATA.pdi_fin_orgao).slice(0,15);
+  makeHBars(topFin,'bars-pdi-fin','var(--purple)',fmtM);
+  const topJa = Object.entries(DATA.orgaos).map(([k,v])=>[k,v.pdi_ja_elegivel]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  makeHBars(topJa,'bars-pdi-elegivel','var(--red)');
+
+  // Tabela idade
+  const ageData = DATA.age_pdi;
+  const tbody2 = document.getElementById('tbody-pdi-idade');
+  if(tbody2) tbody2.innerHTML = ageData.map(x=>`<tr>
+    <td>${x.f}</td><td class="td-total">${fmt(x.t)}</td>
+    <td>${x.ja>0?`<span class="badge b-red">${fmt(x.ja)}</span>`:'—'}</td>
+    <td>${x.m1>0?`<span class="badge b-orange">${fmt(x.m1)}</span>`:'—'}</td>
+    <td>${x._15>0?`<span class="badge b-yellow">${fmt(x._15)}</span>`:'—'}</td>
+    <td>${x._510>0?`<span class="badge b-blue">${fmt(x._510)}</span>`:'—'}</td>
+    <td>${x._10>0?`<span class="badge b-purple">${fmt(x._10)}</span>`:'—'}</td>
+  </tr>`).join('');
+
+  // Tabela orgão
+  const tbody3 = document.getElementById('tbody-pdi-orgao');
+  if(!tbody3) return;
+  tbody3.innerHTML = filtered.sort((a,b)=>b[1].pdi_ja_elegivel-a[1].pdi_ja_elegivel).map(([k,v])=>{
+    const imm = pdiImmediateImpact(v);
+    const alert = v.pdi_ja_elegivel>0?' class="row-alert"':'';
+    return `<tr${alert}>
+      <td class="td-orgao" onclick="switchToOrgao('${k}')">${k}</td>
+      <td class="td-total">${fmt(v.total)}</td>
+      <td>${v.pdi_ja_elegivel>0?`<span class="badge b-red">${fmt(v.pdi_ja_elegivel)}</span>`:'—'}</td>
+      <td>${v.pdi_menos_1ano>0?`<span class="badge b-orange">${fmt(v.pdi_menos_1ano)}</span>`:'—'}</td>
+      <td>${v.pdi_1_5anos>0?`<span class="badge b-yellow">${fmt(v.pdi_1_5anos)}</span>`:'—'}</td>
+      <td>${v.pdi_5_10anos>0?`<span class="badge b-blue">${fmt(v.pdi_5_10anos)}</span>`:'—'}</td>
+      <td>${v.pdi_10mais>0?`<span class="badge b-purple">${fmt(v.pdi_10mais)}</span>`:'—'}</td>
+      <td style="font-weight:700;color:var(--red-text)">${imm>0?fmtM(imm):'—'}</td>
+      <td style="font-weight:700;color:var(--purple-text)">${fmtM(v.pdi_impacto_total)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================================================
+// POR ÓRGÃO
+// ============================================================
+function renderOrgaoTable() {
+  const search = document.getElementById('orgao-search')?.value||'';
+  const statusF = document.getElementById('orgao-filter-status')?.value||'all';
+  const pdiF = document.getElementById('orgao-filter-pdi')?.value||'all';
+  const sortF = document.getElementById('orgao-sort')?.value||'total';
+
+  let entries = Object.entries(DATA.orgaos).filter(([k,v])=>{
+    if(search && !k.toLowerCase().includes(search.toLowerCase())) return false;
+    if(statusF==='ok' && v.conforme!==v.total) return false;
+    if(statusF==='pend' && v.conforme===v.total) return false;
+    if(statusF==='pend-classe' && v.pend_classe===0) return false;
+    if(statusF==='pend-sal' && v.pend_salario===0) return false;
+    if(pdiF==='pdi' && v.pdi_ja_elegivel===0) return false;
+    if(pdiF==='no-pdi' && v.pdi_ja_elegivel>0) return false;
+    return true;
+  });
+
+  entries.sort((a,b)=>{
+    if(sortF==='total') return b[1].total-a[1].total;
+    if(sortF==='pend') return (b[1].total-b[1].conforme)-(a[1].total-a[1].conforme);
+    if(sortF==='pdi') return b[1].pdi_ja_elegivel-a[1].pdi_ja_elegivel;
+    if(sortF==='orgao') return a[0].localeCompare(b[0]);
+    if(sortF==='pct') return (b[1].conforme/b[1].total)-(a[1].conforme/a[1].total);
+    return 0;
+  });
+
+  setResult('orgao-result', Object.keys(DATA.orgaos).length, entries.length);
+
+  const tbody = document.getElementById('tbody-orgao');
+  if(!tbody) return;
+  tbody.innerHTML = entries.map(([k,v])=>{
+    const p = v.total?(v.conforme/v.total*100):0;
+    const pc = p>=90?'var(--green-text)':p>=70?'var(--yellow-text)':'var(--red-text)';
+    const imm = pdiImmediateImpact(v);
+    const alert = v.pdi_ja_elegivel>0?' class="row-alert"':'';
+    return `<tr${alert}>
+      <td class="td-orgao" onclick="drillOrgao('${k}')">${k}</td>
+      <td class="td-total">${fmt(v.total)}</td>
+      <td><span class="badge b-green">${fmt(v.conforme)}</span></td>
+      <td style="color:${pc};font-weight:700">${p.toFixed(1)}%</td>
+      <td>${v.pend_classe>0?`<span class="badge b-yellow">${fmt(v.pend_classe)}</span>`:'—'}</td>
+      <td>${v.pend_salario>0?`<span class="badge b-orange">${fmt(v.pend_salario)}</span>`:'—'}</td>
+      <td>${v.pend_dados>0?`<span class="badge b-purple">${fmt(v.pend_dados)}</span>`:'—'}</td>
+      <td>${fmt(v.cumpre_piso)}</td>
+      <td>${v.nao_cumpre_piso>0?`<span class="badge b-red">${fmt(v.nao_cumpre_piso)}</span>`:'—'}</td>
+      <td>${fmtR(v.sal_pre_media)}</td>
+      <td>${fmtR(v.sal_pos_media)}</td>
+      <td>${v.classe_irregular>0?`<span class="badge b-red">${fmt(v.classe_irregular)}</span>`:'—'}</td>
+      <td>${v.pdi_ja_elegivel>0?`<span class="badge b-red">${fmt(v.pdi_ja_elegivel)}</span>`:'—'}</td>
+      <td style="font-weight:700;color:var(--red-text)">${imm>0?fmtM(imm):'—'}</td>
+      <td>${fmt(v.masc)}</td>
+      <td>${fmt(v.fem)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function drillOrgao(sigla) {
+  const v = DATA.orgaos[sigla]; if(!v) return;
+  const el = document.getElementById('orgao-drill');
+  el.style.display='block';
+  document.getElementById('drill-nome').textContent = sigla;
+  const imm = pdiImmediateImpact(v);
+  const p = v.total?(v.conforme/v.total*100).toFixed(1):0;
+  const badges = document.getElementById('drill-badges');
+  badges.innerHTML = `<span class="badge b-green">${p}% conformes</span>`+
+    (v.classe_irregular>0?`<span class="badge b-red">${v.classe_irregular} irr.classe</span>`:'')+
+    (v.nao_cumpre_piso>0?`<span class="badge b-orange">${v.nao_cumpre_piso} abaixo piso</span>`:'')+
+    (v.pdi_ja_elegivel>0?`<span class="badge b-red">${v.pdi_ja_elegivel} PDI urgente</span>`:'')+
+    (imm>0?`<span class="badge b-purple">Impacto imediato: ${fmtM(imm)}</span>`:'');
+  const items = [
+    {k:'Total',v:fmt(v.total)},{k:'Conformes',v:fmt(v.conforme),c:'var(--green-text)'},
+    {k:'Pend. Classe',v:fmt(v.pend_classe),c:v.pend_classe>0?'var(--yellow-text)':'var(--text2)'},
+    {k:'Pend. Salário',v:fmt(v.pend_salario),c:v.pend_salario>0?'var(--orange-text)':'var(--text2)'},
+    {k:'Pend. Dados',v:fmt(v.pend_dados),c:v.pend_dados>0?'var(--purple-text)':'var(--text2)'},
+    {k:'Cumpre Piso',v:fmt(v.cumpre_piso),c:'var(--green-text)'},{k:'Não Cumpre',v:fmt(v.nao_cumpre_piso),c:v.nao_cumpre_piso>0?'var(--red-text)':'var(--text2)'},
+    {k:'Sal. Médio Pré',v:fmtR(v.sal_pre_media)},{k:'Sal. Médio Pós',v:fmtR(v.sal_pos_media)},
+    {k:'Cl.OK s/Alt',v:fmt(v.classe_ok_sem_alt),c:'var(--green-text)'},{k:'Cl.Corrigida',v:fmt(v.classe_ok_alterada),c:'var(--blue-text)'},
+    {k:'Cl.Irregular',v:fmt(v.classe_irregular),c:v.classe_irregular>0?'var(--red-text)':'var(--text2)'},{k:'Cl.Superior',v:fmt(v.classe_superior),c:'var(--purple-text)'},
+    {k:'PDI ≥75',v:fmt(v.pdi_ja_elegivel),c:v.pdi_ja_elegivel>0?'var(--red-text)':'var(--text3)'},
+    {k:'PDI < 1 Ano',v:fmt(v.pdi_menos_1ano),c:'var(--orange-text)'},{k:'PDI 1–5 Anos',v:fmt(v.pdi_1_5anos),c:'var(--yellow-text)'},
+    {k:'PDI 5–10 Anos',v:fmt(v.pdi_5_10anos),c:'var(--blue-text)'},{k:'PDI 10+ Anos',v:fmt(v.pdi_10mais),c:'var(--purple-text)'},
+    {k:'Impacto Imediato',v:fmtM(imm),c:'var(--red-text)'},{k:'Impacto Total',v:fmtM(v.pdi_impacto_total),c:'var(--purple-text)'},
+    {k:'Masculino',v:fmt(v.masc)},{k:'Feminino',v:fmt(v.fem)},
+  ];
+  document.getElementById('drill-grid').innerHTML = items.map(i=>
+    `<div class="od-item"><div class="od-key">${i.k}</div><div class="od-val" style="${i.c?'color:'+i.c:''}">${i.v}</div></div>`
+  ).join('');
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function switchToOrgao(sigla) {
+  document.querySelectorAll('.navtab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.querySelector('[data-panel="por-orgao"]').classList.add('active');
+  document.getElementById('panel-por-orgao').classList.add('active');
+  document.getElementById('orgao-search').value = sigla;
+  renderOrgaoTable();
+  setTimeout(()=>drillOrgao(sigla),100);
+}
+
+// ============================================================
+// PERFIL
+// ============================================================
+function renderPerfil() {
+  const orgaoF = document.getElementById('perf-orgao')?.value||'';
+  const sexoF = document.getElementById('perf-sexo')?.value||'';
+  const filtered = filterOrgaos({orgao:orgaoF});
+
+  let masc = filtered.reduce((a,[,v])=>a+v.masc,0);
+  let fem = filtered.reduce((a,[,v])=>a+v.fem,0);
+  if(sexoF==='M') fem=0;
+  if(sexoF==='F') masc=0;
+  const total = masc+fem;
+
+  const kpis = document.getElementById('perf-kpis');
+  if(kpis) kpis.innerHTML =
+    makeCard('Total',fmt(total),'Servidores no filtro','',100)+
+    makeCard('Masculino',fmt(masc),pct(masc,total)+' do total','c-blue',pctN(masc,total))+
+    makeCard('Feminino',fmt(fem),pct(fem,total)+' do total','c-purple',pctN(fem,total))+
+    makeCard('Faixa Dominante',DATA.kpi.faixa_dom,'Concentração de '+fmt(DATA.kpi.faixa_dom_pct,1).replace('.',',')+'% dos servidores','c-yellow',null)+
+    makeCard('Acima de 75',fmt(DATA.kpi.acima_75),pct(DATA.kpi.acima_75,DATA.total_servidores)+' — PDI elegíveis','c-red',pctN(DATA.kpi.acima_75,DATA.total_servidores));
+
+  setResult('perf-result', Object.keys(DATA.orgaos).length, filtered.length);
+
+  const sc = document.getElementById('perf-sexo-chart');
+  if(sc) sc.innerHTML = `
+    <div style="display:flex;gap:24px;align-items:center;margin-bottom:16px;">
+      <div style="text-align:center"><div style="font-size:32px;font-weight:800;color:var(--blue)">${fmt(masc)}</div><div style="font-size:12px;color:var(--text2)">Masculino</div></div>
+      <div style="text-align:center"><div style="font-size:32px;font-weight:800;color:var(--purple)">${fmt(fem)}</div><div style="font-size:12px;color:var(--text2)">Feminino</div></div>
+    </div>
+    <div style="height:14px;background:var(--surface3);border-radius:7px;overflow:hidden;display:flex;border:1px solid var(--border)">
+      <div style="width:${pctN(masc,total).toFixed(1)}%;background:var(--blue)"></div>
+      <div style="flex:1;background:var(--purple)"></div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:6px">${pct(masc,total)} M · ${pct(fem,total)} F</div>`;
+
+  const ageEl = document.getElementById('bars-idade');
+  if(ageEl) {
+    const max = Math.max(...Object.values(DATA.age_dist));
+    ageEl.innerHTML = Object.entries(DATA.age_dist).map(([k,v])=>{
+      const w = (v/max*100).toFixed(1);
+      const isOld = parseInt(k)>=75||k.startsWith('75')||k.startsWith('81')||k.startsWith('86')||k.startsWith('91');
+      return `<div class="hbar-row">
+        <span class="hbar-lbl">${k}</span>
+        <div class="hbar-track"><div class="hbar-fill" style="width:${w}%;background:${isOld?'var(--red)':'var(--blue)'}">${w>20?fmt(v):''}</div></div>
+        <span class="hbar-num">${fmt(v)} <span class="mini-pct">(${pct(v,DATA.total_servidores)})</span></span>
+      </div>`;
+    }).join('');
+  }
+
+  const tbody = document.getElementById('tbody-perfil-sexo');
+  if(!tbody) return;
+  tbody.innerHTML = filtered.sort((a,b)=>b[1].total-a[1].total).map(([k,v])=>{
+    const pm = v.total?(v.masc/v.total*100).toFixed(1):0;
+    const pf = v.total?(v.fem/v.total*100).toFixed(1):0;
+    return `<tr>
+      <td class="td-orgao" onclick="switchToOrgao('${k}')">${k}</td>
+      <td class="td-total">${fmt(v.total)}</td>
+      <td>${fmt(v.masc)}</td><td style="color:var(--blue-text);font-weight:600">${pm}%</td>
+      <td>${fmt(v.fem)}</td><td style="color:var(--purple-text);font-weight:600">${pf}%</td>
+      <td style="min-width:140px">
+        <div style="height:10px;background:var(--surface3);border-radius:5px;overflow:hidden;display:flex">
+          <div style="width:${pm}%;background:var(--blue)"></div>
+          <div style="flex:1;background:var(--purple)"></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================================================
+// DADOS BRUTOS
+// ============================================================
+function renderDados() {
+  const orgaoF = document.getElementById('db-orgao')?.value||'';
+  const statusF = document.getElementById('db-status')?.value||'';
+  const pisoF = document.getElementById('db-piso')?.value||'';
+  const pdiF = document.getElementById('db-pdi')?.value||'';
+
+  const rows = DATA.sample_rows.filter(r=>{
+    if(orgaoF && r['SIGLA ORGAO REFERENCIA']!==orgaoF) return false;
+    if(statusF && !r['STATUS_GERAL'].includes(statusF)) return false;
+    if(pisoF==='true' && !r['CUMPRE_PISO']) return false;
+    if(pisoF==='false' && r['CUMPRE_PISO']) return false;
+    if(pdiF && !r['STATUS_PDI'].includes(pdiF)) return false;
+    return true;
+  });
+
+  const el = document.getElementById('db-result');
+  if(el) el.textContent = `${rows.length} de ${DATA.sample_rows.length} registros`;
+
+  const tbody = document.getElementById('tbody-dados');
+  if(!tbody) return;
+  tbody.innerHTML = rows.map((r,i)=>{
+    const sg = r['STATUS_GERAL']||'';
+    const sgB = sg==='CONFORME'?'b-green':sg.includes('CLASSE')&&sg.includes('SALÁRIO')?'b-red':sg.includes('CLASSE')?'b-yellow':sg.includes('SALÁRIO')?'b-orange':'b-purple';
+    const ss = r['STATUS_SALARIO_LEI']||'';
+    const ssB = ss.includes('CONFORME')&&!ss.includes('IRR')?'b-green':'b-red';
+    const sc = r['STATUS_CLASSE_LEI']||'';
+    const scB = sc.startsWith('OK')?'b-green':sc.includes('SUPERIOR')?'b-purple':'b-red';
+    const alertRow = !r['CUMPRE_PISO']?' class="row-alert"':'';
+    return `<tr${alertRow}>
+      <td style="color:var(--text3);font-size:11px">${i+1}</td>
+      <td class="td-orgao" onclick="switchToOrgao('${r['SIGLA ORGAO REFERENCIA']}')">${r['SIGLA ORGAO REFERENCIA']}</td>
+      <td>${r['IT-CO-SEXO']}</td>
+      <td style="font-size:11px">${r['FAIXA ETARIA']}</td>
+      <td style="font-size:11px;max-width:130px;overflow:hidden;text-overflow:ellipsis" title="${r['CARGO']}">${r['CARGO']}</td>
+      <td><span class="badge ${sgB}" style="font-size:10px">${sg.replace('PENDÊNCIA','PEND.')}</span></td>
+      <td><span class="badge ${ssB}" style="font-size:10px">${ss.replace('IRREGULAR - ','').replace('CONFORME','OK')}</span></td>
+      <td><span class="badge ${scB}" style="font-size:10px">${sc.replace('OK - ','').replace('IRREGULAR - ','').split('(')[0].trim()}</span></td>
+      <td><span class="cls cls-${r['CLASSE_MAR_2026']}">${r['CLASSE_MAR_2026']}</span></td>
+      <td><span class="cls cls-${r['CLASSE_JUN_2026']}">${r['CLASSE_JUN_2026']}</span></td>
+      <td style="font-size:11px">${r['SITUAÇÃO INICIAL']}</td>
+      <td><span class="badge ${r['CUMPRE_PISO']?'b-green':'b-red'}">${r['CUMPRE_PISO']?'SIM':'NÃO'}</span></td>
+      <td style="font-size:10px">${(r['STATUS_PDI']||'').replace('ELEGÍVEL','ELEG.')}</td>
+      <td>${fmtR(r['SALARIO_PRE'])}</td>
+      <td>${fmtR(r['SALARIO_POS'])}</td>
+      <td>${fmtR(r['PISO_TABELA'])}</td>
+      <td style="color:var(--purple-text);font-weight:700">${fmtM(r['IMPACTO_FINANCEIRO_PDI'])}</td>
+    </tr>`;
+  }).join('');
+}
+
+
+// ============================================================
+// EVOLUÇÃO DA IMPLEMENTAÇÃO
+// ============================================================
+function implChart(months, monthly, cum, barColor, lineColor) {
+  const W=520, H=280, pl=46, pr=52, pt=26, pb=44;
+  const iw=W-pl-pr, ih=H-pt-pb, n=months.length;
+  const maxBar=Math.max(...monthly,1), maxCum=Math.max(...cum,1);
+  const slot=iw/n, bw=Math.min(46, slot*0.5);
+  const yBar=v=>pt+ih-(v/maxBar*ih), yCum=v=>pt+ih-(v/maxCum*ih), xC=i=>pl+slot*i+slot/2;
+  let g='';
+  for(let t=0;t<=4;t++){
+    const yy=pt+ih-(ih*t/4);
+    g+='<line x1="'+pl+'" y1="'+yy+'" x2="'+(pl+iw)+'" y2="'+yy+'" stroke="var(--border)" stroke-width="1"/>';
+    g+='<text x="'+(pl-6)+'" y="'+(yy+3)+'" text-anchor="end" font-size="9" fill="var(--text3)">'+Math.round(maxBar*t/4)+'</text>';
+    g+='<text x="'+(pl+iw+6)+'" y="'+(yy+3)+'" text-anchor="start" font-size="9" fill="'+lineColor+'">'+Math.round(maxCum*t/4)+'</text>';
+  }
+  months.forEach((m,i)=>{
+    const bx=xC(i)-bw/2, by=yBar(monthly[i]), bh=pt+ih-by;
+    g+='<rect x="'+bx+'" y="'+by+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+barColor+'" opacity="0.9"/>';
+    g+='<text x="'+xC(i)+'" y="'+(by-6)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+barColor+'">'+fmt(monthly[i])+'</text>';
+    g+='<text x="'+xC(i)+'" y="'+(pt+ih+16)+'" text-anchor="middle" font-size="10" fill="var(--text2)" font-weight="600">'+m+'</text>';
+  });
+  const pts=months.map((m,i)=>xC(i)+','+yCum(cum[i])).join(' ');
+  g+='<polyline points="'+pts+'" fill="none" stroke="'+lineColor+'" stroke-width="2.5" stroke-linejoin="round"/>';
+  months.forEach((m,i)=>{
+    g+='<circle cx="'+xC(i)+'" cy="'+yCum(cum[i])+'" r="3.5" fill="'+lineColor+'"/>';
+    g+='<text x="'+xC(i)+'" y="'+(yCum(cum[i])-9)+'" text-anchor="middle" font-size="9" font-weight="700" fill="'+lineColor+'">'+fmt(cum[i])+'</text>';
+  });
+  return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">'+g+'</svg>';
+}
+
+function renderEvolucao() {
+  const mi = DATA.monthly_impl;
+  const totCls = mi.classe.reduce((a,b)=>a+b,0);
+  const totSal = mi.salario.reduce((a,b)=>a+b,0);
+  const kpis = document.getElementById('evo-kpis');
+  if(kpis) kpis.innerHTML =
+    makeCard('Reposicionamentos de Classe',fmt(totCls),fmt(mi.distintos_classe)+' servidores distintos','c-blue',100)+
+    makeCard('Posicionamentos de Salário',fmt(totSal),fmt(mi.distintos_salario)+' servidores distintos','c-green',100)+
+    makeCard('Pico — Classe','Abr/2026',fmt(Math.max(...mi.classe))+' correções no 1º mês','c-purple',null)+
+    makeCard('Pico — Salário','Abr/2026',fmt(Math.max(...mi.salario))+' posicionamentos na vigência','c-teal',null);
+
+  const c1=document.getElementById('chart-classe');
+  if(c1) c1.innerHTML = implChart(mi.months, mi.classe, mi.classe_cum, 'var(--blue)', 'var(--purple)');
+  const c2=document.getElementById('chart-salario');
+  if(c2) c2.innerHTML = implChart(mi.months, mi.salario, mi.salario_cum, 'var(--green)', 'var(--teal)');
+
+  const tbl=document.getElementById('evo-impl-table');
+  if(tbl){
+    let h='<thead><tr><th class="evo-row-label">Referência</th>';
+    mi.months.forEach(m=>h+='<th>'+m+'</th>'); h+='<th>Total</th></tr></thead><tbody>';
+    // classe
+    h+='<tr><td class="evo-row-label">🎓 Reposicionamento (classe)</td>';
+    mi.classe.forEach(v=>h+='<td>'+fmt(v)+'</td>'); h+='<td style="font-weight:800">'+fmt(totCls)+'</td></tr>';
+    h+='<tr><td class="evo-row-label" style="color:var(--text3)">↳ acumulado</td>';
+    mi.classe_cum.forEach(v=>h+='<td style="color:var(--text3)">'+fmt(v)+'</td>'); h+='<td>—</td></tr>';
+    // salario
+    h+='<tr><td class="evo-row-label">💰 Posicionamento (salário)</td>';
+    mi.salario.forEach(v=>h+='<td>'+fmt(v)+'</td>'); h+='<td style="font-weight:800">'+fmt(totSal)+'</td></tr>';
+    h+='<tr><td class="evo-row-label" style="color:var(--text3)">↳ acumulado</td>';
+    mi.salario_cum.forEach(v=>h+='<td style="color:var(--text3)">'+fmt(v)+'</td>'); h+='<td>—</td></tr>';
+    tbl.innerHTML=h+'</tbody>';
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+populateOrgaoSelects();
+renderVisaoGeral();
+renderSalario();
+renderClasse();
+renderEvolucao();
+renderPDI();
+renderOrgaoTable();
+renderPerfil();
+renderDados();
+</script>
+</body>
+</html>
