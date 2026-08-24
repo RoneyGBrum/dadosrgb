@@ -7,6 +7,13 @@
 Legenda: **P0** = base/bloqueante · **P1** = alto valor · **P2** = desejável ·
 Esforço: **P** pequeno · **M** médio · **G** grande · 🔒 decisão necessária · 📊 depende de dado real.
 
+## ✅ Progresso (24/08/2026)
+- **Decidido §1:** dados de nome + CPF mascarado + remuneração bruta são públicos (Portal da Transparência) → podem ir ao domínio; login fica como atrito. Evitar só campos realmente sensíveis (CPF completo, conta bancária).
+- **Feito e validado (com dados sintéticos):** A1 competência via `da_referencia` · A3 matrículas origem/destino · A4 nota de transparência no temporal · B1 coluna Saldo/Vagas Ocupadas · B2 PDF mais legível · B3 recorte destacado + renome + ⓘ · C5 "Limpar" destacado · C6 filtros por tema · C8 ordem do Perfil Funcional · C9 UORG (sigla+nome / hierarquia) · C10 botão relatório à direita e com cor própria · C11 glossário de conceitos (17, do arquivo) · C12 animações (barras crescem, linha desenha L→R).
+- **Pendente de diagnóstico (rode `tests/diagnostico_dados.py`):** A2 exclusão do GDF (códigos) · confirmação da coluna de competência.
+- **Próximo batch:** C1–C4 (filtros: debounce/autocomplete/cascata/multi-seleção) · C7 (Movimentações recolhível sob Perfil Funcional) · C13/C14 (histórico: click-filter + encerramentos) · X1 (transparência nas exportações). Depois D/E/F.
+- **Novos utilitários:** `pipeline/tests/gerar_saida_sintetica_painel.py` (valida o front-end sem dado real) e `pipeline/tests/diagnostico_dados.py`.
+
 ---
 
 ## 0. Contexto e restrições (ler primeiro)
