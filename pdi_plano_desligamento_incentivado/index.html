@@ -303,11 +303,11 @@ footer ul{margin:0;padding-left:18px}
     <p class="lede">Impacto financeiro do PDI dos empregados anistiados (Lei 8.878/1994). Ao viabilizar o encerramento planejado do vínculo de quem já atingiu 75 anos, o Estado renova seus quadros e recupera o investimento em pouco tempo. Ajuste as variáveis e explore cada cenário.</p>
     <div class="window">
       <span class="live">Adesão aberta</span>
-      <span>1º Edital MGI · período de adesão <b>10/ago</b> a <b>25/set 2026</b>. Publicação em 03/ago/2026.</span>
+      <span>1º Edital MGI · período de adesão <b>xx/set</b> a <b>xx/out 2026</b>. Publicação em xx/set/2026.</span>
     </div>
     <div class="stat-row" id="heroStats"></div>
     <div class="hero-meta">
-      <span><span class="dot"></span> Base: <b class="tnum" id="m-base">—</b> anistiados mapeados</span>
+      <span><span class="dot"></span> Base: <b class="tnum" id="m-base">—</b> anistiados mapeados (Adm Direta - Autarq. - Fund) </span>
       <span><span class="dot g"></span> Vigência da lei: 30/mar/2026</span>
       <span><span class="dot k"></span> Parcela única · isenta de IR</span>
     </div>
@@ -695,7 +695,7 @@ function renderKpis(m){
 }
 
 function chartFaixa(m){
-  const d=m.faixaArr, W=520,rowH=46,padL=70,padR=64,H=d.length*rowH+16;
+  const d=m.faixaArr, W=520,rowH=46,padL=95,padR=64,H=d.length*rowH+16;
   const max=Math.max(1,...d.map(x=>x.n)),bw=W-padL-padR;
   let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elegíveis por faixa etária">`;
   d.forEach((x,i)=>{const y=i*rowH+12,w=Math.max(2,x.n/max*bw),col=rampFor(3-i);
@@ -708,7 +708,7 @@ function chartFaixa(m){
     r.addEventListener('mouseleave',hideTT);});
 }
 function chartOrgaos(m){
-  const d=m.orgArr,W=520,rowH=34,padL=64,padR=48,H=Math.max(1,d.length)*rowH+12;
+  const d=m.orgArr,W=520,rowH=34,padL=95,padR=48,H=Math.max(1,d.length)*rowH+12;
   const max=Math.max(1,...d.map(x=>x.n)),bw=W-padL-padR;
   let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elegíveis por órgão">`;
   if(!d.length)s+=`<text class="catlabel" x="${W/2}" y="30" text-anchor="middle">Sem elegíveis neste recorte</text>`;
@@ -738,7 +738,7 @@ function chartValor(m){
 }
 
 function chartTempo(cron){
-  const d=cron,W=780,H=310,padL=66,padR=20,padT=18,padB=48;
+  const d=cron,W=780,H=310,padL=95,padR=20,padT=18,padB=48;
   const iw=W-padL-padR,ih=H-padT-padB,max=Math.max(1,...d.map(x=>x.custoAcum));
   const X=i=>padL+(d.length>1?i/(d.length-1)*iw:0),Y=v=>padT+ih-v/max*ih;
   let area=`M ${X(0)} ${Y(0)}`,line=`M ${X(0)} ${Y(d[0].custoAcum)}`;
@@ -772,7 +772,7 @@ function chartTempo(cron){
 }
 
 function chartCenario(m){
-  const W=780,H=280,padL=70,padR=24,padT=16,padB=42;
+  const W=780,H=280,padL=95,padR=24,padT=16,padB=42;
   const iw=W-padL-padR,ih=H-padT-padB,max=Math.max(m.custo,BUDGET)*1.05;
   const X=p=>padL+p*iw,Y=v=>padT+ih-v/max*ih;
   let area=`M ${X(0)} ${Y(0)}`,line=`M ${X(0)} ${Y(0)}`;
