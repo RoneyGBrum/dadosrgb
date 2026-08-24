@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CGMOP — Planejamento 2025/2026</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSI1OCIgaGVpZ2h0PSI1OCIgcng9IjE0IiBmaWxsPSIjMUIzNjVEIi8+CjxwYXRoIGQ9Ik0xNCAxNiBINTAgTDM2IDM2IFY0NiBMMjggNTAgVjM2IFoiIGZpbGw9IiNGRkZGRkYiLz4KPGNpcmNsZSBjeD0iMzIiIGN5PSI1NSIgcj0iMy40IiBmaWxsPSIjQjA1QTIyIi8+Cjwvc3ZnPgo=">
+<meta name="description" content="Coordenação-Geral de Movimentação de Pessoal — apresentação trimestral: execução do ciclo 2025/2026 e projetos para 2026." />
+<style>
+  /* ============================================================
+     DESIGN TOKENS — dadosrgb · estética Apple keynote
+     azul-marinho (#1B365D) + cobre (#B05A22)
+     ============================================================ */
+  :root {
+    --bg-light: #f5f5f7;
+    --bg-pure:  #ffffff;
+    --bg-dark:  #0d1526;   /* near-black navy */
+    --bg-deep:  #16233a;   /* deep navy — divisores de capítulo */
+
+    --text-primary-light:   #1d1d1f;
+    --text-secondary-light: #5b5f66;
+    --text-tertiary-light:  #86868b;
+
+    --text-primary-dark:   #f4f5f7;
+    --text-secondary-dark: #aab3c0;
+    --text-tertiary-dark:  #7d8794;
+
+    --accent:      #2c5282;                    /* azul dadosrgb (dado) */
+    --accent-soft: rgba(44, 82, 130, 0.12);
+    --accent-line: rgba(44, 82, 130, 0.35);
+
+    --copper:      #b05a22;                     /* cobre dadosrgb (marca) */
+    --copper-soft: rgba(176, 90, 34, 0.12);
+
+    --ok:   #2f8f5b;                            /* concluído */
+    --off:  #b23b3b;                            /* cancelado */
+
+    --border-light: rgba(0, 0, 0, 0.08);
+    --border-dark:  rgba(255, 255, 255, 0.12);
+
+    --ease:     cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --t-fast: 0.45s; --t-med: 0.85s; --t-slow: 1.2s;
+
+    --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                  "Helvetica Neue", "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* Accent/cobre mais claros sobre fundos escuros (contraste) */
+  .slide.dark, .slide.deep {
+    --accent:      #7fa3d4;
+    --accent-soft: rgba(127, 163, 212, 0.16);
+    --accent-line: rgba(127, 163, 212, 0.40);
+    --copper:      #e08b4c;
+    --copper-soft: rgba(224, 139, 76, 0.16);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%; width: 100%;
+    overflow: hidden;
+    font-family: var(--font-stack);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--bg-light);
+    color: var(--text-primary-light);
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ============================================================ DECK ============ */
+  #deck {
+    height: 100vh; width: 100vw;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  #deck::-webkit-scrollbar { display: none; }
+
+  .slide {
+    height: 100vh; min-height: 100vh; width: 100%;
+    scroll-snap-align: start; scroll-snap-stop: always;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5.5rem) clamp(4.5rem, 7vw, 6.5rem);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .slide.dark { background: var(--bg-dark); color: var(--text-primary-dark); }
+  .slide.deep { background: var(--bg-deep); color: var(--text-primary-dark); }
+  .slide.pure { background: var(--bg-pure); }
+
+  /* ============================================================ TIPOGRAFIA ====== */
+  .eyebrow {
+    font-size: clamp(0.72rem, 1vw, 0.9rem);
+    text-transform: uppercase; letter-spacing: 0.2em;
+    font-weight: 700; color: var(--copper);
+    margin-bottom: clamp(1.1rem, 2vw, 1.8rem);
+  }
+  .title {
+    font-size: clamp(2rem, 5vw, 4.6rem);
+    font-weight: 700; letter-spacing: -0.035em; line-height: 1.05;
+    max-width: 1120px; color: inherit;
+  }
+  .title.xl   { font-size: clamp(2.4rem, 6.5vw, 6rem);  letter-spacing: -0.04em; }
+  .title.hero { font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 700; letter-spacing: -0.045em; line-height: 1; }
+  .title.sm   { font-size: clamp(1.8rem, 4vw, 3.2rem); }
+
+  .subtitle {
+    font-size: clamp(1.02rem, 1.5vw, 1.4rem); font-weight: 400;
+    color: var(--text-secondary-light);
+    margin-top: clamp(1rem, 2vw, 1.6rem); max-width: 780px; line-height: 1.5;
+  }
+  .slide.dark .subtitle, .slide.deep .subtitle { color: var(--text-secondary-dark); }
+
+  .caption {
+    font-size: clamp(0.85rem, 1.15vw, 1.02rem); color: var(--text-tertiary-light);
+    margin-top: clamp(1.4rem, 2.4vw, 2rem); max-width: 820px; line-height: 1.55;
+  }
+  .slide.dark .caption, .slide.deep .caption { color: var(--text-tertiary-dark); }
+
+  .regua { width: 54px; height: 3px; background: var(--copper); border-radius: 2px;
+           margin: clamp(1.4rem, 2.4vw, 2rem) 0 0; }
+
+  .tag {
+    display: inline-block; margin-top: clamp(1.4rem, 2.4vw, 2rem);
+    padding: 0.5rem 1rem; border: 1px solid var(--border-light); border-radius: 999px;
+    font-size: 0.82rem; letter-spacing: 0.03em; color: var(--text-secondary-light);
+    background: rgba(255,255,255,0.5); backdrop-filter: blur(8px);
+  }
+  .slide.dark .tag, .slide.deep .tag {
+    border-color: var(--border-dark); background: rgba(255,255,255,0.05); color: var(--text-secondary-dark);
+  }
+  .tag.accent { border-color: var(--accent-line); background: var(--accent-soft); color: inherit; }
+
+  /* ============================================================ REVEAL ========== */
+  .reveal {
+    opacity: 0; transform: translateY(26px);
+    transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
+  }
+  .slide.active .reveal { opacity: 1; transform: translateY(0); }
+  .slide.active .reveal[data-delay="1"] { transition-delay: 0.08s; }
+  .slide.active .reveal[data-delay="2"] { transition-delay: 0.18s; }
+  .slide.active .reveal[data-delay="3"] { transition-delay: 0.30s; }
+  .slide.active .reveal[data-delay="4"] { transition-delay: 0.42s; }
+  .slide.active .reveal[data-delay="5"] { transition-delay: 0.54s; }
+  .slide.active .reveal[data-delay="6"] { transition-delay: 0.66s; }
+  .slide.active .reveal[data-delay="7"] { transition-delay: 0.78s; }
+  .slide.active .reveal[data-delay="8"] { transition-delay: 0.90s; }
+
+  /* ============================================================ CHROME ========== */
+  .scene-count {
+    position: absolute; top: clamp(1.3rem, 3vw, 2.4rem); right: clamp(1.3rem, 3vw, 2.4rem);
+    font-size: 0.76rem; letter-spacing: 0.16em; color: var(--text-tertiary-light);
+    font-weight: 600; font-variant-numeric: tabular-nums;
+  }
+  .slide.dark .scene-count, .slide.deep .scene-count { color: var(--text-tertiary-dark); }
+
+  .footer-mark {
+    position: absolute; bottom: clamp(1.4rem, 3vw, 2.4rem); left: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: 0.72rem; letter-spacing: 0.2em; color: var(--text-tertiary-light);
+    font-weight: 600; text-transform: uppercase;
+  }
+  .slide.dark .footer-mark, .slide.deep .footer-mark { color: var(--text-tertiary-dark); }
+
+  .brand {
+    position: absolute; top: clamp(1.3rem, 3vw, 2.4rem); left: clamp(1.5rem, 3vw, 2.5rem);
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase;
+    color: var(--text-secondary-light);
+  }
+  .slide.dark .brand, .slide.deep .brand { color: var(--text-secondary-dark); }
+  .brand svg { width: 20px; height: 20px; border-radius: 5px; }
+
+  /* ============================================================ ATMOSFERA ======= */
+  .atmos { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-out); }
+  .slide.active .atmos { opacity: 1; }
+  .atmos.glow::before {
+    content: ''; position: absolute; width: 78vw; height: 78vw; border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%); filter: blur(30px);
+  }
+  .grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.022; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Rede de nós (capa) */
+  .net { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity 2s var(--ease-out); }
+  .slide.active .net { opacity: 1; }
+  .net line { stroke: var(--accent); stroke-width: 0.5; opacity: 0.18; }
+  .net circle { fill: var(--accent); animation: twinkle 4s var(--ease) infinite; }
+  .net circle.cu { fill: var(--copper); }
+  @keyframes twinkle { 0%,100%{opacity:0.30;} 50%{opacity:0.85;} }
+
+  /* ============================================================ NUM GRID ======== */
+  .num-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: clamp(1.2rem, 3vw, 2.5rem); width: 100%; max-width: 1120px;
+    margin-top: clamp(2rem, 3.5vw, 3.2rem);
+  }
+  .num-cell { padding: clamp(0.9rem, 2vw, 1.4rem) 0; border-top: 1px solid var(--border-light); text-align: left; }
+  .slide.dark .num-cell, .slide.deep .num-cell { border-top-color: var(--border-dark); }
+  .num-cell .n {
+    font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 700; letter-spacing: -0.04em;
+    line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums;
+  }
+  .num-cell .l { font-size: 0.92rem; color: var(--text-secondary-light); margin-top: 0.55rem; line-height: 1.4; }
+  .slide.dark .num-cell .l, .slide.deep .num-cell .l { color: var(--text-secondary-dark); }
+
+  .emph { font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 700; letter-spacing: -0.04em;
+          color: var(--accent); line-height: 1; font-variant-numeric: tabular-nums; }
+  .big-num { font-size: clamp(4.5rem, 15vw, 13rem); font-weight: 700; letter-spacing: -0.06em;
+             line-height: 0.9; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  /* ============================================================ COLUNAS ========= */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem);
+          width: 100%; max-width: 1140px; margin-top: clamp(1.6rem, 3vw, 2.4rem); text-align: left; }
+  @media (max-width: 820px){ .cols{ grid-template-columns:1fr; gap:1.4rem; } }
+  .col-head {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: clamp(0.8rem,1.4vw,1.1rem);
+  }
+  .col-head.copper { color: var(--copper); }
+
+  ul.list { list-style: none; display: flex; flex-direction: column; gap: clamp(0.55rem, 1vw, 0.8rem); }
+  ul.list li {
+    position: relative; padding-left: 1.7rem; line-height: 1.45;
+    font-size: clamp(0.92rem, 1.15vw, 1.05rem); color: var(--text-secondary-light);
+  }
+  .slide.dark ul.list li, .slide.deep ul.list li { color: var(--text-secondary-dark); }
+  ul.list li strong { color: var(--text-primary-light); font-weight: 600; }
+  .slide.dark ul.list li strong, .slide.deep ul.list li strong { color: var(--text-primary-dark); }
+  ul.list li::before {
+    content: ''; position: absolute; left: 0; top: 0.5em;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  }
+  ul.list.check li::before {
+    content: ''; left: 0.1rem; top: 0.28em; width: 12px; height: 7px;
+    border: 2px solid var(--ok); border-top: none; border-right: none;
+    background: none; border-radius: 0; transform: rotate(-45deg);
+  }
+  ul.list.copper li::before { background: var(--copper); }
+
+  /* ============================================================ CHECK-GRID (Executado) */
+  .check-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.5rem, 1.3vw, 0.95rem) clamp(1.5rem, 4vw, 3.2rem);
+    width: 100%; max-width: 1160px; margin-top: clamp(1.6rem, 3vw, 2.4rem); text-align: left;
+  }
+  @media (max-width: 820px){ .check-grid{ grid-template-columns:1fr; } }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 0.85rem;
+    font-size: clamp(0.9rem, 1.12vw, 1.02rem); line-height: 1.35; color: var(--text-secondary-light);
+    padding: 0.35rem 0;
+  }
+  .check-item .ck {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent-soft); display: grid; place-items: center; margin-top: 0.05rem;
+    transform: scale(0.4); opacity: 0; transition: transform 0.5s var(--ease-out), opacity 0.5s var(--ease-out);
+  }
+  .slide.active .check-item .ck { transform: scale(1); opacity: 1; }
+  .check-item .ck svg { width: 13px; height: 13px; }
+  .check-item .ck svg path { stroke: var(--ok); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .check-item b { color: var(--text-primary-light); font-weight: 600; }
+  .check-item .idx { color: var(--copper); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  /* ============================================================ H-BARS ========== */
+  .chart-box {
+    text-align: left; border: 1px solid var(--border-light); border-radius: 16px;
+    padding: clamp(1.1rem, 2vw, 1.5rem) clamp(1.2rem, 2.2vw, 1.7rem); background: rgba(255,255,255,0.55);
+  }
+  .slide.dark .chart-box, .slide.deep .chart-box { border-color: var(--border-dark); background: rgba(255,255,255,0.03); }
+  .chart-title { font-size: clamp(0.95rem,1.3vw,1.12rem); font-weight: 600; letter-spacing: -0.01em; }
+  .chart-sub { font-size: 0.8rem; color: var(--text-tertiary-light); margin-top: 0.15rem; margin-bottom: 0.9rem; }
+  .slide.dark .chart-sub, .slide.deep .chart-sub { color: var(--text-tertiary-dark); }
+
+  .hbars { display: flex; flex-direction: column; gap: clamp(0.5rem, 0.9vw, 0.75rem); }
+  .hbar { display: grid; grid-template-columns: 62px 1fr auto; align-items: center; gap: 0.7rem; }
+  .hbar .hlabel { font-size: 0.85rem; color: var(--text-secondary-light); font-variant-numeric: tabular-nums; }
+  .slide.dark .hbar .hlabel, .slide.deep .hbar .hlabel { color: var(--text-secondary-dark); }
+  .hbar .htrack { height: 14px; border-radius: 7px; background: rgba(0,0,0,0.06); overflow: hidden; }
+  .slide.dark .hbar .htrack, .slide.deep .hbar .htrack { background: rgba(255,255,255,0.08); }
+  .hbar .hfill {
+    display: block; height: 100%; width: 0; border-radius: 7px; background: var(--accent);
+    transition: width 1.1s var(--ease-out); transition-delay: var(--d, 0s);
+  }
+  .hbar .hfill.top { background: var(--copper); }
+  .slide.active .hbar .hfill { width: var(--w); }
+  .hbar .hval { font-size: 0.85rem; font-weight: 600; color: var(--text-primary-light); font-variant-numeric: tabular-nums; min-width: 34px; text-align: right; }
+  .slide.dark .hbar .hval, .slide.deep .hbar .hval { color: var(--text-primary-dark); }
+
+  /* barra de distribuição empilhada */
+  .stack { height: 26px; border-radius: 8px; overflow: hidden; display: flex; background: rgba(0,0,0,0.06); }
+  .stack .seg { height: 100%; width: 0; transition: width 1.2s var(--ease-out); }
+  .slide.active .stack .seg { width: var(--w); }
+  .stack .seg.a { background: var(--accent); }
+  .stack .seg.b { background: var(--copper); }
+  .stack-legend { display: flex; gap: 1.4rem; margin-top: 0.7rem; font-size: 0.82rem; color: var(--text-secondary-light); }
+  .slide.dark .stack-legend, .slide.deep .stack-legend { color: var(--text-secondary-dark); }
+  .stack-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 0.4rem; vertical-align: middle; }
+
+  /* ============================================================ COMBO CHART ===== */
+  .combo svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .combo .bar { transform: scaleY(0); transform-box: fill-box; transform-origin: bottom;
+                transition: transform 0.9s var(--ease-out); transition-delay: var(--d, 0s); }
+  .slide.active .combo .bar { transform: scaleY(1); }
+  .combo .accum { fill: none; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round;
+                  stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.5s var(--ease-out) 0.4s; }
+  .slide.active .combo .accum { stroke-dashoffset: 0; }
+  .combo .dot { opacity: 0; transition: opacity 0.4s var(--ease-out); transition-delay: var(--d, 0s); }
+  .slide.active .combo .dot { opacity: 1; }
+  .combo .vlabel, .combo .alabel { opacity: 0; transition: opacity 0.5s var(--ease-out); transition-delay: var(--d, 0s); font-variant-numeric: tabular-nums; }
+  .slide.active .combo .vlabel, .slide.active .combo .alabel { opacity: 1; }
+  .combo .axis { font-size: 11px; fill: var(--text-tertiary-light); }
+  .slide.dark .combo .axis, .slide.deep .combo .axis { fill: var(--text-tertiary-dark); }
+  .combo .vlabel { font-size: 13px; font-weight: 700; }
+  .combo .alabel { font-size: 11.5px; font-weight: 600; }
+  .combo .gl { stroke: rgba(0,0,0,0.06); stroke-width: 1; }
+  .slide.dark .combo .gl, .slide.deep .combo .gl { stroke: rgba(255,255,255,0.08); }
+
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.2rem, 3vw, 2.4rem); width: 100%; max-width: 1160px; margin-top: clamp(1.4rem,2.6vw,2.2rem); }
+  @media (max-width: 900px){ .duo{ grid-template-columns:1fr; } }
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem,2.2vw,1.7rem); width:100%; max-width: 1120px; margin-top: clamp(1.5rem,3vw,2.4rem); }
+  @media (max-width: 860px){ .trio{ grid-template-columns:1fr; } }
+
+  /* ============================================================ PDI / CASE CARDS  */
+  .pdi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.9rem,2vw,1.5rem);
+              width: 100%; max-width: 1080px; margin-top: clamp(1.6rem,3vw,2.4rem); }
+  @media (max-width: 820px){ .pdi-grid{ grid-template-columns:1fr 1fr; } }
+  .pdi-cell { padding: clamp(1rem,1.8vw,1.4rem); border: 1px solid var(--border-light); border-radius: 14px;
+              background: rgba(255,255,255,0.5); text-align: left; }
+  .slide.dark .pdi-cell, .slide.deep .pdi-cell { border-color: var(--border-dark); background: rgba(255,255,255,0.03); }
+  .pdi-cell .n { font-size: clamp(1.8rem,3.2vw,2.7rem); font-weight: 700; letter-spacing: -0.035em;
+                 color: var(--accent); line-height: 1; font-variant-numeric: tabular-nums; margin-bottom: 0.4rem; }
+  .pdi-cell .lbl { font-size: 0.82rem; color: var(--text-secondary-light); line-height: 1.4; }
+  .slide.dark .pdi-cell .lbl, .slide.deep .pdi-cell .lbl { color: var(--text-secondary-dark); }
+  .pdi-cell .lbl b { color: var(--text-primary-light); font-weight: 600; }
+  .slide.dark .pdi-cell .lbl b, .slide.deep .pdi-cell .lbl b { color: var(--text-primary-dark); }
+
+  .case-card { padding: clamp(1.3rem,2.2vw,1.7rem); border: 1px solid var(--border-light); border-radius: 18px;
+               background: rgba(255,255,255,0.6); text-align: left; }
+  .slide.dark .case-card, .slide.deep .case-card { border-color: var(--border-dark); background: rgba(255,255,255,0.03); }
+  .case-card .role { font-size: clamp(1.05rem,1.4vw,1.25rem); font-weight: 600; letter-spacing: -0.01em; }
+  .case-card .meta { font-size: 0.8rem; color: var(--text-tertiary-light); margin-top: 0.2rem; }
+  .slide.dark .case-card .meta, .slide.deep .case-card .meta { color: var(--text-tertiary-dark); }
+  .case-card .val { font-size: clamp(1.9rem,3.2vw,2.6rem); font-weight: 700; letter-spacing: -0.035em;
+                    color: var(--accent); margin: 0.7rem 0 0.2rem; font-variant-numeric: tabular-nums; }
+  .case-card .vsub { font-size: 0.8rem; color: var(--text-secondary-light); }
+  .slide.dark .case-card .vsub, .slide.deep .case-card .vsub { color: var(--text-secondary-dark); }
+  .case-card .rows { margin-top: 0.9rem; border-top: 1px solid var(--border-light); padding-top: 0.7rem;
+                     display: flex; flex-direction: column; gap: 0.35rem; }
+  .slide.dark .case-card .rows, .slide.deep .case-card .rows { border-top-color: var(--border-dark); }
+  .case-card .rows .r { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary-light); }
+  .slide.dark .case-card .rows .r, .slide.deep .case-card .rows .r { color: var(--text-secondary-dark); }
+  .case-card .rows .r b { color: var(--text-primary-light); font-weight: 600; }
+  .slide.dark .case-card .rows .r b, .slide.deep .case-card .rows .r b { color: var(--text-primary-dark); }
+
+  /* ============================================================ FELLOWSHIP ====== */
+  .vaga-list { display: flex; flex-direction: column; gap: clamp(0.55rem,1vw,0.8rem); width: 100%; max-width: 940px;
+               margin-top: clamp(1.4rem,2.6vw,2.1rem); text-align: left; }
+  .vaga { display: flex; align-items: center; gap: 1rem; padding: clamp(0.8rem,1.4vw,1.05rem) clamp(1rem,1.8vw,1.35rem);
+          border: 1px solid var(--border-light); border-radius: 14px; background: rgba(255,255,255,0.5); }
+  .slide.dark .vaga, .slide.deep .vaga { border-color: var(--border-dark); background: rgba(255,255,255,0.03); }
+  .vaga .flag { flex-shrink: 0; width: 40px; text-align: center; font-size: 1.4rem; }
+  .vaga .info { flex: 1; }
+  .vaga .role { font-weight: 600; font-size: clamp(0.95rem,1.2vw,1.08rem); letter-spacing: -0.01em; }
+  .vaga .place { font-size: 0.85rem; color: var(--text-secondary-light); margin-top: 0.1rem; }
+  .slide.dark .vaga .place, .slide.deep .vaga .place { color: var(--text-secondary-dark); }
+  .pill { flex-shrink: 0; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.02em; padding: 0.32rem 0.75rem; border-radius: 999px; white-space: nowrap; }
+  .pill.ok  { color: var(--ok);  background: rgba(47,143,91,0.14); }
+  .pill.off { color: var(--off); background: rgba(178,59,59,0.14); }
+  .slide.dark .pill.ok, .slide.deep .pill.ok { color: #74d69e; }
+  .slide.dark .pill.off, .slide.deep .pill.off { color: #f0908e; }
+
+  /* ============================================================ AUTOMAÇÃO / ECO = */
+  .auto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem,2.2vw,1.6rem);
+               width: 100%; max-width: 1160px; margin-top: clamp(1.5rem,3vw,2.3rem); }
+  @media (max-width: 900px){ .auto-grid{ grid-template-columns:1fr; } }
+  .auto-card { padding: clamp(1.2rem,2vw,1.6rem); border: 1px solid var(--border-light); border-radius: 16px;
+               background: rgba(255,255,255,0.55); text-align: left; }
+  .slide.dark .auto-card, .slide.deep .auto-card { border-color: var(--border-dark); background: rgba(255,255,255,0.03); }
+  .auto-card .ico { width: 40px; height: 40px; border-radius: 11px; background: var(--accent-soft);
+                    display: grid; place-items: center; margin-bottom: 0.9rem; }
+  .auto-card .ico svg { width: 20px; height: 20px; fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .auto-card h3 { font-size: clamp(1rem,1.3vw,1.15rem); font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
+  .auto-card p { font-size: clamp(0.85rem,1.05vw,0.95rem); color: var(--text-secondary-light); line-height: 1.5; }
+  .slide.dark .auto-card p, .slide.deep .auto-card p { color: var(--text-secondary-dark); }
+
+  .eco-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.7rem,1.4vw,1rem);
+              width: 100%; max-width: 1200px; margin-top: clamp(1.4rem,2.6vw,2.1rem); }
+  @media (max-width: 1000px){ .eco-grid{ grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 560px){ .eco-grid{ grid-template-columns:1fr;} }
+  .eco-card { position: relative; display: block; text-decoration: none; color: inherit; text-align: left;
+              padding: clamp(0.9rem,1.6vw,1.15rem); border: 1px solid var(--border-light); border-radius: 13px;
+              background: rgba(255,255,255,0.5); transition: transform 0.2s var(--ease), border-color 0.2s var(--ease); }
+  .slide.dark .eco-card, .slide.deep .eco-card { border-color: var(--border-dark); background: rgba(255,255,255,0.03); }
+  a.eco-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .eco-card .etag { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper); }
+  .eco-card h4 { font-size: clamp(0.9rem,1.1vw,1rem); font-weight: 600; letter-spacing: -0.01em; margin: 0.35rem 0 0.25rem; color: var(--accent); line-height: 1.2; }
+  .eco-card p { font-size: 0.78rem; color: var(--text-secondary-light); line-height: 1.4; }
+  .slide.dark .eco-card p, .slide.deep .eco-card p { color: var(--text-secondary-dark); }
+  .eco-card.internal { border-color: var(--copper); background: var(--copper-soft); }
+  .eco-card .badge { display: inline-block; margin-top: 0.5rem; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em;
+                     text-transform: uppercase; color: var(--copper); border: 1px solid var(--copper); border-radius: 999px; padding: 0.12rem 0.5rem; }
+
+  /* ============================================================ AVALIAÇÃO ======= */
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.2rem,3vw,2.5rem);
+             width: 100%; max-width: 1000px; margin-top: clamp(1.8rem,3.2vw,2.8rem); }
+  @media (max-width: 760px){ .metrics{ grid-template-columns:1fr; } }
+  .metric { text-align: center; }
+  .metric .mv { font-size: clamp(3rem,7vw,5.4rem); font-weight: 700; letter-spacing: -0.05em; color: var(--accent);
+                line-height: 0.95; font-variant-numeric: tabular-nums; }
+  .metric .ml { font-size: 0.92rem; color: var(--text-secondary-light); margin-top: 0.6rem; line-height: 1.4; }
+  .slide.dark .metric .ml, .slide.deep .metric .ml { color: var(--text-secondary-dark); }
+  .metric .mu { font-size: 1.4rem; font-weight: 600; color: var(--text-tertiary-light); letter-spacing: -0.02em; }
+
+  .gauge-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1.5rem,3vw,3rem); width: 100%; max-width: 780px; margin-top: 1.4rem; }
+  @media (max-width: 620px){ .gauge-row{ grid-template-columns:1fr; } }
+  .gauge .gt { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; }
+  .gauge .gt .gl { font-size: 0.9rem; color: var(--text-secondary-light); }
+  .slide.dark .gauge .gt .gl, .slide.deep .gauge .gt .gl { color: var(--text-secondary-dark); }
+  .gauge .gt .gv { font-size: 1.1rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .gauge .gtrack { height: 10px; border-radius: 6px; background: rgba(0,0,0,0.07); overflow: hidden; }
+  .slide.dark .gauge .gtrack, .slide.deep .gauge .gtrack { background: rgba(255,255,255,0.09); }
+  .gauge .gfill { display: block; height: 100%; width: 0; border-radius: 6px; background: var(--accent); transition: width 1.2s var(--ease-out); }
+  .slide.active .gauge .gfill { width: var(--w); }
+
+  .dist { display: flex; align-items: flex-end; gap: clamp(0.3rem,1vw,0.7rem); height: 130px; width: 100%; max-width: 620px; margin-top: 1.2rem; }
+  .dist .db { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 0.35rem; }
+  .dist .db .bar { width: 100%; max-width: 34px; border-radius: 6px 6px 0 0; background: var(--accent);
+                   height: 0; transition: height 1s var(--ease-out); transition-delay: var(--d,0s); }
+  .dist .db.hot .bar { background: var(--copper); }
+  .dist .db .bl { font-size: 0.72rem; color: var(--text-tertiary-light); font-variant-numeric: tabular-nums; }
+  .slide.dark .dist .db .bl, .slide.deep .dist .db .bl { color: var(--text-tertiary-dark); }
+
+  .update-bar { display: inline-flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; justify-content: center;
+                margin-top: clamp(1.6rem,3vw,2.4rem); }
+  .btn { display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; border: 1px solid var(--border-light);
+         background: rgba(255,255,255,0.6); color: var(--text-primary-light); border-radius: 999px;
+         padding: 0.6rem 1.15rem; font-size: 0.88rem; font-weight: 600; font-family: inherit;
+         transition: border-color 0.2s var(--ease), background 0.2s var(--ease); }
+  .slide.dark .btn, .slide.deep .btn { border-color: var(--border-dark); background: rgba(255,255,255,0.05); color: var(--text-primary-dark); }
+  .btn:hover { border-color: var(--accent); }
+  .btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .update-note { font-size: 0.8rem; color: var(--text-tertiary-light); margin-top: 0.8rem; max-width: 640px; }
+  .slide.dark .update-note, .slide.deep .update-note { color: var(--text-tertiary-dark); }
+
+  /* ============================================================ CONTATO ========= */
+  .contact { display: inline-flex; align-items: center; gap: 0.8rem; margin-top: clamp(2rem,4vw,3rem);
+             font-size: clamp(1rem,1.4vw,1.25rem); color: var(--text-secondary-light); }
+  .slide.dark .contact, .slide.deep .contact { color: var(--text-secondary-dark); }
+  .contact .ico { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--copper); display: grid; place-items: center; }
+  .contact .ico svg { width: 20px; height: 20px; fill: none; stroke: var(--copper); stroke-width: 1.8; }
+  .contact a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+  /* ============================================================ CONTROL BAR ===== */
+  #control-bar {
+    position: fixed; bottom: clamp(1rem, 2.5vw, 1.6rem); left: 50%; transform: translateX(-50%);
+    z-index: 100; display: flex; align-items: center; gap: 1rem; padding: 0.6rem 1.05rem;
+    background: rgba(255,255,255,0.72); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid rgba(0,0,0,0.06); border-radius: 999px; box-shadow: 0 8px 32px -8px rgba(0,0,0,0.18);
+  }
+  #control-bar.dark-mode { background: rgba(22,28,44,0.75); border-color: rgba(255,255,255,0.08); box-shadow: 0 8px 32px -8px rgba(0,0,0,0.6); }
+  .ctrl-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: transparent; color: var(--text-primary-light);
+              cursor: pointer; display: grid; place-items: center; transition: background 0.2s var(--ease), transform 0.2s var(--ease); padding: 0; }
+  #control-bar.dark-mode .ctrl-btn { color: var(--text-primary-dark); }
+  .ctrl-btn:hover { background: rgba(0,0,0,0.06); } #control-bar.dark-mode .ctrl-btn:hover { background: rgba(255,255,255,0.1); }
+  .ctrl-btn:active { transform: scale(0.92); } .ctrl-btn svg { width: 14px; height: 14px; fill: currentColor; }
+  .progress { width: clamp(120px, 20vw, 220px); height: 3px; background: rgba(0,0,0,0.08); border-radius: 999px; overflow: hidden; }
+  #control-bar.dark-mode .progress { background: rgba(255,255,255,0.14); }
+  .progress-fill { height: 100%; background: var(--copper); width: 0%; border-radius: 999px; transition: width 0.2s linear; }
+  .counter { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary-light); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; min-width: 52px; text-align: center; }
+  #control-bar.dark-mode .counter { color: var(--text-secondary-dark); }
+  .ctrl-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* INTRO */
+  #intro { position: fixed; inset: 0; z-index: 200; background: var(--bg-light); display: grid; place-items: center;
+           transition: opacity 0.9s var(--ease), visibility 0s linear 0.9s; }
+  #intro.hidden { opacity: 0; visibility: hidden; }
+  #intro .pulse { width: 8px; height: 8px; background: var(--copper); border-radius: 50%; animation: pulse 1.4s var(--ease) infinite; }
+  @keyframes pulse { 0%,100%{ transform: scale(1); opacity: 1; } 50%{ transform: scale(2.2); opacity: 0.35; } }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  /* hint teclado */
+  #hint { position: fixed; bottom: clamp(3.6rem,6vw,4.6rem); left: 50%; transform: translateX(-50%); z-index: 90;
+          font-size: 0.76rem; color: var(--text-tertiary-light); background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
+          padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid var(--border-light); transition: opacity 0.6s var(--ease); }
+  #hint.gone { opacity: 0; pointer-events: none; }
+
+  /* ---- MODO QA (screenshot por slide) ---- */
+  html.qa .reveal { opacity: 1 !important; transform: none !important; }
+  html.qa .hbar .hfill, html.qa .stack .seg, html.qa .gauge .gfill { width: var(--w) !important; }
+  html.qa .combo .bar { transform: scaleY(1) !important; }
+  html.qa .combo .accum { stroke-dashoffset: 0 !important; }
+  html.qa .combo .dot, html.qa .combo .vlabel, html.qa .combo .alabel { opacity: 1 !important; }
+  html.qa .check-item .ck { transform: scale(1) !important; opacity: 1 !important; }
+  html.qa .net, html.qa .atmos { opacity: 1 !important; }
+  html.qa #control-bar, html.qa #hint, html.qa #intro { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="intro" role="status" aria-label="Carregando apresentação"><div class="pulse"></div></div>
+
+<main id="deck" role="main">
+
+  <!-- ============================================================ 1 · CAPA ==== -->
+  <section class="slide pure" data-duration="9000" data-theme="light">
+    <span class="brand">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="14" fill="#1B365D"/><path d="M14 16 H50 L36 36 V46 L28 50 V36 Z" fill="#FFFFFF"/><circle cx="32" cy="55" r="3.4" fill="#B05A22"/></svg>
+      dadosrgb
+    </span>
+    <span class="scene-count">01</span>
+    <svg class="net" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g id="net-lines"></g><g id="net-nodes"></g>
+    </svg>
+    <span class="eyebrow reveal">Coordenação-Geral de Movimentação de Pessoal · CGMOP</span>
+    <h1 class="title hero reveal" data-delay="1">Planejamento<br/>2025 · 2026</h1>
+    <p class="subtitle reveal" data-delay="2">Apresentação trimestral à Diretoria — o que foi executado,<br/>os projetos que conduzem o ano e os resultados.</p>
+    <div class="regua reveal" data-delay="3"></div>
+    <span class="footer-mark">MGI · SGP · DEPRO · CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 2 · EXECUTADO -->
+  <section class="slide" data-duration="12000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Executado · Ciclo 2025 / 2026</span>
+    <h2 class="title sm reveal" data-delay="1">Treze frentes. Todas entregues.</h2>
+    <div class="check-grid">
+      <div class="check-item reveal" data-delay="1"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">01.</span> <b>Portaria Conjunta</b> que amplia a movimentação de vítimas de violência doméstica e familiar</span></div>
+      <div class="check-item reveal" data-delay="1"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">02.</span> Alteração normativa para <b>fortalecer formas flexíveis de mobilidade</b> (free-la, time volante)</span></div>
+      <div class="check-item reveal" data-delay="2"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">03.</span> Estudo de impacto e viabilidade do uso do <b>SGC-Seges</b> nas movimentações</span></div>
+      <div class="check-item reveal" data-delay="2"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">04.</span> Plano de exigência do <b>DFT</b> para a realocação de pessoal (Jun/2026)</span></div>
+      <div class="check-item reveal" data-delay="3"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">05.</span> Mobilidade como desenvolvimento profissional — piloto <b>Fellowship Banco Mundial</b></span></div>
+      <div class="check-item reveal" data-delay="3"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">06.</span> Indicadores propostos no <b>mapeamento de processo</b></span></div>
+      <div class="check-item reveal" data-delay="4"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">07.</span> Melhoria de <b>processos internos</b></span></div>
+      <div class="check-item reveal" data-delay="4"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">08.</span> <b>GT de Anistiados</b> da Lei nº 8.878/94</span></div>
+      <div class="check-item reveal" data-delay="5"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">09.</span> Rotina de <b>extração e análise de dados</b> de movimentação, licenças e afastamentos</span></div>
+      <div class="check-item reveal" data-delay="5"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">10.</span> <b>Carta de serviços</b> (Mar/2025)</span></div>
+      <div class="check-item reveal" data-delay="6"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">11.</span> <b>Recruta</b> — captação ativa de talentos e movimentação emergencial</span></div>
+      <div class="check-item reveal" data-delay="6"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">12.</span> <b>Site</b> da Movimentação de Pessoal</span></div>
+      <div class="check-item reveal" data-delay="7"><span class="ck"><svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4"/></svg></span><span><span class="idx">13.</span> <b>Pesquisas, artigos</b> e produções técnicas</span></div>
+    </div>
+    <p class="caption reveal" data-delay="8">Alinhado ao Planejamento Estratégico SGP/MGI, ao Estudo de modernização institucional da DEPRO e ao Planejamento Estratégico da CGMOP.</p>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 3 · PROJETOS 2026 -->
+  <section class="slide pure" data-duration="11000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Planejamento · 2026</span>
+    <h2 class="title sm reveal" data-delay="1">Os projetos que conduzem o ano.</h2>
+    <div class="cols">
+      <div>
+        <div class="col-head reveal" data-delay="2">Externo</div>
+        <ul class="list reveal" data-delay="2">
+          <li>Política de Movimentação para <strong>Mulheres em Situação de Violência</strong></li>
+          <li><strong>PDI Anistia Collor</strong> · (Re)posicionamento e progressão dos anistiados</li>
+          <li><strong>Fellowship Program</strong> com o WBG</li>
+          <li><strong>Recruta</strong> — institucionalização · perfil profissiográfico · TED com a UFSJ</li>
+          <li><strong>Modernização do ato normativo</strong> — projetos, inovação, desenvolvimento</li>
+          <li>Comunicação e <strong>divulgação das políticas</strong> da DEPRO</li>
+          <li>Estudo do <strong>Banco Nacional de Permuta</strong></li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-head copper reveal" data-delay="3">Interno</div>
+        <ul class="list copper reveal" data-delay="3">
+          <li><strong>Simplificação e automação</strong> dos processos — encerramento da alteração de exercício (04/2027)</li>
+          <li>Institucionalizar a ferramenta de gestão do conhecimento — <strong>Mara Legis</strong></li>
+        </ul>
+        <p class="caption reveal" data-delay="4" style="margin-top:1.5rem;max-width:420px;">Frentes externas entregam política pública; frentes internas sustentam a capacidade de entregá-la.</p>
+      </div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 4 · DIVISOR: PROTEÇÃO -->
+  <section class="slide deep" data-duration="6000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div><div class="grain"></div>
+    <span class="eyebrow reveal">Frente 01</span>
+    <h2 class="title xl reveal" data-delay="1">Proteção<br/>e justiça.</h2>
+    <p class="subtitle reveal" data-delay="2">Mulheres em situação de violência · Anistia Collor.</p>
+    <div class="regua reveal" data-delay="3" style="margin-inline:auto;"></div>
+  </section>
+
+  <!-- ============================================================ 5 · MULHERES · REALIZADAS -->
+  <section class="slide pure" data-duration="12000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Política para Mulheres em Situação de Violência</span>
+    <h2 class="title sm reveal" data-delay="1">Ações realizadas.</h2>
+    <div class="cols">
+      <div>
+        <div class="col-head reveal" data-delay="2">Comunicação e mobilização</div>
+        <ul class="list check reveal" data-delay="2">
+          <li><strong>ConectaGente Extraordinário</strong></li>
+          <li><strong>Webnário</strong> Movimentação de Mulheres em Situação de Violência — 1.600 visualizações</li>
+          <li><strong>49ª Reunião do Pleno</strong> Forgepe/Andifes — painel de medidas de resposta</li>
+          <li><strong>ENGP</strong> — Encontro Nacional de Gestão de Pessoas 2026</li>
+          <li><strong>Pró-Integridade</strong> — corresponsabilidade dos homens em ambientes seguros</li>
+          <li>Incluída no <strong>Pacto Brasil contra o Feminicídio</strong></li>
+          <li>Demandas do <strong>FalaBr</strong> com foco em acolhimento</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-head copper reveal" data-delay="3">Medidas normativas e operacionais</div>
+        <ul class="list check copper reveal" data-delay="3">
+          <li>Alteração de exercício para <strong>docentes</strong></li>
+          <li>Contratação de <strong>professor substituto</strong></li>
+          <li>Redistribuição no <strong>período de defeso eleitoral</strong></li>
+          <li>Fim do <strong>pedágio de 6 meses</strong> no PGD</li>
+          <li><strong>Teletrabalho</strong> para estágio probatório</li>
+          <li>Solução no <strong>SIAPE</strong> para acompanhamento e ocultação de dados pessoais</li>
+        </ul>
+      </div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 6 · MULHERES · PRÓXIMOS -->
+  <section class="slide" data-duration="11000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Política para Mulheres em Situação de Violência</span>
+    <h2 class="title sm reveal" data-delay="1">Próximos passos.</h2>
+    <div class="cols" style="grid-template-columns:1fr;max-width:900px;">
+      <ul class="list reveal" data-delay="2" style="gap:1.2rem;">
+        <li><strong>Modernização da Portaria nº 88/2026</strong> — incorporar o entendimento do STF que amplia as medidas protetivas para fora do contexto doméstico e familiar, alcançando todo tipo de violência contra a mulher.</li>
+        <li><strong>Ações junto à CGU</strong> — ocultação dos dados pessoais, no Portal da Transparência, das pessoas em situação de violência doméstica.</li>
+        <li><strong>Melhorar o acolhimento</strong> — construção junto ao MM para uso da Central de Atendimento à Mulher (180) na orientação das servidoras sobre a Portaria nº 88/2025.</li>
+      </ul>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 7 · PDI · O PROGRAMA -->
+  <section class="slide deep" data-duration="12000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div>
+    <span class="eyebrow reveal">Programa de Desligamento Incentivado · PDI Anistia Collor</span>
+    <h2 class="title sm reveal" data-delay="1">Uma saída digna, com regra clara.</h2>
+    <div class="pdi-grid">
+      <div class="pdi-cell reveal" data-delay="2"><div class="n">75+</div><div class="lbl"><b>anos de idade</b><br/>empregados públicos anistiados — público-alvo</div></div>
+      <div class="pdi-cell reveal" data-delay="3"><div class="n">+40%</div><div class="lbl"><b>de multa</b><br/>sobre a remuneração por ano trabalhado após o retorno</div></div>
+      <div class="pdi-cell reveal" data-delay="4"><div class="n">R$ 61,8<span style="font-size:0.5em"> mi</span></div><div class="lbl"><b>provisão orçamentária</b><br/>reservada para o programa</div></div>
+      <div class="pdi-cell reveal" data-delay="5"><div class="n">R$ 350<span style="font-size:0.5em"> mil</span></div><div class="lbl"><b>teto do incentivo</b><br/>alcança 43 pessoas (5%)</div></div>
+    </div>
+    <p class="subtitle reveal" data-delay="6" style="max-width:820px;">Reparação de uma remuneração por ano trabalhado após o retorno, com encerramento do contrato de trabalho.</p>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 8 · PDI · ELEGÍVEIS -->
+  <section class="slide pure" data-duration="13000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">PDI Anistia Collor · Perfil dos elegíveis</span>
+    <h2 class="title sm reveal" data-delay="1">Quem são os elegíveis.</h2>
+    <div class="duo">
+      <div class="chart-box reveal" data-delay="2">
+        <div class="chart-title">Incentivo por faixa etária</div>
+        <div class="chart-sub">Nº de elegíveis · total 799</div>
+        <div class="hbars">
+          <div class="hbar"><span class="hlabel">75–79</span><span class="htrack"><span class="hfill" style="--w:100%;--d:.1s"></span></span><span class="hval">500</span></div>
+          <div class="hbar"><span class="hlabel">80–84</span><span class="htrack"><span class="hfill" style="--w:43.4%;--d:.2s"></span></span><span class="hval">217</span></div>
+          <div class="hbar"><span class="hlabel">85–89</span><span class="htrack"><span class="hfill" style="--w:14%;--d:.3s"></span></span><span class="hval">70</span></div>
+          <div class="hbar"><span class="hlabel">90+</span><span class="htrack"><span class="hfill" style="--w:2.4%;--d:.4s"></span></span><span class="hval">12</span></div>
+        </div>
+      </div>
+      <div class="chart-box reveal" data-delay="3">
+        <div class="chart-title">Onde estão os elegíveis</div>
+        <div class="chart-sub">Principais órgãos, por nº de elegíveis</div>
+        <div class="hbars">
+          <div class="hbar"><span class="hlabel">ANM</span><span class="htrack"><span class="hfill top" style="--w:100%;--d:.1s"></span></span><span class="hval">193</span></div>
+          <div class="hbar"><span class="hlabel">MAPA</span><span class="htrack"><span class="hfill" style="--w:68.4%;--d:.16s"></span></span><span class="hval">132</span></div>
+          <div class="hbar"><span class="hlabel">MT</span><span class="htrack"><span class="hfill" style="--w:67.4%;--d:.22s"></span></span><span class="hval">130</span></div>
+          <div class="hbar"><span class="hlabel">MME</span><span class="htrack"><span class="hfill" style="--w:62.7%;--d:.28s"></span></span><span class="hval">121</span></div>
+          <div class="hbar"><span class="hlabel">MCTI</span><span class="htrack"><span class="hfill" style="--w:49.7%;--d:.34s"></span></span><span class="hval">96</span></div>
+          <div class="hbar"><span class="hlabel">MINC</span><span class="htrack"><span class="hfill" style="--w:10.9%;--d:.40s"></span></span><span class="hval">21</span></div>
+          <div class="hbar"><span class="hlabel">INCRA</span><span class="htrack"><span class="hfill" style="--w:10.4%;--d:.46s"></span></span><span class="hval">20</span></div>
+          <div class="hbar"><span class="hlabel">ABIN</span><span class="htrack"><span class="hfill" style="--w:9.3%;--d:.52s"></span></span><span class="hval">18</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-box reveal" data-delay="4" style="width:100%;max-width:1160px;margin-top:clamp(1rem,2vw,1.5rem);">
+      <div class="chart-title">Distribuição do valor</div>
+      <div class="chart-sub">A regra é concentrada: quase todos recebem valor proporcional; o teto atinge poucos.</div>
+      <div class="stack"><span class="seg a" style="--w:95%"></span><span class="seg b" style="--w:5%"></span></div>
+      <div class="stack-legend"><span><span class="dot" style="background:var(--accent)"></span>Proporcional — 95% (747)</span><span><span class="dot" style="background:var(--copper)"></span>Teto — 5% (43 pessoas)</span></div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 9 · PDI · CASOS-TIPO -->
+  <section class="slide" data-duration="13000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">PDI Anistia Collor · Casos-tipo</span>
+    <h2 class="title sm reveal" data-delay="1">O que isso significa<br/>para uma pessoa concreta.</h2>
+    <p class="subtitle reveal" data-delay="2" style="margin-top:0.8rem;">Perfis representativos da base (valores medianos, anonimizados). Números reais tornam o benefício tangível.</p>
+    <div class="trio">
+      <div class="case-card reveal" data-delay="3">
+        <div class="role">Assistente administrativo</div>
+        <div class="meta">salário-base R$ 7.524/mês · 18 anos de serviço</div>
+        <div class="val">R$ 185.204</div>
+        <div class="vsub">incentivo em parcela única</div>
+        <div class="rows"><div class="r"><span>Forma de pagamento</span><b>Parcela única</b></div><div class="r"><span>Imposto de renda</span><b>Isento</b></div><div class="r"><span>Verbas rescisórias</span><b>À parte</b></div></div>
+      </div>
+      <div class="case-card reveal" data-delay="4">
+        <div class="role">Motorista</div>
+        <div class="meta">salário-base R$ 3.814/mês · 16 anos de serviço</div>
+        <div class="val">R$ 83.199</div>
+        <div class="vsub">incentivo em parcela única</div>
+        <div class="rows"><div class="r"><span>Forma de pagamento</span><b>Parcela única</b></div><div class="r"><span>Imposto de renda</span><b>Isento</b></div><div class="r"><span>Verbas rescisórias</span><b>À parte</b></div></div>
+      </div>
+      <div class="case-card reveal" data-delay="5">
+        <div class="role">Engenheiro(a)</div>
+        <div class="meta">salário-base R$ 10.126/mês · 17 anos de serviço</div>
+        <div class="val">R$ 237.456</div>
+        <div class="vsub">incentivo em parcela única</div>
+        <div class="rows"><div class="r"><span>Forma de pagamento</span><b>Parcela única</b></div><div class="r"><span>Imposto de renda</span><b>Isento</b></div><div class="r"><span>Verbas rescisórias</span><b>À parte</b></div></div>
+      </div>
+    </div>
+    <p class="caption reveal" data-delay="6">Valores ilustrativos pela regra vigente; o valor individual definitivo consta da memória de cálculo de cada processo.</p>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 10 · PDI · AÇÕES -->
+  <section class="slide pure" data-duration="12000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">PDI Anistia Collor · Andamento</span>
+    <h2 class="title sm reveal" data-delay="1">Construção interinstitucional.</h2>
+    <div class="cols">
+      <div>
+        <div class="col-head reveal" data-delay="2">Ações realizadas</div>
+        <ul class="list check reveal" data-delay="2">
+          <li><strong>Edital de abertura</strong> construído junto aos principais órgãos</li>
+          <li>Estudo de <strong>viabilidade financeira</strong> do programa</li>
+          <li><strong>Consulta SOF</strong> — disponibilidade orçamentária, atestes e restrições eleitorais</li>
+          <li><strong>Consulta INSS</strong> — aposentadoria desses empregados no RGPS</li>
+          <li><strong>Rubrica no SIAPE</strong> para o pagamento do incentivo</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-head copper reveal" data-delay="3">Ações em andamento</div>
+        <ul class="list copper reveal" data-delay="3">
+          <li><strong>Consulta MF</strong> — isenção de IR sobre o incentivo financeiro</li>
+          <li><strong>Acompanhamento do recurso no STF</strong> — aplicabilidade da aposentadoria compulsória aos empregados que já completaram ou estão prestes a completar 75 anos</li>
+        </ul>
+      </div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 11 · REPOSICIONAMENTO · INTRO -->
+  <section class="slide deep" data-duration="12000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div>
+    <span class="eyebrow reveal">Anistia Collor · (Re)posicionamento e progressão</span>
+    <h2 class="title sm reveal" data-delay="1">Recolocar na tabela<br/>e na progressão devida.</h2>
+    <div class="cols" style="max-width:1080px;">
+      <div>
+        <div class="col-head reveal" data-delay="2">A entrega — até 31/07/2026</div>
+        <ul class="list reveal" data-delay="2">
+          <li><strong>Reposicionamento</strong> na tabela remuneratória</li>
+          <li><strong>Opção mais vantajosa</strong> no momento do retorno</li>
+          <li><strong>Progressão funcional</strong> a cada 5 anos</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-head copper reveal" data-delay="3">Gerenciamento e comunicação massiva</div>
+        <ul class="list copper reveal" data-delay="3">
+          <li>Correios individual · Ofício Circular</li>
+          <li>Comunica · Mensageria SIGEPE</li>
+          <li>Ofício de acompanhamento</li>
+          <li>Site e Conecta</li>
+        </ul>
+      </div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 12 · REPOSICIONAMENTO · GRÁFICOS -->
+  <section class="slide pure" data-duration="13000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Correções por mês · Abr–Jul 2026</span>
+    <h2 class="title sm reveal" data-delay="1">O ritmo das correções.</h2>
+    <div class="duo">
+      <div class="chart-box combo reveal" data-delay="2">
+        <div class="chart-title">Reposicionamento na classe</div>
+        <div class="chart-sub">Correções no mês · acumulado até <b>1.055</b></div>
+        <div class="combo-canvas" data-chart="classe"></div>
+      </div>
+      <div class="chart-box combo reveal" data-delay="3">
+        <div class="chart-title">Posicionamento no salário</div>
+        <div class="chart-sub">Correções no mês · acumulado até <b>2.011</b></div>
+        <div class="combo-canvas" data-chart="salario"></div>
+      </div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 13 · FELLOWSHIP -->
+  <section class="slide" data-duration="12000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Implementação do Fellowship Program · WBG</span>
+    <h2 class="title sm reveal" data-delay="1">Servidores brasileiros<br/>em missões do Banco Mundial.</h2>
+    <div class="vaga-list">
+      <div class="vaga reveal" data-delay="2"><span class="flag">🇦🇹</span><div class="info"><div class="role">Especialista em Energia</div><div class="place">Viena, Áustria</div></div><span class="pill off">Cancelado</span></div>
+      <div class="vaga reveal" data-delay="3"><span class="flag">🇹🇷</span><div class="info"><div class="role">Especialista em Energia</div><div class="place">Turquia</div></div><span class="pill ok">Intercâmbio iniciado</span></div>
+      <div class="vaga reveal" data-delay="3"><span class="flag">🇬🇹</span><div class="info"><div class="role">Projetos de Infraestrutura</div><div class="place">Guatemala</div></div><span class="pill ok">Intercâmbio iniciado</span></div>
+      <div class="vaga reveal" data-delay="4"><span class="flag">🇺🇦</span><div class="info"><div class="role">Especialista Digital Sênior</div><div class="place">Ucrânia</div></div><span class="pill off">Cancelado</span></div>
+      <div class="vaga reveal" data-delay="4"><span class="flag">🇨🇮</span><div class="info"><div class="role">Especialista Digital Sênior</div><div class="place">Costa do Marfim</div></div><span class="pill ok">Em andamento</span></div>
+    </div>
+    <span class="tag reveal" data-delay="5">Em andamento: avaliação e revisão do fluxo · estudo para ampliar a outros organismos e países</span>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 14 · DIVISOR: INOVAÇÃO -->
+  <section class="slide deep" data-duration="6000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div><div class="grain"></div>
+    <span class="eyebrow reveal">Frente 02</span>
+    <h2 class="title xl reveal" data-delay="1">Inovação<br/>e dados.</h2>
+    <p class="subtitle reveal" data-delay="2">Recruta · Modernização normativa · Banco de Permuta · Automação.</p>
+    <div class="regua reveal" data-delay="3" style="margin-inline:auto;"></div>
+  </section>
+
+  <!-- ============================================================ 15 · RECRUTA · HERO -->
+  <section class="slide pure" data-duration="9000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Apresentando</span>
+    <h2 class="title hero reveal" data-delay="1">Recruta<span style="color:var(--copper);">.</span>gov</h2>
+    <p class="subtitle reveal" data-delay="2">A plataforma que substitui <em style="font-style:normal;font-weight:600;color:var(--text-primary-light);">"quem indica?"</em> por <em style="font-style:normal;font-weight:600;color:var(--text-primary-light);">"quem sabe fazer?"</em></p>
+    <p class="subtitle reveal" data-delay="3" style="margin-top:0.8rem;"><strong style="color:var(--accent);font-weight:600;">Proativa</strong>, <span style="color:var(--text-tertiary-light);text-decoration:line-through;">não reativa</span>. Mapeia talentos antes da vaga existir.</p>
+    <span class="footer-mark">CGMOP · DEPRO · SGP</span>
+  </section>
+
+  <!-- ============================================================ 16 · RECRUTA · ESCALA -->
+  <section class="slide deep" data-duration="13000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div>
+    <span class="eyebrow reveal">A escala do ecossistema</span>
+    <h2 class="title sm reveal" data-delay="1">Inteligência em números reais.</h2>
+    <div class="num-grid" style="max-width:1120px;">
+      <div class="num-cell reveal" data-delay="2"><div class="n">250K+</div><div class="l">trajetórias de servidores vetorizadas e prontas para busca semântica</div></div>
+      <div class="num-cell reveal" data-delay="3"><div class="n">227</div><div class="l">órgãos integrados (SouGov, SIAPE, SISDIP, Oportunidades)</div></div>
+      <div class="num-cell reveal" data-delay="4"><div class="n">100%</div><div class="l">soberania local — operação on-premise, em conformidade com a LGPD</div></div>
+      <div class="num-cell reveal" data-delay="5"><div class="n">9</div><div class="l">dimensões auditadas por perfil, com regra de inferência zero (temp. 0.0)</div></div>
+    </div>
+    <p class="caption reveal" data-delay="6">Vinculado ao <strong style="color:var(--text-primary-dark);">DFT</strong> (Diagnóstico de Força de Trabalho, base SISDIP) e ao <strong style="color:var(--text-primary-dark);">perfil profissiográfico</strong> — base normativa no Decreto nº 11.443. Modelos abertos rodando em infraestrutura própria: nenhum dado sensível sai para fora.</p>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 17 · RECRUTA · RECONHECIMENTO -->
+  <section class="slide pure" data-duration="12000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Recruta · Reconhecimento e alcance</span>
+    <h2 class="title sm reveal" data-delay="1">Do reativo ao proativo —<br/>e reconhecido fora de casa.</h2>
+    <div class="cols">
+      <div>
+        <div class="col-head reveal" data-delay="2">Reconhecimento</div>
+        <ul class="list reveal" data-delay="2">
+          <li><strong>Semana de Inovação</strong> — Enap</li>
+          <li><strong>ENGP</strong> — Encontro Nacional de Gestão de Pessoas</li>
+          <li><strong>CAPES</strong> — metodologia aplicada ao Currículo Lattes</li>
+          <li><strong>BID</strong> — artigo internacional</li>
+          <li><strong>CONSAD</strong> · Ideias Inovadoras</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-head copper reveal" data-delay="3">Institucionalização</div>
+        <ul class="list copper reveal" data-delay="3">
+          <li><strong>Recruta × pedidos de realocação</strong> — a busca ativa antecipa a demanda em vez de esperar o pedido</li>
+          <li>Integração com o <strong>perfil profissiográfico</strong> e o <strong>DFT</strong></li>
+          <li><strong>TED com a UFSJ</strong> para consolidação da metodologia</li>
+        </ul>
+      </div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 18 · MODERNIZAÇÃO / DIVULGAÇÃO -->
+  <section class="slide" data-duration="14000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Modernização do ato normativo · Divulgação das políticas</span>
+    <h2 class="title sm reveal" data-delay="1">Atualizar a norma. Divulgar a política.</h2>
+    <div class="cols">
+      <div>
+        <div class="col-head reveal" data-delay="2">Modernização</div>
+        <ul class="list reveal" data-delay="2">
+          <li><strong>Estudos e alterações de entendimento</strong>: afastamento para servir em OI, intercâmbio internacional, redistribuição, professor substituto na alteração de exercício e LIP</li>
+          <li><strong>Proposta normativa</strong>: Especial temporária (inovação/desenvolvimento — parceria GINGA/SEGES); Excepcional (violência contra mulheres e emergências); Flexíveis (time volante)</li>
+          <li><strong>Incentivo à movimentação</strong> — critério para quem nunca se movimentou</li>
+          <li><strong>Mapeamento</strong> — simplificar procedimentos, atos e formulários</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-head copper reveal" data-delay="3">Divulgação das políticas</div>
+        <ul class="list copper reveal" data-delay="3">
+          <li><strong>RGPA · Volume 5</strong> (jun/2026) — análise estratégica da movimentação de pessoal (Pesquisa ENAP/2025)</li>
+          <li><strong>ENGP</strong> — 3 painéis: Recruta.br, Mulheres em situação de violência e Banco Nacional de Permutas</li>
+          <li><strong>CONSAD</strong> — o caráter ativo e pragmático da movimentação de pessoal</li>
+          <li><strong>BID e U. Andes (Colômbia)</strong> — IA no setor público da América Latina e Caribe</li>
+        </ul>
+      </div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 19 · BANCO DE PERMUTA -->
+  <section class="slide deep" data-duration="12000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div>
+    <span class="eyebrow reveal">Estudo · Banco Nacional de Permuta</span>
+    <h2 class="title sm reveal" data-delay="1">Reunir o que hoje<br/>está disperso.</h2>
+    <p class="subtitle reveal" data-delay="2" style="max-width:860px;">Hoje a permuta acontece por <strong style="color:var(--text-primary-dark);">iniciativas isoladas</strong> — ideias legislativas e portais externos, sem integração nem garantia. O estudo estrutura uma alternativa nacional, oficial e segura.</p>
+    <div class="cols" style="max-width:960px;">
+      <ul class="list reveal" data-delay="3" style="gap:1.1rem;">
+        <li><strong>Coleta de dados</strong> de pesquisas já realizadas para estruturar o banco de talentos e permutas</li>
+        <li><strong>Painel de debate no ENPG</strong> com pesquisa de aceitação junto aos órgãos</li>
+        <li><strong>Alternativas mais flexíveis</strong> que enfrentem os problemas atuais</li>
+      </ul>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 20 · INTERNO · AUTOMAÇÃO -->
+  <section class="slide pure" data-duration="13000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Interno · Simplificação e automação dos processos</span>
+    <h2 class="title sm reveal" data-delay="1">Menos esforço manual,<br/>mais previsibilidade.</h2>
+    <div class="auto-grid">
+      <div class="auto-card reveal" data-delay="2">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 4h18v12H3z"/><path d="M3 20h18"/><path d="M8 8l3 3 5-5"/></svg></div>
+        <h3>Automação SIOP — Saúde financeira e alertas</h3>
+        <p>Governança preventiva sobre os gastos de reembolso: extrai relatórios orçamentários atualizados do SIOP, cruza com bases internas, alimenta o painel e dispara alertas a órgãos próximos do limite.</p>
+      </div>
+      <div class="auto-card reveal" data-delay="3">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6z"/><path d="M15 2v4h4"/><path d="M9 12h6"/><path d="M9 16h6"/></svg></div>
+        <h3>Automação DOU + IA — Leitura e anexação</h3>
+        <p>Varre diariamente as publicações do Diário Oficial da União; a IA generativa interpreta o texto e extrai os dados exatos da movimentação, comunica, opera o SEI e anexa os comprovantes aos processos.</p>
+      </div>
+      <div class="auto-card reveal" data-delay="4">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/><circle cx="8" cy="5" r="1.6"/><circle cx="16" cy="12" r="1.6"/><circle cx="10" cy="19" r="1.6"/></svg></div>
+        <h3>Automação SEI — Controle inteligente de processos</h3>
+        <p>Mapeia as caixas do SEI da coordenação, lê status e responsáveis, calcula o tempo de tramitação e prioriza (foco no prazo de 20 dias). Alimenta o Painel de Indicadores.</p>
+      </div>
+    </div>
+    <span class="tag reveal" data-delay="5">Próximos: automação do encerramento da alteração de exercício (04/2027) · Restrito</span>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 21 · ECOSSISTEMA -->
+  <section class="slide" data-duration="14000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Ecossistema de painéis e estudos · dadosrgb.dev.br</span>
+    <h2 class="title sm reveal" data-delay="1">Uma família de produtos de dados.</h2>
+    <div class="eco-grid">
+      <div class="eco-card internal reveal" data-delay="2"><span class="etag">Painel · núcleo</span><h4>Painel de Movimentações</h4><p>Visão consolidada dos servidores e movimentações — ativos, histórico e anistiados.</p><span class="badge">Uso interno</span></div>
+      <a class="eco-card reveal" data-delay="2" href="../painel-anistiados/"><span class="etag">Painel</span><h4>Monitoramento — Anistiados</h4><p>Reposicionamento na classe e no salário dos anistiados ativos, mês a mês.</p></a>
+      <a class="eco-card reveal" data-delay="3" href="../pdi_plano_desligamento_incentivado/"><span class="etag">Estudo analítico</span><h4>PDI — Desligamento Incentivado</h4><p>Impacto financeiro com simulador de cenários e recorte temporal.</p></a>
+      <a class="eco-card reveal" data-delay="3" href="../recruta-gov/"><span class="etag">Alocação · IA</span><h4>Recruta.gov</h4><p>A nova engenharia de alocação de servidores públicos.</p></a>
+      <a class="eco-card reveal" data-delay="4" href="../pipeline-lattes/"><span class="etag">Dados · IA</span><h4>Pipeline Lattes</h4><p>Classificação e quantificação de perfis a partir do Currículo Lattes.</p></a>
+      <a class="eco-card reveal" data-delay="4" href="../lip-estudo-licencas/"><span class="etag">Estudo analítico</span><h4>LIP — Licenças</h4><p>20.507 licenças e 14.388 servidores, com filtros interativos.</p></a>
+      <a class="eco-card reveal" data-delay="5" href="../limites-reembolso/"><span class="etag">Normativo</span><h4>Limites de Reembolso</h4><p>Parâmetros e limites vigentes.</p></a>
+      <a class="eco-card reveal" data-delay="5" href="../funasa-painel-servidores/"><span class="etag">Painel</span><h4>Servidores — FUNASA</h4><p>Visão consolidada do quadro da fundação.</p></a>
+      <a class="eco-card reveal" data-delay="6" href="../movimentacao-pessoal/"><span class="etag">Gestão de pessoas</span><h4>Movimentação de Pessoal</h4><p>A transformação da mobilidade na Administração Pública Federal.</p></a>
+      <a class="eco-card reveal" data-delay="6" href="../fellowship-programa-geral/"><span class="etag">Fellowship · MGI × BM</span><h4>Programa Fellowship</h4><p>Visão geral: o que é, quem custeia e base legal.</p></a>
+      <a class="eco-card reveal" data-delay="7" href="../fellowship-fluxo-trabalho/"><span class="etag">Fellowship · MGI × BM</span><h4>Fluxo de Trabalho</h4><p>Papéis, procedimentos e padronização do programa.</p></a>
+      <a class="eco-card reveal" data-delay="7" href="../fellowship-diretrizes/"><span class="etag">Fellowship · MGI × BM</span><h4>Diretrizes Operacionais</h4><p>Parceria e previsibilidade do programa de bolsas.</p></a>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 22 · RECONHECIMENTO EQUIPE -->
+  <section class="slide deep" data-duration="12000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div>
+    <span class="eyebrow reveal">Reconhecimento de outras entregas da equipe</span>
+    <div class="big-num reveal" data-delay="1" data-counter="839">0</div>
+    <p class="subtitle reveal" data-delay="2"><strong style="color:var(--text-primary-dark);font-weight:600;">redistribuições publicadas</strong> na força-tarefa do período de defeso.</p>
+    <div class="cols" style="max-width:960px;margin-top:clamp(1.4rem,2.6vw,2rem);">
+      <ul class="list reveal" data-delay="3">
+        <li>Força-tarefa para <strong>descentralização de serviços</strong> dos Hospitais Federais</li>
+        <li>Gestão do <strong>FalaBr</strong>, com base de conhecimentos elaborada e atualizada</li>
+      </ul>
+      <ul class="list copper reveal" data-delay="4">
+        <li>Reuniões de equipe com <strong>estudos de casos</strong> para nivelamento de conhecimento</li>
+        <li><strong>Mara Legis</strong> — NotebookLM que reúne as normas de movimentação de pessoal para consulta da equipe</li>
+      </ul>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 23 · AVALIAÇÃO · MÉTRICAS -->
+  <section class="slide pure" data-duration="12000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Avaliação dos serviços · pesquisa de satisfação</span>
+    <h2 class="title sm reveal" data-delay="1">O que quem é atendido nos diz.</h2>
+    <div class="metrics">
+      <div class="metric reveal" data-delay="2"><div class="mv" id="mv-nota">—</div><div class="ml">nota média de atendimento <span style="opacity:.6">(0–10)</span></div></div>
+      <div class="metric reveal" data-delay="3"><div class="mv" id="mv-nps">—</div><div class="ml">NPS — <span id="mv-nps-detail">promotores − detratores</span></div></div>
+      <div class="metric reveal" data-delay="4"><div class="mv" id="mv-n">—</div><div class="ml">respostas no período <span id="mv-periodo"></span></div></div>
+    </div>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 24 · AVALIAÇÃO · DETALHE -->
+  <section class="slide" data-duration="14000" data-theme="light">
+    <span class="scene-count"></span>
+    <span class="eyebrow reveal">Avaliação dos serviços · detalhamento</span>
+    <h2 class="title sm reveal" data-delay="1">Clareza, cortesia e prazo.</h2>
+    <div style="width:100%;max-width:820px;margin-top:clamp(1.2rem,2.4vw,1.8rem);">
+      <div class="reveal" data-delay="2">
+        <div class="gauge" style="margin-bottom:0.4rem;">
+          <div class="gt"><span class="gl">Dúvidas respondidas totalmente</span><span class="gv" id="gv-sim">—</span></div>
+        </div>
+        <div class="stack"><span class="seg a" id="seg-sim" style="--w:0"></span><span class="seg" id="seg-parc" style="--w:0;background:var(--copper)"></span><span class="seg" id="seg-nao" style="--w:0;background:#b23b3b"></span></div>
+        <div class="stack-legend">
+          <span><span class="dot" style="background:var(--accent)"></span>Sim · <b id="lg-sim">—</b></span>
+          <span><span class="dot" style="background:var(--copper)"></span>Parcialmente · <b id="lg-parc">—</b></span>
+          <span><span class="dot" style="background:#b23b3b"></span>Não · <b id="lg-nao">—</b></span>
+        </div>
+      </div>
+      <div class="gauge-row reveal" data-delay="3">
+        <div class="gauge"><div class="gt"><span class="gl">Equipe atenciosa e prestativa</span><span class="gv" id="gv-atenciosa">—</span></div><div class="gtrack"><span class="gfill" id="gf-atenciosa" style="--w:0"></span></div></div>
+        <div class="gauge"><div class="gt"><span class="gl">Prazos de atendimento</span><span class="gv" id="gv-prazos">—</span></div><div class="gtrack"><span class="gfill" id="gf-prazos" style="--w:0"></span></div></div>
+      </div>
+      <div class="reveal" data-delay="4" style="margin-top:clamp(1.4rem,2.6vw,2rem);text-align:center;">
+        <div class="chart-sub" style="text-align:center;margin-bottom:0.6rem;">Distribuição das notas (0–10)</div>
+        <div class="dist" id="dist" style="margin-inline:auto;"></div>
+      </div>
+    </div>
+    <div class="update-bar reveal" data-delay="5">
+      <label class="btn" for="file-import"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 20h16"/></svg> Atualizar dados (Excel/CSV)</label>
+      <input id="file-import" type="file" accept=".xlsx,.xls,.csv" style="display:none" />
+      <button class="btn" id="btn-baixar"><svg viewBox="0 0 24 24"><path d="M12 4v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg> Baixar dados-avaliacao.js</button>
+    </div>
+    <p class="update-note reveal" data-delay="6" id="update-note">Importe o Excel/CSV exportado do Forms para recalcular tudo na hora, ou edite o arquivo <b>dados-avaliacao.js</b> e recarregue a página.</p>
+    <span class="footer-mark">CGMOP</span>
+  </section>
+
+  <!-- ============================================================ 25 · ENCERRAMENTO -->
+  <section class="slide dark" data-duration="20000" data-theme="dark">
+    <span class="scene-count"></span>
+    <div class="atmos glow"></div><div class="grain"></div>
+    <span class="eyebrow reveal">Coordenação-Geral de Movimentação de Pessoal</span>
+    <h2 class="title hero reveal" data-delay="1">Obrigado.</h2>
+    <div class="contact reveal" data-delay="2">
+      <span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+      <span>Contato: <a href="mailto:sgp.cgmop@gestao.gov.br">sgp.cgmop@gestao.gov.br</a></span>
+    </div>
+    <span class="footer-mark reveal" data-delay="3" style="position:static;margin-top:clamp(2.5rem,5vw,3.5rem);">MGI · SGP · DEPRO · CGMOP</span>
+  </section>
+
+</main>
+
+<div id="control-bar" role="toolbar" aria-label="Controles da apresentação">
+  <button class="ctrl-btn" id="btn-prev" aria-label="Cena anterior" title="Cena anterior (←)"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 2 L4 8 L10 14 L10 12 L6 8 L10 4 Z"/></svg></button>
+  <button class="ctrl-btn" id="btn-play" aria-label="Reproduzir automaticamente" title="Reproduzir / Pausar (Espaço)">
+    <svg id="icon-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2 L13 8 L4 14 Z"/></svg>
+    <svg id="icon-pause" viewBox="0 0 16 16" aria-hidden="true" style="display:none;"><path d="M4 2 H6 V14 H4 Z M10 2 H12 V14 H10 Z"/></svg>
+  </button>
+  <button class="ctrl-btn" id="btn-next" aria-label="Próxima cena" title="Próxima cena (→)"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2 L12 8 L6 14 L6 12 L10 8 L6 4 Z"/></svg></button>
+  <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+  <span class="counter" id="counter">01 / 25</span>
+  <button class="ctrl-btn" id="btn-restart" aria-label="Reiniciar" title="Reiniciar (Home)"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 A6 6 0 1 1 2.5 5.5 L4 5.5 A4.5 4.5 0 1 0 8 3.5 L8 6 L4.5 3 L8 0 Z"/></svg></button>
+</div>
+<div id="hint">Use ← → ou clique para navegar · Espaço reproduz</div>
+
+<script src="dados-avaliacao.js"></script>
+<script src="vendor/xlsx.full.min.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  // ===========================================================
+  // ELEMENTOS
+  // ===========================================================
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const intro = document.getElementById('intro');
+  const controlBar = document.getElementById('control-bar');
+  const btnPlay = document.getElementById('btn-play');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const btnRestart = document.getElementById('btn-restart');
+  const iconPlay = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+  const progressFill = document.getElementById('progress-fill');
+  const counter = document.getElementById('counter');
+  const hint = document.getElementById('hint');
+
+  const total = slides.length;
+  let currentIndex = 0;
+  let isPlaying = false;
+  let timerId = null, progressRAF = null, timerStart = 0, timerDuration = 0;
+
+  function pad(n){ return n < 10 ? '0'+n : ''+n; }
+  const nf = new Intl.NumberFormat('pt-BR');
+  function fmtNum(n, dec){
+    if(dec && dec>0) return n.toLocaleString('pt-BR',{minimumFractionDigits:dec, maximumFractionDigits:dec});
+    return nf.format(Math.round(n));
+  }
+
+  // Preenche numeração das cenas
+  slides.forEach((s,i)=>{ const sc = s.querySelector('.scene-count'); if(sc) sc.textContent = pad(i+1)+' / '+pad(total); });
+  function updateCounter(i){ counter.textContent = pad(i+1)+' / '+pad(total); }
+  function updateBarTheme(i){ controlBar.classList.toggle('dark-mode', slides[i].dataset.theme === 'dark'); }
+
+  // ===========================================================
+  // ATIVAÇÃO + ANIMAÇÕES
+  // ===========================================================
+  function setActive(i){
+    slides.forEach((s,idx)=> s.classList.toggle('active', idx===i));
+    updateCounter(i); updateBarTheme(i); currentIndex = i;
+    triggerAnimations(i);
+  }
+  function triggerAnimations(i){
+    slides[i].querySelectorAll('[data-counter]').forEach(el=>{
+      if(el.dataset.counted==='true') return;
+      el.dataset.counted='true';
+      animateCounter(el);
+    });
+  }
+  function animateCounter(el){
+    const target = parseFloat(el.dataset.counter);
+    const dec = parseInt(el.dataset.decimals||'0',10);
+    const prefix = el.dataset.prefix||''; const suffix = el.dataset.suffix||'';
+    const dur = 1600, t0 = performance.now();
+    function step(now){
+      const t = Math.min((now-t0)/dur, 1);
+      const eased = 1 - Math.pow(1-t, 3);
+      el.textContent = prefix + fmtNum(target*eased, dec) + suffix;
+      if(t<1) requestAnimationFrame(step); else el.textContent = prefix + fmtNum(target, dec) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ===========================================================
+  // NAVEGAÇÃO
+  // ===========================================================
+  function scrollToSlide(i, behavior='smooth'){
+    if(i<0 || i>=total) return;
+    deck.scrollTo({ top: i*window.innerHeight, behavior });
+  }
+  function goNext(){ if(currentIndex<total-1) scrollToSlide(currentIndex+1); }
+  function goPrev(){ if(currentIndex>0) scrollToSlide(currentIndex-1); }
+  function restart(){
+    document.querySelectorAll('[data-counter]').forEach(el=>{ el.dataset.counted='false'; });
+    scrollToSlide(0);
+  }
+
+  // ===========================================================
+  // AUTO-PLAY (inicia pausado)
+  // ===========================================================
+  function clearTimer(){ if(timerId){clearTimeout(timerId);timerId=null;} if(progressRAF){cancelAnimationFrame(progressRAF);progressRAF=null;} }
+  function startTimer(){
+    clearTimer(); if(!isPlaying) return;
+    if(currentIndex>=total-1){ progressFill.style.width='100%'; return; }
+    timerDuration = parseInt(slides[currentIndex].dataset.duration,10) || 9000;
+    timerStart = performance.now();
+    timerId = setTimeout(()=>{ if(isPlaying) scrollToSlide(currentIndex+1); }, timerDuration);
+    (function upd(now){
+      const pct = Math.min((now-timerStart)/timerDuration,1)*100;
+      progressFill.style.width = pct+'%';
+      if(pct<100 && isPlaying) progressRAF = requestAnimationFrame(upd);
+    })(performance.now());
+  }
+  function play(){ isPlaying=true; iconPlay.style.display='none'; iconPause.style.display=''; startTimer(); }
+  function pause(){ isPlaying=false; iconPlay.style.display=''; iconPause.style.display='none'; clearTimer(); progressFill.style.width='0%'; }
+  function togglePlay(){ isPlaying ? pause() : play(); }
+
+  // sincroniza com scroll manual
+  let scrollTO=null;
+  deck.addEventListener('scroll', ()=>{
+    if(scrollTO) clearTimeout(scrollTO);
+    scrollTO = setTimeout(()=>{
+      const i = Math.round(deck.scrollTop/window.innerHeight);
+      if(i!==currentIndex && i>=0 && i<total){ setActive(i); if(isPlaying) startTimer(); }
+    }, 110);
+  }, { passive:true });
+
+  document.addEventListener('keydown', (e)=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ':
+        if(e.key===' '){ e.preventDefault(); togglePlay(); break; }
+        e.preventDefault(); goNext(); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+        e.preventDefault(); goPrev(); break;
+      case 'Home': e.preventDefault(); restart(); break;
+      case 'End': e.preventDefault(); scrollToSlide(total-1); break;
+    }
+    if(hint) hint.classList.add('gone');
+  });
+  btnPlay.addEventListener('click', togglePlay);
+  btnPrev.addEventListener('click', goPrev);
+  btnNext.addEventListener('click', goNext);
+  btnRestart.addEventListener('click', restart);
+  let rTO=null; window.addEventListener('resize', ()=>{ if(rTO)clearTimeout(rTO); rTO=setTimeout(()=>scrollToSlide(currentIndex,'auto'),150); });
+  setTimeout(()=>{ if(hint) hint.classList.add('gone'); }, 6000);
+
+  // ===========================================================
+  // REDE DE NÓS (capa)
+  // ===========================================================
+  (function buildNet(){
+    const nodes = [
+      [150,120],[300,90],[470,150],[620,110],[780,170],[880,120],
+      [120,300],[290,280],[500,320],[680,300],[850,330],
+      [200,470],[400,440],[560,500],[720,470],[900,480]
+    ];
+    const links = [[0,1],[1,2],[2,3],[3,4],[4,5],[0,6],[1,7],[2,8],[3,9],[4,10],[6,7],[7,8],[8,9],[9,10],[6,11],[7,12],[8,13],[9,14],[10,15],[11,12],[12,13],[13,14],[14,15],[8,12],[2,7],[9,13]];
+    const gl = document.getElementById('net-lines'), gn = document.getElementById('net-nodes');
+    if(!gl||!gn) return;
+    const NS='http://www.w3.org/2000/svg';
+    links.forEach(([a,b])=>{ const l=document.createElementNS(NS,'line'); l.setAttribute('x1',nodes[a][0]);l.setAttribute('y1',nodes[a][1]);l.setAttribute('x2',nodes[b][0]);l.setAttribute('y2',nodes[b][1]); gl.appendChild(l); });
+    nodes.forEach((p,i)=>{ const c=document.createElementNS(NS,'circle'); c.setAttribute('cx',p[0]);c.setAttribute('cy',p[1]);c.setAttribute('r', i%5===0?5:3.4); if(i%4===0)c.setAttribute('class','cu'); c.style.animationDelay=(i*0.22)+'s'; gn.appendChild(c); });
+  })();
+
+  // ===========================================================
+  // GRÁFICOS COMBO (reposicionamento)
+  // ===========================================================
+  const COMBO = {
+    classe:  { months:['Abr','Mai','Jun','Jul'], bars:[425,375,165,90],      accum:[425,800,965,1055], color:'var(--accent)', line:'#2c5282' },
+    salario: { months:['Abr','Mai','Jun','Jul'], bars:[1438,364,118,91],     accum:[1438,1802,1920,2011], color:'var(--copper)', line:'#b05a22' }
+  };
+  function renderCombo(el, d){
+    const W=400, H=250, padL=34, padR=40, padT=24, padB=30;
+    const plotW = W-padL-padR, plotH = H-padT-padB;
+    const barMax = Math.max.apply(null, d.bars);
+    const accMax = Math.max.apply(null, d.accum);
+    const n = d.months.length;
+    const slot = plotW/n, bw = Math.min(46, slot*0.5);
+    const NS='http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.setAttribute('role','img');
+    // gridlines + eixo esquerdo (barras)
+    for(let g=0; g<=4; g++){
+      const y = padT + plotH*(1-g/4);
+      const gl = document.createElementNS(NS,'line'); gl.setAttribute('class','gl'); gl.setAttribute('x1',padL);gl.setAttribute('x2',W-padR);gl.setAttribute('y1',y);gl.setAttribute('y2',y); svg.appendChild(gl);
+      const tx = document.createElementNS(NS,'text'); tx.setAttribute('class','axis'); tx.setAttribute('x',padL-6);tx.setAttribute('y',y+3);tx.setAttribute('text-anchor','end'); tx.textContent = nf.format(Math.round(barMax*g/4)); svg.appendChild(tx);
+    }
+    const x = i => padL + slot*i + slot/2;
+    const yBar = v => padT + plotH*(1 - v/barMax);
+    const yAcc = v => padT + plotH*(1 - v/accMax);
+    // barras
+    d.bars.forEach((v,i)=>{
+      const bx = x(i)-bw/2, by = yBar(v), bh = padT+plotH-by;
+      const r = document.createElementNS(NS,'rect'); r.setAttribute('class','bar');
+      r.setAttribute('x',bx); r.setAttribute('y',by); r.setAttribute('width',bw); r.setAttribute('height',Math.max(bh,0.5));
+      r.setAttribute('rx',4); r.setAttribute('fill', d.color); r.style.setProperty('--d',(0.15+i*0.12)+'s'); svg.appendChild(r);
+      const vl = document.createElementNS(NS,'text'); vl.setAttribute('class','vlabel'); vl.setAttribute('x',x(i)); vl.setAttribute('y',by-7); vl.setAttribute('text-anchor','middle'); vl.setAttribute('fill', d.line); vl.style.setProperty('--d',(0.5+i*0.12)+'s'); vl.textContent = nf.format(v); svg.appendChild(vl);
+      const ml = document.createElementNS(NS,'text'); ml.setAttribute('class','axis'); ml.setAttribute('x',x(i)); ml.setAttribute('y',H-10); ml.setAttribute('text-anchor','middle'); ml.textContent = d.months[i]; svg.appendChild(ml);
+    });
+    // linha acumulada
+    const pts = d.accum.map((v,i)=> x(i)+','+yAcc(v)).join(' ');
+    const pl = document.createElementNS(NS,'polyline'); pl.setAttribute('class','accum'); pl.setAttribute('points',pts); pl.setAttribute('pathLength','1'); pl.setAttribute('stroke', d.line); svg.appendChild(pl);
+    d.accum.forEach((v,i)=>{
+      const c = document.createElementNS(NS,'circle'); c.setAttribute('class','dot'); c.setAttribute('cx',x(i));c.setAttribute('cy',yAcc(v));c.setAttribute('r',3.4); c.setAttribute('fill', d.line); c.style.setProperty('--d',(0.9+i*0.12)+'s'); svg.appendChild(c);
+      const al = document.createElementNS(NS,'text'); al.setAttribute('class','alabel'); al.setAttribute('x',x(i)); al.setAttribute('y',yAcc(v)-9); al.setAttribute('text-anchor','middle'); al.setAttribute('fill', d.line); al.style.setProperty('--d',(1.1+i*0.1)+'s'); al.textContent = nf.format(v); svg.appendChild(al);
+    });
+    el.appendChild(svg);
+  }
+  document.querySelectorAll('.combo-canvas').forEach(el=>{ const key = el.dataset.chart; if(COMBO[key]) renderCombo(el, COMBO[key]); });
+
+  // ===========================================================
+  // AVALIAÇÃO DOS SERVIÇOS
+  // ===========================================================
+  function computeSurvey(rows){
+    const n = rows.length;
+    const cnt = { 'Sim':0, 'Parcialmente':0, 'Não':0 };
+    let s7=0,c7=0,s8=0,c8=0,s9=0,c9=0,prom=0,det=0;
+    const dist = {}; for(let k=0;k<=10;k++) dist[k]=0;
+    let dmin=null,dmax=null;
+    rows.forEach(r=>{
+      const d = (r.duvidas||'').trim();
+      if(cnt[d]!==undefined) cnt[d]++;
+      if(typeof r.atenciosa==='number'){ s7+=r.atenciosa; c7++; }
+      if(typeof r.prazos==='number'){ s8+=r.prazos; c8++; }
+      if(typeof r.nota==='number'){ s9+=r.nota; c9++; dist[r.nota]=(dist[r.nota]||0)+1; if(r.nota>=9)prom++; else if(r.nota<=6)det++; }
+      if(r.data){ if(!dmin||r.data<dmin)dmin=r.data; if(!dmax||r.data>dmax)dmax=r.data; }
+    });
+    return { n, cnt, avg7:c7?s7/c7:0, avg8:c8?s8/c8:0, avgNota:c9?s9/c9:0,
+      nps: c9?Math.round((prom-det)/c9*100):0, prom, det, neu:c9-prom-det, c9, dist, dmin, dmax };
+  }
+  function ymToBR(s){ if(!s) return ''; const p=String(s).split('-'); return p.length>=2 ? (p[1]+'/'+p[0]) : s; }
+
+  function renderSurvey(rows){
+    const m = computeSurvey(rows);
+    // slide métricas — usa contadores animados
+    const setC = (id, val, dec, prefix, suffix)=>{ const el=document.getElementById(id); if(!el) return; el.dataset.counter=val; el.dataset.decimals=dec||0; if(prefix)el.dataset.prefix=prefix; if(suffix)el.dataset.suffix=suffix; el.dataset.counted='false'; el.textContent = (prefix||'')+fmtNum(val,dec||0)+(suffix||''); if(slides[currentIndex] && slides[currentIndex].contains(el)){ el.dataset.counted='true'; animateCounter(el); } };
+    setC('mv-nota', m.avgNota, 2, '', '');
+    setC('mv-nps', m.nps, 0, '', '');
+    setC('mv-n', m.n, 0, '', '');
+    const npsDetail = document.getElementById('mv-nps-detail'); if(npsDetail) npsDetail.textContent = m.prom+' promotores · '+m.neu+' neutros · '+m.det+' detratores';
+    const periodo = document.getElementById('mv-periodo'); if(periodo) periodo.textContent = (m.dmin&&m.dmax)?('('+ymToBR(m.dmin)+' – '+ymToBR(m.dmax)+')'):'';
+
+    // slide detalhe — dúvidas
+    const pct = x => m.n? (x/m.n*100):0;
+    const setW = (id,w)=>{ const el=document.getElementById(id); if(el) el.style.setProperty('--w', w+'%'); };
+    setW('seg-sim', pct(m.cnt['Sim'])); setW('seg-parc', pct(m.cnt['Parcialmente'])); setW('seg-nao', pct(m.cnt['Não']));
+    const gvSim = document.getElementById('gv-sim'); if(gvSim) gvSim.textContent = Math.round(pct(m.cnt['Sim']))+'%';
+    const setT = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+    setT('lg-sim', m.cnt['Sim']); setT('lg-parc', m.cnt['Parcialmente']); setT('lg-nao', m.cnt['Não']);
+    // gauges 1-5
+    setW('gf-atenciosa', m.avg7/5*100); setW('gf-prazos', m.avg8/5*100);
+    setT('gv-atenciosa', fmtNum(m.avg7,2).replace('.',',')+' / 5');
+    setT('gv-prazos', fmtNum(m.avg8,2).replace('.',',')+' / 5');
+    // distribuição
+    const distEl = document.getElementById('dist');
+    if(distEl){
+      distEl.innerHTML='';
+      const maxD = Math.max.apply(null, Object.values(m.dist)) || 1;
+      for(let k=0;k<=10;k++){
+        const c = m.dist[k]||0;
+        const db = document.createElement('div'); db.className='db'+(k>=9?' hot':'');
+        const bar = document.createElement('div'); bar.className='bar'; bar.style.setProperty('--d',(0.05*k)+'s');
+        // altura definida ao ativar; guardamos alvo
+        bar.dataset.h = (c/maxD*100);
+        const bl = document.createElement('div'); bl.className='bl'; bl.textContent=k;
+        db.appendChild(bar); db.appendChild(bl); distEl.appendChild(db);
+      }
+      applyDist();
+    }
+    lastSurvey = m;
+  }
+  let lastSurvey = null;
+  function applyDist(){
+    // aplica alturas se o slide de distribuição estiver ativo
+    document.querySelectorAll('#dist .db .bar').forEach(b=>{
+      const s = b.closest('.slide');
+      b.style.height = (s && s.classList.contains('active')) ? (b.dataset.h+'%') : '0%';
+    });
+  }
+
+  // Importação Excel/CSV
+  function normDuv(s){ s=(s||'').toString().trim().replace(/;+$/,'').trim(); if(/^sim/i.test(s))return 'Sim'; if(/^parcial/i.test(s))return 'Parcialmente'; if(/^n(ã|a)o/i.test(s))return 'Não'; return s; }
+  function toDateStr(v){
+    if(v==null) return '';
+    if(v instanceof Date){ return v.getFullYear()+'-'+pad(v.getMonth()+1)+'-'+pad(v.getDate()); }
+    const s = String(v); const m = s.match(/(\d{4})-(\d{2})-(\d{2})/); if(m) return m[1]+'-'+m[2]+'-'+m[3];
+    const br = s.match(/(\d{2})\/(\d{2})\/(\d{4})/); if(br) return br[3]+'-'+br[2]+'-'+br[1];
+    return s.slice(0,10);
+  }
+  function mapRows(matrix){
+    if(!matrix || matrix.length<2) return [];
+    const header = matrix[0].map(h=> (h||'').toString().toLowerCase());
+    const find = (kw)=> header.findIndex(h=> kw.some(k=> h.indexOf(k)>=0));
+    let iData = find(['início','inicio','data']);
+    let iDuv  = find(['dúvidas','duvidas','respondidas']);
+    let iAten = find(['atenciosa','prestativa']);
+    let iPraz = find(['prazos','prazo']);
+    let iNota = find(['nota','0 a 10','atribui']);
+    // fallback posicional (layout padrão do Forms)
+    if(iDuv<0) iDuv=5; if(iAten<0) iAten=6; if(iPraz<0) iPraz=7; if(iNota<0) iNota=8; if(iData<0) iData=1;
+    const out=[];
+    for(let r=1;r<matrix.length;r++){
+      const row=matrix[r]; if(!row || row.every(c=>c==null||c==='')) continue;
+      const nota = parseFloat(row[iNota]); if(isNaN(nota)) continue;
+      out.push({
+        id: r,
+        data: toDateStr(row[iData]),
+        duvidas: normDuv(row[iDuv]),
+        atenciosa: parseFloat(row[iAten]),
+        prazos: parseFloat(row[iPraz]),
+        nota: nota
+      });
+    }
+    return out;
+  }
+  function toast(msg, ok){
+    const note = document.getElementById('update-note');
+    if(note){ note.innerHTML = msg; note.style.color = ok? 'var(--ok)':'var(--off)'; setTimeout(()=>{ note.style.color=''; }, 6000); }
+  }
+  const fileInput = document.getElementById('file-import');
+  if(fileInput){
+    fileInput.addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const reader = new FileReader();
+      const isCSV = /\.csv$/i.test(f.name);
+      reader.onload = (ev)=>{
+        try{
+          let matrix;
+          if(isCSV){
+            const wb = XLSX.read(ev.target.result, {type:'string'});
+            matrix = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header:1, raw:false});
+          } else {
+            const wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array', cellDates:true});
+            matrix = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header:1, raw:true});
+          }
+          const rows = mapRows(matrix);
+          if(!rows.length){ toast('Não encontrei respostas válidas no arquivo. Confira as colunas.', false); return; }
+          window.DADOS_AVALIACAO = rows;
+          renderSurvey(rows);
+          toast('Atualizado: <b>'+rows.length+'</b> respostas importadas. Use "Baixar dados-avaliacao.js" para salvar.', true);
+        }catch(err){ toast('Erro ao ler o arquivo: '+err.message, false); }
+      };
+      if(isCSV) reader.readAsText(f, 'utf-8'); else reader.readAsArrayBuffer(f);
+      fileInput.value='';
+    });
+  }
+  const btnBaixar = document.getElementById('btn-baixar');
+  if(btnBaixar){
+    btnBaixar.addEventListener('click', ()=>{
+      const rows = window.DADOS_AVALIACAO||[];
+      const head = '/*\n  Dados da pesquisa "Ajude-nos a melhorar nossos serviços!" (MS Forms) — CGMOP.\n'+
+        '  Campos: data (AAAA-MM-DD) · duvidas ("Sim"|"Parcialmente"|"Não") · atenciosa (1-5) · prazos (1-5) · nota (0-10).\n*/\n';
+      const body = 'window.DADOS_AVALIACAO = '+JSON.stringify(rows, null, 2)+';\n';
+      const blob = new Blob([head+body], {type:'text/javascript;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='dados-avaliacao.js'; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    });
+  }
+
+  // recalcula alturas de distribuição ao trocar de slide
+  const _setActive = setActive;
+  setActive = function(i){ _setActive(i); applyDist(); };
+
+  if(window.DADOS_AVALIACAO && window.DADOS_AVALIACAO.length){ renderSurvey(window.DADOS_AVALIACAO); }
+
+  // ===========================================================
+  // INIT (pausado)
+  // ===========================================================
+  function init(){
+    const qa = new URLSearchParams(location.search).get('qa');
+    if(qa!==null){
+      document.documentElement.classList.add('qa');
+      intro.classList.add('hidden');
+      const idx = Math.max(0, Math.min(total-1, parseInt(qa,10)||0));
+      slides.forEach((s,k)=>{ s.style.display = (k===idx ? 'flex' : 'none'); });
+      deck.style.scrollSnapType = 'none';
+      setActive(idx);
+      return;
+    }
+    setActive(0);
+    setTimeout(()=>{ intro.classList.add('hidden'); }, 900);
+  }
+  if(document.readyState==='complete') init(); else window.addEventListener('load', init);
+})();
+</script>
+</body>
+</html>
