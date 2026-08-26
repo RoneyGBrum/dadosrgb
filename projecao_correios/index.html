@@ -409,7 +409,7 @@
     <section id="view-simulador" class="view">
       <div class="hero-title">
         <h1>Projeção de Cenários para Movimentações dos Correios</h1>
-        <p>Simule o custo mensal e anual das cessões de pessoal ajustando a remuneração média e a quantidade de funcionários movimentados. Os valores abaixo já refletem o cenário de referência.</p>
+        <p>Simule o custo mensal e anual das cessões de pessoal ajustando o custo média e a quantidade de funcionários movimentados. Os valores abaixo já refletem o cenário de referência.</p>
       </div>
 
       <div class="controls-panel">
@@ -417,7 +417,7 @@
         <!-- CARD 1: Remuneração -->
         <div class="control-card">
           <div class="control-header">
-            <label for="sliderRemuneracao">Remuneração média (R$)</label>
+            <label for="sliderRemuneracao">Custo médio (R$)</label>
             <!-- Nova caixa de digitação exata -->
             <input type="number" id="inputNumRemuneracao" class="input-exato" value="22000" min="0" placeholder="Ex: 22000" title="Digite a remuneração exata">
           </div>
@@ -472,8 +472,8 @@
       </div>
       <div class="divisor-rota"></div>
       <div class="criterio-card">
-        <h3>Como a remuneração média de referência foi apurada</h3>
-        <p>O valor de R$ 22.000 utilizado como remuneração média neste simulador foi extraído após a remoção de <em>outliers</em> — casos atípicos, muito acima ou muito abaixo da curva salarial. Para isso foi aplicado o método estatístico do Intervalo Interquartil (IQR), preservando uma média que representa de fato o núcleo típico da força de trabalho movimentada.</p>
+        <h3>Como o custo médio de referência foi apurado</h3>
+        <p>O valor de R$ 22.000 utilizado como custo médio neste simulador foi extraído após a remoção de <em>outliers</em> — casos atípicos, muito acima ou muito abaixo da curva salarial. Para isso foi aplicado o método estatístico do Intervalo Interquartil (IQR), preservando uma média que representa de fato o núcleo típico da força de trabalho movimentada.</p>
         <div class="stat-bar">
           <span class="stat-chip">63 portarias analisadas</span>
           <span class="stat-chip">52 com custo mensal informado</span>
