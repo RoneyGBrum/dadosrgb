@@ -7,6 +7,14 @@
 Legenda: **P0** = base/bloqueante · **P1** = alto valor · **P2** = desejável ·
 Esforço: **P** pequeno · **M** médio · **G** grande · 🔒 decisão necessária · 📊 depende de dado real.
 
+> ⚠ **STATUS 26/08/2026 — PUBLICADO.** O ecossistema está no ar em `dadosrgb.dev.br/painel_CGMOP/`
+> (hub + `painel_publico.html` sem proporcionalidade + `anistiados.html`), com login de atrito
+> (credenciais fora do repo — ver `publicar_cgmop.py`/handoff). **Decisão do usuário sobrepôs o §1 abaixo:** foi publicado o dado **NOMINAL**
+> (nome + CPF mascarado + remuneração individual) no GitHub público — e NÃO só a camada agregada
+> que este plano recomendava. O login é só atrito, então a PII mascarada fica exposta/baixável.
+> Alternativa futura, se reverter: S3 (`agregados_publico.json`, sem PII). Gerado por
+> `pipeline/painel/gerar_painel_publico.py` + `publicar_cgmop.py`.
+
 ## ✅ Progresso (24/08/2026)
 - **Decidido §1:** dados de nome + CPF mascarado + remuneração bruta são públicos (Portal da Transparência) → podem ir ao domínio; login fica como atrito. Evitar só campos realmente sensíveis (CPF completo, conta bancária).
 - **Feito e validado (com dados sintéticos):** A1 competência via `da_referencia` · A3 matrículas origem/destino · A4 nota de transparência no temporal · B1 coluna Saldo/Vagas Ocupadas · B2 PDF mais legível · B3 recorte destacado + renome + ⓘ · C5 "Limpar" destacado · C6 filtros por tema · C8 ordem do Perfil Funcional · C9 UORG (sigla+nome / hierarquia) · C10 botão relatório à direita e com cor própria · C11 glossário de conceitos (17, do arquivo) · C12 animações (barras crescem, linha desenha L→R).

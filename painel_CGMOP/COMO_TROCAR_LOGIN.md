@@ -4,9 +4,10 @@ O "login" das páginas em `painel_CGMOP/` é apenas **atrito** — NÃO é segur
 O `.html` é público: qualquer pessoa pode ver o código-fonte e baixar o arquivo direto
 pela URL. O portão só desencoraja acesso casual.
 
-## Credenciais atuais (padrão)
-- usuário: `cgmop`
-- senha: `mgi2026`
+## Credenciais atuais
+As credenciais em vigor NÃO são documentadas aqui (este arquivo é público). Elas estão
+registradas fora do repositório: em `pipeline/painel/publicar_cgmop.py`
+(`USUARIO_PADRAO`/`SENHA_PADRAO`) e no handoff interno do projeto.
 
 ## Para trocar
 1. Escolha novo usuário/senha.
