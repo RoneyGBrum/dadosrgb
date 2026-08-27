@@ -423,16 +423,16 @@ init();
 <script>
 (function(){
   // ATRITO — NÃO é segurança real (o arquivo é público; o dado está embutido nele).
-  // Para trocar a senha: gere o SHA-256 de "usuario:senha" e substitua HASH_ESPERADO abaixo
-  // (ver COMO_TROCAR_LOGIN.md). A verificação é client-side, apenas para desencorajar acesso casual.
-  var HASH_ESPERADO="48b58ee5b49440fa480d0f86c9fd801284a720347d9a100d5a0f5c62f5baf897";
+  // HASHES = lista de SHA-256 de "usuario:senha". Para trocar/adicionar usuários, edite
+  // USUARIOS em publicar_cgmop.py e rode de novo (ou troque a lista abaixo à mão).
+  var HASHES=["48b58ee5b49440fa480d0f86c9fd801284a720347d9a100d5a0f5c62f5baf897"];
   var KEY="cgmop_auth_v1";
   function sha256(s){var b=new TextEncoder().encode(s);return crypto.subtle.digest("SHA-256",b).then(function(d){return Array.prototype.map.call(new Uint8Array(d),function(x){return x.toString(16).padStart(2,"0");}).join("");});}
   function liberar(){document.documentElement.classList.add("autenticado");}
   try{if(sessionStorage.getItem(KEY)==="1")liberar();}catch(e){}
   function tentar(){var u=(document.getElementById("portao-user").value||"").trim(),p=document.getElementById("portao-pass").value||"";
     sha256(u+":"+p).then(function(h){
-      if(h===HASH_ESPERADO){try{sessionStorage.setItem(KEY,"1");}catch(e){}liberar();}
+      if(HASHES.indexOf(h)>=0){try{sessionStorage.setItem(KEY,"1");}catch(e){}liberar();}
       else{document.getElementById("portao-err").textContent="Usuário ou senha incorretos.";}
     });}
   document.addEventListener("DOMContentLoaded",function(){

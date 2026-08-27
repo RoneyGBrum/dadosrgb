@@ -4,20 +4,31 @@ O "login" das páginas em `painel_CGMOP/` é apenas **atrito** — NÃO é segur
 O `.html` é público: qualquer pessoa pode ver o código-fonte e baixar o arquivo direto
 pela URL. O portão só desencoraja acesso casual.
 
-## Credenciais atuais
-As credenciais em vigor NÃO são documentadas aqui (este arquivo é público). Elas estão
-registradas fora do repositório: em `pipeline/painel/publicar_cgmop.py`
-(`USUARIO_PADRAO`/`SENHA_PADRAO`) e no handoff interno do projeto.
+Vários usuários são suportados: cada um tem seu próprio `usuário:senha`. As credenciais em
+vigor NÃO ficam listadas aqui (este arquivo é público) — estão em
+`pipeline/painel/publicar_cgmop.py` (dicionário `USUARIOS`) e no handoff interno do projeto.
 
-## Para trocar
-1. Escolha novo usuário/senha.
-2. Gere o hash SHA-256 de `usuario:senha` (ex.: no Python):
+## Jeito recomendado (regenera tudo automaticamente)
+1. Abra `pipeline/painel/publicar_cgmop.py` e edite o dicionário `USUARIOS`:
 
-    python -c "import hashlib;print(hashlib.sha256('NOVOUSER:NOVASENHA'.encode()).hexdigest())"
+       USUARIOS = {
+           "cgmop": "nova-senha",       # trocar senha = mudar o valor
+           "maria": "senha-da-maria",   # adicionar usuário = nova linha
+           # "joao": "...",             # remover = apague a linha
+       }
 
-3. Em CADA arquivo (`index.html`, `painel_publico.html`, `anistiados.html`), localize
-   `var HASH_ESPERADO="..."` e troque pelo novo hash.
-   (Ou edite USUARIO_PADRAO/SENHA_PADRAO em `pipeline/painel/publicar_cgmop.py` e rode de novo.)
-4. Faça commit e push.
+2. Rode:  `python painel/publicar_cgmop.py`  (reescreve as 3 páginas com a nova lista de hashes)
+3. Publique:  `cd C:\0_Apresentacoes\dadosrgb && git add painel_CGMOP && git commit -m "atualiza login" && git push`
 
-> Dica: para forçar novo login em quem já entrou, mude também o `KEY` (`cgmop_auth_v1`).
+## Jeito manual (sem rodar o script)
+1. Gere o hash de cada `usuario:senha`:
+
+       python -c "import hashlib;print(hashlib.sha256('USUARIO:SENHA'.encode()).hexdigest())"
+
+2. Em CADA arquivo (`index.html`, `painel_publico.html`, `anistiados.html`), localize
+   `var HASHES=[...]` e coloque a lista de hashes desejada, ex.: `var HASHES=["hash1","hash2"];`
+3. Faça commit e push.
+
+> Lembrete: o login é só **atrito**. O `.html` é público e o dado está embutido nele — quem
+> abrir o código-fonte vê tudo, com ou sem senha. Não use senha reutilizada/importante.
+> Para forçar novo login em quem já entrou, mude também o `KEY` (`cgmop_auth_v1`).
