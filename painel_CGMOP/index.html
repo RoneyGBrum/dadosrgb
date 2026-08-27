@@ -34,17 +34,26 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 </style>
 </head>
 <body>
-<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoas</span></nav>
+<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoas</span><a class="on" href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="painel_movimentacoes.html"><span class="ic">🔄</span><span class="lab">Movimentações</span></a><a href="anistiados.html"><span class="ic">⚖️</span><span class="lab">Anistiados</span></a><a href="../lip-estudo-licencas/"><span class="ic">📄</span><span class="lab">LIP</span></a><a href="#" title="Em construção"><span class="ic">🌐</span><span class="lab">Internacional</span></a><a href="#" title="Em construção"><span class="ic">↔️</span><span class="lab">Redistribuição</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 <header class="topo"><h1>Movimentação de Pessoas — Servidores Públicos Federais</h1>
 <p>Painéis da Coordenação-Geral de Movimentação de Pessoas (CGMOP/SGP/MGI). Dados do SIAPE, competência de referência. CPF mascarado.</p></header>
 <div class="wrap">
   <div class="cards">
-    <a class="card mov" href="painel_publico.html"><div class="ic">🔄</div>
+    <a class="card mov" href="painel_movimentacoes.html"><div class="ic">🔄</div>
       <h2>Movimentações</h2>
-      <p>Vigentes e histórico completo: cessões, requisições, força de trabalho e reforma administrativa. Gráficos, evolução no tempo, perfil dos servidores e a relação nominal completa com ficha e exportações.</p></a>
+      <p>Vigentes e histórico completo: cessões, requisições, força de trabalho e reforma administrativa — com proporcionalidade, gráficos, perfil dos servidores e a relação nominal completa.</p></a>
     <a class="card ani" href="anistiados.html"><div class="ic">⚖️</div>
       <h2>Anistiados</h2>
       <p>Público anistiado (Lei 8.878/1994): quem são, de onde vieram, onde estão hoje e a situação funcional — com filtros, gráficos e ficha individual.</p></a>
+    <a class="card" href="../lip-estudo-licencas/"><div class="ic">📄</div>
+      <h2>LIP — Licenças de Interesse Particular</h2>
+      <p>Estudo das licenças de interesse particular, com filtros interativos e leitura autossuficiente.</p></a>
+    <a class="card" href="#" title="Em construção" style="opacity:.55;cursor:not-allowed"><div class="ic">🌐</div>
+      <h2>Afastamento Internacional <span style="font-size:11px;color:var(--origem)">· em construção</span></h2>
+      <p>Em breve.</p></a>
+    <a class="card" href="#" title="Em construção" style="opacity:.55;cursor:not-allowed"><div class="ic">↔️</div>
+      <h2>Redistribuição <span style="font-size:11px;color:var(--origem)">· em construção</span></h2>
+      <p>Em breve.</p></a>
   </div>
   <div class="rodape">Fonte: SIAPE — Ministério da Gestão e da Inovação em Serviços Públicos. CPF mascarado. Dados públicos (Portal da Transparência).</div>
 </div>
