@@ -254,9 +254,9 @@ footer ul{margin:0;padding-left:18px}
 @media(max-width:520px){.simgrid{grid-template-columns:1fr}}
 .field label{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;color:var(--ink-2);margin-bottom:7px;gap:8px}
 .field label b{font-family:"IBM Plex Mono",monospace;font-size:.95rem;color:var(--teal);font-weight:600;white-space:nowrap}
-.field select{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--border-2);background:var(--surface);color:var(--ink);
+.field select, .field input[type="number"]{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--border-2);background:var(--surface);color:var(--ink);
   font-family:"IBM Plex Sans",sans-serif;font-size:.86rem;cursor:pointer}
-.field select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.field select:focus-visible, .field input[type="number"]:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .seg{display:flex;border:1px solid var(--border-2);border-radius:9px;overflow:hidden}
 .seg button{flex:1;border:0;background:var(--surface);color:var(--ink-2);padding:8px 6px;font-size:.8rem;cursor:pointer;font-family:inherit}
 .seg button[aria-pressed="true"]{background:var(--teal);color:#fff;font-weight:600}
@@ -388,6 +388,14 @@ footer ul{margin:0;padding-left:18px}
         <div class="field">
           <label>UF de exercício</label>
           <select id="cUf"><option value="-1">Todas as UF</option></select>
+        </div>
+        <div class="field">
+          <label>Auxílio Alimentação <b id="lAlim">R$ 1.192</b></label>
+          <input type="number" id="cAlim" min="0" step="50" value="1192">
+        </div>
+        <div class="field">
+          <label>Auxílio Transporte <b id="lTransp">R$ 200</b></label>
+          <input type="number" id="cTransp" min="0" step="50" value="200">
         </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:10px">
@@ -597,8 +605,9 @@ function idxToYM(i){const k=BASEIDX+i;const y=Math.floor((k-1)/12);const m=((k-1
 function ymLabel(y,m){return MESES[m-1]+'/'+String(y).slice(2);}
 
 // ---- state ----
-const S={pos:C.todayIdx-BASEIDX, minAge:75, ades:0.60, enc:0.1111, hor:48, fator:1, org:-1, uf:-1};
+const S={pos:C.todayIdx-BASEIDX, minAge:75, ades:0.60, enc:0.1111, hor:48, fator:1, org:-1, uf:-1, alim: 1000, transp: 300};
 const DEF={...S};
+
 
 function posYMD(){const ym=idxToYM(S.pos);return [ym[0],ym[1],20];}
 
@@ -614,7 +623,11 @@ function computeModel(){
     if(age<S.minAge)continue;
     const ten=monthsAt(p[2],py,pm,pd);
     const inc=Math.min(TETO,p[0]*(ten/12)*MULT*S.fator);
-    N++;custo+=inc;econMes+=p[0]*(1+S.enc);
+    N++;
+    custo += inc;
+    if (inc > 0) {
+      econMes += (p[0] * (1 + S.enc)) + S.alim + S.transp;
+    }
     const band=age<80?'75-79':age<85?'80-84':age<90?'85-89':'90+';
     faixa[band][0]++;faixa[band][1]+=inc;
     orgAgg[p[3]]=orgAgg[p[3]]||[0,0];orgAgg[p[3]][0]++;orgAgg[p[3]][1]+=inc;
@@ -863,12 +876,30 @@ document.querySelectorAll('#cFator button').forEach(b=>b.addEventListener('click
   b.setAttribute('aria-pressed','true');S.fator=+b.dataset.v;document.getElementById('lFat').textContent=Math.round(S.fator*100)+'%';renderAll();}));
 cOrg.addEventListener('change',()=>{S.org=+cOrg.value;renderAll();});
 cUf.addEventListener('change',()=>{S.uf=+cUf.value;renderAll();});
+const cAlim = document.getElementById('cAlim');
+const cTransp = document.getElementById('cTransp');
+
+cAlim.addEventListener('input', () => { 
+  S.alim = +cAlim.value; 
+  document.getElementById('lAlim').textContent = 'R$ ' + int(S.alim); 
+  renderAll(); 
+});
+
+cTransp.addEventListener('input', () => { 
+  S.transp = +cTransp.value; 
+  document.getElementById('lTransp').textContent = 'R$ ' + int(S.transp); 
+  renderAll(); 
+});
 document.getElementById('cReset').addEventListener('click',()=>{
   Object.assign(S,DEF);
   cPos.value=S.pos;cAge.value=S.minAge;cAdes.value=Math.round(S.ades*100);cEnc.value=Math.round(S.enc*100);cHor.value=S.hor;cOrg.value=-1;cUf.value=-1;
+  cAlim.value = S.alim; 
+  cTransp.value = S.transp;
   document.querySelectorAll('#cFator button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='1'?'true':'false'));
   document.getElementById('lAge').textContent=S.minAge;document.getElementById('lAdes').textContent=Math.round(S.ades*100)+'%';
   document.getElementById('lEnc').textContent='+'+Math.round(S.enc*100)+'%';document.getElementById('lHor').textContent=S.hor+' m';document.getElementById('lFat').textContent='100%';
+  document.getElementById('lAlim').textContent = 'R$ ' + int(S.alim);
+  document.getElementById('lTransp').textContent = 'R$ ' + int(S.transp);
   [cPos,cAge,cAdes,cEnc,cHor].forEach(setFill);updPosLabel();renderAll();});
 
 // init
