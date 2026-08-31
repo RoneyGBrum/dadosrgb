@@ -34,6 +34,19 @@ header.hero{padding:110px 0 84px;text-align:left}
 .hero p.sub{font-size:clamp(16px,2vw,19px);color:var(--mut);max-width:64ch;margin:0 0 34px}
 .hero .meta{display:flex;flex-wrap:wrap;gap:8px 34px;font-size:13.5px;color:var(--mut2);border-top:1px solid var(--line);padding-top:20px}
 .hero .meta b{color:var(--ink);font-weight:700}
+/* Base legal — seção por painel (cada estudo tem a sua) */
+.legal-sec{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:44px 0;margin:0 0 8px}
+.legal-sec .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.legal-sec .ls-kick{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.legal-sec .ls-h{font-size:clamp(22px,3vw,30px);font-weight:800;color:var(--ink);margin:8px 0 6px;letter-spacing:-.01em}
+.legal-sec .ls-sub{font-size:15px;color:var(--mut);max-width:74ch;margin:0 0 24px}
+.legal-sec .ls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.legal-sec .ls-card{background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:14px;padding:18px 20px}
+.legal-sec .ls-card .ls-t{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.legal-sec .ls-card ul{margin:0;padding:0;list-style:none}
+.legal-sec .ls-card li{font-size:13.5px;color:var(--ink2);line-height:1.5;padding:7px 0;border-top:1px solid var(--line2)}
+.legal-sec .ls-card li:first-child{border-top:0}
+.legal-sec .ls-card li b{color:var(--acc-dark)}
 
 /* ============ navegação ============ */
 nav.toc{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -204,11 +217,11 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 </style>
 </head>
 <body>
-<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="painel_movimentacoes.html"><span class="ic">🔄</span><span class="lab">Movimentações</span></a><a href="anistiados.html"><span class="ic">⚖️</span><span class="lab">Anistiados</span></a><a href="pessoal.html"><span class="ic">👥</span><span class="lab">Pessoal</span></a><a href="redistribuicao.html"><span class="ic">↔️</span><span class="lab">Redistribuição</span></a><a class="on" href="lip.html"><span class="ic">📄</span><span class="lab">LIP</span></a><a href="internacional.html"><span class="ic">🌐</span><span class="lab">Internacional</span></a><a href="capacitacao.html"><span class="ic">🎓</span><span class="lab">Capacitação</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
+<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 
 <header class="hero">
   <div class="wrap">
-    <div class="kicker">Estudo analítico · SGP / MGI · Licença para tratar de Interesses Particulares</div>
+    <div class="kicker">Estudo analítico · SGP / MGI · Interesses particulares</div>
     <h1>Em 15 anos, <span class="acc num">21.340</span> licenças para <span class="num">14.928</span> servidores — <span class="acc num">2.266</span> acumulam mais de 3 anos, <span class="num">815</span> deles em curso hoje.</h1>
     <p class="sub">Leitura autossuficiente da base integral de LIP (jan/2011 até hoje): cada seção entrega a conclusão no título, os filtros recalculam todos os números e a lista nominal ao final da página pode ser exportada em Excel.</p>
     <div class="lipe-box" style="max-width:860px;margin:0 0 30px">
@@ -217,13 +230,23 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
       <p><b>1)</b> Marque filtros no topo — tudo recalcula na hora. <b>2)</b> Os títulos já contam a conclusão de cada parte. <b>3)</b> No slide 7, ajuste o interstício e exporte a lista em Excel.</p></div>
     </div>
     <div class="meta">
-      <span>Fonte: <b>painel de afastamentos · extração de 24/07/2026</b></span>
-      <span>Período: <b>jan/2011 – jun/2026</b></span>
-      <span>Base: <b class="num">20.507</b> episódios · <b class="num">14.388</b> servidores</span>
+      <span>Fonte: <b>afastamentos temáticos · SIAPE / Data Lake MGI</b></span><span>Período: <b>2011 – presente</b></span><span>Base: <b class="num">21.340</b> licenças · <b class="num">14.928</b> servidores</span>
       <span>Licença: <b>não remunerada · art. 91, Lei nº 8.112/1990</b></span>
     </div>
   </div>
 </header>
+<section class="legal-sec"><div class="wrap">
+  <div class="ls-kick">Base legal</div>
+  <h2 class="ls-h">O que rege a Licença para Tratar de Interesses Particulares</h2>
+  <p class="ls-sub">A LIP é a licença <b>sem remuneração</b> para assuntos pessoais do servidor estável.</p>
+  <div class="ls-grid">
+    <div class="ls-card"><div class="ls-t">📄 Regra geral</div><ul>
+      <li><b>Lei nº 8.112/1990 (art. 91)</b> — o servidor <b>estável</b> pode obter licença para tratar de interesses particulares, <b>sem remuneração</b>, a critério da Administração.</li>
+      <li><b>MP nº 2.225-45/2001</b> (redação vigente do art. 91) — prazo de <b>até 3 anos consecutivos</b>, podendo ser <b>interrompida a qualquer tempo</b>, a pedido do servidor ou no interesse do serviço.</li>
+      <li>Vedada a quem está em <b>estágio probatório</b>; o período em geral <b>não</b> conta como efetivo exercício.</li>
+    </ul></div>
+  </div>
+</div></section>
 
 <nav class="toc" id="toc">
   <div class="wrap">
@@ -336,7 +359,7 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
   <div class="wrap">
     <div class="s-kicker"><span class="sn">03</span>Perfil · responde aos filtros</div>
     <h2 class="action">Perfil equilibrado por sexo — <span class="num" id="st-pm">—</span> homens e <span class="num" id="st-pf">—</span> mulheres; <span class="acc" id="st-corl">—</span> é a maior autodeclaração, com <span class="acc num" id="st-corp">—</span>.</h2>
-    <p class="support">Distribuição dos episódios da seleção por sexo, cor/origem étnica e escolaridade do cargo. A barra azul marca a maior categoria de cada recorte; as demais ficam em cinza como contexto.</p>
+    <p class="support">Distribuição dos episódios da seleção por sexo, cor/origem étnica e escolaridade do cargo. A barra azul marca a maior categoria de cada recorte; as demais ficam em cinza como contexto. <b>💡 Clique nas barras destes gráficos para filtrar — dá para marcar várias no mesmo gráfico</b> (o menu suspenso correspondente acompanha a seleção).</p>
     <div class="chart-block">
       <p class="ct">Sexo</p><p class="cs">episódios por sexo do servidor</p>
       <div class="sexo">
@@ -696,9 +719,19 @@ function applyFilters(){
   render();
 }
 function PCOUNT(){const s=new Set();for(const i of FIDX)s.add(PIDX[i]);return s.size;}
+// MULTI-BARRA: episódios que passam em TODOS os filtros MENOS o do próprio eixo `ex` (um SEL).
+// Assim o gráfico daquela dimensão mantém todas as barras e permite clicar em várias.
+function filExcept(ex){const f=readFilters();const out=[];
+  for(let i=0;i<EPS.length;i++){const r=EPS[i];
+    if((ex===SEL.st||ok(SEL.st,r[E.AT]))&&(ex===SEL.sx||ok(SEL.sx,r[E.SX]))&&(ex===SEL.cor||ok(SEL.cor,r[E.COR]))
+      &&(ex===SEL.set||ok(SEL.set,r[E.SET]))&&(ex===SEL.nat||ok(SEL.nat,r[E.NAT]))&&(ex===SEL.esc||ok(SEL.esc,r[E.ESC]))
+      &&(ex===SEL.org||ok(SEL.org,r[E.ORG]))&&(ex===SEL.car||ok(SEL.car,r[E.CAR]))&&(ex===SEL.cgo||ok(SEL.cgo,r[E.CGO]))
+      &&(ex===SEL.srv||ok(SEL.srv,PIDX[i]))&&(ex===SEL.dec||ok(SEL.dec,DECC(PEOPLE[PIDX[i]])))
+      &&r[E.ANO]>=f.a1&&r[E.ANO]<=f.a2)out.push(r);}
+  return out;}
 
 /* ---------- gráficos (SVG limpo, saliência única) ---------- */
-const ACC='#0F62FE', GRAY='#D4D9E0';
+const ACC=(getComputedStyle(document.documentElement).getPropertyValue('--acc')||'#0F62FE').trim(), GRAY='#D4D9E0';
 // vcat: barras VERTICAIS para categorias — items: [label, count, remSum, remN]
 function titleCasePT(str){
   const lo=new Set(['de','da','do','das','dos','e','em','a','o','à','ao','aos','na','no','nas','nos','para','com','por','sem','of','the']);
@@ -743,30 +776,39 @@ function axisLblV(cx,axisY,raw,hi){
   }
   return g+`</g>`;
 }
-function vcat(el,items,total,occ,labelFull){
+// clickCfg (opcional) = {sel:Set, ms:idx MSCOMPS} torna as barras CLICÁVEIS (multi-seleção):
+// clicar alterna a categoria daquele eixo no filtro; as escolhidas ficam destacadas (azul + traço).
+function vcat(el,items,total,occ,labelFull,clickCfg){
   const max=Math.max(1,...items.map(i=>i[1]));
-  const hasOcc=!!occ;
+  const hasOcc=!!occ, clk=!!clickCfg;
   const n=items.length, W=1060, PB=(labelFull?158:138), PT=hasOcc?122:84, H=(hasOcc?378:340)+PB, pl=6, pr=6, bw=(W-pl-pr)/n;
   const TR=n>14?15:22;
   let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;overflow:visible" role="img">`;
   items.forEach((it,i)=>{
     const hi=it[1]===max&&it[1]>0;
+    const isSel=clk&&it[4]!=null&&clickCfg.sel.has(it[4]);
+    const fill=isSel?ACC:(hi?ACC:GRAY);
     const h=(it[1]/max)*(H-PB-PT), x=pl+i*bw, y=H-PB-h, cx=x+bw/2;
     const ov=hasOcc?occ[i]:undefined;
     const lipPct=(hasOcc&&ov>0)?(100*it[1]/ov):null;  // afastados x ocupados
     const lipOver=lipPct!==null&&lipPct>100;
     const lipTxt=lipPct===null?'—':lipOver?'>100%':(lipPct<10?lipPct.toLocaleString('pt-BR',{maximumFractionDigits:1}):Math.round(lipPct).toLocaleString('pt-BR'))+'%';
     const lipColor=lipPct===null?'#98A0AC':lipOver?'#98A0AC':'#0F62FE';
-    s+=`<rect x="${x+bw*0.16}" y="${y}" width="${bw*0.68}" height="${Math.max(h,1.5)}" rx="5" fill="${hi?ACC:GRAY}"><title>${it[0]} — ${fmt(it[1])} afastamentos (${pct(it[1],total)}) · remuneração média do cargo: ${it[3]?'R$ '+fmtRem(it[2],it[3]):'sem informação'}${hasOcc?' · cargos ocupados: '+fmtOcc(ov)+(lipPct!==null?(lipOver?' · afastamentos superam os cargos ocupados registrados (cobertura parcial da vaga na base de vacância)':' · '+lipTxt+' em afastamento sobre ocupados'):''):''}</title></rect>
-        <text x="${cx}" y="${y-(hasOcc?85:46)}" font-size="15" fill="${hi?'#16213A':'#3D4757'}" text-anchor="middle" font-weight="700">${fmt(it[1])}</text>
+    const gopen=clk?`<g data-ci="${it[4]}" style="cursor:pointer">`:'', gclose=clk?'</g>':'';
+    const hit=clk?`<rect x="${x}" y="${PT-6}" width="${bw}" height="${H-PB-PT+12}" fill="transparent"/>`:'';
+    s+=`${gopen}${hit}<rect x="${x+bw*0.16}" y="${y}" width="${bw*0.68}" height="${Math.max(h,1.5)}" rx="5" fill="${fill}"${isSel?' stroke="#0A3DA6" stroke-width="2"':''}><title>${it[0]} — ${fmt(it[1])} afastamentos (${pct(it[1],total)}) · remuneração média do cargo: ${it[3]?'R$ '+fmtRem(it[2],it[3]):'sem informação'}${hasOcc?' · cargos ocupados: '+fmtOcc(ov)+(lipPct!==null?(lipOver?' · afastamentos superam os cargos ocupados registrados (cobertura parcial da vaga na base de vacância)':' · '+lipTxt+' em afastamento sobre ocupados'):''):''}${clk?(isSel?' · clique para remover do filtro':' · clique para filtrar'):''}</title></rect>
+        <text x="${cx}" y="${y-(hasOcc?85:46)}" font-size="15" fill="${hi||isSel?'#16213A':'#3D4757'}" text-anchor="middle" font-weight="700">${fmt(it[1])}</text>
         <text x="${cx}" y="${y-(hasOcc?68:29)}" font-size="12.5" fill="#98A0AC" text-anchor="middle">${pct(it[1],total)}</text>
         <text x="${cx}" y="${y-(hasOcc?51:12)}" font-size="12.5" fill="#69707E" text-anchor="middle">${it[3]?fmtRem(it[2],it[3]):'—'}</text>
         ${hasOcc?`<text x="${cx}" y="${y-34}" font-size="12.5" fill="#D0342C" text-anchor="middle" font-weight="700">${fmtOcc(ov)}${ov>=0?'':''}</text>`:''}
         ${hasOcc?`<text x="${cx}" y="${y-14}" font-size="13" fill="${lipColor}" text-anchor="middle" font-weight="800">${lipTxt}<tspan font-size="10.5" font-weight="600"></tspan></text>`:''}
-        ${labelFull?axisLblV(cx,H-PB,it[0],hi):`<g transform="translate(${cx},${H-PB+16}) rotate(-42)"><text font-size="13.5" fill="${hi?'#16213A':'#69707E'}" font-weight="${hi?700:400}" text-anchor="end"><title>${it[0]}</title>${it[0].length>TR?it[0].slice(0,TR-1)+'…':it[0]}</text></g>`}`;
+        ${labelFull?axisLblV(cx,H-PB,it[0],hi||isSel):`<g transform="translate(${cx},${H-PB+16}) rotate(-42)"><text font-size="13.5" fill="${hi||isSel?'#16213A':'#69707E'}" font-weight="${hi||isSel?700:400}" text-anchor="end"><title>${it[0]}</title>${it[0].length>TR?it[0].slice(0,TR-1)+'…':it[0]}</text></g>`}${gclose}`;
   });
   s+=`<line x1="${pl}" y1="${H-PB}" x2="${W-pr}" y2="${H-PB}" stroke="#E7EAEF" stroke-width="1"/>`;
   el.innerHTML=s+'</svg>';
+  if(clk){el.querySelectorAll('[data-ci]').forEach(g=>g.addEventListener('click',()=>{
+    const ci=+g.dataset.ci;if(clickCfg.sel.has(ci))clickCfg.sel.delete(ci);else clickCfg.sel.add(ci);
+    if(window.MSCOMPS&&MSCOMPS[clickCfg.ms])MSCOMPS[clickCfg.ms].refreshBtn();applyFilters();}));}
 }
 function vbars(el,items,hi){ // série anual: [label, count, remSum, remN]; linha tracejada = média
   const max=Math.max(1,...items.map(i=>i[1]));
@@ -872,24 +914,28 @@ function render(){
   $('#sx-mn').innerHTML=fmt(m)+' episódios · R$ '+fmtRem(rmM,rmMn)+' <span style="color:var(--mut2)">rem. média</span>';
   $('#sx-fn').innerHTML=fmt(f)+' episódios · R$ '+fmtRem(rmF,rmFn)+' <span style="color:var(--mut2)">rem. média</span>';
   $('#sx-bar').innerHTML=n?`<i style="width:${100*m/n}%;background:${m>=f?ACC:GRAY}" title="Masculino: ${fmt(m)}"></i><i style="width:${100*f/n}%;background:${f>m?ACC:GRAY}" title="Feminino: ${fmt(f)}"></i>`:'';
-  const corTop=topCat(aggBy(FIL,E.COR),DIC.cores,6);
-  vcat($('#ch-cor'),corTop,n);
-  if(corTop.length){setT('#st-corl',corTop[0][0]);setT('#st-corp',pct(corTop[0][1],n));}
-  vcat($('#ch-esc'),topCat(aggBy(FIL,E.ESC),DIC.escs,4),n);
+  // Gráficos categóricos CLICÁVEIS (multi-barra): cada um usa filExcept(seu SEL) p/ manter
+  // todas as barras visíveis; clicar alterna a categoria no MESMO filtro do menu suspenso.
+  const fCor=filExcept(SEL.cor),corTop=topCat(aggBy(fCor,E.COR),DIC.cores,6);
+  vcat($('#ch-cor'),corTop,fCor.length,null,false,{sel:SEL.cor,ms:2});
+  if(corTop.length){setT('#st-corl',corTop[0][0]);setT('#st-corp',pct(corTop[0][1],fCor.length));}
+  const fEsc=filExcept(SEL.esc);
+  vcat($('#ch-esc'),topCat(aggBy(fEsc,E.ESC),DIC.escs,4),fEsc.length,null,false,{sel:SEL.esc,ms:5});
   // slide 4 — instituições
-  const setTop=topCat(aggBy(FIL,E.SET),DIC.setores,10);
-  vcat($('#ch-setor'),setTop,n);
-  if(setTop.length){setT('#st-set',SETOR_NICE[setTop[0][0]]||setTop[0][0].charAt(0)+setTop[0][0].slice(1).toLowerCase());setT('#st-setp',pct(setTop[0][1],n));}
-  vcat($('#ch-nat'),topCat(aggBy(FIL,E.NAT),DIC.nats,4),n);
-  const orgTop=topCat(aggBy(FIL,E.ORG),DIC.orgaos,20);
-  vcat($('#ch-orgaos'),orgTop,n,orgTop.map(r=>OCC_ORG[r[4]]));
+  const fSet=filExcept(SEL.set),setTop=topCat(aggBy(fSet,E.SET),DIC.setores,10);
+  vcat($('#ch-setor'),setTop,fSet.length,null,false,{sel:SEL.set,ms:3});
+  if(setTop.length){setT('#st-set',SETOR_NICE[setTop[0][0]]||setTop[0][0].charAt(0)+setTop[0][0].slice(1).toLowerCase());setT('#st-setp',pct(setTop[0][1],fSet.length));}
+  const fNat=filExcept(SEL.nat);
+  vcat($('#ch-nat'),topCat(aggBy(fNat,E.NAT),DIC.nats,4),fNat.length,null,false,{sel:SEL.nat,ms:4});
+  const fOrg=filExcept(SEL.org),orgTop=topCat(aggBy(fOrg,E.ORG),DIC.orgaos,20);
+  vcat($('#ch-orgaos'),orgTop,fOrg.length,orgTop.map(r=>OCC_ORG[r[4]]),false,{sel:SEL.org,ms:6});
   if(orgTop.length){setT('#st-org',orgTop[0][0]);setT('#st-orgn',fmt(orgTop[0][1]));}
   // slide 5 — carreiras e cargos (20 colunas)
-  const carrTop=topCat(aggBy(FIL,E.CAR),DIC.carreiras,20);
-  vcat($('#ch-carr'),carrTop,n,carrTop.map(r=>OCC_CAR[r[4]]),true);
-  if(carrTop.length){setT('#st-carr',carrTop[0][0].length>44?carrTop[0][0].slice(0,43)+'…':carrTop[0][0]);setT('#st-carrp',pct(carrTop[0][1],n));}
-  const cgoTop=topCat(aggBy(FIL,E.CGO),DIC.cargos,20);
-  vcat($('#ch-cargos'),cgoTop,n,cgoTop.map(r=>OCC_CGO[r[4]]),true);
+  const fCar=filExcept(SEL.car),carrTop=topCat(aggBy(fCar,E.CAR),DIC.carreiras,20);
+  vcat($('#ch-carr'),carrTop,fCar.length,carrTop.map(r=>OCC_CAR[r[4]]),true,{sel:SEL.car,ms:7});
+  if(carrTop.length){setT('#st-carr',carrTop[0][0].length>44?carrTop[0][0].slice(0,43)+'…':carrTop[0][0]);setT('#st-carrp',pct(carrTop[0][1],fCar.length));}
+  const fCgo=filExcept(SEL.cgo),cgoTop=topCat(aggBy(fCgo,E.CGO),DIC.cargos,20);
+  vcat($('#ch-cargos'),cgoTop,fCgo.length,cgoTop.map(r=>OCC_CGO[r[4]]),true,{sel:SEL.cgo,ms:8});
   // slide 6 — faixas completas por episódio (até o máximo da base: 5.285 dias)
   const fx=EPBANDS.map(()=>[0,0,0]); let epSum=0,epCnt=0;
   FIL.forEach(r=>{const d=r[E.DIAS]; epSum+=d; epCnt++;
