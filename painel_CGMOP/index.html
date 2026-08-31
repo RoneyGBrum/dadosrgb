@@ -1,11 +1,18 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Painel CGMOP — Movimentação de Pessoas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Painel CGMOP — Movimentação de Pessoal</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxMjMzNmUiLz48dGV4dCB4PSIzMiIgeT0iNDUiIGZvbnQtc2l6ZT0iMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfk4o8L3RleHQ+PC9zdmc+">
 <style>
-:root{--gov:#12336e;--gov2:#1a4a8f;--ink:#14203a;--muted:#667;--linha:#e2e6ee;--surface:#fff;--plane:#f4f6fb;--origem:#c26a27;--destino:#178a6e}
+:root{--gov:#12336e;--gov2:#1a4a8f;--ink:#14203a;--ink-2:#52514e;--muted:#667;--linha:#e2e6ee;--surface:#fff;--surface-2:#fafbfe;--claro:#eaf0fb;--plane:#f4f6fb;--origem:#c26a27;--destino:#178a6e}
 *{box-sizing:border-box}html,body{margin:0}
 body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--plane);color:var(--ink);line-height:1.5}
-.eco-nav{position:sticky;top:0;z-index:40;display:flex;gap:6px;align-items:center;background:var(--surface);border-bottom:1px solid var(--linha);padding:8px 16px}
-.eco-nav .marca{font-weight:800;color:var(--gov);font-size:13px}
+.eco-nav{position:sticky;top:0;z-index:40;display:flex;gap:4px;flex-wrap:wrap;align-items:center;background:var(--surface);border-bottom:1px solid var(--linha);box-shadow:0 2px 8px rgba(20,40,80,.05);padding:6px 14px}
+.eco-nav .marca{font-weight:800;color:var(--gov);font-size:13px;margin-right:10px;letter-spacing:.02em}
+.eco-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink-2);font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:9px}
+.eco-nav a .ic{font-size:16px;line-height:1}
+.eco-nav a:hover{background:var(--claro);color:var(--gov)}
+.eco-nav a.on{background:var(--gov);color:#fff}
+.eco-nav .tema{margin-left:auto;background:var(--surface-2);border:1px solid var(--linha);color:var(--ink-2);border-radius:9px;padding:7px 11px;cursor:pointer;font-size:15px}
+@media (max-width:560px){.eco-nav a span.lab{display:none}.eco-nav a{padding:8px 11px}}
 header.topo{background:linear-gradient(120deg,var(--gov),var(--gov2));color:#fff;padding:30px 24px}
 header.topo h1{margin:0;font-size:23px;font-weight:800}header.topo p{margin:6px 0 0;color:#cdddf6;font-size:13.5px;max-width:760px}
 .wrap{max-width:1000px;margin:0 auto;padding:26px 20px 60px}
@@ -34,9 +41,9 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 </style>
 </head>
 <body>
-<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoas</span><a class="on" href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="painel_movimentacoes.html"><span class="ic">🔄</span><span class="lab">Movimentações</span></a><a href="anistiados.html"><span class="ic">⚖️</span><span class="lab">Anistiados</span></a><a href="../lip-estudo-licencas/"><span class="ic">📄</span><span class="lab">LIP</span></a><a href="#" title="Em construção"><span class="ic">🌐</span><span class="lab">Internacional</span></a><a href="#" title="Em construção"><span class="ic">↔️</span><span class="lab">Redistribuição</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
-<header class="topo"><h1>Movimentação de Pessoas — Servidores Públicos Federais</h1>
-<p>Painéis da Coordenação-Geral de Movimentação de Pessoas (CGMOP/SGP/MGI). Dados do SIAPE, competência de referência. CPF mascarado.</p></header>
+<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a class="on" href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="painel_movimentacoes.html"><span class="ic">🔄</span><span class="lab">Movimentações</span></a><a href="anistiados.html"><span class="ic">⚖️</span><span class="lab">Anistiados</span></a><a href="pessoal.html"><span class="ic">👥</span><span class="lab">Pessoal</span></a><a href="redistribuicao.html"><span class="ic">↔️</span><span class="lab">Redistribuição</span></a><a href="lip.html"><span class="ic">📄</span><span class="lab">LIP</span></a><a href="internacional.html"><span class="ic">🌐</span><span class="lab">Internacional</span></a><a href="capacitacao.html"><span class="ic">🎓</span><span class="lab">Capacitação</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
+<header class="topo"><h1>Movimentação de Pessoal — Servidores Públicos Federais</h1>
+<p>Painéis da Coordenação-Geral de Movimentação de Pessoal (CGMOP/SGP/MGI). Dados do SIAPE, competência de referência. CPF mascarado.</p></header>
 <div class="wrap">
   <div class="cards">
     <a class="card mov" href="painel_movimentacoes.html"><div class="ic">🔄</div>
@@ -45,22 +52,28 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
     <a class="card ani" href="anistiados.html"><div class="ic">⚖️</div>
       <h2>Anistiados</h2>
       <p>Público anistiado (Lei 8.878/1994): quem são, de onde vieram, onde estão hoje e a situação funcional — com filtros, gráficos e ficha individual.</p></a>
-    <a class="card" href="../lip-estudo-licencas/"><div class="ic">📄</div>
+    <a class="card mov" href="pessoal.html"><div class="ic">👥</div>
+      <h2>Pessoal</h2>
+      <p>Quadro de pessoal do Executivo federal (agregado, sem nomes): força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração — com filtros e gráficos.</p></a>
+    <a class="card ani" href="redistribuicao.html"><div class="ic">↔️</div>
+      <h2>Redistribuição</h2>
+      <p>Redistribuição de cargos entre órgãos (art. 37, Lei 8.112/90): de onde → para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p></a>
+    <a class="card mov" href="lip.html"><div class="ic">📄</div>
       <h2>LIP — Licenças de Interesse Particular</h2>
-      <p>Estudo das licenças de interesse particular, com filtros interativos e leitura autossuficiente.</p></a>
-    <a class="card" href="#" title="Em construção" style="opacity:.55;cursor:not-allowed"><div class="ic">🌐</div>
-      <h2>Afastamento Internacional <span style="font-size:11px;color:var(--origem)">· em construção</span></h2>
-      <p>Em breve.</p></a>
-    <a class="card" href="#" title="Em construção" style="opacity:.55;cursor:not-allowed"><div class="ic">↔️</div>
-      <h2>Redistribuição <span style="font-size:11px;color:var(--origem)">· em construção</span></h2>
-      <p>Em breve.</p></a>
+      <p>Licenças para tratar de interesses particulares (art. 91, Lei 8.112/90), desde 2011: de que órgão, cargo, carreira, duração e situação — com filtros, gráficos e a relação nominal.</p></a>
+    <a class="card ani" href="internacional.html"><div class="ic">🌐</div>
+      <h2>Afastamento Internacional</h2>
+      <p>Servidores afastados para servir organização internacional ou estudo/curso no exterior — por órgão, cargo, carreira, duração e evolução no tempo.</p></a>
+    <a class="card mov" href="capacitacao.html"><div class="ic">🎓</div>
+      <h2>Licença Capacitação</h2>
+      <p>Licenças-capacitação (art. 87, Lei 8.112/90): quem, de que órgão, por quanto tempo — com filtros, gráficos e relação nominal.</p></a>
   </div>
   <div class="rodape">Fonte: SIAPE — Ministério da Gestão e da Inovação em Serviços Públicos. CPF mascarado. Dados públicos (Portal da Transparência).</div>
 </div>
 
 <div id="portao"><div class="cx">
   <div class="marca">CGMOP · MGI</div>
-  <h2>Movimentação de Pessoas</h2>
+  <h2>Movimentação de Pessoal</h2>
   <p>Acesso restrito. Informe usuário e senha para visualizar o painel.</p>
   <input id="portao-user" placeholder="usuário" autocomplete="username">
   <input id="portao-pass" type="password" placeholder="senha" autocomplete="current-password">
