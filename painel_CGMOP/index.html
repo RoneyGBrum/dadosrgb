@@ -135,6 +135,13 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 #portao button{width:100%;padding:12px;border:0;border-radius:10px;background:#12336e;color:#fff;font-weight:700;font-size:14px;cursor:pointer}
 #portao button:hover{filter:brightness(1.1)}
 #portao .err{color:#c0392b;font-size:12.5px;min-height:17px;margin-top:9px;font-weight:600}
+#portao .ajuda{margin-top:16px;padding-top:14px;border-top:1px solid #e6ebf3;text-align:left}
+#portao .ajuda b{color:#12336e}
+#portao .ajuda > b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+#portao .ajuda span{display:block;font-size:12.5px;color:#4a5568;line-height:1.55;margin-bottom:5px}
+#portao .ajuda i{display:inline-block;min-width:62px;font-style:normal;font-weight:700;color:#7a8090;font-size:11px;text-transform:uppercase}
+#portao .ajuda code{background:#eef2f8;border:1px solid #dbe3ef;border-radius:4px;padding:1px 5px;font-size:12px;color:#12336e}
+#portao .ajuda .obs{margin-top:9px;color:#7a8090;font-size:11.5px;font-style:italic}
 </style>
 </head><body>
 <nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
@@ -261,7 +268,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "01/09/2026 04:51", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "01/09/2026 06:34", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
@@ -271,10 +278,17 @@ ligarTema();
   <div class="marca">CGMOP · MGI</div>
   <h2>Movimentação de Pessoal</h2>
   <p>Acesso restrito. Informe usuário e senha para visualizar o painel.</p>
-  <input id="portao-user" placeholder="usuário" autocomplete="username">
-  <input id="portao-pass" type="password" placeholder="senha" autocomplete="current-password">
+  <input id="portao-user" placeholder="nome.sobrenome" autocomplete="username">
+  <input id="portao-pass" type="password" placeholder="ddmmaaaa" autocomplete="current-password">
   <button id="portao-btn">Entrar</button>
   <div class="err" id="portao-err"></div>
+  <div class="ajuda">
+    <b>Como entrar</b>
+    <span><i>Usuário</i> o seu <b>nome.sobrenome</b> (ex.: <code>maria.silva</code>)</span>
+    <span><i>Senha</i> a sua <b>data de nascimento</b>, só números, no formato
+      <b>ddmmaaaa</b> (ex.: <code>07091985</code> para 07/09/1985)</span>
+    <span class="obs">Não conseguiu entrar? Fale com a CGMOP.</span>
+  </div>
 </div></div>
 
 <script>
