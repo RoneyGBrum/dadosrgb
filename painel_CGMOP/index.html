@@ -1,11 +1,71 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Painel CGMOP — Movimentação de Pessoal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Painéis CGMOP — Movimentação de Pessoal</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxMjMzNmUiLz48dGV4dCB4PSIzMiIgeT0iNDUiIGZvbnQtc2l6ZT0iMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfk4o8L3RleHQ+PC9zdmc+">
-<style>
-:root{--gov:#12336e;--gov2:#1a4a8f;--ink:#14203a;--ink-2:#52514e;--muted:#667;--linha:#e2e6ee;--surface:#fff;--surface-2:#fafbfe;--claro:#eaf0fb;--plane:#f4f6fb;--origem:#c26a27;--destino:#178a6e}
+<style>:root{color-scheme:light;--plane:#f4f6fb;--surface:#fff;--surface-2:#fafbfe;--ink:#0b0b0b;--ink-2:#52514e;--muted:#898781;--linha:#e3e8f0;--baseline:#c3c2b7;
+--gov:#12336e;--gov2:#1b4a9e;--claro:#eaf0fb;--serie:#2a78d6;--serie-suave:#cde2fb;--serie-med:#86b6ef;--magenta:#e87ba4;
+--origem:#c26a27;--origem-suave:#f0dcc7;--origem-med:#e0a267;
+--destino:#178a6e;--destino-suave:#c9e6de;--destino-med:#5cbfa6;
+--div-pos:#c26a27;--div-neg:#178a6e;--neutro:#eef1f6;--good:#0ca30c;--good-ink:#006300;--critical:#d03b3b;--sombra:0 1px 2px rgba(20,40,80,.06),0 8px 24px rgba(20,40,80,.06)}
+:root[data-theme="dark"]{color-scheme:dark;--plane:#0d0d0d;--surface:#1a1a19;--surface-2:#201f1d;--ink:#fff;--ink-2:#c3c2b7;--muted:#898781;--linha:#2c2c2a;--baseline:#383835;
+--gov:#12336e;--gov2:#1b4a9e;--claro:#16243f;--serie:#3987e5;--serie-suave:#16375f;--serie-med:#1c5cab;--magenta:#d55181;
+--origem:#d98a4e;--origem-suave:#3f2c17;--origem-med:#a5652f;--destino:#2aa588;--destino-suave:#123a30;--destino-med:#1c6b57;
+--div-pos:#d98a4e;--div-neg:#2aa588;--neutro:#26262a;--good:#0ca30c;--good-ink:#0ca30c;--critical:#d03b3b}
 *{box-sizing:border-box}html,body{margin:0}
-body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--plane);color:var(--ink);line-height:1.5}
-.eco-nav{position:sticky;top:0;z-index:40;display:flex;gap:4px;flex-wrap:wrap;align-items:center;background:var(--surface);border-bottom:1px solid var(--linha);box-shadow:0 2px 8px rgba(20,40,80,.05);padding:6px 14px}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--plane);color:var(--ink);font-size:14px;line-height:1.45}
+a{color:var(--serie)}
+header.topo{background:linear-gradient(120deg,var(--gov),var(--gov2));color:#fff;padding:14px 24px}
+header.topo h1{margin:0;font-size:18px;font-weight:800}.sub{margin-top:3px;font-size:12px;color:#cdddf6}
+.nav{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.nav a{color:#cdddf6;text-decoration:none;font-size:13px;font-weight:700;padding:6px 12px;border:1px solid rgba(255,255,255,.3);border-radius:8px}
+.nav a.on{background:#fff;color:var(--gov)}.nav a:hover:not(.on){background:rgba(255,255,255,.14);color:#fff}
+.btn-tema{float:right;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:9px;padding:7px 11px;cursor:pointer;font-size:15px}
+.wrap{max-width:1200px;margin:0 auto;padding:16px 20px 70px}
+.controles{background:var(--surface);border:1px solid var(--linha);border-radius:12px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--sombra)}
+.linha{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.campo{display:flex;flex-direction:column;gap:3px}.campo label{font-size:11px;font-weight:800;color:var(--ink-2);text-transform:uppercase;letter-spacing:.4px}
+.campo input,.campo select{padding:8px 10px;border:1px solid var(--linha);border-radius:8px;font-size:13px;background:var(--surface);color:var(--ink);min-width:150px}
+.dica{font-size:12px;color:var(--muted);margin:10px 0 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--claro);border:1px solid var(--serie);color:var(--serie);border-radius:20px;padding:3px 6px 3px 10px;font-size:12px;font-weight:600}
+.chip .x{cursor:pointer;background:var(--serie);color:#fff;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:11px}
+.btn{padding:9px 14px;border:1px solid var(--linha);background:var(--surface);border-radius:8px;cursor:pointer;font-weight:700;color:var(--ink-2)}.btn:hover{border-color:var(--serie);color:var(--serie)}
+.btn-rel{background:var(--destino);color:#fff;border-color:var(--destino)}.btn-rel:hover{color:#fff;filter:brightness(1.06)}
+.btn-limpar{border:1.5px solid var(--critical);color:var(--critical)}.btn-limpar:hover{background:var(--critical);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:var(--surface);border:1px solid var(--linha);border-radius:14px;padding:14px 16px;box-shadow:var(--sombra)}
+.kpi .rot{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+.kpi .val{font-size:30px;font-weight:800;margin-top:2px;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi.destaque{background:linear-gradient(120deg,var(--gov),var(--gov2));border-color:transparent;color:#fff}.kpi.destaque .rot{color:#bcd2f4}
+.kpi.dev .val{color:var(--origem)}.kpi.rec .val{color:var(--destino)}
+.grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
+.card{background:var(--surface);border:1px solid var(--linha);border-radius:14px;padding:14px 16px 12px;box-shadow:var(--sombra)}
+.card.wide{grid-column:1/-1}.card h3{margin:0 0 1px;font-size:14px;font-weight:700}.card .leg{font-size:11.5px;color:var(--muted);margin:0 0 11px}
+.bars{display:flex;flex-direction:column;gap:7px}
+.bar-row{display:grid;grid-template-columns:minmax(120px,240px) 1fr auto;align-items:center;gap:10px;font-size:12.5px;cursor:pointer;border-radius:6px}
+.bar-row:hover{background:var(--surface-2)}.bar-row .lab{color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{background:var(--neutro);border-radius:5px;height:15px;overflow:hidden}.bar-fill{height:100%;border-radius:5px;min-width:2px}
+.bar-row .val{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}.bar-row .val small{color:var(--muted);font-weight:600}
+.bar-row.sel{background:var(--claro);outline:1px solid var(--serie)}
+@media (prefers-reduced-motion:no-preference){
+  .bar-fill{transform-origin:left center;animation:barGrow .9s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .bars .bar-row:nth-child(1) .bar-fill{animation-delay:.08s}.bars .bar-row:nth-child(2) .bar-fill{animation-delay:.16s}
+  .bars .bar-row:nth-child(3) .bar-fill{animation-delay:.24s}.bars .bar-row:nth-child(4) .bar-fill{animation-delay:.32s}
+  .bars .bar-row:nth-child(5) .bar-fill{animation-delay:.40s}.bars .bar-row:nth-child(6) .bar-fill{animation-delay:.48s}
+  .bars .bar-row:nth-child(7) .bar-fill{animation-delay:.56s}.bars .bar-row:nth-child(n+8) .bar-fill{animation-delay:.64s}
+  svg .line{stroke-dasharray:6000;stroke-dashoffset:6000;animation:lineDraw 2s .25s ease-out forwards}
+  @keyframes lineDraw{to{stroke-dashoffset:0}}
+  svg .area{animation:fadeIn 1.9s .25s ease-out both}svg .dot{animation:fadeIn 1.1s 1.4s ease-out both}
+  svg .barnovas{transform-box:fill-box;transform-origin:center bottom;animation:barUp 1s .35s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes barUp{from{transform:scaleY(0)}to{transform:scaleY(1)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}}
+.svgwrap{width:100%;overflow-x:auto}svg .gl{stroke:var(--linha);stroke-width:1}svg .ax{stroke:var(--baseline);stroke-width:1}
+svg text{fill:var(--muted);font-size:11px}svg text.t{fill:var(--ink);font-weight:700}
+#tt{position:fixed;pointer-events:none;background:var(--ink);color:var(--surface);padding:6px 9px;border-radius:7px;font-size:12px;z-index:99;opacity:0;transition:opacity .1s;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:280px}
+.rodape{margin-top:24px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+.vazio{padding:26px;text-align:center;color:var(--muted)}
+/* menu do ecossistema — sempre visível (sticky), com ícones; mesma barra em todas as páginas */
+.eco-nav{position:sticky;top:0;z-index:40;display:flex;gap:4px;flex-wrap:wrap;align-items:center;
+  background:var(--surface);border-bottom:1px solid var(--linha);box-shadow:0 2px 8px rgba(20,40,80,.05);padding:6px 14px}
 .eco-nav .marca{font-weight:800;color:var(--gov);font-size:13px;margin-right:10px;letter-spacing:.02em}
 .eco-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink-2);font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:9px}
 .eco-nav a .ic{font-size:16px;line-height:1}
@@ -13,16 +73,53 @@ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--
 .eco-nav a.on{background:var(--gov);color:#fff}
 .eco-nav .tema{margin-left:auto;background:var(--surface-2);border:1px solid var(--linha);color:var(--ink-2);border-radius:9px;padding:7px 11px;cursor:pointer;font-size:15px}
 @media (max-width:560px){.eco-nav a span.lab{display:none}.eco-nav a{padding:8px 11px}}
-header.topo{background:linear-gradient(120deg,var(--gov),var(--gov2));color:#fff;padding:30px 24px}
-header.topo h1{margin:0;font-size:23px;font-weight:800}header.topo p{margin:6px 0 0;color:#cdddf6;font-size:13.5px;max-width:760px}
-.wrap{max-width:1000px;margin:0 auto;padding:26px 20px 60px}
-.cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.card{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--linha);border-radius:16px;padding:22px 22px 20px;box-shadow:0 3px 14px rgba(20,40,80,.06);transition:transform .12s,box-shadow .12s}
-.card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(20,40,80,.12)}
-.card .ic{font-size:30px}.card h2{margin:8px 0 4px;font-size:18px;color:var(--gov)}
-.card p{margin:0;color:var(--muted);font-size:13px}
-.card.mov{border-top:4px solid var(--destino)}.card.ani{border-top:4px solid var(--origem)}
-.rodape{margin-top:30px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+/* ===== Documento PDF — fundo BRANCO, elegante, legível por qualquer pessoa.
+   Sem preenchimento azul; o azul institucional fica só em títulos, linhas finas e
+   destaques pontuais. Âmbar/verde = destaques (origem/destino, setas, alertas). ===== */
+#pdf-doc{display:none}
+@media print{body *{visibility:hidden}#pdf-doc,#pdf-doc *{visibility:visible}#pdf-doc{display:block;position:absolute;left:0;top:0;width:100%;padding:0}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  /* gráficos precisam sair PREENCHIDOS: desligar animações de entrada e resetar estados iniciais */
+  #pdf-doc *,#pdf-doc *::before,#pdf-doc *::after{animation:none!important;transition:none!important}
+  #pdf-doc .bar-fill,#pdf-doc .meter .seg,#pdf-doc svg .barnovas{transform:none!important}
+  #pdf-doc svg .line{stroke-dashoffset:0!important}
+  #pdf-doc svg .area,#pdf-doc svg .dot{opacity:1!important}
+  /* nenhum título órfão no fim da página; tabelas/cartões não se partem */
+  #pdf-doc h2,#pdf-doc h3,#pdf-doc .rel-tit,#pdf-doc .sec-tit{break-after:avoid;page-break-after:avoid}
+  #pdf-doc table,#pdf-doc .card,#pdf-doc .kbox,#pdf-doc .krow,#pdf-doc .bars{break-inside:avoid;page-break-inside:avoid}
+  #pdf-doc tr,#pdf-doc .bar-row{break-inside:avoid;page-break-inside:avoid}}
+#pdf-doc{color:#1c1c1c;font-family:"Segoe UI",Arial,sans-serif;font-size:13px;line-height:1.5;background:#fff}
+#pdf-doc .cab-of{text-align:center;border-bottom:2px solid #cdd5e2;padding:2px 0 12px;margin-bottom:16px}
+#pdf-doc h2{font-size:20px;margin:6px 0 3px;color:#12336e;font-weight:800;letter-spacing:.2px}
+#pdf-doc h3,#pdf-doc .rel-tit,#pdf-doc .sec-tit{color:#12336e;font-weight:800;font-size:14px;margin:16px 0 4px;border-bottom:1px solid #dfe4ec;padding-bottom:3px}
+#pdf-doc .peq{font-size:12px;color:#555}
+#pdf-doc .params,#pdf-doc .criterio{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #c26a27;border-radius:8px;padding:12px 16px;font-size:12.5px;margin:14px 0;line-height:1.7;color:#1c1c1c}
+#pdf-doc .krow{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
+#pdf-doc .kbox{border:1px solid #e0e4ec;border-top:3px solid #12336e;border-radius:8px;padding:10px 16px;min-width:140px;background:#fff}
+#pdf-doc .kbox .n{font-size:26px;font-weight:800;color:#12336e}.kbox .l{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.4px}
+#pdf-doc table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+#pdf-doc th{background:#fff;color:#12336e;padding:9px 11px;text-align:left;font-weight:800;font-size:12.5px;border-bottom:2px solid #12336e}
+#pdf-doc td{border-bottom:1px solid #e2e6ec;padding:8px 11px;color:#1c1c1c}#pdf-doc td.n,#pdf-doc th.num{text-align:right;font-variant-numeric:tabular-nums}
+#pdf-doc tbody tr:nth-child(even){background:#f5f6f8}
+#pdf-doc .pos{color:#b3541c;font-weight:700}#pdf-doc .neg{color:#0f6b56;font-weight:700}
+#pdf-doc .seta{font-weight:800}#pdf-doc .seta.o{color:#c26a27}#pdf-doc .seta.d{color:#178a6e}
+#pdf-doc .ass{margin-top:40px;font-size:13px;color:#1c1c1c}
+.hero{max-width:1100px;margin:0 auto;padding:34px 20px 8px}
+.hero .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--serie)}
+.hero h1{font-size:clamp(26px,4vw,40px);margin:8px 0 8px;line-height:1.08;color:var(--ink)}
+.hero p{font-size:16px;color:var(--ink-2);max-width:70ch;margin:0}
+.hero .stat{display:inline-flex;gap:18px;margin-top:16px;flex-wrap:wrap}
+.hero .stat b{font-size:22px;color:var(--gov);font-variant-numeric:tabular-nums}
+.hero .stat span{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.cards{max-width:1100px;margin:0 auto;padding:22px 20px 10px;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card-eco{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--linha);border-top:4px solid var(--acc);border-radius:16px;padding:20px;box-shadow:var(--sombra);text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s}
+.card-eco:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(20,40,80,.12)}
+.card-eco.soon{opacity:.62;cursor:default}.card-eco.soon:hover{transform:none;box-shadow:var(--sombra)}
+.card-eco .ic{font-size:32px;line-height:1}
+.card-eco h3{margin:0 0 6px;font-size:17px;display:flex;align-items:center;gap:8px}
+.card-eco p{margin:0 0 10px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.card-eco .ir{font-weight:700;color:var(--acc);font-size:13px}
+.badge-soon{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border:1px solid var(--linha);border-radius:10px;padding:1px 7px}
 </style>
 <style id="portao-css">
 #portao{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#0b2a4a,#12336e);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -39,38 +136,137 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 #portao button:hover{filter:brightness(1.1)}
 #portao .err{color:#c0392b;font-size:12.5px;min-height:17px;margin-top:9px;font-weight:600}
 </style>
-</head>
-<body>
+</head><body>
 <nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
-<header class="topo"><h1>Movimentação de Pessoal — Servidores Públicos Federais</h1>
-<p>Painéis da Coordenação-Geral de Movimentação de Pessoal (CGMOP/SGP/MGI). Dados do SIAPE, competência de referência. CPF mascarado.</p></header>
-<div class="wrap">
-  <div class="cards">
-    <a class="card mov" href="painel_movimentacoes.html"><div class="ic">🔄</div>
-      <h2>Movimentações</h2>
-      <p>Vigentes e histórico completo: cessões, requisições, força de trabalho e reforma administrativa — com proporcionalidade, gráficos, perfil dos servidores e a relação nominal completa.</p></a>
-    <a class="card ani" href="anistiados.html"><div class="ic">⚖️</div>
-      <h2>Anistiados</h2>
-      <p>Público anistiado (Lei 8.878/1994): quem são, de onde vieram, onde estão hoje e a situação funcional — com filtros, gráficos e ficha individual.</p></a>
-    <a class="card mov" href="pessoal.html"><div class="ic">👥</div>
-      <h2>Pessoal</h2>
-      <p>Quadro de pessoal do Executivo federal (agregado, sem nomes): força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração — com filtros e gráficos.</p></a>
-    <a class="card ani" href="redistribuicao.html"><div class="ic">↔️</div>
-      <h2>Redistribuição</h2>
-      <p>Redistribuição de cargos entre órgãos (art. 37, Lei 8.112/90): de onde → para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p></a>
-    <a class="card mov" href="lip.html"><div class="ic">📄</div>
-      <h2>LIP — Licenças de Interesse Particular</h2>
-      <p>Licenças para tratar de interesses particulares (art. 91, Lei 8.112/90), desde 2011: de que órgão, cargo, carreira, duração e situação — com filtros, gráficos e a relação nominal.</p></a>
-    <a class="card ani" href="internacional.html"><div class="ic">🌐</div>
-      <h2>Radar do Exterior — Afastamento Internacional</h2>
-      <p>Console de conformidade: quem está fora do País agora, sob que regime de ônus e até quando. Confronta a folha com o art. 96 (sem ônus = perda total da remuneração) e entrega a fila do que a lei manda conferir.</p></a>
-    <a class="card mov" href="capacitacao.html"><div class="ic">🎓</div>
-      <h2>Quinquênio — Licença Capacitação</h2>
-      <p>Caderno de direito e uso: quanto do teto de 90 dias por quinquênio foi usado (art. 87), quem usa e quem não usa (PNDP) e a carência de 2 anos antes da pós-graduação (art. 96-A).</p></a>
-  </div>
-  <div class="rodape">Fonte: SIAPE — Ministério da Gestão e da Inovação em Serviços Públicos. CPF mascarado. Dados públicos (Portal da Transparência).</div>
-</div>
-
+<header class="topo">
+  <h1>Painéis de Movimentação de Pessoal — CGMOP/SGP/MGI</h1>
+  <div class="sub" id="subtitulo"></div>
+</header>
+<section class="hero">
+  <div class="eyebrow">Ecossistema de dados · CGMOP</div>
+  <h1>Informações de movimentação na palma da mão</h1>
+  <p>Um conjunto de painéis integrados sobre a movimentação de servidores federais entre órgãos — cessão, requisição, força de trabalho (§7º art. 93) e reforma administrativa. Escolha por onde começar.</p>
+  <div class="stat" id="stat"></div>
+</section>
+<section class="cards"><a class="card-eco" href="painel_movimentacoes.html" style="--acc:var(--destino)"><div class="ic">🔄</div><div class="ct"><h3>Movimentações</h3><p>Vigentes e histórico num só lugar: perfil, órgãos que cedem/recebem, proporcionalidade (§7º art.93), encerramentos e motivos de saída, pessoas em exercício por período e a relação nominal completa — com ficha, trajetória, PDF e XLSX.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="anistiados.html" style="--acc:var(--serie)"><div class="ic">⚖️</div><div class="ct"><h3>Anistiados</h3><p>Ficha funcional completa do público anistiado (Lei 8.878/94): de onde vieram, por onde passaram, onde estão hoje, remuneração e tempo de retorno.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="pessoal.html" style="--acc:var(--destino)"><div class="ic">👥</div><div class="ct"><h3>Pessoal</h3><p>Quadro de pessoal do Executivo federal (agregado, sem nomes): força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="redistribuicao.html" style="--acc:var(--origem)"><div class="ic">↔️</div><div class="ct"><h3>Redistribuição</h3><p>Redistribuição de cargos entre órgãos (art. 37, Lei 8.112/90): de onde → para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="lip.html" style="--acc:var(--serie)"><div class="ic">📄</div><div class="ct"><h3>LIP — Licenças de Interesse Particular</h3><p>Licenças para tratar de interesses particulares (art. 91, Lei 8.112/90), desde 2011: órgão, cargo, carreira, duração e situação.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="internacional.html" style="--acc:#0E7C86"><div class="ic">🌍</div><div class="ct"><h3>Radar do Exterior — Afastamento Internacional</h3><p>Console de conformidade: quem está fora do País agora, sob que regime de ônus e até quando. Confronta a folha com o art. 96 (sem ônus = perda total da remuneração) e entrega a fila do que a lei manda conferir.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="capacitacao.html" style="--acc:#146B4A"><div class="ic">🎓</div><div class="ct"><h3>Quinquênio — Licença Capacitação</h3><p>Caderno de direito e uso: quanto do teto de 90 dias por quinquênio foi usado (art. 87), quem usa e quem não usa (PNDP) e a carência de 2 anos antes da pós-graduação (art. 96-A).</p><span class="ir">Abrir →</span></div></a></section>
+<div class="rodape" id="rodape"></div>
+<div id="tt"></div>
+<script>const el=id=>document.getElementById(id),tt=el("tt");
+const fmtInt=n=>(n==null||isNaN(n))?"—":Math.round(n).toLocaleString("pt-BR");
+const fmtPct=n=>(n==null||isNaN(n))?"":(n*100).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
+const fmtMoeda=n=>(n==null||isNaN(n)||+n===0)?"—":(+n).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cap=s=>{s=String(s||"");if(s.length<=4&&s===s.toUpperCase())return s;return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();};
+// Data sempre em dd/mm/aaaa (aceita AAAA-MM-DD, AAAA-MM-DDT..., ou já formatada).
+const fmtData=s=>{if(s==null||s===""||s==="1889-09-09")return"";const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:String(s);};
+function showTT(e,h){if(!tt)return;tt.innerHTML=h;tt.style.opacity=1;moveTT(e);}
+function moveTT(e){if(!tt)return;let x=e.clientX+14,y=e.clientY+14;if(x+tt.offsetWidth>innerWidth)x=e.clientX-tt.offsetWidth-14;tt.style.left=x+"px";tt.style.top=y+"px";}
+function hideTT(){if(tt)tt.style.opacity=0;}
+function ligarTips(c){c.querySelectorAll("[data-tip]").forEach(n=>{n.addEventListener("mouseenter",e=>showTT(e,n.getAttribute("data-tip")));n.addEventListener("mousemove",moveTT);n.addEventListener("mouseleave",hideTT);});}
+function ligarTema(){const b=el("btn-tema");if(b)b.onclick=()=>{const c=document.documentElement.getAttribute("data-theme");document.documentElement.setAttribute("data-theme",c==="dark"?"light":"dark");};}
+// barras horizontais: dist=[{cat,n,pct,idx?}]; opts.dimKey liga clique (data-<dimKey>);
+// opts.selIdx destaca a(s) barra(s) selecionada(s) — aceita um valor único OU array/Set (multi-barra).
+function hbars(dist,o={}){o=Object.assign({max:12,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:true},o);
+  const rows=dist.slice(0,o.max),mx=Math.max(...rows.map(r=>r.n),1);if(!rows.length)return'<p class="vazio">Sem dados no período.</p>';
+  const _selHas=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  let h='<div class="bars">';
+  for(const r of rows){const w=(r.n/mx*100).toFixed(1),lab=o.capLab?cap(r.cat):r.cat;
+    const sel=_selHas(r.idx)?" sel":"";const click=o.dimKey?`data-${o.dimKey}="${r.idx}"`:"";
+    const pc=r.pct!=null?` <small>${(r.pct*100).toFixed(1)}%</small>`:"";
+    h+=`<div class="bar-row${sel}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}">
+      <div class="lab" title="${esc(lab)}">${esc(lab)}</div><div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${o.cor}"></div></div>
+      <div class="val">${fmtInt(r.n)}${pc}</div></div>`;}
+  return h+'</div>';}
+// temporal empilhado: acumulado (área+linha) + novas por ano (barras). serie=[{ano,novas,acumulado}]. Barras clicáveis (data-ano).
+function temporal(serie,cor,titAc,titNo,opts){opts=opts||{};const semArea=!!opts.semArea,corB=opts.corBarras||cor;serie=serie.filter(d=>d.novas>0||d.acumulado>0);if(!serie.length)return'<p class="vazio">Sem dados no período.</p>';
+  const W=Math.max(680,serie.length*54),H=300,mL=54,mR=16,gap=30,pAc={t:14,h:150},pNo={t:14+150+gap,h:78};
+  const iw=W-mL-mR,x=i=>mL+(serie.length===1?iw/2:i/(serie.length-1)*iw);
+  const maxA=Math.max(...serie.map(d=>d.acumulado),1),maxN=Math.max(...serie.map(d=>d.novas),1);
+  const yA=v=>pAc.t+pAc.h-(v/maxA)*pAc.h,yN=v=>pNo.t+pNo.h-(v/maxN)*pNo.h;
+  const pts=serie.map((d,i)=>[x(i),yA(d.acumulado)]);
+  const linha=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+  const area=`M${x(0)} ${pAc.t+pAc.h} `+pts.map(p=>"L"+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ")+` L${x(serie.length-1)} ${pAc.t+pAc.h} Z`;
+  let gridA="";for(let g=1;g<=2;g++){const gy=pAc.t+pAc.h-g/2*pAc.h;gridA+=`<line class="gl" x1="${mL}" y1="${gy}" x2="${W-mR}" y2="${gy}"/><text x="${mL-6}" y="${gy+3}" text-anchor="end">${fmtInt(maxA*g/2)}</text>`;}
+  const bw=Math.min(24,iw/serie.length*.6);
+  const barras=serie.map((d,i)=>`<rect class="barnovas" x="${(x(i)-bw/2).toFixed(1)}" y="${yN(d.novas).toFixed(1)}" width="${bw.toFixed(1)}" height="${(pNo.t+pNo.h-yN(d.novas)).toFixed(1)}" rx="2" fill="${corB}" style="cursor:pointer" data-ano="${d.ano}" data-tip="${d.ano}: ${fmtInt(d.novas)}"/>`).join("");
+  const dots=serie.map((d,i)=>`<circle class="dot" cx="${x(i)}" cy="${yA(d.acumulado)}" r="3.5" fill="${cor}" data-tip="${d.ano}: acumulado ${fmtInt(d.acumulado)}"/>`).join("");
+  const labsX=serie.map((d,i)=>(i%Math.ceil(serie.length/9)===0||i===serie.length-1)?`<text x="${x(i)}" y="${H-6}" text-anchor="middle">${d.ano}</text>`:"").join("");
+  return `<div class="svgwrap"><svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}">
+    <text class="t" x="${mL}" y="10">${titAc}</text>${gridA}<line class="ax" x1="${mL}" y1="${pAc.t+pAc.h}" x2="${W-mR}" y2="${pAc.t+pAc.h}"/>
+    ${semArea?"":`<path class="area" d="${area}" fill="${cor}" opacity=".18"/>`}<path class="line" d="${linha}" fill="none" stroke="${cor}" stroke-width="2"/>${dots}
+    <text class="t" x="${mL}" y="${pNo.t-2}">${titNo}</text><line class="ax" x1="${mL}" y1="${pNo.t+pNo.h}" x2="${W-mR}" y2="${pNo.t+pNo.h}"/><text x="${mL-6}" y="${pNo.t+9}" text-anchor="end">${fmtInt(maxN)}</text>${barras}${labsX}</svg></div>`;}
+// XLSX (zip+deflate manual, sem biblioteca) — matriz de linhas -> Blob .xlsx
+function crc32(b){let c,crc=0xFFFFFFFF;for(let i=0;i<b.length;i++){c=(crc^b[i])&0xFF;for(let k=0;k<8;k++)c=c&1?(c>>>1)^0xEDB88320:c>>>1;crc=(crc>>>8)^c;}return(crc^0xFFFFFFFF)>>>0;}
+function strU8(s){return new TextEncoder().encode(s);}
+async function deflateRaw(u8){if(typeof CompressionStream==="undefined")return null;const cs=new CompressionStream("deflate-raw");const w=cs.writable.getWriter();w.write(u8);w.close();return new Uint8Array(await new Response(cs.readable).arrayBuffer());}
+async function zipFiles(files){const dv=(n,b)=>{const a=new Uint8Array(b);let v=n>>>0;for(let i=0;i<b;i++){a[i]=v&0xFF;v>>>=8;}return a;};let parts=[],central=[],off=0;
+  for(const f of files){const nb=strU8(f.name),crc=crc32(f.data);let comp=await deflateRaw(f.data),method=8;if(!comp){comp=f.data;method=0;}
+    const lh=[...strU8("PK\x03\x04"),...dv(20,2),...dv(0,2),...dv(method,2),...dv(0,2),...dv(0,2),...dv(crc,4),...dv(comp.length,4),...dv(f.data.length,4),...dv(nb.length,2),...dv(0,2)];parts.push(new Uint8Array(lh),nb,comp);
+    const ch=[...strU8("PK\x01\x02"),...dv(20,2),...dv(20,2),...dv(0,2),...dv(method,2),...dv(0,2),...dv(0,2),...dv(crc,4),...dv(comp.length,4),...dv(f.data.length,4),...dv(nb.length,2),...dv(0,2),...dv(0,2),...dv(0,2),...dv(0,4),...dv(off,4)];central.push(new Uint8Array(ch),nb);off+=lh.length+nb.length+comp.length;}
+  let cs=central.reduce((a,p)=>a+p.length,0),ps=parts.reduce((a,p)=>a+p.length,0);
+  const eocd=[...strU8("PK\x05\x06"),...dv(0,2),...dv(0,2),...dv(files.length,2),...dv(files.length,2),...dv(cs,4),...dv(ps,4),...dv(0,2)];
+  const all=[...parts,...central,new Uint8Array(eocd)];let tot=all.reduce((a,p)=>a+p.length,0),out=new Uint8Array(tot),oo=0;for(const p of all){out.set(p,oo);oo+=p.length;}return out;}
+function xc(v,r,c){const col=String.fromCharCode(65+(c%26)),ref=(c>=26?String.fromCharCode(64+Math.floor(c/26)):"")+col+r;if(typeof v==="number"&&isFinite(v))return`<c r="${ref}"><v>${v}</v></c>`;return`<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${esc(v)}</t></is></c>`;}
+async function baixarXLSX(linhas,nomeAba,nomeArq){
+  let rows="";linhas.forEach((ln,ri)=>{rows+=`<row r="${ri+1}">`+ln.map((v,ci)=>xc(v,ri+1,ci)).join("")+"</row>";});
+  const sheet=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${rows}</sheetData></worksheet>`;
+  const wb=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${esc(nomeAba||"Dados")}" sheetId="1" r:id="rId1"/></sheets></workbook>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>`;
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>`;
+  const root=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+  const files=[{name:"[Content_Types].xml",data:strU8(ct)},{name:"_rels/.rels",data:strU8(root)},{name:"xl/workbook.xml",data:strU8(wb)},{name:"xl/_rels/workbook.xml.rels",data:strU8(rels)},{name:"xl/worksheets/sheet1.xml",data:strU8(sheet)}];
+  const zip=await zipFiles(files),blob=new Blob([zip],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nomeArq||"dados.xlsx";a.click();}
+/* ===== Multi-seleção (checklist com busca) — escolha VÁRIOS de uma vez num só painel.
+   O gerador desenha o campo com um botão .msel[data-mtrigger] e liga com ligarMulti(btn,cfg).
+   cfg.getOptions() -> [{v,label}] (em cascata, recalculado a cada abertura);
+   cfg.getSelected() -> [v]; cfg.onApply(arr) -> aplica ao fechar. CSS auto-injetado. */
+(function(){const CSS=`.mpop{position:fixed;z-index:2000;background:var(--surface);border:1px solid var(--linha);border-radius:12px;
+  box-shadow:0 14px 44px rgba(20,40,80,.28);width:min(340px,92vw);max-height:min(56vh,420px);display:flex;flex-direction:column;overflow:hidden}
+  .mpop .top{padding:8px;border-bottom:1px solid var(--linha);display:flex;gap:6px;align-items:center}
+  .mpop .top input{flex:1;padding:7px 9px;border:1px solid var(--linha);border-radius:8px;font-size:13px;background:var(--surface);color:var(--ink)}
+  .mpop .lst{overflow:auto;padding:4px 4px 6px}
+  .mpop .opt{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink)}
+  .mpop .opt:hover{background:var(--claro)}.mpop .opt input{accent-color:var(--serie);width:15px;height:15px;flex:none}
+  .mpop .opt .lb{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mpop .opt.marc{background:var(--claro)}
+  .mpop .foot{display:flex;gap:6px;justify-content:space-between;align-items:center;padding:7px 9px;border-top:1px solid var(--linha);font-size:12px}
+  .mpop .foot .cta{background:var(--gov);color:#fff;border:0;border-radius:8px;padding:6px 14px;font-weight:700;cursor:pointer}
+  .mpop .foot .lk{background:none;border:0;color:var(--serie);cursor:pointer;font-weight:700;font-size:12px}
+  .msel{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--linha);border-radius:8px;background:var(--surface);
+    color:var(--ink);font-size:13px;cursor:pointer;min-width:150px;text-align:left}
+  .msel:hover{border-color:var(--serie)}.msel .cnt{margin-left:auto;color:var(--serie);font-weight:800}.msel .ch{color:var(--muted)}`;
+  let inj=false;function css(){if(inj)return;inj=true;const s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s);}
+  let abrir_=null;
+  window.ligarMulti=function(btn,cfg){css();btn.onclick=function(e){e.stopPropagation();if(abrir_){abrir_();abrir_=null;}
+    const opts=cfg.getOptions()||[],sel=new Set((cfg.getSelected()||[]).map(String));
+    const pop=document.createElement("div");pop.className="mpop";
+    pop.innerHTML=`<div class="top"><input placeholder="buscar…" autocomplete="off"></div><div class="lst"></div>
+      <div class="foot"><button class="lk" data-all>Todos</button><button class="lk" data-none>Nenhum</button><button class="cta">Aplicar (<span class="q">${sel.size}</span>)</button></div>`;
+    document.body.appendChild(pop);const r=btn.getBoundingClientRect();
+    pop.style.left=Math.max(6,Math.min(r.left,innerWidth-pop.offsetWidth-6))+"px";
+    let top=r.bottom+4;if(top+pop.offsetHeight>innerHeight-6)top=Math.max(6,r.top-pop.offsetHeight-4);pop.style.top=top+"px";
+    const lst=pop.querySelector(".lst"),busca=pop.querySelector(".top input"),q=pop.querySelector(".q");
+    function pinta(){const f=(busca.value||"").toLowerCase().trim();
+      lst.innerHTML=opts.filter(o=>!f||o.label.toLowerCase().includes(f)||String(o.v).toLowerCase().includes(f)).slice(0,600)
+        .map(o=>`<label class="opt${sel.has(String(o.v))?" marc":""}"><input type="checkbox" data-v="${esc(o.v)}" ${sel.has(String(o.v))?"checked":""}><span class="lb" title="${esc(o.label)}">${esc(o.label)}</span></label>`).join("")
+        ||'<div class="opt" style="color:var(--muted);cursor:default">sem opções</div>';
+      lst.querySelectorAll("input[data-v]").forEach(c=>c.onchange=()=>{const v=c.dataset.v;if(c.checked)sel.add(v);else sel.delete(v);c.closest(".opt").classList.toggle("marc",c.checked);q.textContent=sel.size;});}
+    pinta();busca.oninput=pinta;setTimeout(()=>busca.focus(),0);
+    pop.querySelector("[data-all]").onclick=()=>{const f=(busca.value||"").toLowerCase().trim();opts.filter(o=>!f||o.label.toLowerCase().includes(f)||String(o.v).toLowerCase().includes(f)).forEach(o=>sel.add(String(o.v)));pinta();q.textContent=sel.size;};
+    pop.querySelector("[data-none]").onclick=()=>{sel.clear();pinta();q.textContent=0;};
+    function fechar(aplicar){pop.remove();document.removeEventListener("mousedown",fora,true);document.removeEventListener("keydown",tecla,true);abrir_=null;if(aplicar)cfg.onApply([...sel]);}
+    function fora(ev){if(!pop.contains(ev.target)&&ev.target!==btn)fechar(true);}
+    function tecla(ev){if(ev.key==="Escape")fechar(false);}
+    pop.querySelector(".cta").onclick=()=>fechar(true);
+    document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
+    abrir_=()=>fechar(false);};};})();
+const META={"gerado_em": "01/09/2026 04:51", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
+if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
+el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
+ligarTema();
+</script>
 <div id="portao"><div class="cx">
   <div class="marca">CGMOP · MGI</div>
   <h2>Movimentação de Pessoal</h2>
@@ -86,16 +282,36 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
   // ATRITO — NÃO é segurança real (o arquivo é público; o dado está embutido nele).
   // HASHES = lista de SHA-256 de "usuario:senha". Para trocar/adicionar usuários, edite
   // USUARIOS em publicar_cgmop.py e rode de novo (ou troque a lista abaixo à mão).
-  var HASHES=["f6cac32d2b7d90cbae5576e0d603d9e770a8124756ef037d2c277381ca119ce4", "e8b1d599f61a51dbf282fbdbb155db2ab566a635a29c87c050acfb020c3353ae", "cb500e4428a27fcc2befa2d867e3de37dffb055fd2a89dee431c965a07c98c35", "f77ed874fdc1abc18fd8660e4cf1f93d2a3fc507c66e6839847a88f451aa1a35", "be0b730f10c289c68b271e57c45284c2d0ad6a7463f4204fc2b684d85d7dc57a", "3fa40f7c7f0af90eec6e659b05b3026f2233b68b3ed06c1da98dd32559e229e2", "ef54ef2164c01d1a755567c0d45a3b179f1496f4c1b07a7c0365cf92dfdb5907", "77c0986b633924e2f758c1010dd446d9a47d47767edbf9d2d15190a62fc816d0", "7e2332cee6e0796eab9837985649c02f69d3b4b5007dfd1e18d129740e1f144e", "69762b8a60073881bb7029ba0b45abdcc790fa940d215e64a4b20534e57ecc91", "6ddeb3cb4fe9224cb37da27b21eec8f8a741b11f60557951a31097b41bd15c48", "4bff694f2bce5ac29a02c2c27f2232140207875c13931229aa87d525a0437c38", "a5fcd3ff299259ccf07418a512d2e0fd8a9f24c4308f81948f83161d4eefb8df", "d5b86c79edac1da9ce7fa92e9094a1374d58d4a6ed28468f137b1af68d6ac424", "8f1baa106f7d9f2fb6b1a0963399c77425238ee69c10430cd10c86fe77d96404", "585ba3d1e5e4661694f5a797bc7707ca8334e593eb5d7ec6f817c5f0d34fd6e5", "4c4404e4017340aa99443350ef4c8ebd7ed4a17a19438418b15ee1c67677a546"];
-  var KEY="cgmop_auth_v1";
-  function sha256(s){var b=new TextEncoder().encode(s);return crypto.subtle.digest("SHA-256",b).then(function(d){return Array.prototype.map.call(new Uint8Array(d),function(x){return x.toString(16).padStart(2,"0");}).join("");});}
+  var HASHES=["201602d21ed0e60ee8e96210d95472f92e1a68d382ee7a652060cb693b33c824", "5b2039fede59812df6aff851301c41fa25d855319a6e701b104645d134fb75d5", "6e61aef71ea822a0c7b79ef4ece7fbaf6e7486a90f108fed80bf2bba6f797ae6", "5b3e3ad9548b68b6d3e830a281d93c97666e94c8357d98c50e68e97c152ed14f", "76f45d397daff8c185a6faa87c355320e86fdb1e9d0cfde002121bcbc37d2a2e", "a06daa29526f49c80be183a8d2cf343cf8c870d55bec56c8caa7c7f57bd1bc04", "3e8e80ed53d284bfc9ad2615f3a33721bebc60906bae921e9dcfe85bcbfbdafe", "e57e2a1e1a5205d1ab456e9b1878164d7c004921fdc86404eca8e711138d5d75", "ae171d8883b2a102be9d316b8a245e1ead123aac9ed2da15fcceb1cb5005daa6", "d89e01a5d3b1e46b95bd1b93304867619c26e70a0294fe36d5e5c4b4a941a1b8", "0bd948d75facc4d87c03906ac455265dcc239f3369dea48447e37deb444ea196", "4536e6b9f4bc36fd9fb0e5e4fea83a4c35e4a78c6c8cb1e1cdb519a7363cda79", "a009d92353cd8a15c1d8fd01f722ab8a1565e66dd8b1a08a26a042b3aa1729a6", "fd92d20f5b855a14c50ed804cc02239a9958c87d17bfc5ceea28e9048b81475e", "21f981da2b918484f099fd80e4ea59774d35b027bbbf251f02dc555573c4ec7a", "5a3eadff04e107a3130690b48767d301dc822dc23050b230995c834e5591adfb", "e5d567ce87088e42f99fe2f312677e67213d86bf7e9efb1c72a54ea5284760b0"];
+  var KEY="cgmop_auth_v2";          // v2: mudou o algoritmo -> força novo login de quem já entrou
+  var SAL="cgmop-painel-2026", ITER=250000;
+  // PBKDF2-HMAC-SHA256 com sal e muitas iterações. Antes era um SHA-256 simples, que tornava
+  // trivial varrer senhas curtas/previsíveis a partir do HTML publicado.
+  function derivar(s){
+    var enc=new TextEncoder();
+    return crypto.subtle.importKey("raw",enc.encode(s),{name:"PBKDF2"},false,["deriveBits"])
+      .then(function(k){return crypto.subtle.deriveBits(
+        {name:"PBKDF2",salt:enc.encode(SAL),iterations:ITER,hash:"SHA-256"},k,256);})
+      .then(function(b){return Array.prototype.map.call(new Uint8Array(b),
+        function(x){return x.toString(16).padStart(2,"0");}).join("");});
+  }
   function liberar(){document.documentElement.classList.add("autenticado");}
   try{if(sessionStorage.getItem(KEY)==="1")liberar();}catch(e){}
-  function tentar(){var u=(document.getElementById("portao-user").value||"").trim(),p=document.getElementById("portao-pass").value||"";
-    sha256(u+":"+p).then(function(h){
+  var ocupado=false;
+  function tentar(){
+    if(ocupado)return; ocupado=true;
+    var bt=document.getElementById("portao-btn"),er=document.getElementById("portao-err");
+    var txt=bt?bt.textContent:""; if(bt){bt.disabled=true;bt.textContent="Verificando…";}
+    if(er)er.textContent="";
+    var u=(document.getElementById("portao-user").value||"").trim(),
+        p=document.getElementById("portao-pass").value||"";
+    derivar(u+":"+p).then(function(h){
       if(HASHES.indexOf(h)>=0){try{sessionStorage.setItem(KEY,"1");}catch(e){}liberar();}
-      else{document.getElementById("portao-err").textContent="Usuário ou senha incorretos.";}
-    });}
+      else{if(er)er.textContent="Usuário ou senha incorretos.";}
+    }).catch(function(e){
+      if(er)er.textContent="Não foi possível verificar (o navegador precisa de HTTPS).";
+    }).then(function(){ocupado=false;if(bt){bt.disabled=false;bt.textContent=txt;}});
+  }
   document.addEventListener("DOMContentLoaded",function(){
     var b=document.getElementById("portao-btn");if(b)b.onclick=tentar;
     var pp=document.getElementById("portao-pass");if(pp)pp.addEventListener("keydown",function(e){if(e.key==="Enter")tentar();});

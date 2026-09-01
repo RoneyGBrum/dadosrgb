@@ -575,16 +575,36 @@ init();
   // ATRITO — NÃO é segurança real (o arquivo é público; o dado está embutido nele).
   // HASHES = lista de SHA-256 de "usuario:senha". Para trocar/adicionar usuários, edite
   // USUARIOS em publicar_cgmop.py e rode de novo (ou troque a lista abaixo à mão).
-  var HASHES=["f6cac32d2b7d90cbae5576e0d603d9e770a8124756ef037d2c277381ca119ce4", "e8b1d599f61a51dbf282fbdbb155db2ab566a635a29c87c050acfb020c3353ae", "cb500e4428a27fcc2befa2d867e3de37dffb055fd2a89dee431c965a07c98c35", "f77ed874fdc1abc18fd8660e4cf1f93d2a3fc507c66e6839847a88f451aa1a35", "be0b730f10c289c68b271e57c45284c2d0ad6a7463f4204fc2b684d85d7dc57a", "3fa40f7c7f0af90eec6e659b05b3026f2233b68b3ed06c1da98dd32559e229e2", "ef54ef2164c01d1a755567c0d45a3b179f1496f4c1b07a7c0365cf92dfdb5907", "77c0986b633924e2f758c1010dd446d9a47d47767edbf9d2d15190a62fc816d0", "7e2332cee6e0796eab9837985649c02f69d3b4b5007dfd1e18d129740e1f144e", "69762b8a60073881bb7029ba0b45abdcc790fa940d215e64a4b20534e57ecc91", "6ddeb3cb4fe9224cb37da27b21eec8f8a741b11f60557951a31097b41bd15c48", "4bff694f2bce5ac29a02c2c27f2232140207875c13931229aa87d525a0437c38", "a5fcd3ff299259ccf07418a512d2e0fd8a9f24c4308f81948f83161d4eefb8df", "d5b86c79edac1da9ce7fa92e9094a1374d58d4a6ed28468f137b1af68d6ac424", "8f1baa106f7d9f2fb6b1a0963399c77425238ee69c10430cd10c86fe77d96404", "585ba3d1e5e4661694f5a797bc7707ca8334e593eb5d7ec6f817c5f0d34fd6e5", "4c4404e4017340aa99443350ef4c8ebd7ed4a17a19438418b15ee1c67677a546"];
-  var KEY="cgmop_auth_v1";
-  function sha256(s){var b=new TextEncoder().encode(s);return crypto.subtle.digest("SHA-256",b).then(function(d){return Array.prototype.map.call(new Uint8Array(d),function(x){return x.toString(16).padStart(2,"0");}).join("");});}
+  var HASHES=["201602d21ed0e60ee8e96210d95472f92e1a68d382ee7a652060cb693b33c824", "5b2039fede59812df6aff851301c41fa25d855319a6e701b104645d134fb75d5", "6e61aef71ea822a0c7b79ef4ece7fbaf6e7486a90f108fed80bf2bba6f797ae6", "5b3e3ad9548b68b6d3e830a281d93c97666e94c8357d98c50e68e97c152ed14f", "76f45d397daff8c185a6faa87c355320e86fdb1e9d0cfde002121bcbc37d2a2e", "a06daa29526f49c80be183a8d2cf343cf8c870d55bec56c8caa7c7f57bd1bc04", "3e8e80ed53d284bfc9ad2615f3a33721bebc60906bae921e9dcfe85bcbfbdafe", "e57e2a1e1a5205d1ab456e9b1878164d7c004921fdc86404eca8e711138d5d75", "ae171d8883b2a102be9d316b8a245e1ead123aac9ed2da15fcceb1cb5005daa6", "d89e01a5d3b1e46b95bd1b93304867619c26e70a0294fe36d5e5c4b4a941a1b8", "0bd948d75facc4d87c03906ac455265dcc239f3369dea48447e37deb444ea196", "4536e6b9f4bc36fd9fb0e5e4fea83a4c35e4a78c6c8cb1e1cdb519a7363cda79", "a009d92353cd8a15c1d8fd01f722ab8a1565e66dd8b1a08a26a042b3aa1729a6", "fd92d20f5b855a14c50ed804cc02239a9958c87d17bfc5ceea28e9048b81475e", "21f981da2b918484f099fd80e4ea59774d35b027bbbf251f02dc555573c4ec7a", "5a3eadff04e107a3130690b48767d301dc822dc23050b230995c834e5591adfb", "e5d567ce87088e42f99fe2f312677e67213d86bf7e9efb1c72a54ea5284760b0"];
+  var KEY="cgmop_auth_v2";          // v2: mudou o algoritmo -> força novo login de quem já entrou
+  var SAL="cgmop-painel-2026", ITER=250000;
+  // PBKDF2-HMAC-SHA256 com sal e muitas iterações. Antes era um SHA-256 simples, que tornava
+  // trivial varrer senhas curtas/previsíveis a partir do HTML publicado.
+  function derivar(s){
+    var enc=new TextEncoder();
+    return crypto.subtle.importKey("raw",enc.encode(s),{name:"PBKDF2"},false,["deriveBits"])
+      .then(function(k){return crypto.subtle.deriveBits(
+        {name:"PBKDF2",salt:enc.encode(SAL),iterations:ITER,hash:"SHA-256"},k,256);})
+      .then(function(b){return Array.prototype.map.call(new Uint8Array(b),
+        function(x){return x.toString(16).padStart(2,"0");}).join("");});
+  }
   function liberar(){document.documentElement.classList.add("autenticado");}
   try{if(sessionStorage.getItem(KEY)==="1")liberar();}catch(e){}
-  function tentar(){var u=(document.getElementById("portao-user").value||"").trim(),p=document.getElementById("portao-pass").value||"";
-    sha256(u+":"+p).then(function(h){
+  var ocupado=false;
+  function tentar(){
+    if(ocupado)return; ocupado=true;
+    var bt=document.getElementById("portao-btn"),er=document.getElementById("portao-err");
+    var txt=bt?bt.textContent:""; if(bt){bt.disabled=true;bt.textContent="Verificando…";}
+    if(er)er.textContent="";
+    var u=(document.getElementById("portao-user").value||"").trim(),
+        p=document.getElementById("portao-pass").value||"";
+    derivar(u+":"+p).then(function(h){
       if(HASHES.indexOf(h)>=0){try{sessionStorage.setItem(KEY,"1");}catch(e){}liberar();}
-      else{document.getElementById("portao-err").textContent="Usuário ou senha incorretos.";}
-    });}
+      else{if(er)er.textContent="Usuário ou senha incorretos.";}
+    }).catch(function(e){
+      if(er)er.textContent="Não foi possível verificar (o navegador precisa de HTTPS).";
+    }).then(function(){ocupado=false;if(bt){bt.disabled=false;bt.textContent=txt;}});
+  }
   document.addEventListener("DOMContentLoaded",function(){
     var b=document.getElementById("portao-btn");if(b)b.onclick=tentar;
     var pp=document.getElementById("portao-pass");if(pp)pp.addEventListener("keydown",function(e){if(e.key==="Enter")tentar();});
