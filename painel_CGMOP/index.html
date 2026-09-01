@@ -104,22 +104,50 @@ svg text{fill:var(--muted);font-size:11px}svg text.t{fill:var(--ink);font-weight
 #pdf-doc .pos{color:#b3541c;font-weight:700}#pdf-doc .neg{color:#0f6b56;font-weight:700}
 #pdf-doc .seta{font-weight:800}#pdf-doc .seta.o{color:#c26a27}#pdf-doc .seta.d{color:#178a6e}
 #pdf-doc .ass{margin-top:40px;font-size:13px;color:#1c1c1c}
-.hero{max-width:1100px;margin:0 auto;padding:34px 20px 8px}
-.hero .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--serie)}
-.hero h1{font-size:clamp(26px,4vw,40px);margin:8px 0 8px;line-height:1.08;color:var(--ink)}
-.hero p{font-size:16px;color:var(--ink-2);max-width:70ch;margin:0}
-.hero .stat{display:inline-flex;gap:18px;margin-top:16px;flex-wrap:wrap}
-.hero .stat b{font-size:22px;color:var(--gov);font-variant-numeric:tabular-nums}
-.hero .stat span{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
-.cards{max-width:1100px;margin:0 auto;padding:22px 20px 10px;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.card-eco{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--linha);border-top:4px solid var(--acc);border-radius:16px;padding:20px;box-shadow:var(--sombra);text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s}
-.card-eco:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(20,40,80,.12)}
-.card-eco.soon{opacity:.62;cursor:default}.card-eco.soon:hover{transform:none;box-shadow:var(--sombra)}
-.card-eco .ic{font-size:32px;line-height:1}
-.card-eco h3{margin:0 0 6px;font-size:17px;display:flex;align-items:center;gap:8px}
-.card-eco p{margin:0 0 10px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
-.card-eco .ir{font-weight:700;color:var(--acc);font-size:13px}
-.badge-soon{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border:1px solid var(--linha);border-radius:10px;padding:1px 7px}
+/* ---- Hub: paleta refinada e local (não altera os tokens dos gráficos) ---- */
+body{background:
+  radial-gradient(1200px 460px at 78% -8%, rgba(45,106,142,.10), transparent 60%),
+  radial-gradient(1000px 420px at 12% 4%, rgba(122,92,134,.08), transparent 55%),
+  var(--plane)}
+:root[data-theme="dark"] body{background:
+  radial-gradient(1200px 460px at 78% -8%, rgba(45,106,142,.20), transparent 60%),
+  radial-gradient(1000px 420px at 12% 4%, rgba(122,92,134,.16), transparent 55%),
+  var(--plane)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.hero{padding:46px 0 6px}
+.hero .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:#2d6a8e;display:inline-flex;align-items:center;gap:9px}
+.hero .eyebrow::before{content:"";width:26px;height:2px;background:#2d6a8e;border-radius:2px;display:inline-block}
+:root[data-theme="dark"] .hero .eyebrow,:root[data-theme="dark"] .hero .eyebrow::before{color:#7fb2cf;background:#7fb2cf}
+:root[data-theme="dark"] .hero .eyebrow{background:none}
+.hero h1{font-size:clamp(27px,4vw,42px);margin:14px 0 12px;line-height:1.06;letter-spacing:-.02em;
+  color:var(--ink);font-weight:800;max-width:20ch}
+.hero p{font-size:15.5px;color:var(--ink-2);max-width:64ch;margin:0;line-height:1.6}
+.hero .sub{margin-top:16px;font-size:12.5px;color:var(--muted);font-weight:600}
+.hero .stat{display:inline-flex;gap:28px;margin-top:18px;flex-wrap:wrap;padding:14px 20px;
+  background:var(--surface);border:1px solid var(--linha);border-radius:14px;box-shadow:0 1px 2px rgba(16,32,64,.04)}
+.hero .stat b{font-size:23px;color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.hero .stat span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));padding:26px 0 12px}
+.tile{position:relative;display:flex;flex-direction:column;background:var(--surface);
+  border:1px solid var(--linha);border-radius:18px;padding:22px 20px 18px;text-decoration:none;color:inherit;
+  box-shadow:0 1px 2px rgba(16,32,64,.04);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;overflow:hidden}
+.tile::after{content:"";position:absolute;inset:0 0 auto 0;height:3px;
+  background:linear-gradient(90deg,var(--acc),transparent 82%);opacity:.9}
+.tile:hover{transform:translateY(-4px);box-shadow:0 16px 38px rgba(16,32,64,.11);
+  border-color:color-mix(in srgb,var(--acc) 45%,var(--linha))}
+.tile.soon{opacity:.6;cursor:default}.tile.soon:hover{transform:none;box-shadow:0 1px 2px rgba(16,32,64,.04);border-color:var(--linha)}
+.tile .ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:23px;
+  background:color-mix(in srgb,var(--acc) 13%,var(--surface));
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 26%,transparent)}
+.tile .tag{margin-top:14px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+  color:color-mix(in srgb,var(--acc) 72%,var(--ink-2))}
+.tile h3{margin:5px 0 8px;font-size:16px;font-weight:800;letter-spacing:-.015em;color:var(--ink);line-height:1.2}
+.tile p{margin:0 0 18px;font-size:12.7px;line-height:1.52;color:var(--ink-2);flex:1}
+.tile .go{font-weight:800;font-size:12.5px;color:var(--acc);letter-spacing:.01em;
+  display:inline-flex;align-items:center;gap:5px;transition:gap .16s ease}
+.tile:hover .go{gap:9px}
+@media(max-width:560px){.hero{padding:30px 0 4px}.grid{gap:14px}}
 </style>
 <style id="portao-css">
 #portao{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#0b2a4a,#12336e);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -145,17 +173,16 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 </style>
 </head><body>
 <nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
-<header class="topo">
-  <h1>Painéis de Movimentação de Pessoal — CGMOP/SGP/MGI</h1>
-  <div class="sub" id="subtitulo"></div>
-</header>
-<section class="hero">
-  <div class="eyebrow">Ecossistema de dados · CGMOP</div>
-  <h1>Informações de movimentação na palma da mão</h1>
-  <p>Um conjunto de painéis integrados sobre a movimentação de servidores federais entre órgãos — cessão, requisição, força de trabalho (§7º art. 93) e reforma administrativa. Escolha por onde começar.</p>
-  <div class="stat" id="stat"></div>
-</section>
-<section class="cards"><a class="card-eco" href="painel_movimentacoes.html" style="--acc:var(--destino)"><div class="ic">🔄</div><div class="ct"><h3>Movimentações</h3><p>Vigentes e histórico num só lugar: perfil, órgãos que cedem/recebem, proporcionalidade (§7º art.93), encerramentos e motivos de saída, pessoas em exercício por período e a relação nominal completa — com ficha, trajetória, PDF e XLSX.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="anistiados.html" style="--acc:var(--serie)"><div class="ic">⚖️</div><div class="ct"><h3>Anistiados</h3><p>Ficha funcional completa do público anistiado (Lei 8.878/94): de onde vieram, por onde passaram, onde estão hoje, remuneração e tempo de retorno.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="pessoal.html" style="--acc:var(--destino)"><div class="ic">👥</div><div class="ct"><h3>Pessoal</h3><p>Quadro de pessoal do Executivo federal (agregado, sem nomes): força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="redistribuicao.html" style="--acc:var(--origem)"><div class="ic">↔️</div><div class="ct"><h3>Redistribuição</h3><p>Redistribuição de cargos entre órgãos (art. 37, Lei 8.112/90): de onde → para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="lip.html" style="--acc:var(--serie)"><div class="ic">📄</div><div class="ct"><h3>LIP — Licenças de Interesse Particular</h3><p>Licenças para tratar de interesses particulares (art. 91, Lei 8.112/90), desde 2011: órgão, cargo, carreira, duração e situação.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="internacional.html" style="--acc:#0E7C86"><div class="ic">🌍</div><div class="ct"><h3>Radar do Exterior — Afastamento Internacional</h3><p>Console de conformidade: quem está fora do País agora, sob que regime de ônus e até quando. Confronta a folha com o art. 96 (sem ônus = perda total da remuneração) e entrega a fila do que a lei manda conferir.</p><span class="ir">Abrir →</span></div></a><a class="card-eco" href="capacitacao.html" style="--acc:#146B4A"><div class="ic">🎓</div><div class="ct"><h3>Quinquênio — Licença Capacitação</h3><p>Caderno de direito e uso: quanto do teto de 90 dias por quinquênio foi usado (art. 87), quem usa e quem não usa (PNDP) e a carência de 2 anos antes da pós-graduação (art. 96-A).</p><span class="ir">Abrir →</span></div></a></section>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Ecossistema de dados · CGMOP / SGP / MGI</div>
+    <h1>Movimentação de pessoal na palma da mão</h1>
+    <p>Painéis integrados sobre servidores federais entre órgãos — cessão, requisição, força de trabalho (§7º art. 93), afastamentos e reforma administrativa. Escolha por onde começar.</p>
+    <div class="sub" id="subtitulo"></div>
+    <div class="stat" id="stat"></div>
+  </section>
+  <section class="grid"><a class="tile" href="painel_movimentacoes.html" style="--acc:#2d6a8e"><span class="ic">🔄</span><span class="tag">Cessão · requisição · §7º</span><h3>Movimentações</h3><p>Vigentes e histórico: perfil, órgãos que cedem e recebem, proporcionalidade, encerramentos e a relação nominal — com ficha, trajetória, PDF e XLSX.</p><span class="go">Abrir →</span></a><a class="tile" href="anistiados.html" style="--acc:#7a5c86"><span class="ic">⚖️</span><span class="tag">Lei 8.878/94</span><h3>Anistiados</h3><p>Ficha funcional do público anistiado: de onde vieram, por onde passaram, onde estão hoje, remuneração e tempo de retorno.</p><span class="go">Abrir →</span></a><a class="tile" href="pessoal.html" style="--acc:#4a6d5a"><span class="ic">👥</span><span class="tag">Agregado · sem nomes</span><h3>Pessoal</h3><p>Quadro de pessoal do Executivo federal: força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração.</p><span class="go">Abrir →</span></a><a class="tile" href="redistribuicao.html" style="--acc:#b07d4f"><span class="ic">↔️</span><span class="tag">Art. 37 · Lei 8.112/90</span><h3>Redistribuição</h3><p>Cargos redistribuídos entre órgãos: de onde para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p><span class="go">Abrir →</span></a><a class="tile" href="lip.html" style="--acc:#5f7891"><span class="ic">📄</span><span class="tag">Art. 91 · desde 2011</span><h3>LIP — Interesse Particular</h3><p>Licenças para tratar de interesses particulares: órgão, cargo, carreira, duração e situação de cada afastamento.</p><span class="go">Abrir →</span></a><a class="tile" href="internacional.html" style="--acc:#2f8088"><span class="ic">🌍</span><span class="tag">Afast. internacional · art. 96</span><h3>Radar do Exterior</h3><p>Quem está fora do País agora, sob que ônus e até quando — confrontado com a folha e com a fila do que a lei manda conferir.</p><span class="go">Abrir →</span></a><a class="tile" href="capacitacao.html" style="--acc:#3f6b4a"><span class="ic">🎓</span><span class="tag">Lic. capacitação · art. 87</span><h3>Quinquênio</h3><p>Uso do teto de 90 dias por quinquênio, quem usa e quem não usa (PNDP) e a carência de 2 anos antes da pós (art. 96-A).</p><span class="go">Abrir →</span></a></section>
+</div>
 <div class="rodape" id="rodape"></div>
 <div id="tt"></div>
 <script>const el=id=>document.getElementById(id),tt=el("tt");
@@ -268,7 +295,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "01/09/2026 06:34", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "01/09/2026 07:40", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
