@@ -1,214 +1,460 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="dadosrgb — hub de projetos de dados, análise e automação de Roney G. Brum.">
 <title>dadosrgb</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSI1OCIgaGVpZ2h0PSI1OCIgcng9IjE0IiBmaWxsPSIjMUIzNjVEIi8+CjxwYXRoIGQ9Ik0xNCAxNiBINTAgTDM2IDM2IFY0NiBMMjggNTAgVjM2IFoiIGZpbGw9IiNGRkZGRkYiLz4KPGNpcmNsZSBjeD0iMzIiIGN5PSI1NSIgcj0iMy40IiBmaWxsPSIjQjA1QTIyIi8+Cjwvc3ZnPgo=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;450;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --azul:#1B365D; --azul-2:#2C5282; --azul-claro:#EEF2F8;
-  --cobre:#B05A22; --cobre-claro:#FBF0E8;
-  --bg:#ffffff; --texto:#1d1d1f; --texto-2:#5b5f66; --borda:#e5e7eb;
-  /* cor de destaque por categoria (definida em cada .secao); padrão = azul da marca */
-  --ac:#1B365D; --ac-bg:#EEF2F8;
-}
-/* Uma COR por categoria, para separar visualmente as seções (claro) */
-.c-mov   {--ac:#0F7B63; --ac-bg:#E4F3EF;}  /* Movimentação/CGMOP — verde-teal */
-.c-anist {--ac:#7A3D9E; --ac-bg:#F2E9F8;}  /* Anistiados — violeta */
-.c-est   {--ac:#1F5FBF; --ac-bg:#E8F0FC;}  /* Estudos e dados — azul */
-.c-fel   {--ac:#0A6B8A; --ac-bg:#E1F1F6;}  /* Fellowship / Banco Mundial — ciano */
-.c-inst  {--ac:#B05A22; --ac-bg:#FBF0E8;}  /* Institucional/ferramentas — cobre */
-@media (prefers-color-scheme: dark){
   :root{
-    --azul:#7FA3D4; --azul-2:#9DBBE4; --azul-claro:#161E2B;
-    --cobre:#E08B4C; --cobre-claro:#241A12;
-    --bg:#0e0f12; --texto:#f2f2f3; --texto-2:#a3a7ae; --borda:#2a2d33;
-    --ac:#7FA3D4; --ac-bg:#161E2B;
+    /* ground — warm greige with an umber bias, not cream */
+    --bg:#eceae3;
+    --bg-tint:#e5e2d9;
+    --card:#faf9f5;
+    --card-2:#f4f2ec;
+    --ink:#26231d;
+    --ink-2:#514c42;
+    --ink-3:#7a7365;
+    --line:#d7d3c8;
+    --line-2:#c9c4b6;
+    --shadow:24 22 16;
+    --shadow-a:0.08;
+    /* five curated, dessaturated jewel tones — harmonic */
+    --c1:#2f6b6b; /* petróleo  */
+    --c2:#9a6a22; /* ocre      */
+    --c3:#6f3d63; /* ameixa    */
+    --c4:#4f6b45; /* pinho     */
+    --c5:#a1584a; /* argila    */
+    --wm:#2f6b6b;
   }
-  .c-mov   {--ac:#4FC4A8; --ac-bg:#10231E;}
-  .c-anist {--ac:#C39BE0; --ac-bg:#1E1526;}
-  .c-est   {--ac:#7FB0EE; --ac-bg:#111C2C;}
-  .c-fel   {--ac:#4FB3D4; --ac-bg:#0E2028;}
-  .c-inst  {--ac:#E08B4C; --ac-bg:#241A12;}
-}
-*{box-sizing:border-box}
-body{
-  margin:0; background:var(--bg); color:var(--texto);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-header{
-  max-width:900px; margin:0 auto; padding:72px 24px 32px;
-}
-.marca{
-  display:inline-flex; align-items:center; gap:10px;
-  font-weight:700; font-size:15px; letter-spacing:.02em; color:var(--azul);
-  text-transform:uppercase;
-}
-.marca svg{width:22px; height:22px; border-radius:6px}
-h1{
-  font-size:clamp(32px,5vw,46px); line-height:1.08; margin:18px 0 12px; letter-spacing:-.02em;
-}
-.sub{color:var(--texto-2); font-size:17px; line-height:1.5; max-width:640px; margin:0}
-.regua{width:56px; height:2.5px; background:var(--cobre); margin:26px 0; border-radius:2px}
-main{max-width:900px; margin:0 auto; padding:0 24px 96px}
-.grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px;
-}
-.card{
-  display:block; text-decoration:none; color:inherit;
-  border:1px solid var(--borda); border-left:4px solid var(--ac); border-radius:14px; padding:22px;
-  transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
-}
-.card:hover{border-color:var(--ac); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.07)}
-.tag{
-  display:inline-block; font-size:11px; font-weight:700; letter-spacing:.05em;
-  text-transform:uppercase; color:var(--ac); background:var(--ac-bg);
-  padding:3px 8px; border-radius:5px; margin-bottom:10px;
-}
-.card h2{font-size:17px; margin:0 0 8px; color:var(--ac); line-height:1.3}
-.card p{font-size:14px; color:var(--texto-2); margin:0; line-height:1.5}
-.card.destaque{border-left-width:5px; border-top:4px solid var(--ac); background:var(--ac-bg)}
-.secao{max-width:900px; margin:0 auto; padding:0 24px}
-.secao h2{font-size:14px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--ac); margin:38px 0 4px; display:flex; align-items:center; gap:10px}
-.secao h2::before{content:""; width:13px; height:13px; border-radius:4px; background:var(--ac); flex:none}
-.secao h2::after{content:""; flex:1; height:2px; background:linear-gradient(90deg,var(--ac),transparent); opacity:.5; border-radius:2px}
-.secao p{color:var(--texto-2); font-size:13.5px; margin:0 0 16px}
-footer{
-  max-width:900px; margin:0 auto; padding:0 24px 60px;
-  color:var(--texto-2); font-size:13px;
-}
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#1a1815;
+      --bg-tint:#211e1a;
+      --card:#242019;
+      --card-2:#2b271f;
+      --ink:#efece3;
+      --ink-2:#c3bdae;
+      --ink-3:#8f887a;
+      --line:#39342b;
+      --line-2:#463f34;
+      --shadow:0 0 0;
+      --shadow-a:0.35;
+      --c1:#74b4ad;
+      --c2:#d5a35d;
+      --c3:#c58fb9;
+      --c4:#9dbf89;
+      --c5:#dc9a88;
+      --wm:#74b4ad;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1a1815;
+    --bg-tint:#211e1a;
+    --card:#242019;
+    --card-2:#2b271f;
+    --ink:#efece3;
+    --ink-2:#c3bdae;
+    --ink-3:#8f887a;
+    --line:#39342b;
+    --line-2:#463f34;
+    --shadow:0 0 0;
+    --shadow-a:0.35;
+    --c1:#74b4ad;
+    --c2:#d5a35d;
+    --c3:#c58fb9;
+    --c4:#9dbf89;
+    --c5:#dc9a88;
+    --wm:#74b4ad;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background-color:var(--bg);
+    /* faint ledger ruling — governmental paper */
+    background-image:repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 33px,
+      color-mix(in srgb, var(--ink) 4%, transparent) 33px,
+      color-mix(in srgb, var(--ink) 4%, transparent) 34px
+    );
+    color:var(--ink);
+    font-family:"Public Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .mono{
+    font-family:ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- masthead ---------- */
+  .top{
+    display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+    padding:30px 0 22px;flex-wrap:wrap;
+    border-bottom:1px solid var(--line-2);
+  }
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .wordmark{
+    font-family:"Fraunces", Georgia, serif;
+    font-optical-sizing:auto;
+    font-weight:600;font-size:26px;letter-spacing:-.01em;color:var(--ink);
+    line-height:1;
+  }
+  .wordmark b{color:var(--wm);font-weight:600}
+  .brand .kicker{
+    font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:600;
+  }
+  .toolbar{display:flex;align-items:center;gap:16px}
+  .catalog{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:600;
+    display:flex;gap:14px;align-items:center;
+  }
+  .catalog span{color:var(--ink-2)}
+  .ttoggle{
+    appearance:none;border:1px solid var(--line-2);background:var(--card);
+    color:var(--ink-2);border-radius:2px;padding:6px 10px;cursor:pointer;
+    font-family:inherit;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:600;transition:border-color .18s, color .18s;
+  }
+  .ttoggle:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:56px 0 44px;max-width:900px}
+  .hero .eyebrow{
+    font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--wm);
+    font-weight:700;margin:0 0 20px;
+  }
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(38px, 6vw, 66px);
+    line-height:1.03;letter-spacing:-.018em;
+    margin:0 0 22px;color:var(--ink);
+    max-width:16ch;
+  }
+  .hero p{
+    font-size:clamp(16px,1.4vw,18.5px);
+    line-height:1.62;color:var(--ink-2);max-width:60ch;margin:0;font-weight:450;
+  }
+
+  /* ---------- section ---------- */
+  .sec{padding:34px 0 12px;scroll-margin-top:20px}
+  .sec-head{
+    display:grid;grid-template-columns:auto 1fr;gap:18px 20px;align-items:baseline;
+    padding-bottom:16px;margin-bottom:26px;
+    border-bottom:2px solid var(--cat);
+  }
+  .sec-no{
+    font-size:12px;letter-spacing:.14em;font-weight:600;
+    color:var(--cat);
+    padding-top:9px;white-space:nowrap;
+  }
+  .sec-titles{grid-column:2}
+  .sec h2{
+    font-family:"Fraunces", Georgia, serif;font-optical-sizing:auto;
+    font-weight:600;font-size:clamp(21px,2.4vw,27px);letter-spacing:-.01em;
+    line-height:1.15;margin:0 0 6px;color:var(--ink);
+  }
+  .sec .sec-desc{font-size:14.5px;color:var(--ink-2);margin:0;max-width:66ch;font-weight:450}
+
+  /* ---------- grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(min(100%,262px), 1fr));
+    gap:16px;
+    margin-bottom:8px;
+  }
+  .card{
+    position:relative;display:flex;flex-direction:column;
+    text-decoration:none;color:inherit;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:22px 22px 20px;
+    min-height:172px;
+    transition:transform .2s cubic-bezier(.2,.6,.2,1), border-color .2s, box-shadow .2s;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    border-color:var(--cat);
+    box-shadow:0 10px 26px -14px rgba(var(--shadow), var(--shadow-a));
+  }
+  .card .tag{
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+    color:var(--cat);margin-bottom:13px;display:block;
+  }
+  .card h3{
+    font-family:"Fraunces", Georgia, serif;font-optical-sizing:auto;
+    font-weight:600;font-size:18px;line-height:1.22;letter-spacing:-.005em;
+    margin:0 0 9px;color:var(--ink);
+  }
+  .card p{font-size:13.5px;line-height:1.55;color:var(--ink-2);margin:0;font-weight:450}
+  .card .go{
+    margin-top:auto;padding-top:16px;
+    font-size:12px;letter-spacing:.03em;color:var(--ink-3);font-weight:600;
+    display:inline-flex;align-items:center;gap:7px;
+    transition:color .2s;
+  }
+  .card:hover .go{color:var(--cat)}
+  .card .go .ar{transition:transform .2s}
+  .card:hover .go .ar{transform:translateX(4px)}
+
+  /* featured — o principal */
+  .card.feat{
+    grid-column:span 2;
+    background:
+      linear-gradient(160deg,
+        color-mix(in srgb, var(--cat) 12%, var(--card)),
+        color-mix(in srgb, var(--cat) 4%, var(--card)) 60%);
+    border-color:color-mix(in srgb, var(--cat) 45%, var(--line));
+    padding:26px 28px 24px;
+    min-height:210px;
+  }
+  .card.feat .flag{
+    position:absolute;top:20px;right:24px;
+    font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+    color:var(--cat);
+    display:flex;align-items:center;gap:8px;
+  }
+  .card.feat .flag::before{content:"";width:20px;height:1px;background:var(--cat)}
+  .card.feat h3{font-size:clamp(22px,2.6vw,29px);line-height:1.1;margin-bottom:12px;max-width:20ch}
+  .card.feat p{font-size:14.5px;line-height:1.58;max-width:62ch;color:var(--ink-2)}
+  .card.feat .go{color:var(--cat)}
+
+  @media (max-width:720px){
+    .grid{grid-template-columns:1fr 1fr;gap:13px}
+    .card.feat{grid-column:1 / -1}
+    .sec-head{grid-template-columns:1fr;gap:8px}
+    .sec-no{padding-top:0}
+    .sec-titles{grid-column:1}
+  }
+  @media (max-width:460px){
+    .grid{grid-template-columns:1fr}
+    .wrap{padding:0 18px}
+    .hero{padding:40px 0 32px}
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:52px;border-top:1px solid var(--line-2);
+    padding:34px 0 46px;
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  footer .fmark{
+    font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:16px;color:var(--ink);
+  }
+  footer .fmeta{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<header>
-  <span class="marca">
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <rect x="3" y="3" width="58" height="58" rx="14" fill="#1B365D"/>
-      <path d="M14 16 H50 L36 36 V46 L28 50 V36 Z" fill="#FFFFFF"/>
-      <circle cx="32" cy="55" r="3.4" fill="#B05A22"/>
-    </svg>
-    dadosrgb
-  </span>
-  <h1>Projetos de dados, análise e automação</h1>
-  <p class="sub">Manuais, painéis e estudos analíticos desenvolvidos por Roney G. Brum — gestão pública, dados e processos.</p>
-  <div class="regua"></div>
-</header>
-
-<main>
-  <section class="secao c-mov">
-    <h2>Movimentação e força de trabalho — CGMOP</h2>
-    <p>Os painéis interativos e os estudos de mobilidade de servidores federais.</p>
-    <div class="grid">
-      <a class="card destaque" href="./painel_CGMOP/">
-        <span class="tag">Painel · acesso restrito</span>
-        <h2>Painel de Movimentação de Pessoal — CGMOP</h2>
-        <p>Ecossistema com Movimentações (vigentes e histórico completo, versões pública e restrita) e Anistiados: cessões, requisições, força de trabalho e reforma administrativa — gráficos, evolução no tempo, proporcionalidade e a relação nominal completa.</p>
-      </a>
-      <a class="card" href="./movimentacao-pessoal/">
-        <span class="tag">Apresentação</span>
-        <h2>Movimentação de Pessoal</h2>
-        <p>A transformação da mobilidade na Administração Pública Federal. CGMOP · DEPRO · SGP · MGI.</p>
-      </a>
-      <a class="card" href="./funasa-painel-servidores/">
-        <span class="tag">Painel</span>
-        <h2>Painel de Servidores — FUNASA</h2>
-        <p>Visão consolidada do quadro de servidores da fundação.</p>
-      </a>
-      <a class="card" href="./projecao_correios/">
-        <span class="tag">Apresentação</span>
-        <h2>Projeção dos Correios</h2>
-        <p>Projeção de cenários para movimentações dos Correios.</p>
-      </a>
+  <div class="top">
+    <div class="brand">
+      <div class="wordmark">dados<b>rgb</b></div>
+      <div class="kicker">Índice de projetos</div>
     </div>
-  </section>
-
-  <section class="secao c-anist">
-    <h2>Anistiados (Lei 8.878/94 e 15.367/2026)</h2>
-    <p>Monitoramento e impacto financeiro do público anistiado.</p>
-    <div class="grid">
-      <a class="card" href="./painel-anistiados/">
-        <span class="tag">Painel</span>
-        <h2>Painel de Monitoramento — Anistiados</h2>
-        <p>Implementação da Lei nº 15.367/2026: reposicionamento na classe e no salário dos anistiados ativos, com evolução mês a mês das correções.</p>
-      </a>
-      <a class="card" href="./pdi_plano_desligamento_incentivado/">
-        <span class="tag">Estudo analítico</span>
-        <h2>PDI — Desligamento Incentivado</h2>
-        <p>Impacto financeiro do PDI dos anistiados (Lei 15.367/2026), com simulador de cenários e recorte temporal.</p>
-      </a>
+    <div class="toolbar">
+      <div class="catalog mono">Coleções <span>05</span> · Projetos <span>14</span></div>
+      <button class="ttoggle" id="tt" type="button" aria-label="Alternar tema">Tema</button>
     </div>
-  </section>
+  </div>
 
-  <section class="secao c-est">
-    <h2>Estudos analíticos e dados</h2>
-    <p>Análises com filtros interativos e leitura autossuficiente.</p>
-    <div class="grid">
-      <a class="card" href="./lip-estudo-licencas/">
-        <span class="tag">Estudo analítico</span>
-        <h2>LIP — Licenças de Interesse Particular</h2>
-        <p>20.507 licenças e 14.388 servidores, com filtros interativos e leitura autossuficiente.</p>
-      </a>
-      <a class="card" href="./pipeline-lattes/">
-        <span class="tag">Dados · IA</span>
-        <h2>Pipeline Lattes</h2>
-        <p>Classificação e quantificação de perfis a partir do Currículo Lattes. CNPq × CNI.</p>
-      </a>
-    </div>
-  </section>
+  <header class="hero">
+    <p class="eyebrow">Roney G. Brum · Gestão pública</p>
+    <h1>Projetos de dados, análise e automação</h1>
+    <p>Manuais, painéis e estudos analíticos desenvolvidos por Roney G. Brum — gestão pública, dados e processos.</p>
+  </header>
 
-  <section class="secao c-fel">
-    <h2>Programa Fellowship — MGI × Banco Mundial</h2>
-    <p>Documentos operacionais da parceria WBG Fellowship Program.</p>
-    <div class="grid">
-      <a class="card" href="./fellowship-programa-geral/">
-        <span class="tag">Fellowship · MGI × BM</span>
-        <h2>Programa Fellowship</h2>
-        <p>Visão geral do programa: o que é, quem custeia e base legal.</p>
-      </a>
-      <a class="card" href="./fellowship-fluxo-trabalho/">
-        <span class="tag">Fellowship · MGI × BM</span>
-        <h2>Proposta de Fluxo de Trabalho</h2>
-        <p>Papéis, procedimentos e padronização do WBG Fellowship Program.</p>
-      </a>
-      <a class="card" href="./fellowship-diretrizes/">
-        <span class="tag">Fellowship · MGI × BM</span>
-        <h2>Diretrizes Operacionais</h2>
-        <p>Consolidação da parceria e garantia de previsibilidade do programa de bolsas.</p>
-      </a>
-    </div>
-  </section>
+  <main>
 
-  <section class="secao c-inst">
-    <h2>Apresentações institucionais e ferramentas</h2>
-    <p>Materiais de diretoria, normativos e ferramentas.</p>
-    <div class="grid">
-      <a class="card" href="./trimestral-cgmop/">
-        <span class="tag">Apresentação</span>
-        <h2>Trimestral CGMOP — Planejamento 2025/2026</h2>
-        <p>Apresentação à Diretoria: execução do ciclo 2025/2026 e os projetos de 2026.</p>
-      </a>
-      <a class="card" href="./recruta-gov/">
-        <span class="tag">Alocação</span>
-        <h2>Recruta.gov</h2>
-        <p>A nova engenharia de alocação de servidores públicos.</p>
-      </a>
-      <a class="card" href="./limites-reembolso/">
-        <span class="tag">Normativo</span>
-        <h2>Limites de Reembolso</h2>
-        <p>Parâmetros e limites vigentes. MGI/SGP/DEPRO/CGMOP/DGIMP.</p>
-      </a>
-    </div>
-  </section>
-</main>
+    <!-- 01 -->
+    <section class="sec" style="--cat:var(--c1)">
+      <div class="sec-head">
+        <div class="sec-no mono">COL. 01</div>
+        <div class="sec-titles">
+          <h2>Movimentação e força de trabalho — CGMOP</h2>
+          <p class="sec-desc">Os painéis interativos e os estudos de mobilidade de servidores federais.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <a class="card feat" href="./painel_CGMOP/">
+          <span class="flag">Principal</span>
+          <span class="tag">Painel · acesso restrito</span>
+          <h3>Painel de Movimentação de Pessoal — CGMOP</h3>
+          <p>Ecossistema com Movimentações (vigentes e histórico completo, versões pública e restrita) e Anistiados: cessões, requisições, força de trabalho e reforma administrativa — gráficos, evolução no tempo, proporcionalidade e a relação nominal completa.</p>
+          <span class="go">Abrir ecossistema <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./movimentacao-pessoal/">
+          <span class="tag">Apresentação</span>
+          <h3>Movimentação de Pessoal</h3>
+          <p>A transformação da mobilidade na Administração Pública Federal. CGMOP · DEPRO · SGP · MGI.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./funasa-painel-servidores/">
+          <span class="tag">Painel</span>
+          <h3>Painel de Servidores — FUNASA</h3>
+          <p>Visão consolidada do quadro de servidores da fundação.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./projecao_correios/">
+          <span class="tag">Apresentação</span>
+          <h3>Projeção dos Correios</h3>
+          <p>Projeção de cenários para movimentações dos Correios.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+      </div>
+    </section>
 
-<footer>
-  dadosrgb.dev.br
-</footer>
+    <!-- 02 -->
+    <section class="sec" style="--cat:var(--c2)">
+      <div class="sec-head">
+        <div class="sec-no mono">COL. 02</div>
+        <div class="sec-titles">
+          <h2>Anistiados (Lei 8.878/94 e 15.367/2026)</h2>
+          <p class="sec-desc">Monitoramento e impacto financeiro do público anistiado.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <a class="card" href="./painel-anistiados/">
+          <span class="tag">Painel</span>
+          <h3>Painel de Monitoramento — Anistiados</h3>
+          <p>Implementação da Lei nº 15.367/2026: reposicionamento na classe e no salário dos anistiados ativos, com evolução mês a mês das correções.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./pdi_plano_desligamento_incentivado/">
+          <span class="tag">Estudo analítico</span>
+          <h3>PDI — Desligamento Incentivado</h3>
+          <p>Impacto financeiro do PDI dos anistiados (Lei 15.367/2026), com simulador de cenários e recorte temporal.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+      </div>
+    </section>
 
+    <!-- 03 -->
+    <section class="sec" style="--cat:var(--c3)">
+      <div class="sec-head">
+        <div class="sec-no mono">COL. 03</div>
+        <div class="sec-titles">
+          <h2>Estudos analíticos e dados</h2>
+          <p class="sec-desc">Análises com filtros interativos e leitura autossuficiente.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <a class="card" href="./lip-estudo-licencas/">
+          <span class="tag">Estudo analítico</span>
+          <h3>LIP — Licenças de Interesse Particular</h3>
+          <p>20.507 licenças e 14.388 servidores, com filtros interativos e leitura autossuficiente.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./pipeline-lattes/">
+          <span class="tag">Dados · IA</span>
+          <h3>Pipeline Lattes</h3>
+          <p>Classificação e quantificação de perfis a partir do Currículo Lattes. CNPq × CNI.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="sec" style="--cat:var(--c4)">
+      <div class="sec-head">
+        <div class="sec-no mono">COL. 04</div>
+        <div class="sec-titles">
+          <h2>Programa Fellowship — MGI × Banco Mundial</h2>
+          <p class="sec-desc">Documentos operacionais da parceria WBG Fellowship Program.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <a class="card" href="./fellowship-programa-geral/">
+          <span class="tag">Fellowship · MGI × BM</span>
+          <h3>Programa Fellowship</h3>
+          <p>Visão geral do programa: o que é, quem custeia e base legal.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./fellowship-fluxo-trabalho/">
+          <span class="tag">Fellowship · MGI × BM</span>
+          <h3>Proposta de Fluxo de Trabalho</h3>
+          <p>Papéis, procedimentos e padronização do WBG Fellowship Program.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./fellowship-diretrizes/">
+          <span class="tag">Fellowship · MGI × BM</span>
+          <h3>Diretrizes Operacionais</h3>
+          <p>Consolidação da parceria e garantia de previsibilidade do programa de bolsas.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="sec" style="--cat:var(--c5)">
+      <div class="sec-head">
+        <div class="sec-no mono">COL. 05</div>
+        <div class="sec-titles">
+          <h2>Apresentações institucionais e ferramentas</h2>
+          <p class="sec-desc">Materiais de diretoria, normativos e ferramentas.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <a class="card" href="./trimestral-cgmop/">
+          <span class="tag">Apresentação</span>
+          <h3>Trimestral CGMOP — Planejamento 2025/2026</h3>
+          <p>Apresentação à Diretoria: execução do ciclo 2025/2026 e os projetos de 2026.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./recruta-gov/">
+          <span class="tag">Alocação</span>
+          <h3>Recruta.gov</h3>
+          <p>A nova engenharia de alocação de servidores públicos.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./limites-reembolso/">
+          <span class="tag">Normativo</span>
+          <h3>Limites de Reembolso</h3>
+          <p>Parâmetros e limites vigentes. MGI/SGP/DEPRO/CGMOP/DGIMP.</p>
+          <span class="go">Ver <span class="ar">→</span></span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="fmark">dadosrgb.dev.br</div>
+    <div class="fmeta mono">Roney G. Brum · Índice de projetos</div>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var root=document.documentElement, btn=document.getElementById('tt');
+    try{var s=localStorage.getItem('dadosrgb-theme'); if(s){root.setAttribute('data-theme',s);}}catch(e){}
+    btn.addEventListener('click',function(){
+      var cur=root.getAttribute('data-theme');
+      var next;
+      if(cur==='dark'){next='light';}
+      else if(cur==='light'){next='dark';}
+      else{ next = matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'; }
+      root.setAttribute('data-theme',next);
+      try{localStorage.setItem('dadosrgb-theme',next);}catch(e){}
+    });
+  })();
+</script>
 </body>
 </html>
