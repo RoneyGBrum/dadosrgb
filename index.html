@@ -11,18 +11,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;450;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* ground — warm greige with an umber bias, not cream */
-    --bg:#eceae3;
-    --bg-tint:#e5e2d9;
-    --card:#faf9f5;
-    --card-2:#f4f2ec;
-    --ink:#26231d;
-    --ink-2:#514c42;
-    --ink-3:#7a7365;
-    --line:#d7d3c8;
-    --line-2:#c9c4b6;
-    --shadow:24 22 16;
-    --shadow-a:0.08;
+    /* ground — very light cool gray, clean and modern */
+    --bg:#f4f5f7;
+    --bg-tint:#eceef1;
+    --card:#ffffff;
+    --card-2:#f7f8fa;
+    --ink:#1b1d21;
+    --ink-2:#4b5058;
+    --ink-3:#828892;
+    --line:#e6e8ec;
+    --line-2:#d7dbe1;
+    --shadow:20 24 32;
+    --shadow-a:0.07;
     /* five curated, dessaturated jewel tones — harmonic */
     --c1:#2f6b6b; /* petróleo  */
     --c2:#9a6a22; /* ocre      */
@@ -33,17 +33,17 @@
   }
   :root:not([data-theme="light"]){
     @media (prefers-color-scheme: dark){
-      --bg:#1a1815;
-      --bg-tint:#211e1a;
-      --card:#242019;
-      --card-2:#2b271f;
-      --ink:#efece3;
-      --ink-2:#c3bdae;
-      --ink-3:#8f887a;
-      --line:#39342b;
-      --line-2:#463f34;
+      --bg:#111318;
+      --bg-tint:#171a20;
+      --card:#191c22;
+      --card-2:#20242b;
+      --ink:#eceef2;
+      --ink-2:#b3b9c2;
+      --ink-3:#818893;
+      --line:#282c34;
+      --line-2:#333842;
       --shadow:0 0 0;
-      --shadow-a:0.35;
+      --shadow-a:0.40;
       --c1:#74b4ad;
       --c2:#d5a35d;
       --c3:#c58fb9;
@@ -77,14 +77,6 @@
   body{
     margin:0;
     background-color:var(--bg);
-    /* faint ledger ruling — governmental paper */
-    background-image:repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 33px,
-      color-mix(in srgb, var(--ink) 4%, transparent) 33px,
-      color-mix(in srgb, var(--ink) 4%, transparent) 34px
-    );
     color:var(--ink);
     font-family:"Public Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     font-weight:400;
@@ -269,7 +261,7 @@
       <div class="kicker">Índice de projetos</div>
     </div>
     <div class="toolbar">
-      <div class="catalog mono">Coleções <span>05</span> · Projetos <span>14</span></div>
+      <div class="catalog mono">Coleções <span>05</span> · Projetos <span>15</span></div>
       <button class="ttoggle" id="tt" type="button" aria-label="Alternar tema">Tema</button>
     </div>
   </div>
@@ -298,6 +290,12 @@
           <h3>Painel de Movimentação de Pessoal — CGMOP</h3>
           <p>Ecossistema com Movimentações (vigentes e histórico completo, versões pública e restrita) e Anistiados: cessões, requisições, força de trabalho e reforma administrativa — gráficos, evolução no tempo, proporcionalidade e a relação nominal completa.</p>
           <span class="go">Abrir ecossistema <span class="ar">→</span></span>
+        </a>
+        <a class="card" href="./painel_CGMOP/painel_publico.html">
+          <span class="tag">Aberto · sem login</span>
+          <h3>Painel público de Movimentações</h3>
+          <p>A versão aberta do painel de Movimentações — vigentes e histórico, gráficos e a relação nominal, sem os dados individuais sensíveis. Acesso direto, sem senha.</p>
+          <span class="go">Abrir <span class="ar">→</span></span>
         </a>
         <a class="card" href="./movimentacao-pessoal/">
           <span class="tag">Apresentação</span>
