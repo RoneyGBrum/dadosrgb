@@ -17,18 +17,22 @@ vigor NÃO ficam listadas aqui (este arquivo é público) — estão em
            # "joao": "...",             # remover = apague a linha
        }
 
-2. Rode:  `python painel/publicar_cgmop.py`  (reescreve as 3 páginas com a nova lista de hashes)
+2. Rode:  `python painel/publicar_cgmop.py`  (reescreve TODAS as páginas com portão)
 3. Publique:  `cd C:\0_Apresentacoes\dadosrgb && git add painel_CGMOP && git commit -m "atualiza login" && git push`
 
-## Jeito manual (sem rodar o script)
-1. Gere o hash de cada `usuario:senha`:
+## Por que NÃO existe "jeito manual"
+A receita manual que ficava aqui estava **errada em três pontos** (revisão de 02/09/2026) e
+trancava os usuários para fora sem dar nenhum aviso:
 
-       python -c "import hashlib;print(hashlib.sha256('USUARIO:SENHA'.encode()).hexdigest())"
+- ensinava `hashlib.sha256("USUARIO:SENHA")`, mas o portão usa **PBKDF2-HMAC-SHA256** com sal e
+  250 mil iterações — os dois produzem 64 caracteres hex, então o hash errado *parece* certo;
+- listava **3** páginas com portão, quando são **8** (todas menos `painel_publico.html`), que
+  compartilham a MESMA lista de hashes — editar 3 deixaria 5 aceitando a senha revogada;
+- mandava mexer na chave de sessão `cgmop_auth_v1`, que hoje é `cgmop_auth_v2`.
 
-2. Nos arquivos COM login (`index.html`, `painel_movimentacoes.html`, `anistiados.html` —
-   o `painel_publico.html` é ABERTO, não tem portão), localize `var HASHES=[...]` e coloque a
-   lista de hashes desejada, ex.: `var HASHES=["hash1","hash2"];`
-3. Faça commit e push.
+Além disso, o portão **canoniza** a entrada (usuário em minúsculas; senha sem `/`, `.`, `-` e
+espaços), o que um hash feito à mão também erraria. Use sempre o jeito recomendado acima — é
+uma linha de comando e regenera tudo de forma consistente.
 
 > Lembrete: o login é só **atrito**. O `.html` é público e o dado está embutido nele — quem
 > abrir o código-fonte vê tudo, com ou sem senha. Não use senha reutilizada/importante.
