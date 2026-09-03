@@ -295,7 +295,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "02/09/2026 19:13", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "03/09/2026 08:12", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
