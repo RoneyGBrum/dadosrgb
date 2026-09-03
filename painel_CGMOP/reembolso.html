@@ -226,30 +226,7 @@ table.mx td.tot,table.mx th.tot{background:var(--claro);font-weight:800;color:va
 #rel .org-bloco h4{margin:0 0 6px;font-size:14px;color:var(--gov)}
 #rel .mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;font-size:11px}
 #rel .mini div b{display:block;font-size:13px;color:var(--gov);font-variant-numeric:tabular-nums}
-</style>
-<style id="portao-css">
-#portao{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#0b2a4a,#12336e);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-html.autenticado #portao{display:none}
-html:not(.autenticado) body{overflow:hidden}
-html:not(.autenticado) body>*:not(#portao){display:none!important}
-#portao .cx{background:#fff;border-radius:16px;padding:30px 30px 26px;width:min(370px,92vw);box-shadow:0 24px 70px rgba(0,0,0,.4);text-align:center}
-#portao .marca{font-weight:800;color:#12336e;font-size:12px;letter-spacing:.5px;text-transform:uppercase}
-#portao h2{margin:6px 0 2px;color:#12336e;font-size:19px}
-#portao p{margin:0 0 18px;color:#556;font-size:12.5px;line-height:1.5}
-#portao input{width:100%;padding:11px 13px;border:1px solid #cdd5e2;border-radius:10px;font-size:14px;margin-bottom:10px;box-sizing:border-box}
-#portao input:focus{outline:2px solid #2E75B6;border-color:#2E75B6}
-#portao button{width:100%;padding:12px;border:0;border-radius:10px;background:#12336e;color:#fff;font-weight:700;font-size:14px;cursor:pointer}
-#portao button:hover{filter:brightness(1.1)}
-#portao .err{color:#c0392b;font-size:12.5px;min-height:17px;margin-top:9px;font-weight:600}
-#portao .ajuda{margin-top:16px;padding-top:14px;border-top:1px solid #e6ebf3;text-align:left}
-#portao .ajuda b{color:#12336e}
-#portao .ajuda > b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
-#portao .ajuda span{display:block;font-size:12.5px;color:#4a5568;line-height:1.55;margin-bottom:5px}
-#portao .ajuda i{display:inline-block;min-width:62px;font-style:normal;font-weight:700;color:#7a8090;font-size:11px;text-transform:uppercase}
-#portao .ajuda code{background:#eef2f8;border:1px solid #dbe3ef;border-radius:4px;padding:1px 5px;font-size:12px;color:#12336e}
-#portao .ajuda .obs{margin-top:9px;color:#7a8090;font-size:11.5px;font-style:italic}
-</style>
-</head><body>
+</style></head><body>
 <nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 <div class="wrap">
   <h1>💰 Limites de Reembolso</h1>
@@ -1483,67 +1460,30 @@ body{background:#fff;margin:0;padding:20px;color:var(--ink,#0b0b0b)}
 *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 svg{max-width:100%}
 @page{size:A4 portrait;margin:12mm}
-</style></head><body><div id="rel">${el("rel").innerHTML}</div>
-
-<div id="portao"><div class="cx">
-  <div class="marca">CGMOP · MGI</div>
-  <h2>Movimentação de Pessoal</h2>
-  <p>Acesso restrito. Informe usuário e senha para visualizar o painel.</p>
-  <input id="portao-user" placeholder="nome.sobrenome" autocomplete="username">
-  <input id="portao-pass" type="password" placeholder="ddmmaaaa" autocomplete="current-password">
-  <button id="portao-btn">Entrar</button>
-  <div class="err" id="portao-err"></div>
-  <div class="ajuda">
-    <b>Como entrar</b>
-    <span><i>Usuário</i> o seu <b>nome.sobrenome</b> (ex.: <code>maria.silva</code>)</span>
-    <span><i>Senha</i> a sua <b>data de nascimento</b>, só números, no formato
-      <b>ddmmaaaa</b> (ex.: <code>07091985</code> para 07/09/1985)</span>
-    <span class="obs">Não conseguiu entrar? Fale com a CGMOP.</span>
-  </div>
-</div></div>
-
-<script>
-(function(){
-  // ATRITO — NÃO é segurança real (o arquivo é público; o dado está embutido nele).
-  // HASHES = lista de SHA-256 de "usuario:senha". Para trocar/adicionar usuários, edite
-  // USUARIOS em publicar_cgmop.py e rode de novo (ou troque a lista abaixo à mão).
-  var HASHES=["201602d21ed0e60ee8e96210d95472f92e1a68d382ee7a652060cb693b33c824", "5b2039fede59812df6aff851301c41fa25d855319a6e701b104645d134fb75d5", "117a93ecdcea3663a7913f5ec9088531e515052b12d52533ebd7c3a0fbf2c089", "5b3e3ad9548b68b6d3e830a281d93c97666e94c8357d98c50e68e97c152ed14f", "76f45d397daff8c185a6faa87c355320e86fdb1e9d0cfde002121bcbc37d2a2e", "a06daa29526f49c80be183a8d2cf343cf8c870d55bec56c8caa7c7f57bd1bc04", "3e8e80ed53d284bfc9ad2615f3a33721bebc60906bae921e9dcfe85bcbfbdafe", "e57e2a1e1a5205d1ab456e9b1878164d7c004921fdc86404eca8e711138d5d75", "ae171d8883b2a102be9d316b8a245e1ead123aac9ed2da15fcceb1cb5005daa6", "d89e01a5d3b1e46b95bd1b93304867619c26e70a0294fe36d5e5c4b4a941a1b8", "0bd948d75facc4d87c03906ac455265dcc239f3369dea48447e37deb444ea196", "4536e6b9f4bc36fd9fb0e5e4fea83a4c35e4a78c6c8cb1e1cdb519a7363cda79", "a009d92353cd8a15c1d8fd01f722ab8a1565e66dd8b1a08a26a042b3aa1729a6", "fd92d20f5b855a14c50ed804cc02239a9958c87d17bfc5ceea28e9048b81475e", "21f981da2b918484f099fd80e4ea59774d35b027bbbf251f02dc555573c4ec7a", "5a3eadff04e107a3130690b48767d301dc822dc23050b230995c834e5591adfb", "6ba02240e471a1b68671dbcf2e5d131a245abc1abeab3acf3031ff04bb4c3676", "117a93ecdcea3663a7913f5ec9088531e515052b12d52533ebd7c3a0fbf2c089"];
-  var KEY="cgmop_auth_v2";          // v2: mudou o algoritmo -> força novo login de quem já entrou
-  var SAL="cgmop-painel-2026", ITER=250000;
-  // PBKDF2-HMAC-SHA256 com sal e muitas iterações. Antes era um SHA-256 simples, que tornava
-  // trivial varrer senhas curtas/previsíveis a partir do HTML publicado.
-  function derivar(s){
-    var enc=new TextEncoder();
-    return crypto.subtle.importKey("raw",enc.encode(s),{name:"PBKDF2"},false,["deriveBits"])
-      .then(function(k){return crypto.subtle.deriveBits(
-        {name:"PBKDF2",salt:enc.encode(SAL),iterations:ITER,hash:"SHA-256"},k,256);})
-      .then(function(b){return Array.prototype.map.call(new Uint8Array(b),
-        function(x){return x.toString(16).padStart(2,"0");}).join("");});
-  }
-  function liberar(){document.documentElement.classList.add("autenticado");}
-  try{if(sessionStorage.getItem(KEY)==="1")liberar();}catch(e){}
-  var ocupado=false;
-  function tentar(){
-    if(ocupado)return; ocupado=true;
-    var bt=document.getElementById("portao-btn"),er=document.getElementById("portao-err");
-    var txt=bt?bt.textContent:""; if(bt){bt.disabled=true;bt.textContent="Verificando…";}
-    if(er)er.textContent="";
-    // Canoniza igual ao Python (_canon_user/_canon_pass): usuário sem caixa; data sem separadores.
-    var u=(document.getElementById("portao-user").value||"").trim().toLowerCase(),
-        p=(document.getElementById("portao-pass").value||"").replace(/[\s\/.\-]/g,"");
-    derivar(u+":"+p).then(function(h){
-      if(HASHES.indexOf(h)>=0){try{sessionStorage.setItem(KEY,"1");}catch(e){}liberar();}
-      else{if(er)er.textContent="Usuário ou senha incorretos.";}
-    }).catch(function(e){
-      if(er)er.textContent="Não foi possível verificar (o navegador precisa de HTTPS).";
-    }).then(function(){ocupado=false;if(bt){bt.disabled=false;bt.textContent=txt;}});
-  }
-  document.addEventListener("DOMContentLoaded",function(){
-    var b=document.getElementById("portao-btn");if(b)b.onclick=tentar;
-    var pp=document.getElementById("portao-pass");if(pp)pp.addEventListener("keydown",function(e){if(e.key==="Enter")tentar();});
-  });
-})();
-</script>
+</style>
+<style id="portao-css">
+#portao{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#0b2a4a,#12336e);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+html.autenticado #portao{display:none}
+html:not(.autenticado) body{overflow:hidden}
+html:not(.autenticado) body>*:not(#portao){display:none!important}
+#portao .cx{background:#fff;border-radius:16px;padding:30px 30px 26px;width:min(370px,92vw);box-shadow:0 24px 70px rgba(0,0,0,.4);text-align:center}
+#portao .marca{font-weight:800;color:#12336e;font-size:12px;letter-spacing:.5px;text-transform:uppercase}
+#portao h2{margin:6px 0 2px;color:#12336e;font-size:19px}
+#portao p{margin:0 0 18px;color:#556;font-size:12.5px;line-height:1.5}
+#portao input{width:100%;padding:11px 13px;border:1px solid #cdd5e2;border-radius:10px;font-size:14px;margin-bottom:10px;box-sizing:border-box}
+#portao input:focus{outline:2px solid #2E75B6;border-color:#2E75B6}
+#portao button{width:100%;padding:12px;border:0;border-radius:10px;background:#12336e;color:#fff;font-weight:700;font-size:14px;cursor:pointer}
+#portao button:hover{filter:brightness(1.1)}
+#portao .err{color:#c0392b;font-size:12.5px;min-height:17px;margin-top:9px;font-weight:600}
+#portao .ajuda{margin-top:16px;padding-top:14px;border-top:1px solid #e6ebf3;text-align:left}
+#portao .ajuda b{color:#12336e}
+#portao .ajuda > b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+#portao .ajuda span{display:block;font-size:12.5px;color:#4a5568;line-height:1.55;margin-bottom:5px}
+#portao .ajuda i{display:inline-block;min-width:62px;font-style:normal;font-weight:700;color:#7a8090;font-size:11px;text-transform:uppercase}
+#portao .ajuda code{background:#eef2f8;border:1px solid #dbe3ef;border-radius:4px;padding:1px 5px;font-size:12px;color:#12336e}
+#portao .ajuda .obs{margin-top:9px;color:#7a8090;font-size:11.5px;font-style:italic}
+</style>
+</head><body><div id="rel">${el("rel").innerHTML}</div>
 </body></html>`);
   w.document.close();
   // imprime a partir DAQUI (a janela-mãe), sem embutir uma tag de script no documento:
@@ -1638,4 +1578,64 @@ el("rodape").innerHTML=`Gerado em ${esc(D.gerado_em)}. Pessoal: SIAPE/Data Lake 
   Base legal: Lei 8.112/90 art. 93; Decreto 10.835/2021 arts. 18, 19, 21, 25 e 26;
   Portaria Conjunta MGI/MPO nº 61/2023.`;
 if(typeof ligarTema==="function")ligarTema();
-</script></body></html>
+</script>
+<div id="portao"><div class="cx">
+  <div class="marca">CGMOP · MGI</div>
+  <h2>Movimentação de Pessoal</h2>
+  <p>Acesso restrito. Informe usuário e senha para visualizar o painel.</p>
+  <input id="portao-user" placeholder="nome.sobrenome" autocomplete="username">
+  <input id="portao-pass" type="password" placeholder="ddmmaaaa" autocomplete="current-password">
+  <button id="portao-btn">Entrar</button>
+  <div class="err" id="portao-err"></div>
+  <div class="ajuda">
+    <b>Como entrar</b>
+    <span><i>Usuário</i> o seu <b>nome.sobrenome</b> (ex.: <code>maria.silva</code>)</span>
+    <span><i>Senha</i> a sua <b>data de nascimento</b>, só números, no formato
+      <b>ddmmaaaa</b> (ex.: <code>07091985</code> para 07/09/1985)</span>
+    <span class="obs">Não conseguiu entrar? Fale com a CGMOP.</span>
+  </div>
+</div></div>
+
+<script>
+(function(){
+  // ATRITO — NÃO é segurança real (o arquivo é público; o dado está embutido nele).
+  // HASHES = lista de SHA-256 de "usuario:senha". Para trocar/adicionar usuários, edite
+  // USUARIOS em publicar_cgmop.py e rode de novo (ou troque a lista abaixo à mão).
+  var HASHES=["201602d21ed0e60ee8e96210d95472f92e1a68d382ee7a652060cb693b33c824", "5b2039fede59812df6aff851301c41fa25d855319a6e701b104645d134fb75d5", "117a93ecdcea3663a7913f5ec9088531e515052b12d52533ebd7c3a0fbf2c089", "5b3e3ad9548b68b6d3e830a281d93c97666e94c8357d98c50e68e97c152ed14f", "76f45d397daff8c185a6faa87c355320e86fdb1e9d0cfde002121bcbc37d2a2e", "a06daa29526f49c80be183a8d2cf343cf8c870d55bec56c8caa7c7f57bd1bc04", "3e8e80ed53d284bfc9ad2615f3a33721bebc60906bae921e9dcfe85bcbfbdafe", "e57e2a1e1a5205d1ab456e9b1878164d7c004921fdc86404eca8e711138d5d75", "ae171d8883b2a102be9d316b8a245e1ead123aac9ed2da15fcceb1cb5005daa6", "d89e01a5d3b1e46b95bd1b93304867619c26e70a0294fe36d5e5c4b4a941a1b8", "0bd948d75facc4d87c03906ac455265dcc239f3369dea48447e37deb444ea196", "4536e6b9f4bc36fd9fb0e5e4fea83a4c35e4a78c6c8cb1e1cdb519a7363cda79", "a009d92353cd8a15c1d8fd01f722ab8a1565e66dd8b1a08a26a042b3aa1729a6", "fd92d20f5b855a14c50ed804cc02239a9958c87d17bfc5ceea28e9048b81475e", "21f981da2b918484f099fd80e4ea59774d35b027bbbf251f02dc555573c4ec7a", "5a3eadff04e107a3130690b48767d301dc822dc23050b230995c834e5591adfb", "6ba02240e471a1b68671dbcf2e5d131a245abc1abeab3acf3031ff04bb4c3676", "117a93ecdcea3663a7913f5ec9088531e515052b12d52533ebd7c3a0fbf2c089"];
+  var KEY="cgmop_auth_v2";          // v2: mudou o algoritmo -> força novo login de quem já entrou
+  var SAL="cgmop-painel-2026", ITER=250000;
+  // PBKDF2-HMAC-SHA256 com sal e muitas iterações. Antes era um SHA-256 simples, que tornava
+  // trivial varrer senhas curtas/previsíveis a partir do HTML publicado.
+  function derivar(s){
+    var enc=new TextEncoder();
+    return crypto.subtle.importKey("raw",enc.encode(s),{name:"PBKDF2"},false,["deriveBits"])
+      .then(function(k){return crypto.subtle.deriveBits(
+        {name:"PBKDF2",salt:enc.encode(SAL),iterations:ITER,hash:"SHA-256"},k,256);})
+      .then(function(b){return Array.prototype.map.call(new Uint8Array(b),
+        function(x){return x.toString(16).padStart(2,"0");}).join("");});
+  }
+  function liberar(){document.documentElement.classList.add("autenticado");}
+  try{if(sessionStorage.getItem(KEY)==="1")liberar();}catch(e){}
+  var ocupado=false;
+  function tentar(){
+    if(ocupado)return; ocupado=true;
+    var bt=document.getElementById("portao-btn"),er=document.getElementById("portao-err");
+    var txt=bt?bt.textContent:""; if(bt){bt.disabled=true;bt.textContent="Verificando…";}
+    if(er)er.textContent="";
+    // Canoniza igual ao Python (_canon_user/_canon_pass): usuário sem caixa; data sem separadores.
+    var u=(document.getElementById("portao-user").value||"").trim().toLowerCase(),
+        p=(document.getElementById("portao-pass").value||"").replace(/[\s\/.\-]/g,"");
+    derivar(u+":"+p).then(function(h){
+      if(HASHES.indexOf(h)>=0){try{sessionStorage.setItem(KEY,"1");}catch(e){}liberar();}
+      else{if(er)er.textContent="Usuário ou senha incorretos.";}
+    }).catch(function(e){
+      if(er)er.textContent="Não foi possível verificar (o navegador precisa de HTTPS).";
+    }).then(function(){ocupado=false;if(bt){bt.disabled=false;bt.textContent=txt;}});
+  }
+  document.addEventListener("DOMContentLoaded",function(){
+    var b=document.getElementById("portao-btn");if(b)b.onclick=tentar;
+    var pp=document.getElementById("portao-pass");if(pp)pp.addEventListener("keydown",function(e){if(e.key==="Enter")tentar();});
+  });
+})();
+</script>
+</body></html>
