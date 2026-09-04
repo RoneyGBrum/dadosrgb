@@ -39,11 +39,63 @@ header.topo h1{margin:0;font-size:18px;font-weight:800}.sub{margin-top:3px;font-
 .kpi.dev .val{color:var(--origem)}.kpi.rec .val{color:var(--destino)}
 .grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
 .card{background:var(--surface);border:1px solid var(--linha);border-radius:14px;padding:14px 16px 12px;box-shadow:var(--sombra)}
-.card.wide{grid-column:1/-1}.card h3{margin:0 0 1px;font-size:14px;font-weight:700}.card .leg{font-size:11.5px;color:var(--muted);margin:0 0 11px}
+.card.wide{grid-column:1/-1}
+/* fixa o cartão na 2ª coluna (a do destino), quando não há par de origem para a linha */
+@media (min-width:900px){.grid.c2>.card.col-dir{grid-column:2}}.card h3{margin:0 0 1px;font-size:14px;font-weight:700}.card .leg{font-size:11.5px;color:var(--muted);margin:0 0 11px}
+/* colunas verticais (vbars) */
+.vbars{display:flex;align-items:flex-end;gap:6px;padding-top:4px}
+.vbars .vb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border-radius:7px;padding:2px 1px}
+.vbars .vb:hover{background:var(--surface-2)}
+.vbars .vb.sel{background:var(--claro);outline:1px solid var(--serie)}
+.vbars .vb-n{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.vbars .vb-col{width:100%;height:var(--alt);display:flex;align-items:flex-end;background:var(--neutro);border-radius:5px;overflow:hidden}
+.vbars .vb-fill{width:100%;border-radius:5px 5px 0 0;transform-origin:bottom center}
+.vbars .vb-lab{font-size:10.5px;color:var(--muted);text-align:center;line-height:1.15;overflow-wrap:anywhere}
+@media (prefers-reduced-motion:no-preference){.vbars .vb-fill{animation:colGrow .8s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes colGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}}
+/* rosca (donut) */
+.rz{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.rz svg{flex:none}.rz .fat{cursor:pointer;transition:stroke-width .15s}
+.rz .rz-tot{font-size:19px;font-weight:800;fill:var(--ink)}
+.rz .rz-sub{font-size:10px;fill:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.rz-leg{flex:1;min-width:148px;display:flex;flex-direction:column;gap:3px}
+.rz-it{display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;border-radius:6px;padding:2px 5px}
+.rz-it:hover{background:var(--surface-2)}.rz-it.sel{background:var(--claro);outline:1px solid var(--serie)}
+.rz-it .pt{width:10px;height:10px;border-radius:3px;flex:none}
+.rz-it .tx{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
+.rz-it b{font-variant-numeric:tabular-nums}.rz-it small{color:var(--muted);font-variant-numeric:tabular-nums}
+/* ⓘ com a explicação junto do dado */
+.ibtn{width:16px;height:16px;border-radius:50%;border:1px solid var(--serie);background:transparent;
+  color:var(--serie);font:800 11px/1 Georgia,serif;cursor:pointer;padding:0;vertical-align:middle;margin-left:5px}
+.ibtn:hover{background:var(--serie);color:#fff}
+.ibpop{position:fixed;z-index:2100;width:min(430px,92vw);max-height:60vh;overflow:auto;background:var(--surface);
+  border:1px solid var(--linha);border-radius:12px;box-shadow:0 16px 46px rgba(20,40,80,.28);font-size:12.5px;line-height:1.55}
+.ibpop .cab{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--linha);
+  font-weight:800;color:var(--gov);position:sticky;top:0;background:var(--surface)}
+.ibpop .cab .x{margin-left:auto;background:none;border:0;color:var(--muted);font-size:17px;cursor:pointer;line-height:1}
+.ibpop .cp{padding:10px 13px;color:var(--ink-2)}.ibpop .cp p{margin:0 0 8px}.ibpop .cp p:last-child{margin:0}
+/* matriz de calor origem x destino */
+.mtz-wrap{overflow:auto;max-height:64vh;border:1px solid var(--linha);border-radius:10px}
+table.mtz{border-collapse:separate;border-spacing:0;font-size:11.5px;width:max-content;min-width:100%}
+table.mtz th,table.mtz td{padding:5px 7px;border-bottom:1px solid var(--linha);white-space:nowrap}
+table.mtz thead th{position:sticky;top:0;z-index:3;background:var(--surface-2);color:var(--gov);font-weight:800;
+  border-bottom:2px solid var(--linha)}
+table.mtz thead th.rot span{display:inline-block;max-width:74px;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+table.mtz th.cnt{position:sticky;left:0;z-index:2;background:var(--surface-2);text-align:left;font-weight:700;
+  color:var(--ink-2);max-width:150px;overflow:hidden;text-overflow:ellipsis;border-right:2px solid var(--linha)}
+table.mtz thead th.cnt{z-index:4}
+table.mtz td.cl{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+table.mtz td.cl.tem{cursor:pointer;font-weight:700}
+table.mtz td.cl.tem:hover{outline:2px solid var(--serie);outline-offset:-2px}
+table.mtz td.tot,table.mtz th.tot{text-align:right;font-variant-numeric:tabular-nums;font-weight:800;
+  color:var(--gov);background:var(--claro)}
+table.mtz tr.rodape th,table.mtz tr.rodape td{border-bottom:0}
 .bars{display:flex;flex-direction:column;gap:7px}
 .bars{--lab:minmax(120px,240px)}
 .bar-row{display:grid;grid-template-columns:var(--lab) 1fr auto;align-items:center;gap:10px;font-size:12.5px;cursor:pointer;border-radius:6px}
-.bar-row:hover{background:var(--surface-2)}.bar-row .lab{color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row:hover{background:var(--surface-2)}
+/* rótulo INTEIRO: quebra em duas linhas em vez de cortar com reticências (achado 03/09/2026) */
+.bar-row .lab{color:var(--ink-2);text-align:right;white-space:normal;overflow-wrap:anywhere;line-height:1.22;padding:2px 0}
 .bar-track{background:var(--neutro);border-radius:5px;height:15px;overflow:hidden}.bar-fill{height:100%;border-radius:5px;min-width:2px}
 .bar-row .val{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}.bar-row .val small{color:var(--muted);font-weight:600}
 .bar-row.sel{background:var(--claro);outline:1px solid var(--serie)}
@@ -72,13 +124,23 @@ svg text{fill:var(--muted);font-size:11px}svg text.t{fill:var(--ink);font-weight
 .eco-nav a .ic{font-size:16px;line-height:1}
 .eco-nav a:hover{background:var(--claro);color:var(--gov)}
 .eco-nav a.on{background:var(--gov);color:#fff}
+.eco-nav .onde{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;margin-left:6px}
+.eco-nav .onde b{color:var(--gov);font-weight:800}
+.eco-nav .onde .sep{color:var(--linha);font-size:15px}
+@media (max-width:560px){.eco-nav .onde{width:100%;margin:2px 0 0 2px}}
 .eco-nav .tema{margin-left:auto;background:var(--surface-2);border:1px solid var(--linha);color:var(--ink-2);border-radius:9px;padding:7px 11px;cursor:pointer;font-size:15px}
 @media (max-width:560px){.eco-nav a span.lab{display:none}.eco-nav a{padding:8px 11px}}
 /* ===== Documento PDF — fundo BRANCO, elegante, legível por qualquer pessoa.
    Sem preenchimento azul; o azul institucional fica só em títulos, linhas finas e
    destaques pontuais. Âmbar/verde = destaques (origem/destino, setas, alertas). ===== */
 #pdf-doc{display:none}
-@media print{body *{visibility:hidden}#pdf-doc,#pdf-doc *{visibility:visible}#pdf-doc{display:block;position:absolute;left:0;top:0;width:100%;padding:0}
+@media print{
+  /* Esconder com display:none, e não visibility:hidden: o "hidden" mantinha o espaço da
+     página inteira no fluxo e saíam dezenas de folhas em branco depois do relatório. */
+  body>*:not(#pdf-doc){display:none!important}
+  #pdf-doc{display:block!important;position:static!important;width:auto;padding:0;margin:0}
+  #pdf-doc,#pdf-doc *{visibility:visible!important}
+  html,body{height:auto!important;min-height:0!important;overflow:visible!important;background:#fff!important;margin:0;padding:0}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   /* gráficos precisam sair PREENCHIDOS: desligar animações de entrada e resetar estados iniciais */
   #pdf-doc *,#pdf-doc *::before,#pdf-doc *::after{animation:none!important;transition:none!important}
@@ -173,7 +235,7 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 #portao .ajuda .obs{margin-top:9px;color:#7a8090;font-size:11.5px;font-style:italic}
 </style>
 </head><body>
-<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
+<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><span class="onde"><span class="sep">›</span>você está em: <b>Início — todos os painéis</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 <div class="wrap">
   <section class="hero">
     <div class="eyebrow">Ecossistema de dados · CGMOP / SGP / MGI</div>
@@ -207,7 +269,8 @@ function hbars(dist,o={}){o=Object.assign({max:12,cor:"var(--serie)",dimKey:null
   // A coluna do rótulo se ajusta ao MAIOR texto deste gráfico. Antes era minmax(120px,240px)
   // fixo, e num gráfico só de siglas ("AGU", "MF") sobrava uma faixa vazia à esquerda.
   const labs=rows.map(r=>String(o.capLab?cap(r.cat):r.cat));
-  const nmax=Math.min(34,Math.max(6,...labs.map(s=>s.length)));
+  // com quebra de linha o rótulo cabe inteiro; a coluna cresce até ~2 linhas de 26 caracteres
+  const nmax=Math.min(26,Math.max(6,...labs.map(s=>s.length)));
   let h=`<div class="bars" style="--lab:minmax(0,${(nmax*0.62+1.2).toFixed(1)}em)">`;
   for(const r of rows){const w=(r.n/mx*100).toFixed(1),lab=o.capLab?cap(r.cat):r.cat;
     const sel=_selHas(r.idx)?" sel":"";const click=o.dimKey?`data-${o.dimKey}="${r.idx}"`:"";
@@ -216,6 +279,140 @@ function hbars(dist,o={}){o=Object.assign({max:12,cor:"var(--serie)",dimKey:null
       <div class="lab" title="${esc(lab)}">${esc(lab)}</div><div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${o.cor}"></div></div>
       <div class="val">${fmtInt(r.n)}${pc}</div></div>`;}
   return h+'</div>';}
+/* ===== Colunas VERTICAIS — para faixas ordenadas (etária, remuneração, tempo). Uma
+   sequência ordenada lê melhor ao longo de um eixo horizontal do que empilhada na
+   vertical, e quebra a monotonia de um painel só de barras deitadas. Mesmo contrato de
+   clique do hbars: cada coluna carrega data-<dimKey>, para multi-seleção. */
+function vbars(dist,o={}){o=Object.assign({max:14,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:false,alt:150},o);
+  const rows=dist.slice(0,o.max),mx=Math.max(...rows.map(r=>r.n),1);
+  if(!rows.length)return'<p class="vazio">Sem dados no período.</p>';
+  const _sel=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  let h=`<div class="vbars" style="--alt:${o.alt}px">`;
+  for(const r of rows){const alt=Math.max(2,r.n/mx*100).toFixed(1),lab=o.capLab?cap(r.cat):r.cat;
+    const click=o.dimKey?`data-${o.dimKey}="${esc(r.idx)}"`:"";
+    h+=`<div class="vb${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}">
+      <div class="vb-n">${fmtInt(r.n)}</div>
+      <div class="vb-col"><div class="vb-fill" style="height:${alt}%;background:${o.cor}"></div></div>
+      <div class="vb-lab">${esc(lab)}</div></div>`;}
+  return h+'</div>';}
+
+/* ===== Rosca (donut) — para poucas categorias que somam um todo (situação, regime,
+   força de trabalho). Mostra a participação sem obrigar a comparar comprimentos de
+   barra. Fatias e itens da legenda são clicáveis, como as barras. */
+function rosca(dist,o={}){o=Object.assign({max:6,cores:null,dimKey:null,selIdx:null,capLab:true,raio:58},o);
+  const rows=dist.slice(0,o.max),tot=rows.reduce((a,r)=>a+r.n,0);
+  if(!rows.length||!tot)return'<p class="vazio">Sem dados no período.</p>';
+  const PAL=o.cores||["var(--serie)","var(--destino)","var(--origem)","var(--magenta)","#7a5bbf","#0f6b56"];
+  const _sel=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  const R=o.raio,C=2*Math.PI*R,cx=R+18,cy=R+18;let off=0,seg="",leg="";
+  rows.forEach((r,k)=>{const frac=r.n/tot,cor=PAL[k%PAL.length],lab=o.capLab?cap(r.cat):r.cat;
+    const click=o.dimKey?`data-${o.dimKey}="${esc(r.idx)}"`:"";
+    seg+=`<circle class="fat${_sel(r.idx)?" sel":""}" ${click} cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${cor}"
+      stroke-width="${_sel(r.idx)?30:23}" stroke-dasharray="${(frac*C).toFixed(2)} ${C.toFixed(2)}"
+      stroke-dashoffset="${(-off*C).toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"
+      data-tip="${esc(lab)}: ${fmtInt(r.n)} (${(frac*100).toFixed(1)}%)"></circle>`;
+    leg+=`<div class="rz-it${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}">
+      <span class="pt" style="background:${cor}"></span><span class="tx">${esc(lab)}</span>
+      <b>${(frac*100).toFixed(1)}%</b><small>${fmtInt(r.n)}</small></div>`;
+    off+=frac;});
+  return `<div class="rz"><svg viewBox="0 0 ${cx*2} ${cy*2}" width="${cx*2}" height="${cy*2}" role="img">${seg}
+    <text x="${cx}" y="${cy-1}" text-anchor="middle" class="rz-tot">${fmtInt(tot)}</text>
+    <text x="${cx}" y="${cy+15}" text-anchor="middle" class="rz-sub">total</text></svg>
+    <div class="rz-leg">${leg}</div></div>`;}
+
+/* ===== Trilho lateral dos FILTROS APLICADOS. Achado de 03/09/2026: a relação de filtros
+   ocupava a área nobre do topo e empurrava os gráficos para baixo. Regra do ecossistema:
+   os filtros aplicados moram na lateral; o topo fica para escolher.
+   itens = [{lab, val, rmv()}]; cfg = {onClear, titulo, vazio}. */
+(function(){const CSS=`.frail{position:fixed;right:10px;top:96px;z-index:35;width:214px;max-height:74vh;
+  display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--linha);
+  border-radius:12px;box-shadow:0 10px 30px rgba(20,40,80,.16);overflow:hidden;font-size:12px}
+ .frail .cab{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid var(--linha);
+  font-weight:800;color:var(--gov);font-size:12px}
+ .frail .cab .n{margin-left:auto;background:var(--gov);color:#fff;border-radius:9px;padding:1px 7px;font-size:11px}
+ .frail .cab .dob{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;padding:0 2px}
+ .frail .lst{overflow:auto;padding:7px 8px;display:flex;flex-direction:column;gap:5px}
+ .frail .it{display:flex;gap:5px;align-items:flex-start;background:var(--claro);border-radius:8px;padding:5px 7px;line-height:1.3}
+ .frail .it .k{color:var(--muted);font-weight:700}
+ .frail .it .v{flex:1;overflow-wrap:anywhere;color:var(--ink)}
+ .frail .it .x{cursor:pointer;color:var(--muted);font-weight:800;flex:none}
+ .frail .it .x:hover{color:#b3261e}
+ .frail .pe{padding:9px 10px;color:var(--muted);line-height:1.4}
+ .frail .rod{border-top:1px solid var(--linha);padding:6px 8px}
+ .frail .rod button{width:100%;background:var(--surface-2);border:1px solid var(--linha);border-radius:8px;
+  padding:5px;cursor:pointer;color:var(--ink-2);font-weight:700;font-size:11.5px}
+ .frail.dobrado .lst,.frail.dobrado .rod{display:none}
+ @media (max-width:1450px){.frail{display:none}}
+ @media (min-width:1451px){.com-rail body{padding-right:236px}
+   .com-rail .chips{display:none}}
+ @media print{.frail{display:none!important}}`;
+ let inj=false,dobrado=false;
+ function css(){if(inj)return;inj=true;const s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s);}
+ window.railFiltros=function(itens,cfg){css();cfg=cfg||{};itens=itens||[];
+   document.documentElement.classList.add("com-rail");
+   let r=document.getElementById("frail");
+   if(!r){r=document.createElement("aside");r.id="frail";r.className="frail";document.body.appendChild(r);}
+   r.classList.toggle("dobrado",dobrado);
+   const n=itens.length;
+   r.innerHTML=`<div class="cab">&#128269; ${esc(cfg.titulo||"Filtros aplicados")}<span class="n">${n}</span>`
+     +`<button class="dob" title="${dobrado?"abrir":"recolher"}">${dobrado?"&#9656;":"&#9662;"}</button></div>`
+     +(n?`<div class="lst">${itens.map((x,k)=>`<div class="it"><span class="v"><span class="k">${esc(x.lab)}:</span> ${esc(x.val)}</span><span class="x" data-i="${k}" title="remover">&times;</span></div>`).join("")}</div>`
+          +`<div class="rod"><button data-lim>&times; Limpar tudo</button></div>`
+        :`<div class="pe">${esc(cfg.vazio||"Nenhum filtro aplicado. Clique nas barras dos gráficos ou use os campos do topo.")}</div>`);
+   r.querySelector(".dob").onclick=()=>{dobrado=!dobrado;railFiltros(itens,cfg);};
+   r.querySelectorAll("[data-i]").forEach(x=>x.onclick=()=>{const it=itens[+x.dataset.i];if(it&&it.rmv)it.rmv();});
+   const lim=r.querySelector("[data-lim]");if(lim&&cfg.onClear)lim.onclick=cfg.onClear;};
+})();
+/* ===== "ⓘ" com a explicação junto do dado. Uso:
+     infoBolha("Título", "<p>texto…</p>")  -> devolve o HTML do ícone (a bolha é criada no
+     clique). Ligue com ligarInfo(container) depois de escrever o HTML. */
+function infoBolha(tit,html){
+  const id="ib"+(infoBolha._n=(infoBolha._n||0)+1);
+  infoBolha._m=infoBolha._m||{};infoBolha._m[id]={tit,html};
+  return `<button type="button" class="ibtn" data-ib="${id}" title="${esc(tit)}" aria-label="${esc(tit)}">i</button>`;}
+function ligarInfo(cont){(cont||document).querySelectorAll("[data-ib]").forEach(b=>{
+  if(b._lig)return;b._lig=1;
+  b.onclick=e=>{e.stopPropagation();
+    const d=(infoBolha._m||{})[b.dataset.ib];if(!d)return;
+    const velho=document.getElementById("ibpop");if(velho)velho.remove();
+    const pop=document.createElement("div");pop.id="ibpop";pop.className="ibpop";
+    pop.innerHTML=`<div class="cab">${esc(d.tit)}<button class="x" aria-label="fechar">&times;</button></div><div class="cp">${d.html}</div>`;
+    document.body.appendChild(pop);
+    const r=b.getBoundingClientRect();
+    pop.style.left=Math.max(8,Math.min(r.left-10,innerWidth-pop.offsetWidth-8))+"px";
+    let top=r.bottom+6;if(top+pop.offsetHeight>innerHeight-8)top=Math.max(8,r.top-pop.offsetHeight-6);
+    pop.style.top=top+"px";
+    pop.querySelector(".x").onclick=()=>pop.remove();
+    setTimeout(()=>{const fora=ev=>{if(!pop.contains(ev.target)){pop.remove();document.removeEventListener("click",fora);}};
+      document.addEventListener("click",fora);},0);};});}
+
+/* ===== Matriz de calor origem × destino. pares=[{o,d,n}].
+   Linhas = origens, colunas = destinos, célula pintada pela intensidade — é o que faz a
+   matriz "ter cara de matriz" e mostrar concentração de fluxo num relance. Cabeçalho e
+   primeira coluna ficam grudados; o resto rola na horizontal. Célula clicável. */
+function matrizCalor(pares,o={}){
+  o=Object.assign({linhas:12,colunas:12,cor:"18,63,133",rot:s=>String(s).split(" — ")[0],titLin:"Origem (cedeu)",titCol:"Destino (recebeu)"},o);
+  if(!pares||!pares.length)return'<p class="vazio">Sem pares com origem e destino conhecidos no recorte.</p>';
+  const somaL={},somaC={};
+  for(const x of pares){somaL[x.o]=(somaL[x.o]||0)+x.n;somaC[x.d]=(somaC[x.d]||0)+x.n;}
+  const topo=(m,k)=>Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,k).map(e=>e[0]);
+  const L=topo(somaL,o.linhas),C=topo(somaC,o.colunas);
+  const cel={};for(const x of pares)if(L.includes(x.o)&&C.includes(x.d))cel[x.o+"\u0001"+x.d]=x.n;
+  const mx=Math.max(1,...Object.values(cel));
+  const tint=n=>{if(!n)return"";const a=(0.10+0.90*Math.sqrt(n/mx)).toFixed(3);
+    return `background:rgba(${o.cor},${a});color:${a>0.55?"#fff":"var(--ink)"}`;};
+  let h=`<div class="mtz-wrap"><table class="mtz"><thead><tr><th class="cnt">${esc(o.titLin)} \\ ${esc(o.titCol)}</th>`;
+  for(const d of C)h+=`<th class="rot" title="${esc(d)}"><span>${esc(o.rot(d))}</span></th>`;
+  h+=`<th class="tot">Σ</th></tr></thead><tbody>`;
+  for(const l of L){h+=`<tr><th class="cnt" title="${esc(l)}">${esc(o.rot(l))}</th>`;
+    for(const d of C){const n=cel[l+"\u0001"+d]||0;
+      h+=`<td class="cl${n?" tem":""}" style="${tint(n)}" ${n?`data-o="${esc(l)}" data-d="${esc(d)}"`:""}
+        data-tip="${esc(o.rot(l))} → ${esc(o.rot(d))}: ${fmtInt(n)}">${n?fmtInt(n):""}</td>`;}
+    h+=`<td class="tot">${fmtInt(somaL[l])}</td></tr>`;}
+  h+=`<tr class="rodape"><th class="cnt">Σ</th>`;
+  for(const d of C)h+=`<td class="tot">${fmtInt(somaC[d])}</td>`;
+  h+=`<td class="tot"></td></tr></tbody></table></div>`;
+  return h;}
 // temporal empilhado: acumulado (área+linha) + novas por ano (barras). serie=[{ano,novas,acumulado}]. Barras clicáveis (data-ano).
 function temporal(serie,cor,titAc,titNo,opts){opts=opts||{};const semArea=!!opts.semArea,corB=opts.corBarras||cor;serie=serie.filter(d=>d.novas>0||d.acumulado>0);if(!serie.length)return'<p class="vazio">Sem dados no período.</p>';
   const W=Math.max(680,serie.length*54),H=300,mL=54,mR=16,gap=30,pAc={t:14,h:150},pNo={t:14+150+gap,h:78};
@@ -241,11 +438,48 @@ async function deflateRaw(u8){if(typeof CompressionStream==="undefined")return n
 async function zipFiles(files){const dv=(n,b)=>{const a=new Uint8Array(b);let v=n>>>0;for(let i=0;i<b;i++){a[i]=v&0xFF;v>>>=8;}return a;};let parts=[],central=[],off=0;
   for(const f of files){const nb=strU8(f.name),crc=crc32(f.data);let comp=await deflateRaw(f.data),method=8;if(!comp){comp=f.data;method=0;}
     const lh=[...strU8("PK\x03\x04"),...dv(20,2),...dv(0,2),...dv(method,2),...dv(0,2),...dv(0,2),...dv(crc,4),...dv(comp.length,4),...dv(f.data.length,4),...dv(nb.length,2),...dv(0,2)];parts.push(new Uint8Array(lh),nb,comp);
-    const ch=[...strU8("PK\x01\x02"),...dv(20,2),...dv(20,2),...dv(0,2),...dv(method,2),...dv(0,2),...dv(0,2),...dv(crc,4),...dv(comp.length,4),...dv(f.data.length,4),...dv(nb.length,2),...dv(0,2),...dv(0,2),...dv(0,2),...dv(0,4),...dv(off,4)];central.push(new Uint8Array(ch),nb);off+=lh.length+nb.length+comp.length;}
+    const ch=[...strU8("PK\x01\x02"),...dv(20,2),...dv(20,2),...dv(0,2),...dv(method,2),...dv(0,2),...dv(0,2),...dv(crc,4),...dv(comp.length,4),...dv(f.data.length,4),...dv(nb.length,2),...dv(0,2),...dv(0,2),
+      // ZIP: depois de "comment length" vem disco inicial(2) + atributos internos(2) +
+      // atributos externos(4) + deslocamento do cabeçalho local(4). Faltavam os 2 bytes de
+      // atributos internos, e o diretório central saía com 44 bytes em vez de 46 — o Excel
+      // recusava o arquivo ("bad magic number"). Era a causa da "planilha bagunçada".
+      ...dv(0,2),...dv(0,2),...dv(0,4),...dv(off,4)];central.push(new Uint8Array(ch),nb);off+=lh.length+nb.length+comp.length;}
   let cs=central.reduce((a,p)=>a+p.length,0),ps=parts.reduce((a,p)=>a+p.length,0);
   const eocd=[...strU8("PK\x05\x06"),...dv(0,2),...dv(0,2),...dv(files.length,2),...dv(files.length,2),...dv(cs,4),...dv(ps,4),...dv(0,2)];
   const all=[...parts,...central,new Uint8Array(eocd)];let tot=all.reduce((a,p)=>a+p.length,0),out=new Uint8Array(tot),oo=0;for(const p of all){out.set(p,oo);oo+=p.length;}return out;}
 function xc(v,r,c){const col=String.fromCharCode(65+(c%26)),ref=(c>=26?String.fromCharCode(64+Math.floor(c/26)):"")+col+r;if(typeof v==="number"&&isFinite(v))return`<c r="${ref}"><v>${v}</v></c>`;return`<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${esc(v)}</t></is></c>`;}
+/* Planilha com VARIAS ABAS: abas=[{nome,linhas}]. Uma aba por assunto, cabecalho na
+   primeira linha e dados linha a linha — para outra pessoa filtrar/dinamizar sem ter de
+   limpar linhas-titulo no meio da grade. Numero sai como numero (ver xc). */
+async function baixarXLSXAbas(abas,nomeArq){
+  abas=(abas||[]).filter(a=>a&&a.linhas&&a.linhas.length);
+  if(!abas.length){alert("Nada para exportar no recorte atual.");return;}
+  const nm=n=>String(n||"Dados").replace(/[\\/\?\*\[\]:]/g,"-").slice(0,31);
+  const usados=new Set();
+  const sheets=abas.map((a,i)=>{
+    let n=nm(a.nome),b=n,k=2;while(usados.has(n.toLowerCase())){n=(b+" "+k++).slice(0,31);}
+    usados.add(n.toLowerCase());
+    let rows="";a.linhas.forEach((ln,ri)=>{rows+=`<row r="${ri+1}">`+ln.map((v,ci)=>xc(v,ri+1,ci)).join("")+"</row>";});
+    const cols=Math.max(...a.linhas.map(l=>l.length));
+    const larg=`<cols><col min="1" max="1" width="42" customWidth="1"/><col min="2" max="${Math.max(2,cols)}" width="17" customWidth="1"/></cols>`;
+    return {nome:n,id:i+1,
+      xml:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">`
+        +`<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>`
+        +`${larg}<sheetData>${rows}</sheetData>`
+        +`<autoFilter ref="A1:${String.fromCharCode(64+Math.min(26,cols))}${a.linhas.length}"/></worksheet>`};
+  });
+  const wb=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>`
+    +sheets.map(s=>`<sheet name="${esc(s.nome)}" sheetId="${s.id}" r:id="rId${s.id}"/>`).join("")+`</sheets></workbook>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">`
+    +sheets.map(s=>`<Relationship Id="rId${s.id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${s.id}.xml"/>`).join("")+`</Relationships>`;
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>`
+    +sheets.map(s=>`<Override PartName="/xl/worksheets/sheet${s.id}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")+`</Types>`;
+  const root=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+  const files=[{name:"[Content_Types].xml",data:strU8(ct)},{name:"_rels/.rels",data:strU8(root)},
+    {name:"xl/workbook.xml",data:strU8(wb)},{name:"xl/_rels/workbook.xml.rels",data:strU8(rels)}]
+    .concat(sheets.map(s=>({name:`xl/worksheets/sheet${s.id}.xml`,data:strU8(s.xml)})));
+  const zip=await zipFiles(files),blob=new Blob([zip],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nomeArq||"dados.xlsx";a.click();}
 async function baixarXLSX(linhas,nomeAba,nomeArq){
   let rows="";linhas.forEach((ln,ri)=>{rows+=`<row r="${ri+1}">`+ln.map((v,ci)=>xc(v,ri+1,ci)).join("")+"</row>";});
   const sheet=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${rows}</sheetData></worksheet>`;
@@ -300,7 +534,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "03/09/2026 10:52", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "03/09/2026 21:09", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
