@@ -139,6 +139,18 @@ window.CATALOGO = {
           "selo": "",
           "externo": false,
           "oculto": false
+        },
+        {
+          "id": "m",
+          "titulo": "Mara Legis",
+          "descricao": "Acervo Mara Legis: Inteligência Jurídica em Movimentação de Servidores",
+          "href": "https://notebook.google.com/notebook/f526e962-e813-443b-bee0-87f059d46800",
+          "etiqueta": "Consulta Legislação",
+          "acao": "Ver",
+          "destaque": false,
+          "selo": "",
+          "externo": true,
+          "oculto": false
         }
       ]
     },
