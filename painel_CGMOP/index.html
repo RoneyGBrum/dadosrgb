@@ -42,6 +42,20 @@ header.topo h1{margin:0;font-size:18px;font-weight:800}.sub{margin-top:3px;font-
 .card.wide{grid-column:1/-1}
 /* fixa o cartão na 2ª coluna (a do destino), quando não há par de origem para a linha */
 @media (min-width:900px){.grid.c2>.card.col-dir{grid-column:2}}.card h3{margin:0 0 1px;font-size:14px;font-weight:700}.card .leg{font-size:11.5px;color:var(--muted);margin:0 0 11px}
+/* dado secundário discreto dentro da barra / abaixo da coluna */
+.bar-track{position:relative}
+.bar-row .bar-ex{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9.5px;
+  font-weight:700;color:var(--muted);opacity:.85;pointer-events:none;font-variant-numeric:tabular-nums;
+  text-shadow:0 0 3px var(--surface),0 0 3px var(--surface)}
+.vbars .vb-ex{display:block;font-size:9.5px;color:var(--muted);font-variant-numeric:tabular-nums;margin-top:1px}
+/* mapa de blocos por UF */
+.tilemap{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(9,1fr);gap:4px;max-width:430px;margin:0 auto}
+.tile{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;cursor:pointer;background:var(--neutro);color:var(--muted)}
+.tile .v{font-size:8.5px;font-weight:600;opacity:.9;font-variant-numeric:tabular-nums}
+.tile.sel{outline:2px solid var(--gov);outline-offset:1px}
+.map-leg{display:flex;align-items:center;gap:5px;justify-content:center;margin-top:8px;font-size:10px;color:var(--muted)}
+.map-leg .sw{width:15px;height:9px;border-radius:3px;display:inline-block}
 /* colunas verticais (vbars) */
 .vbars{display:flex;align-items:flex-end;gap:6px;padding-top:4px}
 .vbars .vb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border-radius:7px;padding:2px 1px}
@@ -59,7 +73,10 @@ header.topo h1{margin:0;font-size:18px;font-weight:800}.sub{margin-top:3px;font-
 .rz .rz-tot{font-size:19px;font-weight:800;fill:var(--ink)}
 .rz .rz-sub{font-size:10px;fill:var(--muted);text-transform:uppercase;letter-spacing:.4px}
 .rz-leg{flex:1;min-width:148px;display:flex;flex-direction:column;gap:3px}
-.rz-it{display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;border-radius:6px;padding:2px 5px}
+.rz-it{position:relative;display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;border-radius:6px;padding:3px 6px;overflow:hidden}
+.rz-it .rz-bg{position:absolute;left:0;top:0;bottom:0;opacity:.13;border-radius:6px;pointer-events:none}
+.rz-it>*:not(.rz-bg){position:relative}
+.rz-it .rz-ex{font-style:normal;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .rz-it:hover{background:var(--surface-2)}.rz-it.sel{background:var(--claro);outline:1px solid var(--serie)}
 .rz-it .pt{width:10px;height:10px;border-radius:3px;flex:none}
 .rz-it .tx{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
@@ -263,7 +280,7 @@ function ligarTips(c){c.querySelectorAll("[data-tip]").forEach(n=>{n.addEventLis
 function ligarTema(){const b=el("btn-tema");if(b)b.onclick=()=>{const c=document.documentElement.getAttribute("data-theme");document.documentElement.setAttribute("data-theme",c==="dark"?"light":"dark");};}
 // barras horizontais: dist=[{cat,n,pct,idx?}]; opts.dimKey liga clique (data-<dimKey>);
 // opts.selIdx destaca a(s) barra(s) selecionada(s) — aceita um valor único OU array/Set (multi-barra).
-function hbars(dist,o={}){o=Object.assign({max:12,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:true},o);
+function hbars(dist,o={}){o=Object.assign({max:12,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:true,extra:null},o);
   const rows=dist.slice(0,o.max),mx=Math.max(...rows.map(r=>r.n),1);if(!rows.length)return'<p class="vazio">Sem dados no período.</p>';
   const _selHas=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
   // A coluna do rótulo se ajusta ao MAIOR texto deste gráfico. Antes era minmax(120px,240px)
@@ -275,31 +292,36 @@ function hbars(dist,o={}){o=Object.assign({max:12,cor:"var(--serie)",dimKey:null
   for(const r of rows){const w=(r.n/mx*100).toFixed(1),lab=o.capLab?cap(r.cat):r.cat;
     const sel=_selHas(r.idx)?" sel":"";const click=o.dimKey?`data-${o.dimKey}="${r.idx}"`:"";
     const pc=r.pct!=null?` <small>${(r.pct*100).toFixed(1)}%</small>`:"";
-    h+=`<div class="bar-row${sel}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}">
-      <div class="lab" title="${esc(lab)}">${esc(lab)}</div><div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${o.cor}"></div></div>
+    // dado secundário (ex.: remuneração média do grupo) DENTRO da barra, discreto: fica
+    // ao alcance do olho sem disputar espaço com a contagem, que é a informação principal.
+    const ex=o.extra?o.extra(r):"";
+    h+=`<div class="bar-row${sel}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}${ex?' · '+esc(ex):''}">
+      <div class="lab" title="${esc(lab)}">${esc(lab)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${o.cor}"></div>${ex?`<span class="bar-ex">${esc(ex)}</span>`:""}</div>
       <div class="val">${fmtInt(r.n)}${pc}</div></div>`;}
   return h+'</div>';}
 /* ===== Colunas VERTICAIS — para faixas ordenadas (etária, remuneração, tempo). Uma
    sequência ordenada lê melhor ao longo de um eixo horizontal do que empilhada na
    vertical, e quebra a monotonia de um painel só de barras deitadas. Mesmo contrato de
    clique do hbars: cada coluna carrega data-<dimKey>, para multi-seleção. */
-function vbars(dist,o={}){o=Object.assign({max:14,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:false,alt:150},o);
+function vbars(dist,o={}){o=Object.assign({max:14,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:false,alt:150,extra:null},o);
   const rows=dist.slice(0,o.max),mx=Math.max(...rows.map(r=>r.n),1);
   if(!rows.length)return'<p class="vazio">Sem dados no período.</p>';
   const _sel=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
   let h=`<div class="vbars" style="--alt:${o.alt}px">`;
   for(const r of rows){const alt=Math.max(2,r.n/mx*100).toFixed(1),lab=o.capLab?cap(r.cat):r.cat;
     const click=o.dimKey?`data-${o.dimKey}="${esc(r.idx)}"`:"";
-    h+=`<div class="vb${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}">
+    const ex=o.extra?o.extra(r):"";
+    h+=`<div class="vb${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}${ex?' · '+esc(ex):''}">
       <div class="vb-n">${fmtInt(r.n)}</div>
       <div class="vb-col"><div class="vb-fill" style="height:${alt}%;background:${o.cor}"></div></div>
-      <div class="vb-lab">${esc(lab)}</div></div>`;}
+      <div class="vb-lab">${esc(lab)}${ex?`<span class="vb-ex">${esc(ex)}</span>`:""}</div></div>`;}
   return h+'</div>';}
 
 /* ===== Rosca (donut) — para poucas categorias que somam um todo (situação, regime,
    força de trabalho). Mostra a participação sem obrigar a comparar comprimentos de
    barra. Fatias e itens da legenda são clicáveis, como as barras. */
-function rosca(dist,o={}){o=Object.assign({max:6,cores:null,dimKey:null,selIdx:null,capLab:true,raio:58},o);
+function rosca(dist,o={}){o=Object.assign({max:6,cores:null,dimKey:null,selIdx:null,capLab:true,raio:58,extra:null},o);
   const rows=dist.slice(0,o.max),tot=rows.reduce((a,r)=>a+r.n,0);
   if(!rows.length||!tot)return'<p class="vazio">Sem dados no período.</p>';
   const PAL=o.cores||["var(--serie)","var(--destino)","var(--origem)","var(--magenta)","#7a5bbf","#0f6b56"];
@@ -311,14 +333,41 @@ function rosca(dist,o={}){o=Object.assign({max:6,cores:null,dimKey:null,selIdx:n
       stroke-width="${_sel(r.idx)?30:23}" stroke-dasharray="${(frac*C).toFixed(2)} ${C.toFixed(2)}"
       stroke-dashoffset="${(-off*C).toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"
       data-tip="${esc(lab)}: ${fmtInt(r.n)} (${(frac*100).toFixed(1)}%)"></circle>`;
-    leg+=`<div class="rz-it${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}">
+    // Sombra clara ATRÁS da linha, do tamanho da fatia e na cor dela: a legenda passa a
+    // comparar as fatias sozinha, sem precisar voltar os olhos ao círculo (achado 04/09/2026).
+    const larg=(frac/Math.max(...rows.map(x=>x.n/tot))*100).toFixed(1);
+    const ex=o.extra?o.extra(r):"";
+    leg+=`<div class="rz-it${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${ex?' · '+esc(ex):''}">
+      <span class="rz-bg" style="width:${larg}%;background:${cor}"></span>
       <span class="pt" style="background:${cor}"></span><span class="tx">${esc(lab)}</span>
-      <b>${(frac*100).toFixed(1)}%</b><small>${fmtInt(r.n)}</small></div>`;
+      ${ex?`<i class="rz-ex">${esc(ex)}</i>`:""}<b>${(frac*100).toFixed(1)}%</b><small>${fmtInt(r.n)}</small></div>`;
     off+=frac;});
   return `<div class="rz"><svg viewBox="0 0 ${cx*2} ${cy*2}" width="${cx*2}" height="${cy*2}" role="img">${seg}
     <text x="${cx}" y="${cy-1}" text-anchor="middle" class="rz-tot">${fmtInt(tot)}</text>
     <text x="${cx}" y="${cy+15}" text-anchor="middle" class="rz-sub">total</text></svg>
     <div class="rz-leg">${leg}</div></div>`;}
+
+/* ===== Mapa de blocos por UF — as 27 unidades no formato aproximado do país. Uma
+   sequência de 27 colunas obriga a procurar o estado pelo rótulo; no mapa o olho vai
+   direto à região. `dist` = [{cat:"RJ", n, idx}]. Clique com data-<dimKey>. */
+const UF_GRADE={RR:[2,0],AP:[3,0],AM:[1,1],PA:[2,1],MA:[3,1],CE:[4,1],RN:[5,1],AC:[0,2],RO:[1,2],
+  TO:[2,2],PI:[3,2],PB:[4,2],PE:[5,2],MT:[1,3],GO:[2,3],BA:[3,3],AL:[4,3],SE:[5,3],MS:[1,4],
+  DF:[2,4],MG:[3,4],ES:[4,4],SP:[2,5],RJ:[3,5],PR:[2,6],SC:[2,7],RS:[1,8]};
+function mapaUF(dist,o={}){o=Object.assign({dimKey:null,selIdx:null,cor:"var(--serie)",extra:null},o);
+  const m={},ex={};let mx=0;
+  for(const d of dist){if(String(d.cat).length===2){m[d.cat]=d.n;ex[d.cat]=o.extra?o.extra(d):"";if(d.n>mx)mx=d.n;}}
+  const _sel=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  let h='<div class="tilemap">';
+  for(const uf in UF_GRADE){const[c,r]=UF_GRADE[uf],v=m[uf]||0,int=mx?v/mx:0;
+    const bg=v?`color-mix(in srgb, ${o.cor} ${(15+int*85).toFixed(0)}%, var(--neutro))`:"var(--neutro)";
+    const tinta=int>.45?"#fff":"var(--ink-2)";
+    const click=o.dimKey?`data-${o.dimKey}="${uf}"`:"";
+    h+=`<div class="tile${_sel(uf)?" sel":""}" style="grid-column:${c+1};grid-row:${r+1};background:${bg};color:${tinta}" ${click}
+      data-tip="${uf}: ${fmtInt(v)}${ex[uf]?' · '+esc(ex[uf]):''}">${uf}<span class="v">${v?fmtInt(v):""}</span></div>`;}
+  h+='</div><div class="map-leg"><span>menos</span><span class="sw" style="background:var(--neutro)"></span>'
+    +`<span class="sw" style="background:color-mix(in srgb, ${o.cor} 55%, var(--neutro))"></span>`
+    +`<span class="sw" style="background:${o.cor}"></span><span>mais</span></div>`;
+  return h;}
 
 /* ===== Trilho lateral dos FILTROS APLICADOS. Achado de 03/09/2026: a relação de filtros
    ocupava a área nobre do topo e empurrava os gráficos para baixo. Regra do ecossistema:
@@ -343,9 +392,19 @@ function rosca(dist,o={}){o=Object.assign({max:6,cores:null,dimKey:null,selIdx:n
   padding:5px;cursor:pointer;color:var(--ink-2);font-weight:700;font-size:11.5px}
  .frail.dobrado .lst,.frail.dobrado .rod{display:none}
  @media (max-width:1450px){.frail{display:none}}
- @media (min-width:1451px){.com-rail body{padding-right:236px}
-   .com-rail .chips{display:none}}
+ @media (min-width:1451px){body{padding-right:236px}
+   /* informação repetida não acrescenta: com o trilho à vista, some a lista de valores
+      logo abaixo de cada campo e a barra de chips. Em tela estreita, onde o trilho não
+      cabe, elas voltam — senão não haveria como saber o que está escolhido. */
+   .chips,.fchips{display:none}}
  @media print{.frail{display:none!important}}`;
+ // Paleta clara para separar as dimensões no trilho. Cada rótulo pega uma cor fixa (pela
+ // ordem de aparição), então "Órgão de lotação" fica sempre com a mesma, dentro da sessão.
+ const TONS=[["#eef3fd","#2a5bb0"],["#eef7f1","#1c7a5b"],["#fdf3ea","#b96a24"],
+             ["#f7eff8","#8a4f9e"],["#eaf6f8","#1c6f80"],["#fdf0f3","#b03a5b"],
+             ["#f2f4e9","#6a7a2a"],["#f0f1f7","#4a4f7a"]];
+ const CORES={};let _proxCor=0;
+ function tomDe(lab){if(!(lab in CORES)){CORES[lab]=TONS[_proxCor%TONS.length];_proxCor++;}return CORES[lab];}
  let inj=false,dobrado=false;
  function css(){if(inj)return;inj=true;const s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s);}
  window.railFiltros=function(itens,cfg){css();cfg=cfg||{};itens=itens||[];
@@ -356,7 +415,10 @@ function rosca(dist,o={}){o=Object.assign({max:6,cores:null,dimKey:null,selIdx:n
    const n=itens.length;
    r.innerHTML=`<div class="cab">&#128269; ${esc(cfg.titulo||"Filtros aplicados")}<span class="n">${n}</span>`
      +`<button class="dob" title="${dobrado?"abrir":"recolher"}">${dobrado?"&#9656;":"&#9662;"}</button></div>`
-     +(n?`<div class="lst">${itens.map((x,k)=>`<div class="it"><span class="v"><span class="k">${esc(x.lab)}:</span> ${esc(x.val)}</span><span class="x" data-i="${k}" title="remover">&times;</span></div>`).join("")}</div>`
+     +(n?`<div class="lst">${itens.map((x,k)=>{const[fundo,tinta]=tomDe(x.lab);
+         return `<div class="it" style="background:${fundo};border-left:3px solid ${tinta}">`
+           +`<span class="v"><span class="k" style="color:${tinta}">${esc(x.lab)}:</span> ${esc(x.val)}</span>`
+           +`<span class="x" data-i="${k}" title="remover">&times;</span></div>`;}).join("")}</div>`
           +`<div class="rod"><button data-lim>&times; Limpar tudo</button></div>`
         :`<div class="pe">${esc(cfg.vazio||"Nenhum filtro aplicado. Clique nas barras dos gráficos ou use os campos do topo.")}</div>`);
    r.querySelector(".dob").onclick=()=>{dobrado=!dobrado;railFiltros(itens,cfg);};
@@ -534,7 +596,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "03/09/2026 21:09", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "04/09/2026 14:50", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
