@@ -217,7 +217,7 @@ body::before{content:"";position:fixed;inset:0 0 auto 0;height:520px;pointer-eve
 .eco-nav{background:color-mix(in srgb,var(--papel) 78%,transparent);
   backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid var(--fio);box-shadow:none;padding:9px 0}
-.eco-nav>*{max-width:1160px}
+.eco-nav>*{max-width:1264px}
 .eco-nav .marca{font-weight:600;letter-spacing:-.01em;color:var(--tinta)}
 .eco-nav a{font-weight:500;color:var(--tinta-2);font-size:13px}
 .eco-nav a:hover{background:transparent;color:var(--tinta)}
@@ -231,33 +231,37 @@ body::before{content:"";position:fixed;inset:0 0 auto 0;height:520px;pointer-eve
 :root[data-theme="dark"] .eco-nav a.on{background:rgba(255,255,255,.07)}
 .eco-nav a .ic{font-size:14px;opacity:.9}
 
-.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.wrap{max-width:1264px;margin:0 auto;padding:0 28px}
 
 /* ── abertura ───────────────────────────────────────────────────────────────────── */
-.hero{padding:88px 0 12px;max-width:none}
+.hero{padding:52px 0 10px;max-width:none}
 .hero .eyebrow{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--tinta-3);
   text-transform:none;display:block}
 .hero h1{margin:16px 0 0;font-weight:600;line-height:1.045;letter-spacing:-.028em;
-  font-size:clamp(38px,6.2vw,68px);max-width:15ch;color:var(--tinta)}
-.hero .deck{margin:20px 0 0;font-size:clamp(16px,1.5vw,19px);line-height:1.5;
+  font-size:clamp(34px,4.6vw,54px);max-width:21ch;color:var(--tinta)}
+.hero .deck{margin:16px 0 0;font-size:clamp(15px,1.3vw,17px);line-height:1.5;
   color:var(--tinta-2);max-width:56ch;font-weight:400;letter-spacing:-.006em}
-.hero .sub{margin-top:26px;font-size:12.5px;color:var(--tinta-3);font-weight:400;letter-spacing:.01em}
+.hero .sub{margin-top:18px;font-size:12.5px;color:var(--tinta-3);font-weight:400;letter-spacing:.01em}
 
 /* Números sem moldura: o algarismo grande basta. */
-.stat{display:flex;gap:0;margin:30px 0 0;flex-wrap:wrap}
+.stat{display:flex;gap:0;margin:20px 0 0;flex-wrap:wrap}
 .stat>div{padding:2px 34px 2px 0;margin-right:34px;border-right:1px solid var(--fio)}
 .stat>div:last-child{border-right:0;margin-right:0;padding-right:0}
-.stat b{display:block;font-size:clamp(28px,3vw,38px);font-weight:600;letter-spacing:-.03em;
+.stat b{display:block;font-size:clamp(26px,2.4vw,32px);font-weight:600;letter-spacing:-.03em;
   color:var(--tinta);font-variant-numeric:tabular-nums;line-height:1.05}
 .stat span{display:block;font-size:11px;color:var(--tinta-3);letter-spacing:.08em;
   text-transform:uppercase;margin-top:7px;font-weight:600}
 
-.sec-rot{margin:74px 0 0;font-size:12px;font-weight:600;letter-spacing:.09em;
+.sec-rot{margin:40px 0 0;font-size:12px;font-weight:600;letter-spacing:.09em;
   text-transform:uppercase;color:var(--tinta-3)}
 
 /* ── cartões ────────────────────────────────────────────────────────────────────── */
-.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));
-  padding:20px 0 8px;margin-top:0}
+/* Colunas por faixa, e não auto-fill: com 8 cartões o auto-fill parava em 3 e deixava
+   uma faixa vazia à direita. Quatro colunas fecham as duas fileiras exatamente. */
+.grid{display:grid;gap:20px;grid-template-columns:1fr;padding:16px 0 8px;margin-top:0}
+@media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1180px){.grid{grid-template-columns:repeat(4,1fr)}}
 .tile{position:relative;display:flex;flex-direction:column;background:var(--carta);
   border:1px solid var(--fio);border-radius:20px;padding:26px 24px 22px;text-decoration:none;
   color:inherit;box-shadow:0 1px 1px rgba(16,24,40,.03);overflow:hidden;
@@ -313,7 +317,7 @@ body::before{content:"";position:fixed;inset:0 0 auto 0;height:520px;pointer-eve
   @keyframes sobe{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 }
 @media(max-width:720px){
-  .wrap{padding:0 20px}.hero{padding:52px 0 8px}
+  .wrap{padding:0 20px}.hero{padding:36px 0 8px}
   /* Em tela estreita a barra quebrava em três linhas (marca / trilha / tema). Encolhe a
      marca, esconde o "você está em:" e deixa só o nome do painel — a linha volta a caber. */
   .eco-nav{padding:7px 14px}
@@ -323,7 +327,7 @@ body::before{content:"";position:fixed;inset:0 0 auto 0;height:520px;pointer-eve
   .eco-nav .onde{font-size:0}
   .eco-nav .onde b{font-size:12px}
   .stat>div{padding-right:22px;margin-right:22px}
-  .sec-rot{margin-top:52px}.grid{gap:14px}
+  .sec-rot{margin-top:34px}.grid{gap:14px}
   .tile{padding:22px 20px 20px;border-radius:18px}
 }
 @media print{body::before{display:none}.tile{box-shadow:none}}
@@ -697,7 +701,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "04/09/2026 16:24", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "04/09/2026 17:02", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
