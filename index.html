@@ -1,464 +1,892 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>document.documentElement.className='js';</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="dadosrgb — hub de projetos de dados, análise e automação de Roney G. Brum.">
+<meta name="color-scheme" content="light dark">
 <title>dadosrgb</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSI1OCIgaGVpZ2h0PSI1OCIgcng9IjE0IiBmaWxsPSIjMUIzNjVEIi8+CjxwYXRoIGQ9Ik0xNCAxNiBINTAgTDM2IDM2IFY0NiBMMjggNTAgVjM2IFoiIGZpbGw9IiNGRkZGRkYiLz4KPGNpcmNsZSBjeD0iMzIiIGN5PSI1NSIgcj0iMy40IiBmaWxsPSIjQjA1QTIyIi8+Cjwvc3ZnPgo=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;450;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;450;500;600;700&display=swap" rel="stylesheet">
+<script src="./catalogo.js"></script>
 <style>
-  :root{
-    /* ground — very light cool gray, clean and modern */
-    --bg:#f4f5f7;
-    --bg-tint:#eceef1;
-    --card:#ffffff;
-    --card-2:#f7f8fa;
-    --ink:#1b1d21;
-    --ink-2:#4b5058;
-    --ink-3:#828892;
-    --line:#e6e8ec;
-    --line-2:#d7dbe1;
-    --shadow:20 24 32;
-    --shadow-a:0.07;
-    /* five curated, dessaturated jewel tones — harmonic */
-    --c1:#2f6b6b; /* petróleo  */
-    --c2:#9a6a22; /* ocre      */
-    --c3:#6f3d63; /* ameixa    */
-    --c4:#4f6b45; /* pinho     */
-    --c5:#a1584a; /* argila    */
-    --wm:#2f6b6b;
-  }
+/* ══════════════════════════════════════════════════════════════
+   TOKENS — claro
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --bg-0:#EAEEF6;      /* herói e rodapé — plano mais fundo */
+  --bg:#F4F6FA;        /* a placa que sobe */
+  --surface:#FFFFFF;
+  --surface-2:#FAFBFD;
+  --ink:#12161F;
+  --ink-2:#4A5364;
+  --ink-3:#616A7A;
+  --line:#E2E7EF;
+  --line-2:#CFD6E2;
+  --shadow-rgb:16 24 40;
+  --grain-op:.020;
+  --amb-op:.055;
+
+  --c1:#2C5282; --i1:#2C5282;   /* marinho  — marca */
+  --c2:#B05A22; --i2:#9A4A16;   /* cobre    — marca */
+  --c3:#6B2FA0; --i3:#6B2FA0;   /* ametista */
+  --c4:#0E6B4F; --i4:#0E6B4F;   /* esmeralda */
+  --c5:#B0233F; --i5:#B0233F;   /* granada */
+  --wm:#2C5282;
+
+  --e-out:cubic-bezier(.16,1,.3,1);
+  --e-inout:cubic-bezier(.65,0,.35,1);
+  --e-ui:cubic-bezier(.2,.7,.2,1);
+  --e-snap:cubic-bezier(.34,1.4,.64,1);
+}
+/* ESCURO — um só, desaninhado (o @media aninhado era bug latente) */
+@media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    @media (prefers-color-scheme: dark){
-      --bg:#111318;
-      --bg-tint:#171a20;
-      --card:#191c22;
-      --card-2:#20242b;
-      --ink:#eceef2;
-      --ink-2:#b3b9c2;
-      --ink-3:#818893;
-      --line:#282c34;
-      --line-2:#333842;
-      --shadow:0 0 0;
-      --shadow-a:0.40;
-      --c1:#74b4ad;
-      --c2:#d5a35d;
-      --c3:#c58fb9;
-      --c4:#9dbf89;
-      --c5:#dc9a88;
-      --wm:#74b4ad;
-    }
+    --bg-0:#070A11; --bg:#0B0F18; --surface:#121826; --surface-2:#18202F;
+    --ink:#EEF2F8; --ink-2:#A8B3C4; --ink-3:#8A96A8;
+    --line:#1E2636; --line-2:#2B3547;
+    --shadow-rgb:0 0 0; --grain-op:.032; --amb-op:.075;
+    --c1:#7FA3D4; --i1:#7FA3D4;
+    --c2:#E08B4C; --i2:#E08B4C;
+    --c3:#C49BEC; --i3:#C49BEC;
+    --c4:#5FC3A6; --i4:#5FC3A6;
+    --c5:#F0899F; --i5:#F0899F;
+    --wm:#7FA3D4;
   }
-  :root[data-theme="dark"]{
-    --bg:#1a1815;
-    --bg-tint:#211e1a;
-    --card:#242019;
-    --card-2:#2b271f;
-    --ink:#efece3;
-    --ink-2:#c3bdae;
-    --ink-3:#8f887a;
-    --line:#39342b;
-    --line-2:#463f34;
-    --shadow:0 0 0;
-    --shadow-a:0.35;
-    --c1:#74b4ad;
-    --c2:#d5a35d;
-    --c3:#c58fb9;
-    --c4:#9dbf89;
-    --c5:#dc9a88;
-    --wm:#74b4ad;
-  }
+}
+:root[data-theme="dark"]{
+  --bg-0:#070A11; --bg:#0B0F18; --surface:#121826; --surface-2:#18202F;
+  --ink:#EEF2F8; --ink-2:#A8B3C4; --ink-3:#8A96A8;
+  --line:#1E2636; --line-2:#2B3547;
+  --shadow-rgb:0 0 0; --grain-op:.032; --amb-op:.075;
+  --c1:#7FA3D4; --i1:#7FA3D4;
+  --c2:#E08B4C; --i2:#E08B4C;
+  --c3:#C49BEC; --i3:#C49BEC;
+  --c4:#5FC3A6; --i4:#5FC3A6;
+  --c5:#F0899F; --i5:#F0899F;
+  --wm:#7FA3D4;
+}
 
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0;
-    background-color:var(--bg);
-    color:var(--ink);
-    font-family:"Public Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    font-weight:400;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
-  }
-  .mono{
-    font-family:ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
-  }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background-color:var(--bg-0); color:var(--ink);
+  font-family:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight:450; font-size:17px; line-height:1.6; letter-spacing:-.003em;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+h1,h2,h3{margin:0}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums; letter-spacing:.16em; font-weight:600}
+.wrap{max-width:1240px; margin:0 auto; padding:0 clamp(20px,4vw,40px)}
 
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+/* ---------- pular para o conteúdo ---------- */
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:100;
+  background:var(--surface); color:var(--ink); border:1px solid var(--line-2);
+  border-radius:10px; padding:10px 16px; font-weight:600; text-decoration:none;
+}
+.skip:focus-visible{left:16px; top:16px; outline:2px solid var(--c1); outline-offset:4px}
 
-  /* ---------- masthead ---------- */
-  .top{
-    display:flex;align-items:baseline;justify-content:space-between;gap:24px;
-    padding:30px 0 22px;flex-wrap:wrap;
-    border-bottom:1px solid var(--line-2);
-  }
-  .brand{display:flex;flex-direction:column;gap:2px}
-  .wordmark{
-    font-family:"Fraunces", Georgia, serif;
-    font-optical-sizing:auto;
-    font-weight:600;font-size:26px;letter-spacing:-.01em;color:var(--ink);
-    line-height:1;
-  }
-  .wordmark b{color:var(--wm);font-weight:600}
-  .brand .kicker{
-    font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--ink-3);font-weight:600;
-  }
-  .toolbar{display:flex;align-items:center;gap:16px}
-  .catalog{
-    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--ink-3);font-weight:600;
-    display:flex;gap:14px;align-items:center;
-  }
-  .catalog span{color:var(--ink-2)}
-  .ttoggle{
-    appearance:none;border:1px solid var(--line-2);background:var(--card);
-    color:var(--ink-2);border-radius:2px;padding:6px 10px;cursor:pointer;
-    font-family:inherit;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    font-weight:600;transition:border-color .18s, color .18s;
-  }
-  .ttoggle:hover{border-color:var(--ink-3);color:var(--ink)}
+/* ---------- grão e ambiente ---------- */
+.grain{
+  position:fixed; inset:0; z-index:9; pointer-events:none;
+  opacity:var(--grain-op); mix-blend-mode:overlay; background-size:200px;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* dentro da placa: pinta sobre o fundo do pai e sob o conteúdo (z-index negativo
+   no contexto de empilhamento de main.slab). Como fixed no body ficava coberto. */
+.amb{
+  position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:0;
+  border-radius:inherit;
+  transition:opacity 900ms var(--e-inout);
+  background:radial-gradient(72% 56% at 50% 0%, var(--cor,transparent), transparent 72%);
+}
+.amb.on{opacity:var(--amb-op)}
 
-  /* ---------- hero ---------- */
-  .hero{padding:56px 0 44px;max-width:900px}
-  .hero .eyebrow{
-    font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--wm);
-    font-weight:700;margin:0 0 20px;
-  }
-  h1{
-    font-family:"Fraunces", Georgia, serif;
-    font-optical-sizing:auto;
-    font-weight:600;
-    font-size:clamp(38px, 6vw, 66px);
-    line-height:1.03;letter-spacing:-.018em;
-    margin:0 0 22px;color:var(--ink);
-    max-width:16ch;
-  }
-  .hero p{
-    font-size:clamp(16px,1.4vw,18.5px);
-    line-height:1.62;color:var(--ink-2);max-width:60ch;margin:0;font-weight:450;
-  }
+/* ---------- masthead ---------- */
+.top{
+  position:fixed; inset:0 0 auto 0; height:56px; z-index:40;
+  display:flex; align-items:center;
+  background:transparent;
+  transition:background 380ms var(--e-ui);
+}
+.top::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background:var(--line); opacity:0; transition:opacity 380ms var(--e-ui);
+}
+.top.is-stuck{
+  background:rgba(244,246,250,.74);
+  background:color-mix(in srgb, var(--bg) 74%, transparent);
+  -webkit-backdrop-filter:blur(22px) saturate(1.6); backdrop-filter:blur(22px) saturate(1.6);
+}
+.top.is-stuck::after{opacity:1}
+.top .wrap{display:flex; align-items:center; justify-content:space-between; gap:20px; width:100%}
+.wordmark{
+  font-family:"Fraunces", Georgia, serif; font-optical-sizing:auto;
+  font-weight:600; font-size:27px; letter-spacing:-.012em; line-height:1; color:var(--ink);
+  transform:scale(1.18); transform-origin:left center;
+  transition:transform 380ms var(--e-ui);
+}
+.top.is-stuck .wordmark{transform:scale(1)}
+.wordmark b{color:var(--wm); font-weight:600}
+.toolbar{display:flex; align-items:center; gap:14px}
+.count{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600}
+.count b{color:var(--ink-2); font-weight:600}
+.ttoggle{
+  appearance:none; border:1px solid var(--line-2); background:transparent; color:var(--ink-2);
+  border-radius:999px; padding:6px 13px; cursor:pointer; font-family:inherit;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:700;
+  transition:border-color .2s var(--e-ui), color .2s var(--e-ui);
+}
+.ttoggle:hover{border-color:var(--ink-3); color:var(--ink)}
+.ttoggle:focus-visible{outline:2px solid var(--c1); outline-offset:4px}
 
-  /* ---------- section ---------- */
-  .sec{padding:34px 0 12px;scroll-margin-top:20px}
-  .sec-head{
-    display:grid;grid-template-columns:auto 1fr;gap:18px 20px;align-items:baseline;
-    padding-bottom:16px;margin-bottom:26px;
-    border-bottom:2px solid var(--cat);
-  }
-  .sec-no{
-    font-size:12px;letter-spacing:.14em;font-weight:600;
-    color:var(--cat);
-    padding-top:9px;white-space:nowrap;
-  }
-  .sec-titles{grid-column:2}
-  .sec h2{
-    font-family:"Fraunces", Georgia, serif;font-optical-sizing:auto;
-    font-weight:600;font-size:clamp(21px,2.4vw,27px);letter-spacing:-.01em;
-    line-height:1.15;margin:0 0 6px;color:var(--ink);
-  }
-  .sec .sec-desc{font-size:14.5px;color:var(--ink-2);margin:0;max-width:66ch;font-weight:450}
-
-  /* ---------- grid ---------- */
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(min(100%,262px), 1fr));
-    gap:16px;
-    margin-bottom:8px;
-  }
-  .card{
-    position:relative;display:flex;flex-direction:column;
-    text-decoration:none;color:inherit;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:3px;
-    padding:22px 22px 20px;
-    min-height:172px;
-    transition:transform .2s cubic-bezier(.2,.6,.2,1), border-color .2s, box-shadow .2s;
-  }
-  .card:hover{
-    transform:translateY(-3px);
-    border-color:var(--cat);
-    box-shadow:0 10px 26px -14px rgba(var(--shadow), var(--shadow-a));
-  }
-  .card .tag{
-    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
-    color:var(--cat);margin-bottom:13px;display:block;
-  }
-  .card h3{
-    font-family:"Fraunces", Georgia, serif;font-optical-sizing:auto;
-    font-weight:600;font-size:18px;line-height:1.22;letter-spacing:-.005em;
-    margin:0 0 9px;color:var(--ink);
-  }
-  .card p{font-size:13.5px;line-height:1.55;color:var(--ink-2);margin:0;font-weight:450}
-  .card .go{
-    margin-top:auto;padding-top:16px;
-    font-size:12px;letter-spacing:.03em;color:var(--ink-3);font-weight:600;
-    display:inline-flex;align-items:center;gap:7px;
-    transition:color .2s;
-  }
-  .card:hover .go{color:var(--cat)}
-  .card .go .ar{transition:transform .2s}
-  .card:hover .go .ar{transform:translateX(4px)}
-
-  /* featured — o principal */
-  .card.feat{
-    grid-column:span 2;
+/* ---------- herói ---------- */
+.hero-stage{height:128vh; position:relative; background:var(--bg-0)}
+.hero{
+  position:sticky; top:0; height:100vh; height:100svh;
+  display:grid; place-items:center; overflow:hidden;
+}
+.plano{position:absolute; inset:0; pointer-events:none}
+.hero-stage.is-live .plano{will-change:transform}
+/* plano 4 — campo de luz */
+.p4{
+  transform:translate3d(0,calc(var(--p,0) * -30px),0);
+  background:
+    radial-gradient(60% 55% at 18% 12%, rgba(44,82,130,.13), transparent 70%),
+    radial-gradient(50% 45% at 84% 78%, rgba(176,90,34,.09), transparent 70%),
+    linear-gradient(180deg,#EEF1F7,#F4F6FA);
+}
+:root[data-theme="dark"] .p4,
+:root:not([data-theme="light"]) .p4{}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .p4{
     background:
-      linear-gradient(160deg,
-        color-mix(in srgb, var(--cat) 12%, var(--card)),
-        color-mix(in srgb, var(--cat) 4%, var(--card)) 60%);
-    border-color:color-mix(in srgb, var(--cat) 45%, var(--line));
-    padding:26px 28px 24px;
-    min-height:210px;
+      radial-gradient(60% 55% at 18% 12%, rgba(127,163,212,.10), transparent 70%),
+      radial-gradient(50% 45% at 84% 78%, rgba(224,139,76,.07), transparent 70%),
+      radial-gradient(120% 90% at 50% -10%, transparent, rgba(0,0,0,.55)),
+      #070A11;
   }
-  .card.feat .flag{
-    position:absolute;top:20px;right:24px;
-    font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
-    color:var(--cat);
-    display:flex;align-items:center;gap:8px;
+}
+:root[data-theme="dark"] .p4{
+  background:
+    radial-gradient(60% 55% at 18% 12%, rgba(127,163,212,.10), transparent 70%),
+    radial-gradient(50% 45% at 84% 78%, rgba(224,139,76,.07), transparent 70%),
+    radial-gradient(120% 90% at 50% -10%, transparent, rgba(0,0,0,.55)),
+    #070A11;
+}
+/* plano 3 — malha de dados */
+.p3{
+  transform:translate3d(0,calc(var(--p,0) * -78px),0);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(18,22,31,.06) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(90deg, rgba(18,22,31,.06) 0 1px, transparent 1px 72px);
+  -webkit-mask-image:radial-gradient(65% 60% at 50% 45%, #000, transparent 78%);
+  mask-image:radial-gradient(65% 60% at 50% 45%, #000, transparent 78%);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .p3{
+    background-image:
+      repeating-linear-gradient(0deg, rgba(238,242,248,.07) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(90deg, rgba(238,242,248,.07) 0 1px, transparent 1px 72px);
   }
-  .card.feat .flag::before{content:"";width:20px;height:1px;background:var(--cat)}
-  .card.feat h3{font-size:clamp(22px,2.6vw,29px);line-height:1.1;margin-bottom:12px;max-width:20ch}
-  .card.feat p{font-size:14.5px;line-height:1.58;max-width:62ch;color:var(--ink-2)}
-  .card.feat .go{color:var(--cat)}
+}
+:root[data-theme="dark"] .p3{
+  background-image:
+    repeating-linear-gradient(0deg, rgba(238,242,248,.07) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(90deg, rgba(238,242,248,.07) 0 1px, transparent 1px 72px);
+}
+/* plano 2 — constelação */
+.p2{transform:translate3d(0,calc(var(--p,0) * -168px),0)}
+.p2 svg{position:absolute; inset:0; width:100%; height:100%}
+.p2 line{stroke:var(--c1); stroke-width:.5; opacity:.16}
+.p2 circle{fill:var(--c1); opacity:.34}
+html.js .p2{opacity:0; transition:opacity 1400ms var(--e-out) 300ms}
+html.js .p2.in{opacity:1}
+/* plano 1 — conteúdo */
+.p1{
+  position:relative; z-index:2; width:100%;
+  transform:translateY(calc(var(--p,0) * -104px)) scale(calc(1 - var(--p,0) * .06));
+  opacity:clamp(0, calc(1 - var(--p,0) * 1.45), 1);
+}
+.eyebrow{
+  font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--wm);
+  font-weight:700; margin:0 0 22px;
+}
+h1{
+  font-family:"Fraunces", Georgia, serif; font-optical-sizing:auto;
+  font-variation-settings:"opsz" 144;
+  font-weight:300; font-size:clamp(2.9rem, 8.2vw, 6.2rem);
+  line-height:.98; letter-spacing:-.035em; max-width:15ch;
+  text-wrap:balance; margin:0 0 24px; color:var(--ink);
+}
+.lede{
+  font-weight:450; font-size:clamp(1.0625rem,1.5vw,1.3125rem); line-height:1.55;
+  color:var(--ink-2); max-width:58ch; text-wrap:pretty; margin:0;
+}
 
-  @media (max-width:720px){
-    .grid{grid-template-columns:1fr 1fr;gap:13px}
-    .card.feat{grid-column:1 / -1}
-    .sec-head{grid-template-columns:1fr;gap:8px}
-    .sec-no{padding-top:0}
-    .sec-titles{grid-column:1}
-  }
-  @media (max-width:460px){
-    .grid{grid-template-columns:1fr}
-    .wrap{padding:0 18px}
-    .hero{padding:40px 0 32px}
-  }
+/* ---------- a placa ---------- */
+main.slab{
+  position:relative; z-index:2; background:var(--bg);
+  border-radius:28px 28px 0 0;
+  /* duas declarações inteiras: se color-mix falhar, a 2ª é descartada e a 1ª vale.
+     (Fallback DENTRO da mesma lista derrubaria a sombra toda.) */
+  box-shadow:
+    0 -1px 0 rgba(18,22,31,.08),
+    0 -40px 80px -32px rgba(var(--shadow-rgb)/.22);
+  box-shadow:
+    0 -1px 0 color-mix(in srgb, var(--ink) 8%, transparent),
+    0 -40px 80px -32px rgba(var(--shadow-rgb)/.22);
+}
 
-  /* ---------- footer ---------- */
-  footer{
-    margin-top:52px;border-top:1px solid var(--line-2);
-    padding:34px 0 46px;
-    display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+/* ---------- a linha viva ---------- */
+.baseline{
+  position:sticky; top:56px; z-index:30; height:34px;
+  background:rgba(244,246,250,.76);
+  background:color-mix(in srgb, var(--bg) 76%, transparent);
+  -webkit-backdrop-filter:blur(18px) saturate(1.5); backdrop-filter:blur(18px) saturate(1.5);
+  border-bottom:1px solid var(--line);
+  border-radius:28px 28px 0 0;
+}
+.baseline .wrap{display:flex; align-items:center; height:100%; gap:0}
+.notches{display:flex; align-items:center; gap:14px}
+.notch{
+  display:grid; place-items:center; width:30px; height:34px;
+  text-decoration:none; position:relative;
+}
+.notch i{
+  display:block; width:3px; height:14px; border-radius:1px;
+  background:var(--cat,var(--c1)); transform-origin:bottom;
+  opacity:.35;
+  transition:transform 380ms var(--e-ui), opacity 380ms var(--e-ui);
+}
+html.js .notch i{opacity:0; transform:translateY(-10px) scale(.4)}
+html.js .baseline.in .notch i{opacity:.35; transform:none;
+  transition:transform 420ms var(--e-snap), opacity 420ms var(--e-snap);
+  transition-delay:calc(var(--n,0) * 110ms)}
+html.js .baseline.in .notch.on i{opacity:1; transform:scaleY(1.57)}
+.notch.on i{opacity:1; transform:scaleY(1.57)}
+.notch:focus-visible{outline:2px solid var(--cat,var(--c1)); outline-offset:2px; border-radius:6px}
+.bfill{
+  position:absolute; left:0; bottom:-1px; height:2px; width:100%;
+  transform:scaleX(var(--sp,0)); transform-origin:left;
+  background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5));
+}
+
+/* ---------- seções ---------- */
+.sec{padding:clamp(84px,11vh,148px) 0 clamp(40px,6vh,72px); scroll-margin-top:96px}
+.sec-head{
+  display:grid; grid-template-columns:auto 1fr; gap:18px 20px; align-items:baseline;
+  padding-bottom:16px; margin-bottom:28px;
+  border-bottom:2px solid #CFD6E2;
+  border-bottom:2px solid color-mix(in srgb, var(--cat) 40%, var(--line));
+  transition:border-color 240ms var(--e-ui);
+  scroll-margin-top:96px;
+}
+.sec.aim .sec-head{border-bottom-color:var(--cat)}
+.sec-no{
+  font-size:12px; letter-spacing:.16em; font-weight:600; font-variant-numeric:tabular-nums;
+  color:var(--ink-3); padding-top:9px; white-space:nowrap;
+  transition:color 240ms var(--e-ui);
+}
+.sec.aim .sec-no{color:var(--cat-ink)}
+.sec h2{
+  font-family:"Fraunces", Georgia, serif; font-optical-sizing:auto;
+  font-variation-settings:"opsz" 72;
+  font-weight:600; font-size:clamp(1.6rem,3.4vw,2.5rem); line-height:1.06;
+  letter-spacing:-.022em; text-wrap:balance; margin:0 0 6px; color:var(--ink);
+}
+.sec-desc{font-size:15px; line-height:1.5; color:var(--ink-2); max-width:64ch; text-wrap:pretty; margin:0}
+
+/* ---------- grade ---------- */
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr)); gap:clamp(14px,1.6vw,22px)}
+.grid.g2{grid-template-columns:repeat(2,1fr)}
+.grid.g3{grid-template-columns:repeat(3,1fr)}
+
+/* ---------- cartões ---------- */
+.card{
+  position:relative; display:flex; flex-direction:column; text-decoration:none;
+  background:#FFFFFF;
+  background:linear-gradient(180deg,var(--surface),var(--surface-2));
+  border:1px solid var(--line);
+  border-radius:16px; padding:26px 26px 22px; min-height:196px;
+  scroll-margin-top:96px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    0 1px 2px rgba(var(--shadow-rgb)/.04),
+    0 8px 24px -16px rgba(var(--shadow-rgb)/.14);
+  transition:transform 320ms var(--e-out), border-color 320ms var(--e-out), box-shadow 320ms var(--e-out);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .card{
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 12px 32px -20px rgba(0,0,0,.8);
   }
-  footer .fmark{
-    font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:16px;color:var(--ink);
+}
+:root[data-theme="dark"] .card{
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 12px 32px -20px rgba(0,0,0,.8);
+}
+.card > *{min-width:0}
+.card:focus-visible{outline:2px solid var(--cat); outline-offset:3px}
+@media (hover:hover) and (pointer:fine){
+  .card:hover, .card:focus-within{
+    transform:translateY(-6px);
+    border-color:#CFD6E2;
+    border-color:color-mix(in srgb, var(--cat) 42%, var(--line));
+    box-shadow:
+      0 2px 4px rgba(var(--shadow-rgb)/.05),
+      0 26px 50px -22px rgba(var(--shadow-rgb)/.4);
+    box-shadow:
+      0 2px 4px rgba(var(--shadow-rgb)/.05),
+      0 26px 50px -22px color-mix(in oklab, var(--cat) 30%, rgba(var(--shadow-rgb)/.4));
   }
-  footer .fmeta{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .card:hover .ar, .card:focus-within .ar{transform:translateX(5px)}
+  .card:hover .go, .card:focus-within .go{color:var(--cat-ink)}
+}
+@media (hover:none){
+  .card:active{transform:translateY(-3px)}
+}
+.tag{
+  font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--cat-ink); margin-bottom:12px;
+}
+.card h3{
+  font-family:"Public Sans", system-ui, sans-serif;
+  font-weight:600; font-size:1.1875rem; line-height:1.22; letter-spacing:-.018em;
+  color:var(--ink); margin:0 0 8px; text-wrap:balance;
+}
+.card p{
+  font-weight:450; font-size:14.5px; line-height:1.55; color:var(--ink-2);
+  margin:0; text-wrap:pretty;
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+}
+.go{
+  margin-top:auto; padding-top:18px; display:inline-flex; align-items:center; gap:7px;
+  font-weight:600; font-size:12.5px; letter-spacing:.02em; color:var(--ink-3);
+  transition:color 320ms var(--e-out);
+}
+.ar{display:inline-block; transition:transform 320ms var(--e-snap)}
+
+/* cartão principal */
+.card.feat{
+  grid-column:span 2; border-radius:20px; min-height:230px; padding:34px 36px 30px;
+  background:#FFFFFF;
+  background:radial-gradient(130% 150% at 10% -10%, color-mix(in srgb, var(--cat) 15%, var(--surface)) 0%, var(--surface) 60%);
+}
+.card.feat h3{
+  font-family:"Fraunces", Georgia, serif; font-optical-sizing:auto;
+  font-variation-settings:"opsz" 48;
+  font-weight:600; font-size:clamp(1.5rem,2.9vw,2.05rem); line-height:1.08;
+  letter-spacing:-.026em; max-width:18ch;
+}
+.card.feat p{-webkit-line-clamp:none; display:block; font-size:15.5px; line-height:1.58; max-width:62ch}
+.card.feat::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none;
+  background:conic-gradient(from 140deg, rgba(44,82,130,.7), transparent 34%, rgba(44,82,130,.2) 62%, transparent);
+  background:conic-gradient(from 140deg,
+    color-mix(in srgb, var(--cat) 70%, transparent), transparent 34%,
+    color-mix(in srgb, var(--cat) 20%, transparent) 62%, transparent);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+}
+/* sem filter:blur — proibido em cartão. O esfumado vem das paradas do gradiente,
+   com o círculo ampliado para cobrir o espalhamento que o blur produzia. */
+.card.feat::before{
+  content:""; position:absolute; left:-70px; top:-90px; width:520px; height:520px;
+  border-radius:50%; pointer-events:none; z-index:0;
+  background:radial-gradient(closest-side, rgba(44,82,130,.18) 0%, rgba(44,82,130,.07) 45%, transparent 100%);
+  background:radial-gradient(closest-side,
+    color-mix(in srgb, var(--cat) 18%, transparent) 0%,
+    color-mix(in srgb, var(--cat) 7%, transparent) 45%,
+    transparent 100%);
+  opacity:0;
+  transition:opacity 1100ms var(--e-out) 220ms;
+}
+.card.feat.in::before{opacity:.62}
+.card.feat > *{position:relative; z-index:1}
+.flag{
+  align-self:flex-start; margin-bottom:10px; font-size:10.5px; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--cat-ink);
+  border-radius:999px; padding:4px 11px;
+  background:rgba(44,82,130,.12);
+  background:color-mix(in srgb, var(--cat) 12%, transparent);
+  border:1px solid #CFD6E2;
+  border:1px solid color-mix(in srgb, var(--cat) 30%, transparent);
+}
+
+/* ---------- revelação ---------- */
+html.js .card{
+  opacity:0; transform:translateY(30px) scale(.965);
+  transition:opacity 720ms var(--e-out), transform 720ms var(--e-out),
+             border-color 320ms var(--e-out), box-shadow 320ms var(--e-out);
+  transition-delay:calc(min(var(--i,0),4) * 70ms);
+}
+html.js .card.in{opacity:1; transform:none}
+
+/* ---------- rodapé ---------- */
+footer{
+  position:relative; z-index:2; background:var(--bg-0);
+  padding:64px 0 72px; margin-top:clamp(60px,9vh,120px);
+  border-top:1px solid var(--line);
+}
+footer .wrap{display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap}
+.fmark{
+  font-family:"Fraunces", Georgia, serif; font-optical-sizing:auto;
+  font-weight:600; font-size:19px; letter-spacing:-.01em; color:var(--ink-2);
+}
+.fmeta{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-weight:600}
+
+/* ---------- noscript ---------- */
+.ns{padding:120px 0 60px}
+.ns ul{padding-left:20px; line-height:2}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVO — kill switch de viewport curta
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width:900px){
+  .grid.g2, .grid.g3{grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr))}
+}
+@media (max-width:720px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .card.feat{grid-column:1/-1}
+  .count{display:none}
+}
+@media (max-width:460px){
+  .grid{grid-template-columns:1fr}
+}
+@media (max-width:720px), (max-height:640px){
+  .hero-stage{height:auto}
+  .hero{position:static; height:auto; padding:96px 0 64px}
+  .p2,.p3,.p4{transform:none !important}
+  .p1{transform:none !important; opacity:1 !important}
+  /* a baseline MANTÉM top:56px — com top:0 ela ficava coberta pelo masthead fixo */
+  .hero-stage.is-live .plano{will-change:auto}
+  .grain{mix-blend-mode:normal; opacity:calc(var(--grain-op) * .6)}
+  .top.is-stuck, .baseline{
+    background:rgba(244,246,250,.96);
+    background:color-mix(in srgb, var(--bg) 96%, transparent);
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOVIMENTO REDUZIDO — desliga de verdade
+   ══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .hero-stage{height:auto}
+  .hero{position:static; height:auto; padding:96px 0 64px}
+  .p1,.p2,.p3,.p4{transform:none !important; opacity:1 !important; transition:none !important}
+  html.js .card{opacity:1 !important; transform:none !important; transition:none !important}
+  .card.feat::before{opacity:.62 !important; transform:none !important; transition:none !important}
+  .amb{transition:none !important}
+  html.js .notch i{opacity:.35; transform:none; transition:none !important}
+  html.js .baseline.in .notch.on i, .notch.on i{opacity:1; transform:scaleY(1.57)}
+  .wordmark{transform:none !important; transition:none !important}
+  .hero-stage.is-live .plano{will-change:auto}
+  .grain{mix-blend-mode:normal; opacity:calc(var(--grain-op) * .6)}
+  .top.is-stuck, .baseline{
+    background:rgba(244,246,250,.96);
+    background:color-mix(in srgb, var(--bg) 96%, transparent);
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+  }
+  *{animation-duration:.01ms !important}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="top">
-    <div class="brand">
-      <div class="wordmark">dados<b>rgb</b></div>
-      <div class="kicker">Índice de projetos</div>
-    </div>
+<a class="skip" href="#col-1">Ir para as coleções</a>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <div class="wordmark">dados<b>rgb</b></div>
     <div class="toolbar">
-      <div class="catalog mono">Coleções <span>05</span> · Projetos <span>16</span></div>
-      <button class="ttoggle" id="tt" type="button" aria-label="Alternar tema">Tema</button>
+      <div class="count num" id="count">Coleções <b>05</b> · Projetos <b>16</b></div>
+      <button class="ttoggle" id="tt" type="button" aria-label="Alternar tema" aria-pressed="false">Tema</button>
     </div>
   </div>
+</header>
 
-  <header class="hero">
-    <p class="eyebrow">Roney G. Brum · Gestão pública</p>
-    <h1>Projetos de dados, análise e automação</h1>
-    <p>Manuais, painéis e estudos analíticos desenvolvidos por Roney G. Brum — gestão pública, dados e processos.</p>
-  </header>
-
-  <main>
-
-    <!-- 01 -->
-    <section class="sec" style="--cat:var(--c1)">
-      <div class="sec-head">
-        <div class="sec-no mono">COL. 01</div>
-        <div class="sec-titles">
-          <h2>Movimentação e força de trabalho — CGMOP</h2>
-          <p class="sec-desc">Os painéis interativos e os estudos de mobilidade de servidores federais.</p>
-        </div>
+<div class="hero-stage" id="stage">
+  <div class="hero">
+    <div class="plano p4" aria-hidden="true"></div>
+    <div class="plano p3" aria-hidden="true"></div>
+    <div class="plano p2" id="p2" aria-hidden="true">
+      <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g>
+          <line x1="150" y1="120" x2="300" y2="90"/><line x1="300" y1="90" x2="470" y2="150"/>
+          <line x1="470" y1="150" x2="620" y2="110"/><line x1="620" y1="110" x2="780" y2="170"/>
+          <line x1="780" y1="170" x2="905" y2="120"/><line x1="150" y1="120" x2="120" y2="300"/>
+          <line x1="300" y1="90" x2="290" y2="280"/><line x1="470" y1="150" x2="500" y2="320"/>
+          <line x1="620" y1="110" x2="680" y2="300"/><line x1="780" y1="170" x2="850" y2="330"/>
+          <line x1="120" y1="300" x2="290" y2="280"/><line x1="290" y1="280" x2="500" y2="320"/>
+          <line x1="500" y1="320" x2="680" y2="300"/><line x1="680" y1="300" x2="850" y2="330"/>
+          <line x1="120" y1="300" x2="200" y2="470"/><line x1="290" y1="280" x2="400" y2="440"/>
+          <line x1="500" y1="320" x2="560" y2="500"/><line x1="680" y1="300" x2="720" y2="470"/>
+          <line x1="850" y1="330" x2="900" y2="480"/><line x1="200" y1="470" x2="400" y2="440"/>
+          <line x1="400" y1="440" x2="560" y2="500"/><line x1="560" y1="500" x2="720" y2="470"/>
+          <line x1="720" y1="470" x2="900" y2="480"/><line x1="1050" y1="230" x2="905" y2="120"/>
+          <line x1="1050" y1="230" x2="1010" y2="420"/><line x1="1010" y1="420" x2="900" y2="480"/>
+        </g>
+        <g>
+          <circle cx="150" cy="120" r="2.2"/><circle cx="300" cy="90" r="1.4"/><circle cx="470" cy="150" r="1.8"/>
+          <circle cx="620" cy="110" r="1.3"/><circle cx="780" cy="170" r="2.0"/><circle cx="905" cy="120" r="1.2"/>
+          <circle cx="120" cy="300" r="1.6"/><circle cx="290" cy="280" r="2.1"/><circle cx="500" cy="320" r="1.3"/>
+          <circle cx="680" cy="300" r="1.9"/><circle cx="850" cy="330" r="1.4"/><circle cx="200" cy="470" r="1.7"/>
+          <circle cx="400" cy="440" r="1.2"/><circle cx="560" cy="500" r="2.2"/><circle cx="720" cy="470" r="1.5"/>
+          <circle cx="900" cy="480" r="1.3"/><circle cx="1050" cy="230" r="1.8"/><circle cx="1010" cy="420" r="1.1"/>
+          <circle cx="60" cy="180" r="1.0"/><circle cx="1140" cy="150" r="1.2"/><circle cx="1100" cy="560" r="1.4"/>
+          <circle cx="80" cy="560" r="1.1"/><circle cx="380" cy="620" r="1.3"/><circle cx="640" cy="640" r="0.9"/>
+          <circle cx="860" cy="620" r="1.2"/><circle cx="240" cy="180" r="0.9"/>
+        </g>
+      </svg>
+    </div>
+    <div class="p1">
+      <div class="wrap">
+        <p class="eyebrow">Roney G. Brum · Gestão pública</p>
+        <h1>Projetos de dados, análise e automação</h1>
+        <p class="lede">Manuais, painéis e estudos analíticos desenvolvidos por Roney G. Brum — gestão pública, dados e processos.</p>
       </div>
-      <div class="grid">
-        <a class="card feat" href="./painel_CGMOP/">
-          <span class="flag">Principal</span>
-          <span class="tag">Painel · acesso restrito</span>
-          <h3>Painel de Movimentação de Pessoal — CGMOP</h3>
-          <p>Ecossistema com Movimentações (vigentes e histórico completo, versões pública e restrita) e Anistiados: cessões, requisições, força de trabalho e reforma administrativa — gráficos, evolução no tempo, proporcionalidade e a relação nominal completa.</p>
-          <span class="go">Abrir ecossistema <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./painel_CGMOP/painel_publico.html">
-          <span class="tag">Aberto · sem login</span>
-          <h3>Painel público de Movimentações</h3>
-          <p>A versão aberta do painel de Movimentações — vigentes e histórico, gráficos e a relação nominal, sem os dados individuais sensíveis. Acesso direto, sem senha.</p>
-          <span class="go">Abrir <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./movimentacao-pessoal/">
-          <span class="tag">Apresentação</span>
-          <h3>Movimentação de Pessoal</h3>
-          <p>A transformação da mobilidade na Administração Pública Federal. CGMOP · DEPRO · SGP · MGI.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./funasa-painel-servidores/">
-          <span class="tag">Painel</span>
-          <h3>Painel de Servidores — FUNASA</h3>
-          <p>Visão consolidada do quadro de servidores da fundação.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./projecao_correios/">
-          <span class="tag">Apresentação</span>
-          <h3>Projeção dos Correios</h3>
-          <p>Projeção de cenários para movimentações dos Correios.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-      </div>
-    </section>
-
-    <!-- 02 -->
-    <section class="sec" style="--cat:var(--c2)">
-      <div class="sec-head">
-        <div class="sec-no mono">COL. 02</div>
-        <div class="sec-titles">
-          <h2>Anistiados (Lei 8.878/94 e 15.367/2026)</h2>
-          <p class="sec-desc">Monitoramento e impacto financeiro do público anistiado.</p>
-        </div>
-      </div>
-      <div class="grid">
-        <a class="card" href="./painel-anistiados/">
-          <span class="tag">Painel</span>
-          <h3>Painel de Monitoramento — Anistiados</h3>
-          <p>Implementação da Lei nº 15.367/2026: reposicionamento na classe e no salário dos anistiados ativos, com evolução mês a mês das correções.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./pdi_plano_desligamento_incentivado/">
-          <span class="tag">Estudo analítico</span>
-          <h3>PDI — Desligamento Incentivado</h3>
-          <p>Impacto financeiro do PDI dos anistiados (Lei 15.367/2026), com simulador de cenários e recorte temporal.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-      </div>
-    </section>
-
-    <!-- 03 -->
-    <section class="sec" style="--cat:var(--c3)">
-      <div class="sec-head">
-        <div class="sec-no mono">COL. 03</div>
-        <div class="sec-titles">
-          <h2>Estudos analíticos e dados</h2>
-          <p class="sec-desc">Análises com filtros interativos e leitura autossuficiente.</p>
-        </div>
-      </div>
-      <div class="grid">
-        <a class="card" href="./lip-estudo-licencas/">
-          <span class="tag">Estudo analítico</span>
-          <h3>LIP — Licenças de Interesse Particular</h3>
-          <p>20.507 licenças e 14.388 servidores, com filtros interativos e leitura autossuficiente.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./pipeline-lattes/">
-          <span class="tag">Dados · IA</span>
-          <h3>Pipeline Lattes</h3>
-          <p>Classificação e quantificação de perfis a partir do Currículo Lattes. CNPq × CNI.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-      </div>
-    </section>
-
-    <!-- 04 -->
-    <section class="sec" style="--cat:var(--c4)">
-      <div class="sec-head">
-        <div class="sec-no mono">COL. 04</div>
-        <div class="sec-titles">
-          <h2>Programa Fellowship — MGI × Banco Mundial</h2>
-          <p class="sec-desc">Documentos operacionais da parceria WBG Fellowship Program.</p>
-        </div>
-      </div>
-      <div class="grid">
-        <a class="card" href="./fellowship-programa-geral/">
-          <span class="tag">Fellowship · MGI × BM</span>
-          <h3>Programa Fellowship</h3>
-          <p>Visão geral do programa: o que é, quem custeia e base legal.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./fellowship-fluxo-trabalho/">
-          <span class="tag">Fellowship · MGI × BM</span>
-          <h3>Proposta de Fluxo de Trabalho</h3>
-          <p>Papéis, procedimentos e padronização do WBG Fellowship Program.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./fellowship-diretrizes/">
-          <span class="tag">Fellowship · MGI × BM</span>
-          <h3>Diretrizes Operacionais</h3>
-          <p>Consolidação da parceria e garantia de previsibilidade do programa de bolsas.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-      </div>
-    </section>
-
-    <!-- 05 -->
-    <section class="sec" style="--cat:var(--c5)">
-      <div class="sec-head">
-        <div class="sec-no mono">COL. 05</div>
-        <div class="sec-titles">
-          <h2>Apresentações institucionais e ferramentas</h2>
-          <p class="sec-desc">Materiais de diretoria, normativos e ferramentas.</p>
-        </div>
-      </div>
-      <div class="grid">
-        <a class="card" href="./trimestral-cgmop/">
-          <span class="tag">Apresentação</span>
-          <h3>Trimestral CGMOP — Planejamento 2025/2026</h3>
-          <p>Apresentação à Diretoria: execução do ciclo 2025/2026 e os projetos de 2026.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-        <a class="card" href="./recruta-gov/">
-          <span class="tag">Alocação</span>
-          <h3>Recruta.gov</h3>
-          <p>A nova engenharia de alocação de servidores públicos.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-          <a class="card" href="./recruta-gov/manual/">
-            <span class="tag">Documentação</span>
-            <h3>Recruta.gov — Manual</h3>
-            <p>Manual de funcionamento e operação: o pipeline, o assistente, as telas e o método por trás de cada número.</p>
-            <span class="go">Ler <span class="ar">→</span></span>
-          </a>
-        <a class="card" href="./limites-reembolso/">
-          <span class="tag">Normativo</span>
-          <h3>Limites de Reembolso</h3>
-          <p>Parâmetros e limites vigentes. MGI/SGP/DEPRO/CGMOP/DGIMP.</p>
-          <span class="go">Ver <span class="ar">→</span></span>
-        </a>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div class="fmark">dadosrgb.dev.br</div>
-    <div class="fmeta mono">Roney G. Brum · Índice de projetos</div>
-  </footer>
-
+    </div>
+  </div>
 </div>
 
+<main class="slab" id="slab">
+  <div class="amb" id="ambA" aria-hidden="true"></div>
+  <div class="amb" id="ambB" aria-hidden="true"></div>
+  <nav class="baseline" id="baseline" aria-label="Coleções">
+    <div class="wrap">
+      <div class="notches" id="notches"></div>
+    </div>
+    <i class="bfill" id="bfill" aria-hidden="true"></i>
+  </nav>
+
+  <!-- aparece se o catálogo não carregar (JS ligado mas catalogo.js indisponível) -->
+  <div class="wrap ns" id="fallback" hidden>
+    <p>Não consegui carregar o catálogo agora. As coleções continuam acessíveis:</p>
+    <ul>
+      <li><a href="./painel_CGMOP/">Movimentação e força de trabalho — CGMOP</a></li>
+      <li><a href="./painel-anistiados/">Anistiados</a></li>
+      <li><a href="./lip-estudo-licencas/">Estudos analíticos e dados</a></li>
+      <li><a href="./fellowship-programa-geral/">Programa Fellowship — MGI × Banco Mundial</a></li>
+      <li><a href="./trimestral-cgmop/">Apresentações institucionais e ferramentas</a></li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fmark">dadosrgb.dev.br</div>
+    <div class="fmeta num">Roney G. Brum · Índice de projetos</div>
+  </div>
+</footer>
+
+<noscript>
+  <div class="wrap ns">
+    <p>Este índice usa JavaScript para montar o catálogo. As coleções continuam acessíveis:</p>
+    <ul>
+      <li><a href="./painel_CGMOP/">Movimentação e força de trabalho — CGMOP</a></li>
+      <li><a href="./painel-anistiados/">Anistiados</a></li>
+      <li><a href="./lip-estudo-licencas/">Estudos analíticos e dados</a></li>
+      <li><a href="./fellowship-programa-geral/">Programa Fellowship — MGI × Banco Mundial</a></li>
+      <li><a href="./trimestral-cgmop/">Apresentações institucionais e ferramentas</a></li>
+    </ul>
+  </div>
+</noscript>
+
 <script>
-  (function(){
-    var root=document.documentElement, btn=document.getElementById('tt');
-    try{var s=localStorage.getItem('dadosrgb-theme'); if(s){root.setAttribute('data-theme',s);}}catch(e){}
-    btn.addEventListener('click',function(){
-      var cur=root.getAttribute('data-theme');
-      var next;
-      if(cur==='dark'){next='light';}
-      else if(cur==='light'){next='dark';}
-      else{ next = matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'; }
-      root.setAttribute('data-theme',next);
-      try{localStorage.setItem('dadosrgb-theme',next);}catch(e){}
+(function(){
+  'use strict';
+  var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var slab = document.getElementById('slab');
+  var notches = document.getElementById('notches');
+  var stage = document.getElementById('stage');
+  var bfill = document.getElementById('bfill');
+  var baseline = document.getElementById('baseline');
+  var ambA = document.getElementById('ambA'), ambB = document.getElementById('ambB');
+  var ambActive = null;
+
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function el(tag, cls, txt){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(txt != null) e.textContent = txt;   /* nunca innerHTML */
+    return e;
+  }
+
+  /* ===================== RENDER ===================== */
+  /* quiet=true (prévia da curadoria): sem reanimar contador nem revelação dos cartões */
+  function render(cat, quiet){
+    var cols = ((cat && cat.colecoes) || []).filter(function(c){ return !c.oculta; });
+    slab.querySelectorAll('section.sec').forEach(function(n){ n.remove(); });
+    notches.textContent = '';
+    ambCor = null;                                  /* seções recriadas: zera o par de ambiente */
+    var totalProj = 0;
+
+    cols.forEach(function(c, ci){
+      var n = ci + 1;
+      var projs = (c.projetos || []).filter(function(p){ return !p.oculto; });
+      totalProj += projs.length;
+      var secId = 'col-' + n;
+
+      /* notch */
+      var a = el('a', 'notch');
+      a.href = '#' + secId;
+      a.style.setProperty('--cat', 'var(--c' + c.cor + ')');
+      a.style.setProperty('--n', String(ci));
+      a.setAttribute('aria-label', 'Coleção ' + pad(n) + ' — ' + c.titulo);
+      a.appendChild(el('i'));
+      notches.appendChild(a);
+
+      /* seção */
+      var sec = el('section', 'sec');
+      sec.id = secId;
+      sec.style.setProperty('--cat', 'var(--c' + c.cor + ')');
+      sec.style.setProperty('--cat-ink', 'var(--i' + c.cor + ')');
+      sec.dataset.cor = String(c.cor);
+
+      var wrap = el('div', 'wrap');
+      var head = el('div', 'sec-head');
+      head.appendChild(el('div', 'sec-no num', 'COL. ' + pad(n)));
+      var titles = el('div');
+      titles.appendChild(el('h2', null, c.titulo));
+      if(c.descricao) titles.appendChild(el('p', 'sec-desc', c.descricao));
+      head.appendChild(titles);
+      wrap.appendChild(head);
+
+      var grid = el('div', 'grid' + (projs.length === 2 ? ' g2' : projs.length === 3 ? ' g3' : ''));
+      projs.forEach(function(p, pi){
+        var card = el('a', 'card' + (p.destaque ? ' feat' : ''));
+        card.href = p.href || '#';
+        card.style.setProperty('--i', String(pi));
+        if(p.externo){ card.target = '_blank'; card.rel = 'noopener'; }
+        if(p.destaque && p.selo) card.appendChild(el('span', 'flag', p.selo));
+        if(p.etiqueta) card.appendChild(el('span', 'tag', p.etiqueta));
+        card.appendChild(el('h3', null, p.titulo));
+        if(p.descricao) card.appendChild(el('p', null, p.descricao));
+        var go = el('span', 'go');
+        go.appendChild(document.createTextNode(p.acao || 'Ver'));
+        go.appendChild(el('span', 'ar', '→'));
+        card.appendChild(go);
+        grid.appendChild(card);
+      });
+      wrap.appendChild(grid);
+      sec.appendChild(wrap);
+      slab.appendChild(sec);
     });
-  })();
+
+    var fb = document.getElementById('fallback');
+    if(fb) fb.hidden = cols.length > 0;            /* catálogo vazio → links de emergência */
+    setCount(cols.length, totalProj, quiet);
+    observe(quiet);
+  }
+
+  /* ===================== CONTADOR ===================== */
+  function setCount(nc, np, quiet){
+    var box = document.getElementById('count');
+    if(!box) return;
+    box.setAttribute('aria-live', 'off');
+    if(RM || quiet){
+      box.textContent = '';
+      box.appendChild(document.createTextNode('Coleções '));
+      box.appendChild(el('b', null, pad(nc)));
+      box.appendChild(document.createTextNode(' · Projetos '));
+      box.appendChild(el('b', null, pad(np)));
+      return;
+    }
+    box.textContent = '';
+    var b1 = el('b', null, pad(nc)), b2 = el('b', null, pad(np));
+    box.appendChild(document.createTextNode('Coleções '));
+    box.appendChild(b1);
+    box.appendChild(document.createTextNode(' · Projetos '));
+    box.appendChild(b2);
+    var t0 = performance.now(), dur = 900;
+    (function step(now){
+      var t = Math.min((now - t0) / dur, 1);
+      var e = 1 - Math.pow(2, -10 * t);
+      b1.textContent = pad(Math.round(nc * e));
+      b2.textContent = pad(Math.round(np * e));
+      if(t < 1) requestAnimationFrame(step);
+      else { b1.textContent = pad(nc); b2.textContent = pad(np); }
+    })(t0);
+  }
+
+  /* ===================== AMBIENTE ===================== */
+  var ambCor = null;
+  function setAmbient(cor){
+    if(!cor || cor === ambCor) return;          /* dedupe: mesma cor não retroca */
+    var next = (ambActive === ambA) ? ambB : ambA;
+    var prev = ambActive;
+    ambCor = cor; ambActive = next;             /* reserva já, não dentro do rAF */
+    next.style.setProperty('--cor', 'var(--c' + cor + ')');
+    requestAnimationFrame(function(){
+      next.classList.add('on');
+      if(prev && prev !== next) prev.classList.remove('on');
+    });
+  }
+
+  /* ===================== OBSERVERS ===================== */
+  var ioCards, ioSecs;
+  function observe(quiet){
+    if(ioCards) ioCards.disconnect();
+    if(ioSecs) ioSecs.disconnect();
+
+    if(quiet && !RM){
+      /* prévia: cartões já nascem revelados, mas as seções seguem observadas
+         para o ambiente e o notch ativo continuarem funcionando */
+      document.querySelectorAll('.card').forEach(function(c){ c.classList.add('in'); });
+      ioSecs = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if(en.isIntersecting) activate(en.target); });
+      }, { rootMargin:'-45% 0px -50% 0px' });
+      document.querySelectorAll('.sec').forEach(function(s){ ioSecs.observe(s); });
+      return;
+    }
+
+    if(RM){
+      document.querySelectorAll('.card').forEach(function(c){ c.classList.add('in'); });
+      var f = document.querySelector('.sec');
+      if(f) activate(f);
+      return;
+    }
+
+    ioCards = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); ioCards.unobserve(en.target); }
+      });
+    }, { threshold:.15, rootMargin:'0px 0px -12% 0px' });
+    document.querySelectorAll('.card').forEach(function(c){ ioCards.observe(c); });
+
+    ioSecs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting) activate(en.target); });
+    }, { rootMargin:'-45% 0px -50% 0px' });
+    document.querySelectorAll('.sec').forEach(function(s){ ioSecs.observe(s); });
+  }
+
+  function activate(sec){
+    var id = sec.id;
+    document.querySelectorAll('.notch').forEach(function(a){
+      var on = a.getAttribute('href') === '#' + id;
+      a.classList.toggle('on', on);
+      if(on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+    setAmbient(sec.dataset.cor);
+  }
+
+  /* mira: hover/foco no notch destaca a seção */
+  notches.addEventListener('mouseover', aimOn);
+  notches.addEventListener('focusin', aimOn);
+  notches.addEventListener('mouseout', aimOff);
+  notches.addEventListener('focusout', aimOff);
+  function aimOn(e){
+    var a = e.target.closest('.notch'); if(!a) return;
+    var s = document.querySelector(a.getAttribute('href'));
+    if(s) s.classList.add('aim');
+  }
+  function aimOff(){ document.querySelectorAll('.sec.aim').forEach(function(s){ s.classList.remove('aim'); }); }
+
+  /* ===================== SCROLL (um único rAF) ===================== */
+  var stageH = 0, vh = 0, docH = 0, ticking = false;
+  function measure(){
+    vh = window.innerHeight;
+    stageH = stage.offsetHeight;
+    docH = document.documentElement.scrollHeight - vh;
+  }
+  function frame(){
+    var y = window.scrollY || window.pageYOffset;
+    var p = (stageH > vh) ? Math.min(1, Math.max(0, y / (stageH - vh))) : 0;
+    stage.style.setProperty('--p', p.toFixed(4));
+    stage.classList.toggle('is-live', p > 0 && p < 1);
+    var sp = docH > 0 ? Math.min(1, Math.max(0, y / docH)) : 0;
+    bfill.style.setProperty('--sp', sp.toFixed(4));
+    ticking = false;
+  }
+  if(!RM){
+    window.addEventListener('scroll', function(){
+      if(!ticking){ ticking = true; requestAnimationFrame(frame); }
+    }, { passive:true });
+    var rt;
+    window.addEventListener('resize', function(){
+      clearTimeout(rt); rt = setTimeout(function(){ measure(); frame(); }, 150);
+    });
+  }
+
+  /* ===================== TEMA ===================== */
+  var root = document.documentElement, btn = document.getElementById('tt');
+  try{ var s = localStorage.getItem('dadosrgb-theme'); if(s) root.setAttribute('data-theme', s); }catch(e){}
+  function isDark(){
+    var t = root.getAttribute('data-theme');
+    if(t) return t === 'dark';
+    return matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function syncBtn(){ btn.setAttribute('aria-pressed', isDark() ? 'true' : 'false'); }
+  syncBtn();
+  btn.addEventListener('click', function(){
+    var next = isDark() ? 'light' : 'dark';
+    var apply = function(){
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('dadosrgb-theme', next); }catch(e){}
+      syncBtn();
+    };
+    if(!RM && document.startViewTransition) document.startViewTransition(apply);
+    else apply();
+  });
+
+  /* ===================== INIT ===================== */
+  /* se catalogo.js falhar (404, cache ruim, erro de sintaxe) a página não pode ficar vazia */
+  try{
+    render(window.CATALOGO || { colecoes: [] });
+  }catch(err){
+    document.documentElement.classList.remove('js');   /* devolve os cartões à visibilidade */
+    var fb0 = document.getElementById('fallback');
+    if(fb0) fb0.hidden = false;
+  }
+  measure();
+  if(!RM){
+    frame();
+    requestAnimationFrame(function(){
+      document.getElementById('p2').classList.add('in');
+    });
+    var ioBase = new IntersectionObserver(function(en){
+      en.forEach(function(e){ if(e.isIntersecting){ baseline.classList.add('in'); ioBase.disconnect(); } });
+    }, { threshold:.4 });
+    ioBase.observe(baseline);
+
+    var sentinel = document.createElement('div');
+    sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none';
+    document.body.appendChild(sentinel);
+    var ioTop = new IntersectionObserver(function(en){
+      document.getElementById('top').classList.toggle('is-stuck', !en[0].isIntersecting);
+    }, { threshold:0 });
+    ioTop.observe(sentinel);
+  } else {
+    baseline.classList.add('in');
+    document.getElementById('p2').classList.add('in');
+    document.getElementById('top').classList.add('is-stuck');
+  }
+
+  /* ===================== PREVIEW (curadoria) ===================== */
+  if(location.search.indexOf('preview=1') >= 0){
+    window.addEventListener('message', function(e){
+      if(e.origin !== location.origin) return;
+      var d = e.data;
+      if(d && d.tipo === 'catalogo' && d.catalogo){
+        try{ render(d.catalogo, true); measure(); if(!RM) frame(); }catch(err){}
+      }
+      if(d && d.tipo === 'tema'){
+        root.setAttribute('data-theme', d.tema === 'dark' ? 'dark' : 'light');
+      }
+    });
+    try{ (window.parent || window).postMessage({ tipo:'pronto' }, location.origin); }catch(err){}
+  }
+})();
 </script>
 </body>
 </html>
