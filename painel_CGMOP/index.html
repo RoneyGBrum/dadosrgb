@@ -184,50 +184,149 @@ svg text{fill:var(--muted);font-size:11px}svg text.t{fill:var(--ink);font-weight
 #pdf-doc .pos{color:#b3541c;font-weight:700}#pdf-doc .neg{color:#0f6b56;font-weight:700}
 #pdf-doc .seta{font-weight:800}#pdf-doc .seta.o{color:#c26a27}#pdf-doc .seta.d{color:#178a6e}
 #pdf-doc .ass{margin-top:40px;font-size:13px;color:#1c1c1c}
-/* ---- Hub: paleta refinada e local (não altera os tokens dos gráficos) ---- */
-body{background:
-  radial-gradient(1200px 460px at 78% -8%, rgba(45,106,142,.10), transparent 60%),
-  radial-gradient(1000px 420px at 12% 4%, rgba(122,92,134,.08), transparent 55%),
-  var(--plane)}
-:root[data-theme="dark"] body{background:
-  radial-gradient(1200px 460px at 78% -8%, rgba(45,106,142,.20), transparent 60%),
-  radial-gradient(1000px 420px at 12% 4%, rgba(122,92,134,.16), transparent 55%),
-  var(--plane)}
-.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
-.hero{padding:46px 0 6px}
-.hero .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
-  color:#2d6a8e;display:inline-flex;align-items:center;gap:9px}
-.hero .eyebrow::before{content:"";width:26px;height:2px;background:#2d6a8e;border-radius:2px;display:inline-block}
-:root[data-theme="dark"] .hero .eyebrow,:root[data-theme="dark"] .hero .eyebrow::before{color:#7fb2cf;background:#7fb2cf}
-:root[data-theme="dark"] .hero .eyebrow{background:none}
-.hero h1{font-size:clamp(27px,4vw,42px);margin:14px 0 12px;line-height:1.06;letter-spacing:-.02em;
-  color:var(--ink);font-weight:800;max-width:20ch}
-.hero p{font-size:15.5px;color:var(--ink-2);max-width:64ch;margin:0;line-height:1.6}
-.hero .sub{margin-top:16px;font-size:12.5px;color:var(--muted);font-weight:600}
-.hero .stat{display:inline-flex;gap:28px;margin-top:18px;flex-wrap:wrap;padding:14px 20px;
-  background:var(--surface);border:1px solid var(--linha);border-radius:14px;box-shadow:0 1px 2px rgba(16,32,64,.04)}
-.hero .stat b{font-size:23px;color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-.hero .stat span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
-.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));padding:26px 0 12px}
-.tile{position:relative;display:flex;flex-direction:column;background:var(--surface);
-  border:1px solid var(--linha);border-radius:18px;padding:22px 20px 18px;text-decoration:none;color:inherit;
-  box-shadow:0 1px 2px rgba(16,32,64,.04);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;overflow:hidden}
-.tile::after{content:"";position:absolute;inset:0 0 auto 0;height:3px;
-  background:linear-gradient(90deg,var(--acc),transparent 82%);opacity:.9}
-.tile:hover{transform:translateY(-4px);box-shadow:0 16px 38px rgba(16,32,64,.11);
-  border-color:color-mix(in srgb,var(--acc) 45%,var(--linha))}
-.tile.soon{opacity:.6;cursor:default}.tile.soon:hover{transform:none;box-shadow:0 1px 2px rgba(16,32,64,.04);border-color:var(--linha)}
-.tile .ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:23px;
-  background:color-mix(in srgb,var(--acc) 13%,var(--surface));
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 26%,transparent)}
-.tile .tag{margin-top:14px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
-  color:color-mix(in srgb,var(--acc) 72%,var(--ink-2))}
-.tile h3{margin:5px 0 8px;font-size:16px;font-weight:800;letter-spacing:-.015em;color:var(--ink);line-height:1.2}
-.tile p{margin:0 0 18px;font-size:12.7px;line-height:1.52;color:var(--ink-2);flex:1}
-.tile .go{font-weight:800;font-size:12.5px;color:var(--acc);letter-spacing:.01em;
-  display:inline-flex;align-items:center;gap:5px;transition:gap .16s ease}
-.tile:hover .go{gap:9px}
-@media(max-width:560px){.hero{padding:30px 0 4px}.grid{gap:14px}}
+
+/* ═══ Hub — o acabamento mora aqui, e só aqui: nada nesta folha altera os painéis. ═══ */
+
+/* A pilha de fontes começa pelas do sistema. Numa tela Apple isso entrega a São Francisco,
+   no Windows a Segoe UI — em ambos, a fonte que o olho do usuário já espera. */
+:root{
+  --face:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable Display",
+         "Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --papel:#fbfbfd;          /* branco levemente frio: o cinza puro amarela ao lado do azul */
+  --tinta:#1b1c1f;
+  --tinta-2:#565a61;
+  --tinta-3:#868b93;
+  --fio:rgba(0,0,0,.085);
+  --fio-forte:rgba(0,0,0,.14);
+  --carta:#fff;
+  --curva:cubic-bezier(.22,.61,.24,1);
+}
+:root[data-theme="dark"]{
+  --papel:#0b0b0d; --tinta:#f2f3f5; --tinta-2:#a9aeb6; --tinta-3:#787e87;
+  --fio:rgba(255,255,255,.10); --fio-forte:rgba(255,255,255,.18); --carta:#141518;
+}
+body{font-family:var(--face);background:var(--papel);color:var(--tinta);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+/* Uma transição vertical mínima no topo dá profundidade sem virar decoração. */
+body::before{content:"";position:fixed;inset:0 0 auto 0;height:520px;pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,rgba(45,106,142,.055),transparent 78%)}
+:root[data-theme="dark"] body::before{background:linear-gradient(180deg,rgba(120,175,205,.07),transparent 78%)}
+.wrap,.rodape,.eco-nav{position:relative;z-index:1}
+
+/* A barra fica translúcida e desfocada, como as barras do sistema. */
+.eco-nav{background:color-mix(in srgb,var(--papel) 78%,transparent);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--fio);box-shadow:none;padding:9px 0}
+.eco-nav>*{max-width:1160px}
+.eco-nav .marca{font-weight:600;letter-spacing:-.01em;color:var(--tinta)}
+.eco-nav a{font-weight:500;color:var(--tinta-2);font-size:13px}
+.eco-nav a:hover{background:transparent;color:var(--tinta)}
+.eco-nav .onde{color:var(--tinta-3);font-size:12.5px}
+.eco-nav .onde b{color:var(--tinta-2);font-weight:600}
+.eco-nav .tema{border-color:var(--fio);background:transparent;color:var(--tinta-2)}
+/* A pílula azul cheia do CSS base pesa demais nesta página. Vira um chip discreto: marca
+   a posição sem disputar com o título. */
+.eco-nav a.on{background:color-mix(in srgb,var(--tinta) 6%,transparent);color:var(--tinta);
+  border:1px solid var(--fio)}
+:root[data-theme="dark"] .eco-nav a.on{background:rgba(255,255,255,.07)}
+.eco-nav a .ic{font-size:14px;opacity:.9}
+
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+
+/* ── abertura ───────────────────────────────────────────────────────────────────── */
+.hero{padding:88px 0 12px;max-width:none}
+.hero .eyebrow{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--tinta-3);
+  text-transform:none;display:block}
+.hero h1{margin:16px 0 0;font-weight:600;line-height:1.045;letter-spacing:-.028em;
+  font-size:clamp(38px,6.2vw,68px);max-width:15ch;color:var(--tinta)}
+.hero .deck{margin:20px 0 0;font-size:clamp(16px,1.5vw,19px);line-height:1.5;
+  color:var(--tinta-2);max-width:56ch;font-weight:400;letter-spacing:-.006em}
+.hero .sub{margin-top:26px;font-size:12.5px;color:var(--tinta-3);font-weight:400;letter-spacing:.01em}
+
+/* Números sem moldura: o algarismo grande basta. */
+.stat{display:flex;gap:0;margin:30px 0 0;flex-wrap:wrap}
+.stat>div{padding:2px 34px 2px 0;margin-right:34px;border-right:1px solid var(--fio)}
+.stat>div:last-child{border-right:0;margin-right:0;padding-right:0}
+.stat b{display:block;font-size:clamp(28px,3vw,38px);font-weight:600;letter-spacing:-.03em;
+  color:var(--tinta);font-variant-numeric:tabular-nums;line-height:1.05}
+.stat span{display:block;font-size:11px;color:var(--tinta-3);letter-spacing:.08em;
+  text-transform:uppercase;margin-top:7px;font-weight:600}
+
+.sec-rot{margin:74px 0 0;font-size:12px;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--tinta-3)}
+
+/* ── cartões ────────────────────────────────────────────────────────────────────── */
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));
+  padding:20px 0 8px;margin-top:0}
+.tile{position:relative;display:flex;flex-direction:column;background:var(--carta);
+  border:1px solid var(--fio);border-radius:20px;padding:26px 24px 22px;text-decoration:none;
+  color:inherit;box-shadow:0 1px 1px rgba(16,24,40,.03);overflow:hidden;
+  transition:transform .34s var(--curva),box-shadow .34s var(--curva),border-color .34s var(--curva)}
+.tile .corpo{display:flex;flex-direction:column;flex:1}
+.tile:hover{transform:translateY(-5px);border-color:var(--fio-forte);
+  box-shadow:0 20px 44px -14px rgba(16,24,40,.20),0 3px 10px -4px rgba(16,24,40,.10)}
+:root[data-theme="dark"] .tile:hover{box-shadow:0 20px 44px -14px rgba(0,0,0,.62)}
+.tile:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+
+.tile .ic{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;font-size:24px;
+  background:color-mix(in srgb,var(--acc) 11%,var(--carta));
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 20%,transparent);
+  transition:transform .34s var(--curva)}
+.tile:hover .ic{transform:scale(1.06)}
+.tile .tag{margin-top:22px;font-size:11px;font-weight:600;letter-spacing:.055em;
+  text-transform:uppercase;color:color-mix(in srgb,var(--acc) 62%,var(--tinta-3))}
+.tile h3{margin:9px 0 9px;font-size:19px;font-weight:600;letter-spacing:-.019em;
+  color:var(--tinta);line-height:1.22}
+/* peso 400 explícito: o CSS base engrossa o parágrafo e, ao lado de um título 600,
+   o cartão inteiro ficava "gritando" no mesmo tom */
+.tile p{margin:0 0 22px;font-size:13.5px;line-height:1.58;color:var(--tinta-2);flex:1;
+  letter-spacing:-.003em;font-weight:400}
+.tile .go{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;
+  color:var(--acc);letter-spacing:-.004em}
+.tile .go .ar{transition:transform .34s var(--curva)}
+.tile:hover .go .ar{transform:translateX(4px)}
+
+/* Estado declarado, não cartão apagado. */
+.tile.soon{background:color-mix(in srgb,var(--papel) 60%,var(--carta));cursor:default}
+.tile.soon:hover{transform:none;border-color:var(--fio);
+  box-shadow:0 1px 1px rgba(16,24,40,.03)}
+.tile.soon .ic{filter:grayscale(.55);opacity:.75}
+.tile.soon h3,.tile.soon .tag{color:var(--tinta-2)}
+.tile.soon p{color:var(--tinta-3)}
+.tile .selo{align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.045em;
+  text-transform:uppercase;color:var(--tinta-3);border:1px solid var(--fio-forte);
+  border-radius:999px;padding:4px 11px}
+
+.rodape{max-width:1160px;margin:64px auto 0;padding:26px 28px 46px;border-top:1px solid var(--fio);
+  font-size:12px;color:var(--tinta-3);letter-spacing:.005em}
+
+/* Entrada suave e escalonada — some para quem pede menos movimento. */
+@media (prefers-reduced-motion:no-preference){
+  .hero>*,.sec-rot,.tile{animation:sobe .62s var(--curva) both}
+  .hero .eyebrow{animation-delay:.02s}.hero h1{animation-delay:.06s}
+  .hero .deck{animation-delay:.11s}.hero .sub{animation-delay:.15s}.stat{animation-delay:.19s}
+  .sec-rot{animation-delay:.23s}
+  .grid .tile:nth-child(1){animation-delay:.26s}.grid .tile:nth-child(2){animation-delay:.30s}
+  .grid .tile:nth-child(3){animation-delay:.34s}.grid .tile:nth-child(4){animation-delay:.38s}
+  .grid .tile:nth-child(5){animation-delay:.42s}.grid .tile:nth-child(6){animation-delay:.46s}
+  .grid .tile:nth-child(7){animation-delay:.50s}.grid .tile:nth-child(8){animation-delay:.54s}
+  @keyframes sobe{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+}
+@media(max-width:720px){
+  .wrap{padding:0 20px}.hero{padding:52px 0 8px}
+  /* Em tela estreita a barra quebrava em três linhas (marca / trilha / tema). Encolhe a
+     marca, esconde o "você está em:" e deixa só o nome do painel — a linha volta a caber. */
+  .eco-nav{padding:7px 14px}
+  .eco-nav .marca{font-size:12px}
+  .eco-nav .onde{width:auto;margin:0 0 0 4px;font-size:12px}
+  .eco-nav .onde .sep{display:none}
+  .eco-nav .onde{font-size:0}
+  .eco-nav .onde b{font-size:12px}
+  .stat>div{padding-right:22px;margin-right:22px}
+  .sec-rot{margin-top:52px}.grid{gap:14px}
+  .tile{padding:22px 20px 20px;border-radius:18px}
+}
+@media print{body::before{display:none}.tile{box-shadow:none}}
 </style>
 <style id="portao-css">
 #portao{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#0b2a4a,#12336e);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -254,14 +353,16 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 </head><body>
 <nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><span class="onde"><span class="sep">›</span>você está em: <b>Início — todos os painéis</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 <div class="wrap">
-  <section class="hero">
-    <div class="eyebrow">Ecossistema de dados · CGMOP / SGP / MGI</div>
+  <header class="hero">
+    <span class="eyebrow">Ecossistema de dados · CGMOP / SGP / MGI</span>
     <h1>Movimentação de pessoal na palma da mão</h1>
-    <p>Painéis integrados sobre servidores federais entre órgãos — cessão, requisição, força de trabalho (§7º art. 93), afastamentos e reforma administrativa. Escolha por onde começar.</p>
+    <p class="deck">Painéis integrados sobre servidores federais entre órgãos — cessão, requisição,
+      força de trabalho (§7º do art. 93), afastamentos e reforma administrativa.</p>
     <div class="sub" id="subtitulo"></div>
     <div class="stat" id="stat"></div>
-  </section>
-  <section class="grid"><a class="tile" href="painel_movimentacoes.html" style="--acc:#2d6a8e"><span class="ic">🔄</span><span class="tag">Cessão · requisição · §7º</span><h3>Movimentações</h3><p>Vigentes e histórico: perfil, órgãos que cedem e recebem, proporcionalidade, encerramentos e a relação nominal — com ficha, trajetória, PDF e XLSX.</p><span class="go">Abrir →</span></a><a class="tile" href="anistiados.html" style="--acc:#7a5c86"><span class="ic">⚖️</span><span class="tag">Lei 8.878/94</span><h3>Anistiados</h3><p>Ficha funcional do público anistiado: de onde vieram, por onde passaram, onde estão hoje, remuneração e tempo de retorno.</p><span class="go">Abrir →</span></a><a class="tile" href="pessoal.html" style="--acc:#4a6d5a"><span class="ic">👥</span><span class="tag">Agregado · sem nomes</span><h3>Pessoal</h3><p>Quadro de pessoal do Executivo federal: força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração.</p><span class="go">Abrir →</span></a><a class="tile" href="redistribuicao.html" style="--acc:#b07d4f"><span class="ic">↔️</span><span class="tag">Art. 37 · Lei 8.112/90</span><h3>Redistribuição</h3><p>Cargos redistribuídos entre órgãos: de onde para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p><span class="go">Abrir →</span></a><a class="tile" href="lip.html" style="--acc:#5f7891"><span class="ic">📄</span><span class="tag">Art. 91 · desde 2011</span><h3>LIP — Interesse Particular</h3><p>Licenças para tratar de interesses particulares: órgão, cargo, carreira, duração e situação de cada afastamento.</p><span class="go">Abrir →</span></a><div class="tile soon" style="--acc:#2f8088"><span class="ic">🌍</span><span class="tag">Afast. internacional · art. 96</span><h3>Radar do Exterior</h3><p>Quem está fora do País agora, sob que ônus e até quando — confrontado com a folha e com a fila do que a lei manda conferir.</p><span class="go">🔍 em revisão</span></div><div class="tile soon" style="--acc:#3f6b4a"><span class="ic">🎓</span><span class="tag">Lic. capacitação · art. 87</span><h3>Quinquênio</h3><p>Uso do teto de 90 dias por quinquênio, quem usa e quem não usa (PNDP) e a carência de 2 anos antes da pós (art. 96-A).</p><span class="go">🔍 em revisão</span></div><a class="tile" href="reembolso.html" style="--acc:#8a5a2b"><span class="ic">💰</span><span class="tag">Cedidos de estatal · Dec. 10.835/2021</span><h3>Limites de Reembolso</h3><p>Quanto cada órgão já gastou do teto da portaria conjunta MGI/MPO, quem são os empregados de estatal cedidos por trás dessa despesa e quanto custaria um reajuste de convenção coletiva.</p><span class="go">Abrir →</span></a></section>
+  </header>
+  <div class="sec-rot">Escolha por onde começar</div>
+  <section class="grid"><a class="tile" href="painel_movimentacoes.html" style="--acc:#2d6a8e"><span class="ic" aria-hidden="true">🔄</span><span class="corpo"><span class="tag">Cessão · requisição · §7º</span><h3>Movimentações</h3><p>Vigentes e histórico: perfil, órgãos que cedem e recebem, proporcionalidade, encerramentos e a relação nominal — com ficha, trajetória, PDF e XLSX.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="anistiados.html" style="--acc:#7a5c86"><span class="ic" aria-hidden="true">⚖️</span><span class="corpo"><span class="tag">Lei 8.878/94</span><h3>Anistiados</h3><p>Ficha funcional do público anistiado: de onde vieram, por onde passaram, onde estão hoje, remuneração e tempo de retorno.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="pessoal.html" style="--acc:#4a6d5a"><span class="ic" aria-hidden="true">👥</span><span class="corpo"><span class="tag">Agregado · sem nomes</span><h3>Pessoal</h3><p>Quadro de pessoal do Executivo federal: força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="redistribuicao.html" style="--acc:#b07d4f"><span class="ic" aria-hidden="true">↔️</span><span class="corpo"><span class="tag">Art. 37 · Lei 8.112/90</span><h3>Redistribuição</h3><p>Cargos redistribuídos entre órgãos: de onde para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="lip.html" style="--acc:#5f7891"><span class="ic" aria-hidden="true">📄</span><span class="corpo"><span class="tag">Art. 91 · desde 2011</span><h3>LIP — Interesse Particular</h3><p>Licenças para tratar de interesses particulares: órgão, cargo, carreira, duração e situação de cada afastamento.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><div class="tile soon" style="--acc:#2f8088"><span class="ic" aria-hidden="true">🌍</span><span class="corpo"><span class="tag">Afast. internacional · art. 96</span><h3>Radar do Exterior</h3><p>Quem está fora do País agora, sob que ônus e até quando — confrontado com a folha e com a fila do que a lei manda conferir.</p></span><span class="selo">Em revisão</span></div><div class="tile soon" style="--acc:#3f6b4a"><span class="ic" aria-hidden="true">🎓</span><span class="corpo"><span class="tag">Lic. capacitação · art. 87</span><h3>Quinquênio</h3><p>Uso do teto de 90 dias por quinquênio, quem usa e quem não usa (PNDP) e a carência de 2 anos antes da pós (art. 96-A).</p></span><span class="selo">Em revisão</span></div><a class="tile" href="reembolso.html" style="--acc:#8a5a2b"><span class="ic" aria-hidden="true">💰</span><span class="corpo"><span class="tag">Cedidos de estatal · Dec. 10.835/2021</span><h3>Limites de Reembolso</h3><p>Quanto cada órgão já gastou do teto da portaria conjunta MGI/MPO, quem são os empregados de estatal cedidos por trás dessa despesa e quanto custaria um reajuste de convenção coletiva.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></section>
 </div>
 <div class="rodape" id="rodape"></div>
 <div id="tt"></div>
@@ -596,7 +697,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "04/09/2026 15:35", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "04/09/2026 16:24", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
