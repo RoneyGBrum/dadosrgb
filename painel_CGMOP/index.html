@@ -301,6 +301,26 @@ body::before{content:"";position:fixed;inset:0 0 auto 0;height:520px;pointer-eve
   text-transform:uppercase;color:var(--tinta-3);border:1px solid var(--fio-forte);
   border-radius:999px;padding:4px 11px}
 
+/* Faixa do manual: fica fora da grade para não virar um nono cartão e quebrar as duas
+   fileiras de quatro. É um destino diferente dos painéis — texto, não dado. */
+.faixa{display:flex;align-items:center;gap:18px;margin:26px 0 0;padding:20px 24px;
+  background:var(--carta);border:1px solid var(--fio);border-radius:20px;text-decoration:none;
+  color:inherit;box-shadow:0 1px 1px rgba(16,24,40,.03);
+  transition:transform .34s var(--curva),box-shadow .34s var(--curva),border-color .34s var(--curva)}
+.faixa:hover{transform:translateY(-3px);border-color:var(--fio-forte);
+  box-shadow:0 18px 40px -16px rgba(16,24,40,.20)}
+.faixa .fx-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;
+  background:color-mix(in srgb,#2d6a8e 11%,var(--carta));flex:none;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,#2d6a8e 20%,transparent)}
+.faixa .fx-tx{display:flex;flex-direction:column;gap:3px;min-width:0}
+.faixa .fx-tx b{font-size:17px;font-weight:600;letter-spacing:-.017em;color:var(--tinta)}
+.faixa .fx-tx span{font-size:13.5px;line-height:1.5;color:var(--tinta-2);font-weight:400}
+.faixa .fx-go{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none;
+  font-size:13.5px;font-weight:500;color:#2d6a8e;white-space:nowrap}
+.faixa .fx-go svg{transition:transform .34s var(--curva)}
+.faixa:hover .fx-go svg{transform:translateX(4px)}
+@media(max-width:720px){.faixa{flex-wrap:wrap;gap:12px;padding:18px}
+  .faixa .fx-go{margin-left:0;width:100%}}
 .rodape{max-width:1160px;margin:64px auto 0;padding:26px 28px 46px;border-top:1px solid var(--fio);
   font-size:12px;color:var(--tinta-3);letter-spacing:.005em}
 
@@ -367,6 +387,19 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
   </header>
   <div class="sec-rot">Escolha por onde começar</div>
   <section class="grid"><a class="tile" href="painel_movimentacoes.html" style="--acc:#2d6a8e"><span class="ic" aria-hidden="true">🔄</span><span class="corpo"><span class="tag">Cessão · requisição · §7º</span><h3>Movimentações</h3><p>Vigentes e histórico: perfil, órgãos que cedem e recebem, proporcionalidade, encerramentos e a relação nominal — com ficha, trajetória, PDF e XLSX.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="anistiados.html" style="--acc:#7a5c86"><span class="ic" aria-hidden="true">⚖️</span><span class="corpo"><span class="tag">Lei 8.878/94</span><h3>Anistiados</h3><p>Ficha funcional do público anistiado: de onde vieram, por onde passaram, onde estão hoje, remuneração e tempo de retorno.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="pessoal.html" style="--acc:#4a6d5a"><span class="ic" aria-hidden="true">👥</span><span class="corpo"><span class="tag">Agregado · sem nomes</span><h3>Pessoal</h3><p>Quadro de pessoal do Executivo federal: força de trabalho por órgão, carreira, cargo, natureza jurídica, UF, faixa etária e remuneração.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="redistribuicao.html" style="--acc:#b07d4f"><span class="ic" aria-hidden="true">↔️</span><span class="corpo"><span class="tag">Art. 37 · Lei 8.112/90</span><h3>Redistribuição</h3><p>Cargos redistribuídos entre órgãos: de onde para onde, saldo por órgão, matriz origem→destino, série histórica e perfis.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="lip.html" style="--acc:#5f7891"><span class="ic" aria-hidden="true">📄</span><span class="corpo"><span class="tag">Art. 91 · desde 2011</span><h3>LIP — Interesse Particular</h3><p>Licenças para tratar de interesses particulares: órgão, cargo, carreira, duração e situação de cada afastamento.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><div class="tile soon" style="--acc:#2f8088"><span class="ic" aria-hidden="true">🌍</span><span class="corpo"><span class="tag">Afast. internacional · art. 96</span><h3>Radar do Exterior</h3><p>Quem está fora do País agora, sob que ônus e até quando — confrontado com a folha e com a fila do que a lei manda conferir.</p></span><span class="selo">Em revisão</span></div><div class="tile soon" style="--acc:#3f6b4a"><span class="ic" aria-hidden="true">🎓</span><span class="corpo"><span class="tag">Lic. capacitação · art. 87</span><h3>Quinquênio</h3><p>Uso do teto de 90 dias por quinquênio, quem usa e quem não usa (PNDP) e a carência de 2 anos antes da pós (art. 96-A).</p></span><span class="selo">Em revisão</span></div><a class="tile" href="reembolso.html" style="--acc:#8a5a2b"><span class="ic" aria-hidden="true">💰</span><span class="corpo"><span class="tag">Cedidos de estatal · Dec. 10.835/2021</span><h3>Limites de Reembolso</h3><p>Quanto cada órgão já gastou do teto da portaria conjunta MGI/MPO, quem são os empregados de estatal cedidos por trás dessa despesa e quanto custaria um reajuste de convenção coletiva.</p></span><span class="go">Abrir<svg class="ar" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></section>
+
+  <a class="faixa" href="manual.html">
+    <span class="fx-ic" aria-hidden="true">📘</span>
+    <span class="fx-tx">
+      <b>Manual do ecossistema</b>
+      <span>Como rodar, o que cada número significa, a base legal de cada painel e o que fazer
+        quando algo dá errado. Do Data Lake ao painel publicado.</span>
+    </span>
+    <span class="fx-go">Abrir manual
+      <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5"
+        fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+  </a>
 </div>
 <div class="rodape" id="rodape"></div>
 <div id="tt"></div>
@@ -701,7 +734,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "04/09/2026 17:02", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "05/09/2026 20:09", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
