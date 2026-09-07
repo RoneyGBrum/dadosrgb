@@ -303,10 +303,13 @@ html.js .baseline.in .notch.on i{opacity:1; transform:scaleY(1.57)}
 }
 .sec-desc{font-size:15px; line-height:1.5; color:var(--ink-2); max-width:64ch; text-wrap:pretty; margin:0}
 
-/* ---------- grade ---------- */
+/* ---------- grade ----------
+   Quantas colunas: o campo "colunas" da coleção manda (2, 3 ou 4).
+   Com 0 / ausente, cai no automático — a largura mínima do cartão decide. */
 .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr)); gap:clamp(14px,1.6vw,22px)}
 .grid.g2{grid-template-columns:repeat(2,1fr)}
 .grid.g3{grid-template-columns:repeat(3,1fr)}
+.grid.g4{grid-template-columns:repeat(4,1fr)}
 
 /* ---------- cartões ---------- */
 .card{
@@ -409,6 +412,12 @@ html.js .baseline.in .notch.on i{opacity:1; transform:scaleY(1.57)}
 }
 .card.feat.in::before{opacity:.62}
 .card.feat > *{position:relative; z-index:1}
+
+/* largura do cartão — escolha do projeto, vem DEPOIS de .card.feat para vencê-la.
+   w1 devolve ao normal um cartão em destaque; w3 usa 1/-1, seguro em qualquer grade. */
+.card.w1{grid-column:auto}
+.card.w2{grid-column:span 2}
+.card.w3{grid-column:1/-1}
 .flag{
   align-self:flex-start; margin-bottom:10px; font-size:10.5px; font-weight:700;
   letter-spacing:.18em; text-transform:uppercase; color:var(--cat-ink);
@@ -449,15 +458,16 @@ footer .wrap{display:flex; align-items:baseline; justify-content:space-between; 
    RESPONSIVO — kill switch de viewport curta
    ══════════════════════════════════════════════════════════════ */
 @media (max-width:900px){
-  .grid.g2, .grid.g3{grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr))}
+  .grid.g2, .grid.g3, .grid.g4{grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr))}
 }
 @media (max-width:720px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .card.feat{grid-column:1/-1}
+  .grid, .grid.g2, .grid.g3, .grid.g4{grid-template-columns:repeat(2,1fr)}
+  /* span 2 numa grade de 2 colunas = linha inteira; 1/-1 é seguro se a grade encolher mais */
+  .card.feat, .card.w2, .card.w3{grid-column:1/-1}
   .count{display:none}
 }
 @media (max-width:460px){
-  .grid{grid-template-columns:1fr}
+  .grid, .grid.g2, .grid.g3, .grid.g4{grid-template-columns:1fr}
 }
 @media (max-width:720px), (max-height:640px){
   .hero-stage{height:auto}
@@ -662,11 +672,22 @@ footer .wrap{display:flex; align-items:baseline; justify-content:space-between; 
       head.appendChild(titles);
       wrap.appendChild(head);
 
-      var grid = el('div', 'grid' + (projs.length === 2 ? ' g2' : projs.length === 3 ? ' g3' : ''));
+      /* colunas: escolha explícita da coleção; sem ela, o palpite pela quantidade */
+      var nc = Number(c.colunas) || 0;
+      var gcls = (nc >= 2 && nc <= 4) ? ' g' + nc
+               : projs.length === 2 ? ' g2'
+               : projs.length === 3 ? ' g3' : '';
+      var grid = el('div', 'grid' + gcls);
+      var LARG = {normal: ' w1', largo: ' w2', cheio: ' w3'};
       projs.forEach(function(p, pi){
-        var card = el('a', 'card' + (p.destaque ? ' feat' : ''));
+        var card = el('a', 'card' + (p.destaque ? ' feat' : '') + (LARG[p.largura] || ''));
         card.href = p.href || '#';
         card.style.setProperty('--i', String(pi));
+        /* cor própria do projeto; sem ela, herda a da coleção */
+        if(p.cor){
+          card.style.setProperty('--cat', 'var(--c' + p.cor + ')');
+          card.style.setProperty('--cat-ink', 'var(--i' + p.cor + ')');
+        }
         if(p.externo){ card.target = '_blank'; card.rel = 'noopener'; }
         if(p.destaque && p.selo) card.appendChild(el('span', 'flag', p.selo));
         if(p.etiqueta) card.appendChild(el('span', 'tag', p.etiqueta));

@@ -75,9 +75,13 @@ def sanear(o):
     for c in o["colecoes"]:
         if not isinstance(c, dict):
             continue
+        colunas = int(c.get("colunas") or 0)
+        if colunas not in (2, 3, 4):
+            colunas = 0                      # 0 = automático
         cc = {
             "id": str(c.get("id") or "").strip() or "colecao-%d" % (len(out["colecoes"]) + 1),
             "cor": min(5, max(1, int(c.get("cor") or 1))),
+            "colunas": colunas,
             "titulo": str(c.get("titulo") or ""),
             "descricao": str(c.get("descricao") or ""),
             "oculta": bool(c.get("oculta")),
@@ -90,6 +94,12 @@ def sanear(o):
             if acesso not in ("publico", "restrito"):
                 # deduz pelo texto da etiqueta quando o campo ainda não existe
                 acesso = "restrito" if "restrit" in str(p.get("etiqueta", "")).lower() else "publico"
+            largura = str(p.get("largura") or "auto").strip().lower()
+            if largura not in ("auto", "normal", "largo", "cheio"):
+                largura = "auto"
+            pcor = int(p.get("cor") or 0)
+            if pcor not in (1, 2, 3, 4, 5):
+                pcor = 0                     # 0 = herda a cor da coleção
             cc["projetos"].append({
                 "id": str(p.get("id") or "").strip() or "projeto-%d" % (len(cc["projetos"]) + 1),
                 "titulo": str(p.get("titulo") or ""),
@@ -97,6 +107,8 @@ def sanear(o):
                 "href": str(p.get("href") or ""),
                 "etiqueta": str(p.get("etiqueta") or ""),
                 "acao": str(p.get("acao") or "Ver"),
+                "cor": pcor,
+                "largura": largura,
                 "destaque": bool(p.get("destaque")),
                 "selo": str(p.get("selo") or ""),
                 "externo": bool(p.get("externo")),
@@ -121,7 +133,10 @@ def serializar(cat):
     L.append("   Esta é a ÚNICA fonte de verdade do índice. O index.html lê este arquivo.")
     L.append("   Para adicionar/editar um link, use o assistente: curadoria/curadoria.pyw")
     L.append("   (Editar cartão à mão no index.html é inútil: a próxima exportação sobrescreve.)")
-    L.append("   cor: 1..5 → var(--c1)..var(--c5). A ORDEM DO ARRAY é a ordem na tela. */")
+    L.append("   cor: 1..5 → var(--c1)..var(--c5). A ORDEM DO ARRAY é a ordem na tela.")
+    L.append("   colunas (coleção): 0 automático, ou 2 / 3 / 4 cartões por linha.")
+    L.append("   cor (projeto): 0 herda a da coleção, ou 1..5 para destoar.")
+    L.append('   largura (projeto): "auto" | "normal" | "largo" (2 col.) | "cheio" (linha toda). */')
     L.append("window.CATALOGO = {")
     L.append('  "versao": %d,' % int(cat.get("versao") or 1))
     L.append('  "atualizadoEm": %s,' % js(hoje))
@@ -131,6 +146,7 @@ def serializar(cat):
         L.append("    {")
         L.append('      "id": %s,' % js(c.get("id")))
         L.append('      "cor": %d,' % int(c.get("cor") or 1))
+        L.append('      "colunas": %d,' % int(c.get("colunas") or 0))
         L.append('      "titulo": %s,' % js(c.get("titulo")))
         L.append('      "descricao": %s,' % js(c.get("descricao")))
         L.append('      "oculta": %s,' % ("true" if c.get("oculta") else "false"))
@@ -144,6 +160,8 @@ def serializar(cat):
             L.append('          "href": %s,' % js(p.get("href")))
             L.append('          "etiqueta": %s,' % js(p.get("etiqueta")))
             L.append('          "acao": %s,' % js(p.get("acao") or "Ver"))
+            L.append('          "cor": %d,' % int(p.get("cor") or 0))
+            L.append('          "largura": %s,' % js(p.get("largura") or "auto"))
             L.append('          "destaque": %s,' % ("true" if p.get("destaque") else "false"))
             L.append('          "selo": %s,' % js(p.get("selo")))
             L.append('          "externo": %s,' % ("true" if p.get("externo") else "false"))
@@ -227,6 +245,16 @@ class App(tk.Tk):
         self.title("Curadoria dadosrgb — catálogo do índice")
         self.geometry("1180x760")
         self.minsize(980, 620)
+        ico = os.path.join(os.path.dirname(os.path.abspath(__file__)), "curadoria.ico")
+        if os.path.exists(ico):
+            try:
+                # default= vale para a janela e para os diálogos filhos
+                self.iconbitmap(default=ico)
+            except tk.TclError:
+                try:
+                    self.iconbitmap(ico)
+                except tk.TclError:
+                    pass      # sem ícone é feio, não é fatal
 
         self.cat = None
         self.sel = None            # ("col", ci) ou ("proj", ci, pi)
@@ -534,6 +562,38 @@ class App(tk.Tk):
             ttk.Radiobutton(cel, text=nome, value=n, variable=var_cor,
                             command=trocar_cor).pack(side="left")
 
+        # --- quantos cartões cabem em cada linha ---
+        self._linha(self.form, "Cartões por linha")
+        fr_col = ttk.Frame(self.form)
+        fr_col.pack(fill="x")
+        var_colunas = tk.IntVar(value=int(c.get("colunas") or 0))
+        lb_col = ttk.Label(self.form, style="Dica.TLabel", wraplength=520, justify="left")
+
+        def trocar_colunas():
+            if self._carregando:
+                return
+            self._mudou_campo(c, "colunas", var_colunas.get())
+            dica_colunas()
+
+        def dica_colunas():
+            n = var_colunas.get()
+            vis = len([p for p in c["projetos"] if not p.get("oculto")])
+            if n == 0:
+                lb_col.config(text="Automático: a largura mínima do cartão (270px) decide quantos "
+                                   "cabem. Com 2 ou 3 projetos, o site já os distribui igualmente.")
+            else:
+                sobra = vis % n
+                extra = ("A última linha fica com %d cartão(ões)." % sobra) if sobra else \
+                        "As linhas ficam completas."
+                lb_col.config(text="%d por linha. Esta coleção tem %d projetos visíveis. %s "
+                                   "Em telas estreitas o site reduz sozinho." % (n, vis, extra))
+
+        for val, rot in ((0, "Automático"), (2, "2"), (3, "3"), (4, "4")):
+            ttk.Radiobutton(fr_col, text=rot, value=val, variable=var_colunas,
+                            command=trocar_colunas).pack(side="left", padx=(0, 14))
+        lb_col.pack(anchor="w", pady=(4, 0))
+        dica_colunas()
+
         self._entrada(self.form, "Identificador (id)", c["id"],
                       lambda v: self._mudou_campo(c, "id", v), 40)
         ttk.Label(self.form, text="O id vira a âncora da seção no site (#col-N usa a posição).",
@@ -554,8 +614,10 @@ class App(tk.Tk):
         nb.pack(fill="both", expand=True, pady=(6, 0))
         ab1 = ttk.Frame(nb, padding=10)
         ab2 = ttk.Frame(nb, padding=10)
+        ab3 = ttk.Frame(nb, padding=10)
         nb.add(ab1, text="Conteúdo")
-        nb.add(ab2, text="Acesso e exibição")
+        nb.add(ab2, text="Aparência")
+        nb.add(ab3, text="Acesso")
 
         # ---- aba conteúdo ----
         def set_titulo(v):
@@ -599,11 +661,70 @@ class App(tk.Tk):
         self._entrada(ab1, "Identificador (id)", p["id"],
                       lambda v: self._mudou_campo(p, "id", v), 40)
 
+        # ---- aba aparência ----
+        self._linha(ab2, "Largura do cartão")
+        fr_larg = ttk.Frame(ab2)
+        fr_larg.pack(fill="x")
+        var_larg = tk.StringVar(value=p.get("largura") or "auto")
+        lb_larg = ttk.Label(ab2, style="Dica.TLabel", wraplength=520, justify="left")
+
+        LARGS = (
+            ("auto", "Automático",
+             "Segue o padrão: cartão comum ocupa uma coluna; o cartão principal ocupa duas."),
+            ("normal", "Normal",
+             "Uma coluna, sempre — mesmo se este for o cartão principal da coleção."),
+            ("largo", "Largo",
+             "Duas colunas. Bom para o projeto que merece mais espaço sem virar destaque."),
+            ("cheio", "Linha inteira",
+             "Ocupa a linha toda, qualquer que seja o número de colunas."),
+        )
+
+        def trocar_larg():
+            if self._carregando:
+                return
+            self._mudou_campo(p, "largura", var_larg.get())
+            dica_larg()
+
+        def dica_larg():
+            atual = var_larg.get()
+            for v, _, txt in LARGS:
+                if v == atual:
+                    lb_larg.config(text=txt + "  Em telas estreitas o site sempre reduz.")
+                    return
+
+        for v, rot, _ in LARGS:
+            ttk.Radiobutton(fr_larg, text=rot, value=v, variable=var_larg,
+                            command=trocar_larg).pack(side="left", padx=(0, 12))
+        lb_larg.pack(anchor="w", pady=(4, 0))
+        dica_larg()
+
+        self._linha(ab2, "Cor do cartão")
+        fr_pcor = ttk.Frame(ab2)
+        fr_pcor.pack(fill="x")
+        var_pcor = tk.IntVar(value=int(p.get("cor") or 0))
+
+        def trocar_pcor():
+            if self._carregando:
+                return
+            self._mudou_campo(p, "cor", var_pcor.get(), True)
+
+        ttk.Radiobutton(fr_pcor, text="Herdar", value=0, variable=var_pcor,
+                        command=trocar_pcor).pack(side="left", padx=(0, 12))
+        for n, (hexa, nome) in CORES.items():
+            cel = ttk.Frame(fr_pcor)
+            cel.pack(side="left", padx=(0, 10))
+            tk.Label(cel, background=hexa, width=2, height=1).pack(side="left", padx=(0, 3))
+            ttk.Radiobutton(cel, text=nome, value=n, variable=var_pcor,
+                            command=trocar_pcor).pack(side="left")
+        ttk.Label(ab2, style="Dica.TLabel", wraplength=520, justify="left",
+                  text="«Herdar» usa a cor da coleção — é o certo quase sempre. Uma cor própria "
+                       "tinge a borda, a seta e o fundo do cartão principal.").pack(anchor="w", pady=(4, 0))
+
         # ---- aba acesso ----
-        self._linha(ab2, "Acesso")
+        self._linha(ab3, "Acesso")
         var_ac = tk.StringVar(value=p.get("acesso") or "publico")
 
-        lb_ac = ttk.Label(ab2, text="", style="Dica.TLabel", wraplength=520, justify="left")
+        lb_ac = ttk.Label(ab3, text="", style="Dica.TLabel", wraplength=520, justify="left")
 
         def trocar_acesso():
             if self._carregando:
@@ -611,12 +732,12 @@ class App(tk.Tk):
             self._mudou_campo(p, "acesso", var_ac.get(), True)
             atualiza_ac()
 
-        ttk.Radiobutton(ab2, text="Público — qualquer pessoa abre", value="publico",
+        ttk.Radiobutton(ab3, text="Público — qualquer pessoa abre", value="publico",
                         variable=var_ac, command=trocar_acesso).pack(anchor="w")
-        ttk.Radiobutton(ab2, text="Restrito — a página pede usuário e senha", value="restrito",
+        ttk.Radiobutton(ab3, text="Restrito — a página pede usuário e senha", value="restrito",
                         variable=var_ac, command=trocar_acesso).pack(anchor="w")
 
-        fr_senha = ttk.Frame(ab2)
+        fr_senha = ttk.Frame(ab3)
         fr_senha.pack(fill="x", pady=(6, 0))
         ttk.Button(fr_senha, text="Definir senha do acesso restrito…",
                    command=self.definir_senha).pack(side="left")
@@ -645,11 +766,11 @@ class App(tk.Tk):
         self._check(ab2, "Ocultar do site (mantém o conteúdo aqui)", p.get("oculto"),
                     lambda v: self._mudou_campo(p, "oculto", v, True))
 
-        ttk.Separator(ab2).pack(fill="x", pady=10)
-        self._linha(ab2, "Mover para outra coleção")
+        ttk.Separator(ab3).pack(fill="x", pady=10)
+        self._linha(ab3, "Mover para outra coleção")
         var_mv = tk.StringVar(value="%d · %s" % (self.sel[1] + 1, c["titulo"]))
         opts = ["%d · %s" % (i + 1, x["titulo"]) for i, x in enumerate(self.cat["colecoes"])]
-        cb = ttk.Combobox(ab2, textvariable=var_mv, values=opts, state="readonly")
+        cb = ttk.Combobox(ab3, textvariable=var_mv, values=opts, state="readonly")
         cb.pack(fill="x")
         cb.bind("<<ComboboxSelected>>", lambda e: self._mover_colecao(opts.index(var_mv.get())))
         self._carregando = False
@@ -703,7 +824,7 @@ class App(tk.Tk):
         self.snap()
         n = len(self.cat["colecoes"])
         self.cat["colecoes"].append({
-            "id": "colecao-%d" % (n + 1), "cor": (n % 5) + 1,
+            "id": "colecao-%d" % (n + 1), "cor": (n % 5) + 1, "colunas": 0,
             "titulo": "Nova coleção", "descricao": "", "oculta": False, "projetos": [],
         })
         self.sel = ("col", n)
@@ -723,6 +844,7 @@ class App(tk.Tk):
         c["projetos"].append({
             "id": "projeto-%d" % (len(c["projetos"]) + 1), "titulo": "Novo projeto",
             "descricao": "", "href": "", "etiqueta": "", "acao": "Ver",
+            "cor": 0, "largura": "auto",
             "destaque": False, "selo": "", "externo": False, "oculto": False,
             "acesso": "publico",
         })

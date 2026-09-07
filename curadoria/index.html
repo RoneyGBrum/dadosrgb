@@ -271,20 +271,35 @@ function sane(o){
   var out = { versao: parseInt(o.versao,10) || 1, atualizadoEm: String(o.atualizadoEm || ''), colecoes: [] };
   o.colecoes.forEach(function(c){
     if(!c || typeof c !== 'object') return;
+    var colunas = parseInt(c.colunas,10) || 0;
+    if(colunas !== 2 && colunas !== 3 && colunas !== 4) colunas = 0;
     var cc = {
       id: String(c.id || '').trim() || ('colecao-' + (out.colecoes.length + 1)),
       cor: Math.min(5, Math.max(1, parseInt(c.cor,10) || 1)),
+      colunas: colunas,
       titulo: String(c.titulo || ''), descricao: String(c.descricao || ''),
       oculta: !!c.oculta, projetos: []
     };
     (Array.isArray(c.projetos) ? c.projetos : []).forEach(function(pr){
       if(!pr || typeof pr !== 'object') return;
+      /* estes campos o editor web não expõe, mas PRECISA preservar:
+         reconstruir o projeto sem eles apagaria a escolha feita no curadoria.pyw */
+      var acesso = String(pr.acesso || '').trim().toLowerCase();
+      if(acesso !== 'publico' && acesso !== 'restrito'){
+        acesso = /restrit/.test(String(pr.etiqueta || '').toLowerCase()) ? 'restrito' : 'publico';
+      }
+      var largura = String(pr.largura || 'auto').trim().toLowerCase();
+      if(['auto','normal','largo','cheio'].indexOf(largura) < 0) largura = 'auto';
+      var pcor = parseInt(pr.cor,10) || 0;
+      if(pcor < 1 || pcor > 5) pcor = 0;
       cc.projetos.push({
         id: String(pr.id || '').trim() || ('projeto-' + (cc.projetos.length + 1)),
         titulo: String(pr.titulo || ''), descricao: String(pr.descricao || ''),
         href: String(pr.href || ''), etiqueta: String(pr.etiqueta || ''),
-        acao: String(pr.acao || 'Ver'), destaque: !!pr.destaque,
-        selo: String(pr.selo || ''), externo: !!pr.externo, oculto: !!pr.oculto
+        acao: String(pr.acao || 'Ver'), cor: pcor, largura: largura,
+        destaque: !!pr.destaque,
+        selo: String(pr.selo || ''), externo: !!pr.externo, oculto: !!pr.oculto,
+        acesso: acesso
       });
     });
     out.colecoes.push(cc);
@@ -468,14 +483,15 @@ function slug(s){
 function addProj(ci){
   snap();
   D.colecoes[ci].projetos.push({id:'novo-'+Date.now().toString(36), titulo:'Novo projeto', descricao:'',
-    href:'', etiqueta:'', acao:'Ver', destaque:false, selo:'', externo:false, oculto:false});
+    href:'', etiqueta:'', acao:'Ver', cor:0, largura:'auto',
+    destaque:false, selo:'', externo:false, oculto:false, acesso:'publico'});
   sel = {c:ci, p:D.colecoes[ci].projetos.length-1};
   commit();
 }
 $('addCol').onclick = function(){
   snap();
   D.colecoes.push({id:'colecao-'+Date.now().toString(36), cor:((D.colecoes.length)%5)+1,
-    titulo:'Nova coleção', descricao:'', oculta:false, projetos:[]});
+    colunas:0, titulo:'Nova coleção', descricao:'', oculta:false, projetos:[]});
   sel = {c:D.colecoes.length-1};
   commit();
 };
@@ -729,9 +745,12 @@ function serialize(cat){
   var L = [];
   L.push('/* dadosrgb — catálogo de projetos.');
   L.push('   Esta é a ÚNICA fonte de verdade do índice. O index.html lê este arquivo.');
-  L.push('   Para adicionar/editar um link, use o assistente: dadosrgb.dev.br/curadoria/');
+  L.push('   Para adicionar/editar um link, use o assistente: curadoria/curadoria.pyw');
   L.push('   (Editar cartão à mão no index.html é inútil: a próxima exportação sobrescreve.)');
-  L.push('   cor: 1..5 → var(--c1)..var(--c5). A ORDEM DO ARRAY é a ordem na tela. */');
+  L.push('   cor: 1..5 → var(--c1)..var(--c5). A ORDEM DO ARRAY é a ordem na tela.');
+  L.push('   colunas (coleção): 0 automático, ou 2 / 3 / 4 cartões por linha.');
+  L.push('   cor (projeto): 0 herda a da coleção, ou 1..5 para destoar.');
+  L.push('   largura (projeto): "auto" | "normal" | "largo" (2 col.) | "cheio" (linha toda). */');
   L.push('window.CATALOGO = {');
   L.push('  "versao": ' + (parseInt(cat.versao,10) || 1) + ',');
   L.push('  "atualizadoEm": ' + esc(hoje) + ',');
@@ -741,6 +760,7 @@ function serialize(cat){
     L.push('    {');
     L.push('      "id": ' + esc(c.id) + ',');
     L.push('      "cor": ' + (parseInt(c.cor,10) || 1) + ',');
+    L.push('      "colunas": ' + (parseInt(c.colunas,10) || 0) + ',');
     L.push('      "titulo": ' + esc(c.titulo) + ',');
     L.push('      "descricao": ' + esc(c.descricao) + ',');
     L.push('      "oculta": ' + (!!c.oculta) + ',');
@@ -754,10 +774,13 @@ function serialize(cat){
       L.push('          "href": ' + esc(p.href) + ',');
       L.push('          "etiqueta": ' + esc(p.etiqueta) + ',');
       L.push('          "acao": ' + esc(p.acao || 'Ver') + ',');
+      L.push('          "cor": ' + (parseInt(p.cor,10) || 0) + ',');
+      L.push('          "largura": ' + esc(p.largura || 'auto') + ',');
       L.push('          "destaque": ' + (!!p.destaque) + ',');
       L.push('          "selo": ' + esc(p.selo) + ',');
       L.push('          "externo": ' + (!!p.externo) + ',');
-      L.push('          "oculto": ' + (!!p.oculto));
+      L.push('          "oculto": ' + (!!p.oculto) + ',');
+      L.push('          "acesso": ' + esc(p.acesso || 'publico'));
       L.push('        }' + (pi < ps.length - 1 ? ',' : ''));
     });
     L.push('      ]');
