@@ -5,7 +5,7 @@
    cor: 1..5 → var(--c1)..var(--c5). A ORDEM DO ARRAY é a ordem na tela. */
 window.CATALOGO = {
   "versao": 1,
-  "atualizadoEm": "2026-09-04",
+  "atualizadoEm": "2026-09-05",
   "colecoes": [
     {
       "id": "movimentacao-cgmop",
@@ -225,6 +225,18 @@ window.CATALOGO = {
           "href": "./recruta-gov/",
           "etiqueta": "Alocação",
           "acao": "Ver",
+          "destaque": false,
+          "selo": "",
+          "externo": false,
+          "oculto": false
+        },
+        {
+          "id": "recruta-apresentacao",
+          "titulo": "Recruta.gov — Apresentação",
+          "descricao": "Dez minutos de método e o roteiro da demonstração: a régua única de nove dimensões, o que o sistema não faz, e as sete paradas da demo. Navegação por teclado, cronômetro e notas do apresentador.",
+          "href": "./recruta-gov/apresentacao/",
+          "etiqueta": "Apresentação",
+          "acao": "Apresentar",
           "destaque": false,
           "selo": "",
           "externo": false,

@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recruta.Gov — apresentação</title>
+<meta name="description" content="Uma régua só para unidade, pessoa e curso. Apresentação do Recruta.Gov: 10 minutos de método e a demonstração do sistema.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F4F6FA; --surface:#FFFFFF; --ink:#12161F; --ink-2:#48536B; --ink-3:#7A8699;
+  --line:#E2E7EF;
+  --c1:#2C5282; --c2:#B05A22; --c3:#6B2FA0; --c4:#0E6B4F; --c5:#B0233F;
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-tema="claro"]){
+    --bg:#0B0F18; --surface:#121826; --ink:#EEF2F8; --ink-2:#AAB6CB; --ink-3:#7C8AA3;
+    --line:#1E2636;
+    --c1:#7FA9DC; --c2:#E0955A; --c3:#B58BE0; --c4:#57B48F; --c5:#E0788C;
+  }
+}
+:root[data-tema="escuro"]{
+  --bg:#0B0F18; --surface:#121826; --ink:#EEF2F8; --ink-2:#AAB6CB; --ink-3:#7C8AA3;
+  --line:#1E2636;
+  --c1:#7FA9DC; --c2:#E0955A; --c3:#B58BE0; --c4:#57B48F; --c5:#E0788C;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden}
+
+/* ---------------- estrutura do slide ---------------- */
+.deck{height:100vh;display:grid;grid-template-rows:auto 1fr auto}
+.slide{display:none;overflow-y:auto;padding:2.4rem clamp(1.2rem,5vw,4.5rem)}
+.slide.ativo{display:block;animation:entra .32s ease both}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.ativo{animation:none}}
+.slide-in{max-width:60rem;margin:0 auto}
+
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--c1);margin:0 0 .9rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5.2vw,3.4rem);
+  line-height:1.08;letter-spacing:-.02em;margin:0 0 1rem;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,3.4vw,2.2rem);
+  line-height:1.15;letter-spacing:-.015em;margin:0 0 1rem;text-wrap:balance}
+.lede{font-size:clamp(1.02rem,2vw,1.28rem);color:var(--ink-2);max-width:46ch;margin:0 0 1.6rem}
+p{margin:0 0 1rem;max-width:62ch}
+strong{font-weight:600}
+.mono{font-family:var(--mono)}
+
+/* ---------------- componentes ---------------- */
+.grade{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cartao{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:1.1rem 1.2rem}
+.cartao h3{font-family:var(--sans);font-size:.95rem;font-weight:600;margin:0 0 .35rem}
+.cartao p{font-size:.9rem;color:var(--ink-2);margin:0}
+.cartao .num{font-family:var(--serif);font-size:2.1rem;font-weight:600;line-height:1;
+  display:block;margin-bottom:.3rem}
+
+.dims{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.2rem 0}
+.dims span{font-family:var(--mono);font-size:.76rem;border:1px solid var(--line);
+  background:var(--surface);border-radius:999px;padding:.3rem .7rem;color:var(--ink-2)}
+
+.regua{display:grid;gap:.55rem;margin:1.4rem 0}
+.perna{display:grid;grid-template-columns:minmax(8rem,1.1fr) 3fr minmax(4.5rem,auto);
+  gap:.9rem;align-items:center;background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;padding:.75rem .95rem}
+@media(max-width:640px){.perna{grid-template-columns:1fr auto}.perna .barra{grid-column:1/-1}}
+.perna b{font-size:.92rem}
+.perna small{display:block;color:var(--ink-3);font-size:.76rem;font-weight:400}
+.barra{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.barra i{display:block;height:100%;border-radius:999px}
+.pct{font-family:var(--mono);font-size:.9rem;font-weight:500;text-align:right;
+  font-variant-numeric:tabular-nums}
+.ok i{background:var(--c4)} .ok .pct{color:var(--c4)}
+.falta i{background:var(--c2)} .falta .pct{color:var(--c2)}
+
+.regras{list-style:none;margin:1.2rem 0;padding:0;display:grid;gap:.7rem}
+.regras li{display:grid;grid-template-columns:auto 1fr;gap:.75rem;align-items:start;
+  font-size:.96rem;color:var(--ink-2)}
+.regras b{color:var(--ink);font-weight:600}
+.marca{width:1.5rem;height:1.5rem;border-radius:6px;display:grid;place-items:center;
+  font-size:.8rem;background:var(--surface);border:1px solid var(--line);flex:none}
+
+.roteiro{list-style:none;counter-reset:r;margin:1rem 0 0;padding:0;display:grid;gap:.5rem}
+.roteiro li{counter-increment:r;display:grid;grid-template-columns:2rem 1fr auto;
+  gap:.85rem;align-items:baseline;background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;padding:.7rem .95rem;cursor:pointer;transition:opacity .2s}
+.roteiro li::before{content:counter(r);font-family:var(--mono);font-size:.8rem;
+  color:var(--c1);font-weight:500}
+.roteiro li.feito{opacity:.45}
+.roteiro li.feito .r-tt{text-decoration:line-through}
+.r-tt{font-weight:600;font-size:.95rem}
+.r-tt small{display:block;font-weight:400;color:var(--ink-3);font-size:.8rem;
+  text-decoration:none}
+.r-min{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
+
+.aviso{border-left:3px solid var(--c2);background:var(--surface);border-radius:0 10px 10px 0;
+  padding:.85rem 1.1rem;font-size:.92rem;color:var(--ink-2);margin:1.2rem 0}
+.aviso b{color:var(--ink)}
+.frase{font-family:var(--serif);font-size:clamp(1.3rem,3vw,1.9rem);line-height:1.3;
+  color:var(--ink);max-width:34ch;margin:1.4rem 0}
+
+/* ---------------- barra de controle ---------------- */
+.topo{display:flex;align-items:center;gap:1rem;padding:.7rem clamp(1.2rem,5vw,4.5rem);
+  border-bottom:1px solid var(--line);background:var(--surface);font-size:.78rem}
+.topo .id{font-weight:700;letter-spacing:-.01em}
+.topo .id span{color:var(--c1)}
+.crono{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9rem;
+  padding:.15rem .5rem;border-radius:6px;border:1px solid var(--line)}
+.crono.correndo{border-color:var(--c4);color:var(--c4)}
+.crono.estourou{border-color:var(--c5);color:var(--c5)}
+.espaco{flex:1}
+button{font-family:inherit;font-size:.76rem;color:var(--ink-2);background:transparent;
+  border:1px solid var(--line);border-radius:7px;padding:.3rem .65rem;cursor:pointer}
+button:hover{color:var(--c1);border-color:var(--c1)}
+button:focus-visible{outline:2px solid var(--c1);outline-offset:2px}
+
+.rodape{display:flex;align-items:center;gap:1rem;padding:.55rem clamp(1.2rem,5vw,4.5rem);
+  border-top:1px solid var(--line);background:var(--surface);font-size:.76rem;
+  color:var(--ink-3)}
+.prog{flex:1;height:4px;background:var(--line);border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--c1);transition:width .3s}
+.conta{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.notas{display:none;border-top:1px dashed var(--line);margin-top:1.6rem;padding-top:.9rem;
+  font-size:.86rem;color:var(--ink-3);max-width:62ch}
+body.mostrar-notas .notas{display:block}
+.notas b{color:var(--ink-2)}
+
+a{color:var(--c1)}
+@media print{body{overflow:visible}.slide{display:block!important;page-break-after:always}
+  .topo,.rodape{display:none}}
+</style>
+</head>
+<body>
+
+<div class="deck">
+  <header class="topo">
+    <span class="id">Recruta<span>.Gov</span></span>
+    <span class="crono" id="crono" title="Clique para iniciar ou pausar">10:00</span>
+    <span class="espaco"></span>
+    <button onclick="zerar()">↺ cronômetro</button>
+    <button onclick="document.body.classList.toggle('mostrar-notas')">notas (N)</button>
+    <button onclick="tema()">tema</button>
+  </header>
+
+  <main id="palco">
+
+  <!-- 1 -->
+  <section class="slide ativo"><div class="slide-in">
+    <p class="eyebrow">MGI · SGP · DEPRO · CGMOP</p>
+    <h1>Uma régua só para a unidade, a pessoa e o curso.</h1>
+    <p class="lede">O Recruta.Gov põe o que a área <em>exige</em>, o que a pessoa
+    <em>evidencia</em> e o que o curso <em>desenvolve</em> na mesma escala — e transforma
+    a diferença entre eles em decisão.</p>
+    <div class="dims">
+      <span>230.969 currículos</span><span>687.099 vínculos</span>
+      <span>5.793 unidades</span><span>1.042 cursos</span>
+    </div>
+    <div class="notas"><b>Abertura (40 s).</b> Não começar pelo sistema. Começar pela
+    frase acima e deixar o número no ar: são 230 mil currículos e 5,8 mil unidades — a
+    escala é o que torna o problema interessante e a solução necessária.</div>
+  </div></section>
+
+  <!-- 2 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">O problema</p>
+    <h2>O governo sabe <em>quem</em> são seus servidores. Não sabe <em>o que</em> eles sabem.</h2>
+    <p>O SIAPE responde cargo, lotação, vínculo e situação funcional com precisão. Não
+    responde quem já conduziu um processo de contratação, quem domina análise de dados,
+    quem trabalhou com a legislação de pessoal.</p>
+    <p>Essa informação existe — está no currículo que o servidor preencheu no SouGov.
+    Só que em <strong>texto livre</strong>, e texto livre não entra em consulta.</p>
+    <div class="aviso">Na prática, a alocação acontece por rede de contatos e leitura de
+    currículo um a um. Funciona para preencher <b>uma</b> vaga. Não funciona para
+    responder «quem, em todo o governo, tem este perfil?».</div>
+    <div class="notas"><b>1 min.</b> Aqui vale uma pergunta à plateia: «como vocês
+    encontram hoje alguém com um perfil específico?». A resposta costuma ser «pergunto
+    para alguém que conhece» — e é exatamente esse o gargalo.</div>
+  </div></section>
+
+  <!-- 3 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">A ideia</p>
+    <h2>Se tudo estiver na mesma escala, a conta fica trivial.</h2>
+    <p>A decisão de método que sustenta o resto: <strong>nove dimensões, de 0 a 5</strong>,
+    medidas com a mesma régua e a mesma normalização nos três lados do problema.</p>
+    <div class="dims">
+      <span>competências do órgão</span><span>mentalidade digital</span>
+      <span>resolução de problemas</span><span>foco no cidadão</span>
+      <span>transversalidade</span><span>habilidades sociais</span>
+      <span>flexibilidade</span><span>gestão por resultados</span>
+      <span>alinhamento de interesses</span>
+    </div>
+    <p>Com isso, <span class="mono">lacuna = exigido − evidenciado</span> deixa de ser
+    metáfora e vira aritmética. E o curso que fecha a lacuna é o que pontua alto
+    justamente na dimensão que falta.</p>
+    <div class="notas"><b>1 min 30.</b> Este é o slide central. Se a plateia entender só
+    um, que seja este. Dizer que a mesma escala nos três lados não foi coincidência —
+    foi decidido no início, e é o que permite tudo o mais.</div>
+  </div></section>
+
+  <!-- 4 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">De onde vem cada lado</p>
+    <h2>Três fontes, uma escala.</h2>
+    <div class="regua">
+      <div class="perna ok">
+        <div><b>A demanda</b><small>o que a unidade exige</small></div>
+        <div class="barra"><i style="width:100%"></i></div>
+        <div class="pct">100%</div>
+      </div>
+      <div class="perna ok">
+        <div><b>O ganho</b><small>o que o curso desenvolve</small></div>
+        <div class="barra"><i style="width:100%"></i></div>
+        <div class="pct">100%</div>
+      </div>
+      <div class="perna falta">
+        <div><b>A oferta</b><small>o que a pessoa evidencia</small></div>
+        <div class="barra"><i style="width:2%"></i></div>
+        <div class="pct">1,3%</div>
+      </div>
+    </div>
+    <p>A demanda vem do <strong>dimensionamento que cada unidade declarou</strong>
+    (5.793 unidades analisadas). O ganho vem do <strong>catálogo da Escola Virtual de
+    Governo</strong> (1.042 cursos, todos pontuados). A oferta vem do currículo — e é o
+    lado que ainda está sendo construído, currículo a currículo.</p>
+    <div class="notas"><b>1 min.</b> Não esconder o 1,3%. Assumir de frente: duas pernas
+    prontas, uma em construção, e é ela que define o ritmo do projeto. Quem esconde esse
+    número perde a credibilidade quando alguém pergunta.</div>
+  </div></section>
+
+  <!-- 5 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">O método</p>
+    <h2>Como medir sem inventar.</h2>
+    <p class="lede">Um sistema que pontua pessoas e unidades erra de dois jeitos: errando
+    a conta, ou inventando o que não está escrito. O segundo é pior, porque é invisível.</p>
+    <ul class="regras">
+      <li><span class="marca">1</span><div><b>Só do texto declarado.</b> A análise extrai
+        do que a unidade ou a pessoa escreveu — nunca do nome da unidade. «Coordenação de
+        Movimentação» não gera competência nenhuma por si só.</div></li>
+      <li><span class="marca">2</span><div><b>Nunca deduzir sistema ou norma.</b> Se o SEI
+        não está citado, ele não entra. A tentação de completar o raciocínio é exatamente
+        o que produz relatório plausível e falso.</div></li>
+      <li><span class="marca">3</span><div><b>Declarar quando a fonte não basta.</b> Hoje
+        <strong>20,9%</strong> das unidades analisadas se declaram apoiadas em fonte
+        insuficiente. O número aparece na tela em vez de ser diluído numa nota qualquer.</div></li>
+      <li><span class="marca">4</span><div><b>Toda indicação diz por quê.</b> Cada curso
+        sugerido traz o motivo e a parcela da conta. Quem for questionado precisa
+        reconstruir o resultado à mão.</div></li>
+    </ul>
+    <div class="notas"><b>2 min.</b> Slide para ir devagar. É o que separa este projeto de
+    «pedimos para a IA analisar». A regra 3 costuma surpreender: mostrar que o sistema
+    admite não saber é o que faz confiarem nele quando ele afirma.</div>
+  </div></section>
+
+  <!-- 6 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">A régua única</p>
+    <h2>A mesma pessoa, o mesmo número, em todas as telas.</h2>
+    <p>A nota é calculada <strong>uma vez</strong>, no pipeline, e gravada. As telas leem
+    pronta. Isso parece detalhe técnico e é decisão de gestão: sem ela, a mesma pessoa
+    apareceria com números diferentes na busca, no comparador e no simulador — e a
+    primeira pergunta de qualquer gestor seria «afinal, qual é o certo?».</p>
+    <div class="grade">
+      <div class="cartao"><h3>🧮 Nota do pipeline</h3><p>Régua única, estável, auditável.
+        É o que se quer ver.</p></div>
+      <div class="cartao"><h3>🧠 Nota gerada na hora</h3><p>Quando aquela pessoa ainda não
+        foi processada. A tela avisa.</p></div>
+      <div class="cartao"><h3>⚠️ Análise falhou</h3><p>O erro não vira dado. Vai para a
+        fila de retentativa.</p></div>
+    </div>
+    <p style="margin-top:1.2rem">O selo aparece ao lado de cada perfil. É a resposta
+    permanente à pergunta «esse número é o mesmo que eu vi ontem?».</p>
+    <div class="notas"><b>1 min.</b> Se houver alguém de controle interno ou auditoria na
+    sala, este é o slide que ganha essa pessoa.</div>
+  </div></section>
+
+  <!-- 7 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">O perímetro</p>
+    <h2>Currículo é dado pessoal, e não sai da máquina.</h2>
+    <p>O sistema trabalha com dois tipos de informação, e o tratamento é diferente por
+    desenho, não por configuração.</p>
+    <div class="grade">
+      <div class="cartao" style="border-left:3px solid var(--c4)">
+        <h3>Informação institucional</h3>
+        <p>Editais publicados, catálogo de cursos, dimensionamento das unidades. São atos
+        públicos e catálogos abertos — podem ser processados por serviço externo.</p></div>
+      <div class="cartao" style="border-left:3px solid var(--c5)">
+        <h3>Currículo</h3>
+        <p>Processado <strong>na máquina</strong>, por modelo local. Só sai por uma
+        bandeira própria e explícita, com anonimização de nome, CPF, e-mail, telefone e
+        matrícula. Nunca por configuração.</p></div>
+    </div>
+    <div class="aviso">A autenticação no Data Lake é interativa, com a conta do próprio
+    operador. <b>Não existe variável de senha</b> no sistema — e isso é intencional.</div>
+    <div class="notas"><b>1 min 30.</b> Slide obrigatório se houver jurídico ou
+    encarregado de dados. A frase que fecha: o sistema não pede que confiem nele — ele
+    torna o vazamento estruturalmente difícil.</div>
+  </div></section>
+
+  <!-- 8 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">O que isso destrava</p>
+    <h2>Cinco perguntas que passam a ter resposta em minutos.</h2>
+    <div class="grade">
+      <div class="cartao"><h3>Quem tem este perfil?</h3><p>Busca semântica em 230 mil
+        currículos — por significado, não por palavra-chave.</p></div>
+      <div class="cartao"><h3>O que esta unidade faz?</h3><p>Missão, entregas e
+        competências exigidas, extraídas do que ela própria declarou.</p></div>
+      <div class="cartao"><h3>Minha equipe dá conta?</h3><p>Gap analysis: o exigido contra
+        o evidenciado, dimensão por dimensão.</p></div>
+      <div class="cartao"><h3>E se essa pessoa mudar de área?</h3><p>Simulação de
+        movimentação: o antes e o depois, nas duas pontas.</p></div>
+      <div class="cartao"><h3>Que curso resolve a lacuna?</h3><p>Trilha de capacitação,
+        com o link de matrícula e o motivo da indicação.</p></div>
+    </div>
+    <div class="notas"><b>1 min.</b> Ler os cinco cartões rápido — eles são o índice da
+    demonstração que vem a seguir. Não detalhar aqui; o detalhe é a tela.</div>
+  </div></section>
+
+  <!-- 9 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">Honestidade sobre os limites</p>
+    <h2>O que este sistema <em>não</em> faz.</h2>
+    <ul class="regras">
+      <li><span class="marca">✕</span><div><b>Não avalia desempenho.</b> Ele compara o que
+        está evidenciado no currículo com o que a unidade declarou exigir. Currículo
+        desatualizado aparece como lacuna que talvez não exista.</div></li>
+      <li><span class="marca">✕</span><div><b>Não decide.</b> Nenhuma tela recomenda
+        movimentar alguém. Ela mostra aderência e lacuna; a decisão é de quem tem
+        competência para tomá-la.</div></li>
+      <li><span class="marca">✕</span><div><b>Não prevê.</b> O dimensionamento descreve o
+        que a unidade faz hoje. Não há previsão de atividades futuras na base — e o
+        sistema diz isso, em vez de simular uma.</div></li>
+      <li><span class="marca">✕</span><div><b>Não inventa cobertura.</b> Onde a amostra é
+        pequena, a tela mostra o denominador. «12 de 40 pessoas pontuadas» é uma
+        informação, não um defeito.</div></li>
+    </ul>
+    <div class="notas"><b>1 min 30.</b> Contraintuitivo, mas este slide costuma ser o que
+    mais convence. Quem apresenta só virtudes gera desconfiança; quem declara os limites
+    ganha o benefício da dúvida no resto.</div>
+  </div></section>
+
+  <!-- 10 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">Onde estamos</p>
+    <h2>O que já está de pé.</h2>
+    <div class="grade">
+      <div class="cartao"><span class="num" style="color:var(--c1)">5.793</span>
+        <h3>unidades com DFT analisado</h3><p>Missão, entregas e competências, nas nove dimensões.</p></div>
+      <div class="cartao"><span class="num" style="color:var(--c4)">1.042</span>
+        <h3>cursos da EV.G pontuados</h3><p>Todos com link direto de matrícula.</p></div>
+      <div class="cartao"><span class="num" style="color:var(--c3)">230.969</span>
+        <h3>currículos vetorizados</h3><p>Busca por significado já funciona em toda a base.</p></div>
+      <div class="cartao"><span class="num" style="color:var(--c2)">882</span>
+        <h3>verificações automáticas</h3><p>Rodam em segundos, sem tocar em dado real.</p></div>
+    </div>
+    <p style="margin-top:1.2rem">O que falta é escala do lado da oferta: pontuar os
+    currículos dos setores que serão analisados. É trabalho de máquina, medido e previsível
+    — cerca de <strong>uma hora e vinte por setor</strong> de quarenta pessoas.</p>
+    <div class="notas"><b>1 min.</b> Terminar a teoria aqui, olhar o relógio e passar para
+    a demonstração. Se o cronômetro estiver acima de 10 min, pular o slide 6 na próxima vez.</div>
+  </div></section>
+
+  <!-- 11 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">Demonstração</p>
+    <h2>Roteiro — clique para riscar.</h2>
+    <p class="lede">Sete paradas. Cada uma responde uma das perguntas do slide anterior,
+    na mesma ordem.</p>
+    <ul class="roteiro" id="roteiro">
+      <li onclick="this.classList.toggle('feito')"><span class="r-tt">Busca de Talentos
+        <small>Filtrar por órgão, depois descrever um perfil em texto livre. Mostrar que
+        «vigilância epidemiológica» encontra quem escreveu outra coisa.</small></span>
+        <span class="r-min">3 min</span></li>
+      <li onclick="this.classList.toggle('feito')"><span class="r-tt">O dossiê
+        <small>Abrir uma pessoa, mostrar a teia das nove dimensões e o selo 🧮 da régua
+        única. Exportar o PDF.</small></span><span class="r-min">2 min</span></li>
+      <li onclick="this.classList.toggle('feito')"><span class="r-tt">DFT da unidade
+        <small>Escolher uma unidade conhecida da plateia. Ler a missão que a IA extraiu e
+        perguntar se está certa — costuma render.</small></span><span class="r-min">3 min</span></li>
+      <li onclick="this.classList.toggle('feito')"><span class="r-tt">Gap Analysis
+        <small>A mesma unidade contra a equipe real. É o slide 3 virando tela.</small></span>
+        <span class="r-min">3 min</span></li>
+      <li onclick="this.classList.toggle('feito')"><span class="r-tt">Trilha de Capacitação
+        <small>Buscar um tema livre no catálogo, escolher dois cursos e avaliar a utilidade
+        para aquela equipe — com as parcelas da conta à vista.</small></span>
+        <span class="r-min">3 min</span></li>
+      <li onclick="this.classList.toggle('feito')"><span class="r-tt">Simulador
+        <small>Mover uma pessoa entre duas unidades e mostrar o efeito nas duas
+        pontas.</small></span><span class="r-min">2 min</span></li>
+      <li onclick="this.classList.toggle('feito')"><span class="r-tt">O assistente
+        <small>Fechar mostrando que tudo isso é operado por uma janela só — e que o
+        sistema diz o que vai fazer antes de fazer.</small></span>
+        <span class="r-min">2 min</span></li>
+    </ul>
+    <div class="notas"><b>Antes de começar:</b> API e site no ar (aba 2 do assistente),
+    catálogo da EV.G carregado, e uma unidade escolhida com antecedência — de preferência
+    a da própria plateia. Ter o manual aberto numa aba, como rede.</div>
+  </div></section>
+
+  <!-- 12 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">Se algo falhar</p>
+    <h2>Plano B, por parada.</h2>
+    <div class="grade">
+      <div class="cartao"><h3>A IA demora ou falha</h3><p>Seguir com quem já tem nota do
+        pipeline — o selo 🧮 mostra quais são. A régua única existe exatamente para isso.</p></div>
+      <div class="cartao"><h3>Nome de unidade como «nan»</h3><p>Hierarquia não reprocessada.
+        Não travar na tela: usar o filtro por órgão e seguir.</p></div>
+      <div class="cartao"><h3>Trilha sem alvo</h3><p>A avaliação precisa de uma Gap Analysis
+        feita na mesma sessão. Fazer a parada 4 antes da 5, sempre.</p></div>
+      <div class="cartao"><h3>Nada abre</h3><p>Mostrar o manual publicado. Ele tem as telas
+        descritas e os exemplos calculáveis na própria página.</p></div>
+    </div>
+    <div class="notas"><b>Não mostrar este slide.</b> Ele é para você, na véspera.</div>
+  </div></section>
+
+  <!-- 13 -->
+  <section class="slide"><div class="slide-in">
+    <p class="eyebrow">Fechamento</p>
+    <p class="frase">O sistema não substitui o julgamento de quem decide. Ele faz com que
+    a decisão parta de evidência, e não de quem a gente conhece.</p>
+    <p>Próximos passos: ampliar a cobertura da pontuação de currículos, setor a setor, e
+    abrir a trilha de capacitação para as áreas que já têm dimensionamento maduro.</p>
+    <p style="margin-top:1.6rem;font-size:.9rem;color:var(--ink-3)">
+      Manual completo: <a href="../manual/">dadosrgb.dev.br/recruta-gov/manual</a><br>
+      MGI · SGP · DEPRO · Coordenação-Geral de Movimentação de Pessoal</p>
+    <div class="notas"><b>30 s.</b> Terminar na frase, não nos próximos passos. E deixar o
+    manual no ar enquanto abrem as perguntas.</div>
+  </div></section>
+
+  </main>
+
+  <footer class="rodape">
+    <button onclick="ir(-1)" aria-label="Slide anterior">←</button>
+    <button onclick="ir(1)" aria-label="Próximo slide">→</button>
+    <div class="prog"><i id="prog"></i></div>
+    <span class="conta" id="conta">1 / 13</span>
+  </footer>
+</div>
+
+<script>
+/* Navegação ------------------------------------------------------------- */
+var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+var atual = 0;
+function mostrar(i){
+  atual = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach(function(s, k){ s.classList.toggle('ativo', k === atual); });
+  document.getElementById('conta').textContent = (atual + 1) + ' / ' + slides.length;
+  document.getElementById('prog').style.width = ((atual + 1) / slides.length * 100) + '%';
+  try { location.hash = 's' + (atual + 1); } catch (e) {}
+  var m = document.querySelector('.slide.ativo'); if (m) m.scrollTop = 0;
+}
+function ir(d){ mostrar(atual + d); }
+document.addEventListener('keydown', function(e){
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); ir(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); ir(-1); }
+  else if (e.key === 'Home') mostrar(0);
+  else if (e.key === 'End') mostrar(slides.length - 1);
+  else if (e.key === 'n' || e.key === 'N') document.body.classList.toggle('mostrar-notas');
+  else if (e.key === 't' || e.key === 'T') tema();
+});
+/* Abrir direto num slide pelo endereço (#s4), útil para retomar a demo. */
+(function(){
+  var m = (location.hash || '').match(/^#s(\d+)$/);
+  mostrar(m ? parseInt(m[1], 10) - 1 : 0);
+})();
+
+/* Cronômetro de 10 minutos ---------------------------------------------- */
+var ALVO = 600, resto = ALVO, timer = null;
+var elC = document.getElementById('crono');
+function pinta(){
+  var m = Math.floor(Math.abs(resto) / 60), s = Math.abs(resto) % 60;
+  elC.textContent = (resto < 0 ? '+' : '') + m + ':' + String(s).padStart(2, '0');
+  elC.classList.toggle('estourou', resto < 0);
+  elC.classList.toggle('correndo', !!timer && resto >= 0);
+}
+elC.addEventListener('click', function(){
+  if (timer) { clearInterval(timer); timer = null; }
+  else { timer = setInterval(function(){ resto--; pinta(); }, 1000); }
+  pinta();
+});
+function zerar(){ if (timer) { clearInterval(timer); timer = null; } resto = ALVO; pinta(); }
+pinta();
+
+/* Tema ------------------------------------------------------------------- */
+function tema(){
+  var r = document.documentElement;
+  var escuro = r.getAttribute('data-tema') === 'escuro'
+    || (!r.hasAttribute('data-tema') && matchMedia('(prefers-color-scheme:dark)').matches);
+  r.setAttribute('data-tema', escuro ? 'claro' : 'escuro');
+}
+</script>
+</body>
+</html>
