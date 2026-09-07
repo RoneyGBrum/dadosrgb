@@ -375,7 +375,7 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 #portao .ajuda .obs{margin-top:9px;color:#7a8090;font-size:11.5px;font-style:italic}
 </style>
 </head><body>
-<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><span class="onde"><span class="sep">›</span>você está em: <b>Início — todos os painéis</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
+<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="manual.html"><span class="ic">📘</span><span class="lab">Manual</span></a><span class="onde"><span class="sep">›</span>você está em: <b>Início — todos os painéis</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 <div class="wrap">
   <header class="hero">
     <span class="eyebrow">Ecossistema de dados · CGMOP / SGP / MGI</span>
@@ -734,7 +734,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "05/09/2026 20:09", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "06/09/2026 22:28", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;

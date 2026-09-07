@@ -27,6 +27,18 @@ window.CATALOGO = {
           "oculto": false
         },
         {
+          "id": "cgmop-manual",
+          "titulo": "Manual do Ecossistema CGMOP",
+          "descricao": "Documentação completa do pipeline e dos painéis: o que o sistema faz, como rodar, o que cada número significa, a base legal de cada painel e o que fazer quando algo dá errado. Inclui os números da última rodada, atualizados a cada geração.",
+          "href": "./painel_CGMOP/manual.html",
+          "etiqueta": "Documentação · acesso restrito",
+          "acao": "Ler manual",
+          "destaque": false,
+          "selo": "",
+          "externo": false,
+          "oculto": false
+        },
+        {
           "id": "painel-publico",
           "titulo": "Painel público de Movimentações",
           "descricao": "A versão aberta do painel de Movimentações — vigentes e histórico, gráficos e a relação nominal, sem os dados individuais sensíveis. Acesso direto, sem senha.",
