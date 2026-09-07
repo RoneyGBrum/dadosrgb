@@ -1,11 +1,11 @@
 /* dadosrgb — catálogo de projetos.
    Esta é a ÚNICA fonte de verdade do índice. O index.html lê este arquivo.
-   Para adicionar/editar um link, use o assistente: dadosrgb.dev.br/curadoria/
+   Para adicionar/editar um link, use o assistente: curadoria/curadoria.pyw
    (Editar cartão à mão no index.html é inútil: a próxima exportação sobrescreve.)
    cor: 1..5 → var(--c1)..var(--c5). A ORDEM DO ARRAY é a ordem na tela. */
 window.CATALOGO = {
   "versao": 1,
-  "atualizadoEm": "2026-09-05",
+  "atualizadoEm": "2026-09-07",
   "colecoes": [
     {
       "id": "movimentacao-cgmop",
@@ -24,19 +24,8 @@ window.CATALOGO = {
           "destaque": true,
           "selo": "Principal",
           "externo": false,
-          "oculto": false
-        },
-        {
-          "id": "cgmop-manual",
-          "titulo": "Manual do Ecossistema CGMOP",
-          "descricao": "Documentação completa do pipeline e dos painéis: o que o sistema faz, como rodar, o que cada número significa, a base legal de cada painel e o que fazer quando algo dá errado. Inclui os números da última rodada, atualizados a cada geração.",
-          "href": "./painel_CGMOP/manual.html",
-          "etiqueta": "Documentação · acesso restrito",
-          "acao": "Ler manual",
-          "destaque": false,
-          "selo": "",
-          "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "restrito"
         },
         {
           "id": "painel-publico",
@@ -48,7 +37,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "movimentacao-pessoal",
@@ -60,7 +50,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "funasa-painel-servidores",
@@ -72,7 +63,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "projecao-correios",
@@ -84,7 +76,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         }
       ]
     },
@@ -105,7 +98,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "pdi-desligamento",
@@ -117,7 +111,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         }
       ]
     },
@@ -138,19 +133,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
-        },
-        {
-          "id": "pipeline-lattes",
-          "titulo": "Pipeline Lattes",
-          "descricao": "Classificação e quantificação de perfis a partir do Currículo Lattes. CNPq × CNI.",
-          "href": "./pipeline-lattes/",
-          "etiqueta": "Dados · IA",
-          "acao": "Ver",
-          "destaque": false,
-          "selo": "",
-          "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "m",
@@ -162,7 +146,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": true,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         }
       ]
     },
@@ -183,7 +168,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "fellowship-fluxo-trabalho",
@@ -195,7 +181,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "fellowship-diretrizes",
@@ -207,7 +194,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         }
       ]
     },
@@ -228,7 +216,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "recruta-gov",
@@ -240,7 +229,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "recruta-apresentacao",
@@ -252,19 +242,8 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
-        },
-        {
-          "id": "recruta-manual",
-          "titulo": "Recruta.gov — Manual",
-          "descricao": "Manual de funcionamento e operação: o pipeline, o assistente, as telas e o método por trás de cada número.",
-          "href": "./recruta-gov/manual/",
-          "etiqueta": "Documentação",
-          "acao": "Ler",
-          "destaque": false,
-          "selo": "",
-          "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
         },
         {
           "id": "limites-reembolso",
@@ -276,7 +255,56 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false
+          "oculto": false,
+          "acesso": "publico"
+        }
+      ]
+    },
+    {
+      "id": "manuais",
+      "cor": 2,
+      "titulo": "Manuais e documentação",
+      "descricao": "Como cada sistema funciona, como operar e o que cada número significa.",
+      "oculta": false,
+      "projetos": [
+        {
+          "id": "cgmop-manual",
+          "titulo": "Manual do Ecossistema CGMOP",
+          "descricao": "Documentação completa do ecossistema de painéis: o que o sistema faz, a arquitetura, a instalação, os três caminhos de execução e o pipeline em cinco etapas. Traz os números da rodada corrente e os conceitos que mudam o número (vigente ≠ ativo, pessoas ≠ vínculos).",
+          "href": "./painel_CGMOP/manual.html",
+          "etiqueta": "Documentação · acesso restrito",
+          "acao": "Ler manual",
+          "destaque": true,
+          "selo": "Restrito",
+          "externo": false,
+          "oculto": false,
+          "acesso": "restrito"
+        },
+        {
+          "id": "recruta-manual",
+          "titulo": "Manual do Recruta.Gov",
+          "descricao": "Funcionamento e operação: o acervo em números, o problema que o sistema resolve sem termos técnicos, as nove dimensões da régua de avaliação e a operação aba a aba do assistente — início, pipeline e servidores, com cache, reprocessamento e acessos.",
+          "href": "./recruta-gov/manual/",
+          "etiqueta": "Documentação",
+          "acao": "Ler manual",
+          "destaque": false,
+          "selo": "",
+          "externo": false,
+          "oculto": false,
+          "acesso": "publico"
+        },
+        {
+          "id": "manual-pipeline-lattes",
+          "titulo": "Pipeline Lattes — Manual de Referência",
+          "descricao": "Guia de instalação, manual de operação e documentação técnica em cinco partes: entender o mecanismo de classificação, instalar o ambiente, as quatro etapas em detalhe, calibrar os números ajustáveis e adaptar o sistema. CNPq × CNI.",
+          "href": "./pipeline-lattes/",
+          "etiqueta": "Manual · CNPq × CNI",
+          "acao": "Ler manual",
+          "destaque": false,
+          "selo": "",
+          "externo": false,
+          "oculto": false,
+          "acesso": "publico"
         }
       ]
     }
