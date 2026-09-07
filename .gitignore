@@ -1,0 +1,6 @@
+# lixo de execução do Python (o assistente)
+__pycache__/
+*.pyc
+
+# backups automáticos do assistente de catálogo
+*.bak-*
