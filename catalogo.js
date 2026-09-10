@@ -284,6 +284,21 @@ window.CATALOGO = {
           "acesso": "publico"
         },
         {
+          "id": "recruta-apresentacao-comite",
+          "titulo": "Recruta.gov — Apresentação para decisão",
+          "descricao": "A versão longa, de trinta a quarenta minutos, para quem decide a continuidade do sistema: o problema que ele resolve, a régua de nove dimensões medida sobre a base inteira, a procedência de cada nota, a demonstração ao vivo no meio da apresentação e o que o sistema recusa responder quando não tem base. Catorze slides com notas do apresentador, tema claro forçável para projetor e roteiro de demonstração cronometrado.",
+          "href": "./recruta-gov/apresentacao-comite/",
+          "etiqueta": "Apresentação",
+          "acao": "Apresentar",
+          "cor": 0,
+          "largura": "auto",
+          "destaque": false,
+          "selo": "",
+          "externo": false,
+          "oculto": false,
+          "acesso": "publico"
+        },
+        {
           "id": "limites-reembolso",
           "titulo": "Limites de Reembolso",
           "descricao": "Parâmetros e limites vigentes. MGI/SGP/DEPRO/CGMOP/DGIMP.",
