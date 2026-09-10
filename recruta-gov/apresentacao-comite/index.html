@@ -3,625 +3,686 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Recruta.Gov: uma regua so para unidade, pessoa e curso. Apresentacao de 30 a 40 minutos para comite de decisao, em 14 slides, com notas do apresentador e roteiro de demonstracao cronometrado.">
-<meta name="color-scheme" content="light dark">
+<meta name="description" content="Recruta.Gov: uma regua so para unidade, pessoa e curso. Apresentacao de 30 a 40 minutos para comite de decisao, em 15 slides animados, com notas do apresentador, cronometro e roteiro de demonstracao.">
+<meta name="color-scheme" content="dark light">
 <title>Recruta.Gov — apresentação para decisão</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,500;100,600;110,700;125,800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap">
 
 <style>
-/* ═══════════════════════════════════════════════════════════════════════
-   Recruta.Gov — apresentação institucional
-   A identidade sai do próprio instrumento do sistema: a régua de 0 a 5 e o
-   par de cores do radar (ocre = o que a unidade EXIGE, azul = o que a
-   equipe DEMONSTRA). O trilho de progresso no rodapé é essa régua.
-   ═══════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════════
+   Recruta.Gov — apresentação para decisão
+   A identidade é o instrumento do sistema: a régua de 0 a 5 e o par de cores
+   do radar — ocre para o que a unidade EXIGE, azul para o que a equipe
+   DEMONSTRA. O deck avança sobre essa régua; o radar se desenha na frente
+   de quem decide; os números contam a partir do zero porque foram medidos.
+   Escuro por padrão (projeta melhor); tecla T para o claro em sala clara.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 :root{
-  --papel:#F4F6F9;      /* off-white com viés frio, para casar com o azul */
-  --carta:#FFFFFF;
-  --tinta:#0F2238;      /* tinta naval, não preto */
-  --tinta-2:#51667F;
-  --tinta-3:#8496AB;
-  --gov:#1351B4;        /* azul institucional — o mesmo do sistema */
-  --gov-fraco:#E4ECFA;
-  --exig:#B4711A;       /* ocre: a linha da exigência no radar */
-  --exig-fraco:#FAF0DF;
-  --ok:#0F6647;
-  --alerta:#A8410F;
-  --linha:#D8E0EA;
-  --linha-forte:#B9C6D6;
-  --sombra:0 1px 2px rgba(15,34,56,.06), 0 8px 24px -12px rgba(15,34,56,.18);
-  color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --papel:#08131F;
-    --carta:#0E1E30;
-    --tinta:#E7EEF7;
-    --tinta-2:#9CB0C7;
-    --tinta-3:#6C8299;
-    --gov:#78A8F7;
-    --gov-fraco:#132C4D;
-    --exig:#E4A544;
-    --exig-fraco:#33260F;
-    --ok:#48C79A;
-    --alerta:#F08A55;
-    --linha:#1D3350;
-    --linha-forte:#2C4763;
-    --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --papel:#08131F;
-  --carta:#0E1E30;
-  --tinta:#E7EEF7;
-  --tinta-2:#9CB0C7;
-  --tinta-3:#6C8299;
-  --gov:#78A8F7;
-  --gov-fraco:#132C4D;
-  --exig:#E4A544;
-  --exig-fraco:#33260F;
-  --ok:#48C79A;
-  --alerta:#F08A55;
-  --linha:#1D3350;
-  --linha-forte:#2C4763;
-  --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  --fundo:#071220;        /* naval profundo, não preto */
+  --carta:#0C1B2C;
+  --carta-2:#122536;
+  --tinta:#EAF0F8;
+  --tinta-2:#A9BBD0;
+  --tinta-3:#6F84A0;
+  --gov:#6EA6FF;          /* o azul institucional, levantado para o escuro */
+  --gov-forte:#8FBBFF;
+  --gov-fraco:rgba(110,166,255,.14);
+  --exig:#E8A94A;         /* ocre: a exigência */
+  --exig-fraco:rgba(232,169,74,.14);
+  --ok:#4CCB9B;
+  --alerta:#FF8A5B;
+  --linha:#1B2F45;
+  --linha-forte:#2E4864;
+  --brilho:0 0 0 1px rgba(255,255,255,.04), 0 24px 60px -30px rgba(0,0,0,.8);
   color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --fundo:#EEF2F7;
+  --carta:#FFFFFF;
+  --carta-2:#F4F7FB;
+  --tinta:#0F2238;
+  --tinta-2:#4E637C;
+  --tinta-3:#8395AB;
+  --gov:#1351B4;
+  --gov-forte:#0E3F8F;
+  --gov-fraco:rgba(19,81,180,.10);
+  --exig:#B4711A;
+  --exig-fraco:rgba(180,113,26,.12);
+  --ok:#0F6647;
+  --alerta:#B8461A;
+  --linha:#D9E1EB;
+  --linha-forte:#B7C5D6;
+  --brilho:0 1px 2px rgba(15,34,56,.06), 0 24px 60px -30px rgba(15,34,56,.35);
+  color-scheme:light;
 }
 
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
-  margin:0; background:var(--papel); color:var(--tinta);
+  margin:0; background:var(--fundo); color:var(--tinta);
   font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
-  -webkit-font-smoothing:antialiased;
-  display:flex; flex-direction:column; min-height:100vh;
+  -webkit-font-smoothing:antialiased; overflow:hidden;
+  display:flex; flex-direction:column;
 }
 
-/* ── o palco 16:9 ───────────────────────────────────────────────────── */
-.palco{
-  flex:1; display:grid; place-items:center; padding:1.4rem 1.4rem 0;
-}
+/* ── o palco ──────────────────────────────────────────────────────────── */
+.palco{flex:1; position:relative; min-height:0}
 .slide{
-  container-type:size;
-  position:relative;
-  width:min(100%, calc((100vh - 6.5rem) * 16 / 9));
+  container-type:size; position:absolute; top:50%; left:50%; translate:-50% -50%;
+  width:min(calc(100vw - 2.4rem), calc((100vh - 5.6rem) * 16 / 9));
   aspect-ratio:16/9;
-  background:var(--carta);
-  border:1px solid var(--linha);
-  border-radius:4px;
-  box-shadow:var(--sombra);
-  overflow:hidden;
-  display:none;
+  background:var(--carta); border:1px solid var(--linha); border-radius:6px;
+  box-shadow:var(--brilho); overflow:hidden;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateX(3%);
+  transition:opacity .45s ease, transform .5s cubic-bezier(.2,.7,.2,1), visibility 0s .45s;
 }
-.slide.on{display:block}
+.slide.on{opacity:1; visibility:visible; pointer-events:auto; transform:none; transition-delay:0s}
+.slide.volta{transform:translateX(-3%)}
+.slide.volta.on{transform:none}
 
-.quadro{
-  position:absolute; inset:0;
-  padding:6.2cqw 7cqw 5.4cqw;
-  display:flex; flex-direction:column; gap:2.6cqh;
-}
-.slide[data-largo] .quadro{padding:4.4cqw 5cqw}
+.q{position:absolute; inset:0; padding:5.6cqw 6.4cqw 5cqw; display:flex; flex-direction:column; gap:2.4cqh}
+.q.largo{padding:4.2cqw 5cqw 4cqw}
 
-/* ── tipografia ─────────────────────────────────────────────────────── */
+/* entradas escalonadas: cada elemento animado tem --d */
+.slide.on .a{animation:entra .7s cubic-bezier(.2,.7,.2,1) both; animation-delay:var(--d,0s)}
+@keyframes entra{from{opacity:0; transform:translateY(1.6cqh)} to{opacity:1; transform:none}}
+.slide.on .a-esq{animation:entraEsq .7s cubic-bezier(.2,.7,.2,1) both; animation-delay:var(--d,0s)}
+@keyframes entraEsq{from{opacity:0; transform:translateX(-1.6cqw)} to{opacity:1; transform:none}}
+
+/* ── tipografia ───────────────────────────────────────────────────────── */
 .eyebrow{
-  font-family:"IBM Plex Mono", ui-monospace, monospace;
-  font-size:1.35cqw; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
-  color:var(--tinta-3); display:flex; align-items:center; gap:.8cqw;
+  font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:1.25cqw; font-weight:500;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--tinta-3);
+  display:flex; align-items:center; gap:.9cqw;
 }
-.eyebrow::before{
-  content:""; width:2.4cqw; height:2px; background:var(--gov); flex:none; border-radius:1px;
-}
+.eyebrow::before{content:""; width:2.6cqw; height:2px; background:var(--gov); border-radius:1px; flex:none}
+.eyebrow.ocre::before{background:var(--exig)}
 h1{
-  font-family:"Archivo", ui-sans-serif, sans-serif;
-  font-weight:700; font-size:4.2cqw; line-height:1.08; letter-spacing:-.02em;
-  margin:0; text-wrap:balance; max-width:22ch;
+  font-family:"Archivo", ui-sans-serif, sans-serif; font-stretch:110%; font-weight:700;
+  font-size:4.1cqw; line-height:1.06; letter-spacing:-.015em; margin:0;
+  text-wrap:balance; max-width:24ch;
 }
-h1.grande{font-size:5.4cqw; max-width:18ch}
-h1 em{font-style:normal; color:var(--gov)}
-h2{
-  font-family:"Archivo", ui-sans-serif, sans-serif;
-  font-weight:600; font-size:2.1cqw; line-height:1.2; margin:0; letter-spacing:-.01em;
-}
-p{margin:0; font-size:1.72cqw; line-height:1.55; color:var(--tinta-2); max-width:62ch}
-p.destaque{color:var(--tinta); font-size:2cqw}
+h1 .g{color:var(--gov)} h1 .o{color:var(--exig)}
+p{margin:0; font-size:1.7cqw; line-height:1.55; color:var(--tinta-2); max-width:64ch}
+p.destaque{color:var(--tinta); font-size:1.95cqw}
 .mono{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums}
 
-/* ── capa ───────────────────────────────────────────────────────────── */
-.capa{justify-content:center; gap:2.4cqh}
+/* ── capa ─────────────────────────────────────────────────────────────── */
+.capa{justify-content:center; gap:2cqh}
+.capa .fundo-radar{
+  position:absolute; right:-6cqw; top:50%; width:60cqw; height:60cqw; transform:translateY(-50%);
+  opacity:.16; pointer-events:none;
+}
+.capa .fundo-radar svg{width:100%; height:100%; animation:gira 90s linear infinite; transform-origin:50% 50%}
+@keyframes gira{to{transform:rotate(360deg)}}
+.capa .fundo-radar .eixo{stroke:var(--gov); stroke-width:1.2; stroke-dasharray:1; stroke-dashoffset:1;
+  animation:tracar 1.1s cubic-bezier(.2,.7,.2,1) forwards; animation-delay:calc(.12s * var(--i))}
+.capa .fundo-radar .anel{fill:none; stroke:var(--linha-forte); stroke-width:1; opacity:0;
+  animation:aparece .8s ease forwards; animation-delay:calc(1.1s + .12s * var(--i))}
+@keyframes tracar{to{stroke-dashoffset:0}}
+@keyframes aparece{to{opacity:1}}
+.capa .orgao{
+  font-family:"IBM Plex Mono", monospace; font-size:1.25cqw; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--tinta-3);
+}
 .capa .marca{
-  font-family:"Archivo", sans-serif; font-weight:800; font-size:8.4cqw;
-  letter-spacing:-.035em; line-height:1; margin:0;
+  font-family:"Archivo", sans-serif; font-stretch:125%; font-weight:800; font-size:8.6cqw;
+  letter-spacing:-.03em; line-height:.95; margin:0; color:var(--tinta);
 }
 .capa .marca span{color:var(--gov)}
-.capa .lema{font-size:2.3cqw; color:var(--tinta-2); max-width:34ch; line-height:1.4}
-.capa .orgao{
-  font-family:"IBM Plex Mono", monospace; font-size:1.3cqw; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--tinta-3);
-}
+.capa .lema{font-size:2.25cqw; color:var(--tinta-2); max-width:36ch; line-height:1.4}
+.capa .lema b{color:var(--tinta); font-weight:600}
 .capa .selo{
-  position:absolute; right:7cqw; bottom:5.4cqw; text-align:right;
-  font-family:"IBM Plex Mono", monospace; font-size:1.2cqw; color:var(--tinta-3);
-  line-height:1.9;
+  position:absolute; left:6.4cqw; bottom:5cqw;
+  font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; color:var(--tinta-3); line-height:1.9;
 }
+.capa .dica{
+  position:absolute; right:6.4cqw; bottom:5cqw; text-align:right;
+  font-family:"IBM Plex Mono", monospace; font-size:1.05cqw; color:var(--tinta-3); line-height:1.9;
+  opacity:0; animation:aparece 1s ease forwards; animation-delay:2.6s;
+}
+.capa .dica kbd{border:1px solid var(--linha-forte); border-radius:3px; padding:0 .5cqw; color:var(--tinta-2)}
 
-/* ── listas compostas ───────────────────────────────────────────────── */
-.pontos{display:flex; flex-direction:column; gap:1.9cqh; margin:0; padding:0; list-style:none}
-.pontos li{
-  display:grid; grid-template-columns:2.6cqw 1fr; gap:1.4cqw; align-items:start;
-  font-size:1.72cqw; line-height:1.5; color:var(--tinta-2);
-}
-.pontos li::before{
-  content:""; margin-top:.72cqw; width:2.6cqw; height:2px; background:var(--linha-forte);
-  border-radius:1px;
-}
+/* ── pontos (o que estava quebrado): o texto vai INTEIRO num span ────── */
+.pontos{display:flex; flex-direction:column; gap:1.8cqh; margin:0; padding:0; list-style:none}
+.pontos li{display:flex; gap:1.5cqw; align-items:flex-start; font-size:1.7cqw; line-height:1.5; color:var(--tinta-2)}
+.pontos li .m{flex:none; margin-top:.95cqw; width:2.6cqw; height:2px; background:var(--linha-forte); border-radius:1px}
+.pontos li.grave .m{background:var(--alerta)}
+.pontos li.bom .m{background:var(--ok)}
 .pontos li b{color:var(--tinta); font-weight:600}
-.pontos li.grave::before{background:var(--alerta)}
+.pontos.compacto li{font-size:1.45cqw; gap:1.2cqw}
+.pontos.compacto li .m{margin-top:.8cqw; width:2cqw}
 
-/* ── as nove dimensões ──────────────────────────────────────────────── */
-.dims{
-  display:grid; grid-template-columns:repeat(3, 1fr); gap:1.6cqh 2.4cqw; margin:0; padding:0;
-  list-style:none; counter-reset:d;
+/* ── a ideia ──────────────────────────────────────────────────────────── */
+.ideia h1{font-size:5cqw; max-width:20ch}
+.ideia .tres{display:flex; gap:2.6cqw; margin-top:1cqh}
+.ideia .tres div{
+  flex:1; padding:1.6cqh 0 0; border-top:3px solid var(--linha-forte);
+  font-family:"Archivo", sans-serif; font-weight:600; font-size:1.9cqw; color:var(--tinta);
 }
+.ideia .tres div small{display:block; font-family:"Source Sans 3", sans-serif; font-weight:400; font-size:1.35cqw; color:var(--tinta-2); margin-top:.5cqh; line-height:1.4}
+.ideia .tres .u{border-top-color:var(--exig)} .ideia .tres .p{border-top-color:var(--gov)} .ideia .tres .c{border-top-color:var(--ok)}
+
+/* ── radar ────────────────────────────────────────────────────────────── */
+.radar-linha{display:grid; grid-template-columns:1.1fr .9fr; gap:3cqw; flex:1; align-items:center; min-height:0}
+.radar-caixa{display:flex; flex-direction:column; align-items:center; gap:1cqh; min-height:0}
+.radar-caixa svg{width:100%; height:auto; max-height:58cqh}
+.legenda{display:flex; gap:2.4cqw; font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; color:var(--tinta-2)}
+.legenda i{display:inline-flex; align-items:center; gap:.6cqw; font-style:normal}
+.legenda i::before{content:""; width:1.8cqw; height:3px; border-radius:2px; background:currentColor}
+.legenda .e{color:var(--exig)} .legenda .qq{color:var(--gov)}
+.nota-fig{font-family:"IBM Plex Mono", monospace; font-size:1.05cqw; color:var(--tinta-3); text-align:center}
+#radar .anel{fill:none; stroke:var(--linha); stroke-width:1}
+#radar .raio{stroke:var(--linha); stroke-width:1}
+#radar .tick{font-family:"IBM Plex Mono", monospace; font-size:11px; fill:var(--tinta-3)}
+#radar .rot{font-family:"IBM Plex Mono", monospace; font-size:13.5px; fill:var(--tinta-2)}
+#radar .serie{stroke-width:2.6; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1; fill-opacity:0}
+#radar .serie.exig{stroke:var(--exig); fill:var(--exig)}
+#radar .serie.equipe{stroke:var(--gov); fill:var(--gov)}
+#radar .pt{fill:var(--gov); opacity:0}
+#radar .gap{stroke:var(--exig); stroke-width:2; stroke-dasharray:4 3; opacity:0}
+#radar .gap-rot{font-family:"IBM Plex Mono", monospace; font-size:12px; fill:var(--exig); font-weight:600; opacity:0}
+.slide.on #radar .anel{animation:aparece .5s ease both; animation-delay:calc(.15s + .1s * var(--i))}
+.slide.on #radar .raio{animation:aparece .5s ease both; animation-delay:.3s}
+.slide.on #radar .serie.exig{animation:tracar 1.3s cubic-bezier(.3,.7,.2,1) both, preenche .6s ease 1.3s both; animation-delay:1s, 2.1s}
+.slide.on #radar .serie.equipe{animation:tracar 1.3s cubic-bezier(.3,.7,.2,1) both, preenche .6s ease both; animation-delay:2.3s, 3.4s}
+@keyframes preenche{to{fill-opacity:.16}}
+.slide.on #radar .pt{animation:aparece .3s ease both; animation-delay:calc(3.4s + .06s * var(--i))}
+.slide.on #radar .gap{animation:aparece .5s ease both; animation-delay:calc(4.2s + .25s * var(--i))}
+.slide.on #radar .gap-rot{animation:aparece .5s ease both; animation-delay:calc(4.4s + .25s * var(--i))}
+.radar-txt{display:flex; flex-direction:column; gap:1.6cqh}
+.radar-txt p{font-size:1.6cqw}
+.radar-txt .lacuna{
+  margin-top:.6cqh; padding:1.4cqh 1.6cqw; border-left:3px solid var(--exig); background:var(--exig-fraco);
+  border-radius:0 4px 4px 0;
+}
+.radar-txt .lacuna b{color:var(--tinta)}
+
+/* ── as nove dimensões ────────────────────────────────────────────────── */
+.dims{display:grid; grid-template-columns:repeat(3,1fr); gap:1.7cqh 2.6cqw; margin:0; padding:0; list-style:none; counter-reset:d}
 .dims li{counter-increment:d; display:flex; flex-direction:column; gap:.4cqh}
-.dims dt, .dims .nome{
-  font-family:"Archivo", sans-serif; font-weight:600; font-size:1.6cqw; color:var(--tinta);
-  display:flex; align-items:baseline; gap:.7cqw;
+.dims .nome{
+  font-family:"Archivo", sans-serif; font-weight:600; font-size:1.55cqw; color:var(--tinta);
+  display:flex; align-items:baseline; gap:.8cqw;
 }
 .dims .nome::before{
-  content:counter(d, decimal-leading-zero);
-  font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; font-weight:500;
-  color:var(--gov); letter-spacing:.04em;
+  content:counter(d, decimal-leading-zero); font-family:"IBM Plex Mono", monospace; font-size:1.15cqw;
+  font-weight:500; color:var(--gov); letter-spacing:.04em;
 }
-.dims .def{font-size:1.34cqw; line-height:1.45; color:var(--tinta-2); padding-left:2.7cqw}
-
-/* ── colunas de origem ──────────────────────────────────────────────── */
-.origens{display:grid; grid-template-columns:repeat(3,1fr); gap:2.2cqw; flex:1; align-content:start}
-.origem{display:flex; flex-direction:column; gap:1.1cqh; padding-top:1.4cqh; border-top:3px solid var(--linha-forte)}
-.origem.u{border-top-color:var(--exig)}
-.origem.p{border-top-color:var(--gov)}
-.origem.c{border-top-color:var(--ok)}
-.origem .rot{
-  font-family:"IBM Plex Mono", monospace; font-size:1.2cqw; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--tinta-3);
-}
-.origem h3{font-family:"Archivo",sans-serif; font-weight:600; font-size:1.9cqw; margin:0; line-height:1.15}
-.origem ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:.55cqh}
-.origem li{font-size:1.32cqw; line-height:1.4; color:var(--tinta-2)}
-.origem .fonte{
-  margin-top:auto; font-family:"IBM Plex Mono", monospace; font-size:1.12cqw;
-  color:var(--tinta-3); padding-top:1cqh; border-top:1px solid var(--linha);
+.dims .def{font-size:1.3cqw; line-height:1.45; color:var(--tinta-2); padding-left:2.9cqw}
+.rodape-medido{
+  margin-top:auto; font-family:"IBM Plex Mono", monospace; font-size:1.12cqw; color:var(--tinta-3);
+  border-top:1px solid var(--linha); padding-top:1.4cqh; line-height:1.6;
 }
 
-/* ── números ────────────────────────────────────────────────────────── */
-.cifras{display:grid; grid-template-columns:repeat(4,1fr); gap:1.8cqh 2cqw}
-.cifra{display:flex; flex-direction:column; gap:.3cqh}
+/* ── origens ──────────────────────────────────────────────────────────── */
+.origens{display:grid; grid-template-columns:repeat(3,1fr); gap:2.4cqw; flex:1; align-content:start}
+.origem{display:flex; flex-direction:column; gap:1cqh; padding-top:1.4cqh; border-top:3px solid var(--linha-forte)}
+.origem.u{border-top-color:var(--exig)} .origem.p{border-top-color:var(--gov)} .origem.c{border-top-color:var(--ok)}
+.origem .rot{font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; letter-spacing:.16em; text-transform:uppercase; color:var(--tinta-3)}
+.origem h3{font-family:"Archivo",sans-serif; font-weight:600; font-size:1.85cqw; margin:0; line-height:1.15; color:var(--tinta)}
+.origem ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:.5cqh}
+.origem li{font-size:1.3cqw; line-height:1.4; color:var(--tinta-2)}
+.origem li b{color:var(--tinta); font-weight:600}
+.origem .fonte{margin-top:auto; font-family:"IBM Plex Mono", monospace; font-size:1.08cqw; color:var(--tinta-3); padding-top:1cqh; border-top:1px solid var(--linha)}
+
+/* ── números ──────────────────────────────────────────────────────────── */
+.cifras{display:grid; grid-template-columns:repeat(4,1fr); gap:2cqh 2.2cqw}
+.cifra{display:flex; flex-direction:column; gap:.4cqh; padding-left:1.3cqw; border-left:2px solid var(--linha-forte)}
+.cifra.forte{border-left-color:var(--gov)}
 .cifra .n{
-  font-family:"Archivo", sans-serif; font-weight:700; font-size:3.5cqw; line-height:1;
+  font-family:"Archivo", sans-serif; font-stretch:110%; font-weight:700; font-size:3.4cqw; line-height:1;
   letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--tinta);
 }
-.cifra .n small{font-size:.42em; font-weight:600; color:var(--tinta-2); letter-spacing:0}
-.cifra .q{font-size:1.32cqw; line-height:1.35; color:var(--tinta-2)}
 .cifra.forte .n{color:var(--gov)}
-.rodape-medido{
-  margin-top:auto; font-family:"IBM Plex Mono", monospace; font-size:1.15cqw;
-  color:var(--tinta-3); border-top:1px solid var(--linha); padding-top:1.4cqh; line-height:1.6;
+.cifra .n small{font-size:.45em; font-weight:600; color:var(--tinta-2)}
+.cifra .qq{font-size:1.28cqw; line-height:1.35; color:var(--tinta-2)}
+.cifra .qq b{color:var(--tinta); font-weight:600}
+
+/* ── módulos ──────────────────────────────────────────────────────────── */
+.mods{display:grid; grid-template-columns:repeat(3,1fr); gap:1.8cqh 2.4cqw}
+.mod{display:flex; flex-direction:column; gap:.5cqh; padding-left:1.4cqw; border-left:2px solid var(--gov)}
+.mod .pergunta{font-family:"IBM Plex Mono", monospace; font-size:1.1cqw; color:var(--gov); letter-spacing:.02em}
+.mod h3{font-family:"Archivo",sans-serif; font-weight:600; font-size:1.65cqw; margin:0; color:var(--tinta)}
+.mod p{font-size:1.28cqw; line-height:1.42}
+
+/* ── demo ─────────────────────────────────────────────────────────────── */
+.slide.demo{background:linear-gradient(135deg, var(--carta) 0%, var(--carta-2) 100%)}
+.roteiro{display:grid; grid-template-columns:repeat(2,1fr); gap:1.6cqh 3cqw; margin-top:.6cqh}
+.passo{display:grid; grid-template-columns:auto 1fr; gap:1.4cqw; align-items:start; cursor:pointer; padding:.6cqh .8cqw; border-radius:4px; transition:background .2s}
+.passo:hover{background:var(--gov-fraco)}
+.passo .t{
+  font-family:"IBM Plex Mono", monospace; font-size:1.2cqw; color:var(--exig); font-variant-numeric:tabular-nums;
+  letter-spacing:.02em; padding-top:.35cqh; min-width:7cqw;
+}
+.passo .t small{display:block; color:var(--tinta-3); font-size:.9em; margin-top:.2cqh}
+.passo .o{font-size:1.5cqw; line-height:1.42; color:var(--tinta-2)}
+.passo .o b{color:var(--tinta); font-weight:600}
+.passo.andando{background:var(--gov-fraco)}
+.passo.andando .t{color:var(--gov)}
+.passo.feito .t{color:var(--ok)}
+.aviso{
+  margin-top:auto; font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; color:var(--tinta-3);
+  border-top:1px solid var(--linha); padding-top:1.4cqh; line-height:1.6;
 }
 
-/* ── módulos ────────────────────────────────────────────────────────── */
-.mods{display:grid; grid-template-columns:repeat(3,1fr); gap:1.7cqh 2.2cqw}
-.mod{display:flex; flex-direction:column; gap:.5cqh; padding-left:1.5cqw; border-left:2px solid var(--gov)}
-.mod h3{font-family:"Archivo",sans-serif; font-weight:600; font-size:1.7cqw; margin:0}
-.mod p{font-size:1.3cqw; line-height:1.42}
+/* ── pipeline ─────────────────────────────────────────────────────────── */
+.fluxo{display:flex; flex-direction:column; gap:2.2cqh; margin-top:.5cqh}
+.etapas{display:grid; grid-template-columns:repeat(8,1fr); gap:.7cqw}
+.etapa{
+  padding:1.2cqh .6cqw; border:1px solid var(--linha-forte); border-radius:4px; text-align:center;
+  font-family:"IBM Plex Mono", monospace; font-size:1cqw; color:var(--tinta-2); background:var(--carta);
+  opacity:.25; transform:scale(.96);
+}
+.etapa b{display:block; font-size:1.25cqw; color:var(--tinta); font-weight:600; margin-bottom:.3cqh}
+.slide.on .etapa{animation:acende .5s ease both; animation-delay:calc(.3s + .13s * var(--i))}
+@keyframes acende{to{opacity:1; transform:none; border-color:var(--gov)}}
+.seta{display:flex; align-items:center; gap:1.2cqw; font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; color:var(--tinta-3); letter-spacing:.1em; text-transform:uppercase}
+.seta .tr{flex:1; height:2px; background:linear-gradient(90deg, var(--gov), transparent); transform-origin:left; transform:scaleX(0)}
+.slide.on .seta .tr{animation:cresce .8s cubic-bezier(.2,.7,.2,1) both; animation-delay:1.6s}
+@keyframes cresce{to{transform:scaleX(1)}}
+.saidas{display:grid; grid-template-columns:1fr 1fr; gap:2.4cqw}
+.saida{padding:1.6cqh 1.8cqw; border-radius:4px; background:var(--carta-2); border:1px solid var(--linha)}
+.saida .rot{font-family:"IBM Plex Mono", monospace; font-size:1.1cqw; letter-spacing:.16em; text-transform:uppercase; color:var(--tinta-3); margin-bottom:.8cqh}
+.saida h3{font-family:"Archivo",sans-serif; font-weight:600; font-size:1.75cqw; margin:0 0 .6cqh; color:var(--tinta)}
+.saida p{font-size:1.32cqw}
+.saida.lenta .rot{color:var(--exig)} .saida.rapida .rot{color:var(--gov)}
 
-/* ── demo ───────────────────────────────────────────────────────────── */
-.slide.demo{background:var(--tinta); border-color:var(--tinta)}
-.slide.demo .eyebrow{color:rgba(255,255,255,.5)}
-.slide.demo .eyebrow::before{background:var(--exig)}
-.slide.demo h1{color:#fff}
-.slide.demo .roteiro{display:grid; grid-template-columns:repeat(2,1fr); gap:1.5cqh 3cqw; margin-top:1cqh}
-.slide.demo .passo{display:grid; grid-template-columns:auto 1fr; gap:1.2cqw; align-items:baseline}
-.slide.demo .passo .t{
-  font-family:"IBM Plex Mono", monospace; font-size:1.25cqw; color:var(--exig);
-  font-variant-numeric:tabular-nums; letter-spacing:.02em;
-}
-.slide.demo .passo .o{font-size:1.55cqw; line-height:1.4; color:rgba(255,255,255,.88)}
-.slide.demo .passo .o b{color:#fff; font-weight:600}
-.slide.demo .aviso{
-  margin-top:auto; font-family:"IBM Plex Mono", monospace; font-size:1.2cqw;
-  color:rgba(255,255,255,.55); border-top:1px solid rgba(255,255,255,.16); padding-top:1.4cqh;
-}
+/* ── duas colunas ─────────────────────────────────────────────────────── */
+.duas{display:grid; grid-template-columns:1fr 1fr; gap:3.2cqw; flex:1; align-items:start; min-height:0}
+.bloco{display:flex; flex-direction:column; gap:1.3cqh; min-width:0}
+.bloco .rot{font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; letter-spacing:.16em; text-transform:uppercase; color:var(--tinta-3)}
 
-/* ── duas colunas genéricas ─────────────────────────────────────────── */
-.duas{display:grid; grid-template-columns:1fr 1fr; gap:3cqw; flex:1; align-items:start}
-.bloco{display:flex; flex-direction:column; gap:1.2cqh}
-.bloco .rot{
-  font-family:"IBM Plex Mono", monospace; font-size:1.2cqw; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--tinta-3);
-}
+/* ── verificações (contador grande) ───────────────────────────────────── */
+.big{display:flex; align-items:baseline; gap:1.4cqw; margin:.4cqh 0}
+.big .n{font-family:"Archivo", sans-serif; font-stretch:110%; font-weight:800; font-size:7.5cqw; line-height:1; letter-spacing:-.03em; color:var(--gov); font-variant-numeric:tabular-nums}
+.big .qq{font-size:1.6cqw; color:var(--tinta-2); max-width:22ch; line-height:1.35}
 
-/* ── estado / etapas ────────────────────────────────────────────────── */
-.estado{display:flex; flex-direction:column; gap:1.1cqh; margin:0; padding:0; list-style:none}
-.estado li{
-  display:grid; grid-template-columns:8.5cqw 1fr; gap:1.4cqw; align-items:baseline;
-  font-size:1.55cqw; line-height:1.45; color:var(--tinta-2);
-}
-.estado .marca{
-  font-family:"IBM Plex Mono", monospace; font-size:1.1cqw; letter-spacing:.1em;
-  text-transform:uppercase; padding:.28cqh .7cqw; border-radius:2px; text-align:center;
-}
+/* ── estado ───────────────────────────────────────────────────────────── */
+.estado{display:flex; flex-direction:column; gap:1.15cqh; margin:0; padding:0; list-style:none}
+.estado li{display:grid; grid-template-columns:8.6cqw 1fr; gap:1.5cqw; align-items:baseline; font-size:1.5cqw; line-height:1.45; color:var(--tinta-2)}
+.estado .marca{font-family:"IBM Plex Mono", monospace; font-size:1.05cqw; letter-spacing:.12em; text-transform:uppercase; padding:.3cqh .7cqw; border-radius:3px; text-align:center}
 .estado .pronto{background:var(--gov-fraco); color:var(--gov)}
 .estado .andando{background:var(--exig-fraco); color:var(--exig)}
 .estado li b{color:var(--tinta); font-weight:600}
 
-/* ── radar ──────────────────────────────────────────────────────────── */
-.radar-linha{display:grid; grid-template-columns:1.05fr .95fr; gap:2.5cqw; flex:1; align-items:center}
-.radar-caixa{display:flex; flex-direction:column; align-items:center; gap:.8cqh}
-.radar-caixa svg{width:100%; height:auto; max-height:56cqh}
-.legenda{display:flex; gap:2cqw; font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; color:var(--tinta-2)}
-.legenda i{display:inline-flex; align-items:center; gap:.5cqw; font-style:normal}
-.legenda i::before{content:""; width:1.6cqw; height:3px; border-radius:2px; background:currentColor}
-.legenda .e{color:var(--exig)}
-.legenda .q{color:var(--gov)}
-.nota-fig{font-family:"IBM Plex Mono", monospace; font-size:1.05cqw; color:var(--tinta-3); text-align:center}
-
-/* ── o pedido ───────────────────────────────────────────────────────── */
-.pedidos{display:flex; flex-direction:column; gap:2cqh; margin:0; padding:0; list-style:none; counter-reset:p}
-.pedidos li{counter-increment:p; display:grid; grid-template-columns:3.4cqw 1fr; gap:1.6cqw; align-items:start}
-.pedidos li::before{
-  content:counter(p); font-family:"Archivo",sans-serif; font-weight:700; font-size:2.4cqw;
-  color:var(--gov); line-height:1;
-}
-.pedidos h3{font-family:"Archivo",sans-serif; font-weight:600; font-size:2cqw; margin:0 0 .35cqh}
+/* ── o pedido ─────────────────────────────────────────────────────────── */
+.pedidos{display:flex; flex-direction:column; gap:2.2cqh; margin:0; padding:0; list-style:none; counter-reset:p}
+.pedidos li{counter-increment:p; display:grid; grid-template-columns:4cqw 1fr; gap:1.4cqw; align-items:start}
+.pedidos li::before{content:counter(p); font-family:"Archivo",sans-serif; font-stretch:110%; font-weight:800; font-size:3cqw; color:var(--gov); line-height:1}
+.pedidos h3{font-family:"Archivo",sans-serif; font-weight:600; font-size:2cqw; margin:0 0 .4cqh; color:var(--tinta)}
 .pedidos p{font-size:1.5cqw}
+.fecho{margin-top:auto; font-family:"Archivo",sans-serif; font-weight:600; font-size:2.3cqw; color:var(--tinta); text-wrap:balance; max-width:30ch}
+.fecho span{color:var(--exig)}
 
-/* ── barra inferior: a régua ────────────────────────────────────────── */
+/* ── a régua (rodapé) ─────────────────────────────────────────────────── */
 .regua{
-  flex:none; display:flex; align-items:center; gap:1.2rem;
-  padding:.7rem 1.6rem 1rem; font-family:"IBM Plex Mono", monospace; font-size:.72rem;
-  color:var(--tinta-3); letter-spacing:.08em;
+  flex:none; display:flex; align-items:center; gap:1.1rem; padding:.7rem 1.4rem .9rem;
+  font-family:"IBM Plex Mono", monospace; font-size:.72rem; color:var(--tinta-3); letter-spacing:.08em;
 }
-.regua .trilho{
-  flex:1; height:16px; position:relative; display:flex; align-items:center;
-}
-.regua .trilho::before{
-  content:""; position:absolute; left:0; right:0; height:2px; background:var(--linha-forte);
-}
+.regua .titulo{font-weight:500; color:var(--tinta-2); text-transform:uppercase; min-width:12rem}
+.regua .trilho{flex:1; height:18px; position:relative}
+.regua .trilho::before{content:""; position:absolute; left:0; right:0; top:8px; height:2px; background:var(--linha-forte)}
+.regua .cheio{position:absolute; left:0; top:8px; height:2px; background:var(--gov); width:0; transition:width .5s cubic-bezier(.2,.7,.2,1)}
 .regua .marcas{position:absolute; inset:0; display:flex}
-.regua .marcas span{
-  flex:1; position:relative; cursor:pointer; border:0; background:none; padding:0;
-}
-.regua .marcas span::after{
-  content:""; position:absolute; left:0; top:3px; width:2px; height:10px;
-  background:var(--linha-forte); border-radius:1px; transition:background .18s, height .18s;
-}
-.regua .marcas span.visto::after{background:var(--gov)}
-.regua .marcas span.aqui::after{background:var(--gov); height:16px; top:0; width:3px}
-.regua .marcas span:focus-visible{outline:2px solid var(--gov); outline-offset:3px; border-radius:2px}
-.regua .conta{font-variant-numeric:tabular-nums; min-width:4.5rem; text-align:right}
-.regua .titulo{font-weight:500; color:var(--tinta-2); text-transform:uppercase}
+.regua .marcas button{flex:1; position:relative; border:0; background:none; padding:0; cursor:pointer}
+.regua .marcas button::after{content:""; position:absolute; left:0; top:4px; width:2px; height:10px; background:var(--linha-forte); border-radius:1px; transition:background .2s, height .2s, top .2s}
+.regua .marcas button.visto::after{background:var(--gov)}
+.regua .marcas button.aqui::after{background:var(--gov-forte); height:18px; top:0; width:3px}
+.regua .marcas button:focus-visible{outline:2px solid var(--gov); outline-offset:3px; border-radius:2px}
+.regua .conta{font-variant-numeric:tabular-nums; min-width:4.6rem; text-align:right}
+.regua .relogio{font-variant-numeric:tabular-nums; min-width:4.2rem; text-align:right; color:var(--tinta-2); transition:color .3s}
+.regua .relogio.aviso{color:var(--exig)} .regua .relogio.estouro{color:var(--alerta); font-weight:600}
 .botao{
-  font-family:"IBM Plex Mono", monospace; font-size:.68rem; letter-spacing:.1em;
-  text-transform:uppercase; background:none; border:1px solid var(--linha-forte);
-  color:var(--tinta-2); padding:.34rem .6rem; border-radius:3px; cursor:pointer;
-  transition:border-color .18s, color .18s;
+  font-family:"IBM Plex Mono", monospace; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  background:none; border:1px solid var(--linha-forte); color:var(--tinta-2); padding:.34rem .58rem;
+  border-radius:3px; cursor:pointer; transition:border-color .18s, color .18s;
 }
-.botao:hover{border-color:var(--gov); color:var(--gov)}
+.botao:hover, .botao[aria-pressed="true"]{border-color:var(--gov); color:var(--gov)}
 .botao:focus-visible{outline:2px solid var(--gov); outline-offset:2px}
 
-/* ── notas do apresentador ──────────────────────────────────────────── */
-.notas{display:none}
-:root[data-notas="1"] .notas{
-  display:block; margin:0 1.4rem 1rem; padding:1rem 1.2rem;
-  background:var(--carta); border:1px solid var(--linha); border-left:3px solid var(--exig);
-  border-radius:3px; font-size:.92rem; line-height:1.6; color:var(--tinta-2);
-  max-width:110ch; align-self:center;
+/* ── camadas: notas, visão geral, tela preta, ajuda ───────────────────── */
+.notas{
+  display:none; position:fixed; left:50%; bottom:3.6rem; transform:translateX(-50%);
+  width:min(92vw, 78rem); max-height:34vh; overflow:auto;
+  padding:1rem 1.3rem; background:var(--carta); border:1px solid var(--linha); border-left:3px solid var(--exig);
+  border-radius:4px; box-shadow:var(--brilho); font-size:.95rem; line-height:1.6; color:var(--tinta-2); z-index:20;
 }
-:root[data-notas="1"] .notas b{color:var(--tinta)}
-:root[data-notas="1"] .notas .t{
-  font-family:"IBM Plex Mono", monospace; font-size:.72rem; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--exig); display:block; margin-bottom:.4rem;
+:root[data-notas="1"] .notas{display:block}
+.notas .t{font-family:"IBM Plex Mono", monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--exig); display:block; margin-bottom:.4rem}
+.notas b{color:var(--tinta)}
+.camada{position:fixed; inset:0; z-index:30; display:none; background:var(--fundo)}
+.camada.on{display:block}
+.preta{background:#000}
+.geral{padding:2rem; overflow:auto}
+.geral h2{font-family:"Archivo",sans-serif; font-weight:600; font-size:1rem; letter-spacing:.1em; text-transform:uppercase; color:var(--tinta-3); margin:0 0 1.2rem}
+.geral .grade{display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:.8rem}
+.geral button{
+  text-align:left; padding:.9rem 1rem; background:var(--carta); border:1px solid var(--linha); border-radius:4px;
+  color:var(--tinta); cursor:pointer; font-family:"Source Sans 3", sans-serif; font-size:.95rem; line-height:1.35;
+  display:flex; gap:.8rem; align-items:baseline; transition:border-color .18s;
 }
+.geral button:hover, .geral button.aqui{border-color:var(--gov)}
+.geral button .n{font-family:"IBM Plex Mono", monospace; font-size:.75rem; color:var(--gov); font-variant-numeric:tabular-nums}
+.ajuda{padding:2.4rem; display:none; place-items:center}
+.ajuda.on{display:grid}
+.ajuda .cx{background:var(--carta); border:1px solid var(--linha); border-radius:6px; padding:1.6rem 2rem; max-width:34rem; box-shadow:var(--brilho)}
+.ajuda h2{font-family:"Archivo",sans-serif; font-weight:600; font-size:1.1rem; margin:0 0 1rem; color:var(--tinta)}
+.ajuda dl{display:grid; grid-template-columns:auto 1fr; gap:.5rem 1.2rem; margin:0; font-size:.95rem; color:var(--tinta-2)}
+.ajuda dt{font-family:"IBM Plex Mono", monospace; color:var(--tinta)}
+.ajuda kbd{border:1px solid var(--linha-forte); border-radius:3px; padding:0 .4rem}
 
-@media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
-
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.001s !important; animation-delay:0s !important; transition-duration:.001s !important}
+  #radar .serie{stroke-dashoffset:0; fill-opacity:.16} #radar .pt, #radar .gap, #radar .gap-rot{opacity:1}
+  .etapa{opacity:1; transform:none} .seta .tr{transform:none}
+}
 @media print{
-  body{background:#fff}
-  .regua, .notas{display:none !important}
-  .palco{padding:0}
-  .slide{display:block !important; page-break-after:always; box-shadow:none; border:none;
-         width:100%; max-width:none; border-radius:0}
+  body{background:#fff; overflow:visible; display:block}
+  .regua, .notas, .camada{display:none !important}
+  .palco{display:block; padding:0}
+  .slide{position:static; opacity:1 !important; visibility:visible !important; transform:none !important;
+         display:block; width:100%; max-width:none; page-break-after:always; box-shadow:none; border:none; border-radius:0}
 }
 </style>
 </head>
 <body>
-<div class="palco">
+<div class="palco" id="palco">
 
 <!-- ═══ 1 · capa ═══ -->
 <section class="slide on" aria-label="Capa">
-  <div class="quadro capa">
-    <p class="orgao">Ministério da Gestão e da Inovação em Serviços Públicos</p>
-    <p class="marca">Recruta<span>.Gov</span></p>
-    <p class="lema">Uma régua só para <b>unidade</b>, <b>pessoa</b> e <b>curso</b> — e a diferença entre elas vira decisão.</p>
-    <div class="selo">
-      Apresentação institucional<br>
-      Setembro de 2026
+  <div class="q capa">
+    <div class="fundo-radar" aria-hidden="true">
+      <svg viewBox="0 0 400 400" id="capa-radar"></svg>
     </div>
+    <p class="orgao a" style="--d:.2s">Ministério da Gestão e da Inovação em Serviços Públicos</p>
+    <p class="marca a" style="--d:.5s">Recruta<span>.Gov</span></p>
+    <p class="lema a" style="--d:.9s">Uma régua só para <b>unidade</b>, <b>pessoa</b> e <b>curso</b> — e a diferença entre elas vira decisão.</p>
+    <div class="selo a" style="--d:1.3s">Apresentação para decisão<br>Setembro de 2026</div>
+    <div class="dica"><kbd>→</kbd> avança &nbsp;·&nbsp; <kbd>N</kbd> notas &nbsp;·&nbsp; <kbd>?</kbd> ajuda</div>
   </div>
 </section>
 
 <!-- ═══ 2 · o problema ═══ -->
 <section class="slide" aria-label="O problema">
-  <div class="quadro">
-    <p class="eyebrow">Por que o sistema existe</p>
-    <h1>“Quem é a pessoa certa para esta unidade?” hoje não tem resposta comparável.</h1>
+  <div class="q">
+    <p class="eyebrow a">Por que o sistema existe</p>
+    <h1 class="a" style="--d:.15s">“Quem é a pessoa certa para esta unidade?” hoje não tem resposta comparável.</h1>
     <ul class="pontos">
-      <li>A unidade descreve o que precisa em <b>texto livre</b>. O currículo descreve o que a pessoa fez em <b>outro texto livre</b>. Não há como confrontar os dois.</li>
-      <li>Na falta de comparação, a decisão sai por <b>indicação</b>, por quem já se conhece, ou pela leitura manual de dezenas de currículos — que ninguém tem tempo de fazer.</li>
-      <li class="grave">E o efeito é o que se ouve na ponta: <b>a equipe fica sempre pendente</b>. Falta alguém — mas não se sabe dizer <b>com o quê</b>.</li>
+      <li class="a" style="--d:.5s"><span class="m"></span><span>A unidade descreve o que precisa em <b>texto livre</b>. O currículo descreve o que a pessoa fez em <b>outro texto livre</b>. Não há como confrontar os dois.</span></li>
+      <li class="a" style="--d:.85s"><span class="m"></span><span>Sem comparação, a decisão sai por <b>indicação</b>, por quem já se conhece, ou pela leitura manual de dezenas de currículos — que ninguém tem tempo de fazer.</span></li>
+      <li class="a grave" style="--d:1.2s"><span class="m"></span><span>E o efeito é o que se ouve na ponta: <b>a equipe fica sempre pendente</b>. Falta alguém — mas não se sabe dizer <b>com o quê</b>.</span></li>
     </ul>
-    <p class="destaque" style="margin-top:auto">O Recruta.Gov não substitui a decisão do gestor. Ele constrói a base comparável que hoje não existe.</p>
+    <p class="destaque a" style="--d:1.7s; margin-top:auto">O Recruta.Gov não substitui a decisão do gestor. Ele constrói a base comparável que hoje não existe.</p>
   </div>
 </section>
 
-<!-- ═══ 3 · a tese, com o radar ═══ -->
-<section class="slide" data-largo aria-label="A régua">
-  <div class="quadro">
-    <p class="eyebrow">A tese</p>
-    <h1>Medidas na mesma régua, a distância entre elas é a decisão.</h1>
+<!-- ═══ 3 · a ideia ═══ -->
+<section class="slide" aria-label="A ideia">
+  <div class="q ideia">
+    <p class="eyebrow a">A tese</p>
+    <h1 class="a" style="--d:.2s">Se as três coisas forem medidas na <span class="g">mesma régua</span>, a distância entre elas é a decisão.</h1>
+    <div class="tres">
+      <div class="u a" style="--d:.9s">Unidade<small>o que ela <b>exige</b> — pelo DFT</small></div>
+      <div class="p a" style="--d:1.15s">Pessoa<small>o que o currículo <b>demonstra</b></small></div>
+      <div class="c a" style="--d:1.4s">Curso<small>o que a capacitação <b>desenvolve</b></small></div>
+    </div>
+    <p class="destaque a" style="--d:1.9s; margin-top:auto">Nove dimensões, de 0 a 5, com a mesma pergunta para os três. Por isso dá para responder <b>quem preenche esta lacuna</b> — e <b>qual curso a cobre</b>.</p>
+  </div>
+</section>
+
+<!-- ═══ 4 · a régua, com o radar ═══ -->
+<section class="slide" aria-label="A régua">
+  <div class="q largo">
+    <p class="eyebrow a">O instrumento, num caso real</p>
+    <h1 class="a" style="--d:.15s">O que a unidade exige, o que a equipe demonstra — e o espaço entre os dois.</h1>
     <div class="radar-linha">
-      <div class="radar-caixa">
+      <div class="radar-caixa a" style="--d:.4s">
         <svg id="radar" viewBox="0 0 620 470" role="img"
              aria-label="Gráfico de teia com nove dimensões comparando a exigência da unidade com o nível atual da equipe."></svg>
-        <div class="legenda">
-          <i class="e">o que a unidade exige</i>
-          <i class="q">o que a equipe demonstra</i>
-        </div>
-        <p class="nota-fig">Exemplo real — uma coordenação-geral do MGI</p>
+        <div class="legenda"><i class="e">o que a unidade exige</i><i class="qq">o que a equipe demonstra</i></div>
+        <p class="nota-fig">Uma coordenação-geral do MGI · notas medidas, não ilustrativas</p>
       </div>
-      <div class="bloco">
-        <p>Cada dimensão vai de <span class="mono">0</span> a <span class="mono">5</span>. A unidade é pontuada pelo que ela <b>entrega</b>; a pessoa, pelo que o currículo <b>demonstra</b>; o curso, pelo que ele <b>desenvolve</b>.</p>
-        <p>Onde a linha azul fica dentro da ocre, há <b>lacuna</b> — e ela é nomeada, não intuída: nesta unidade, competência técnica, visão sistêmica e resolução de problemas.</p>
-        <p>É a mesma escala nos três lados. Por isso dá para perguntar, e responder: <b>quem preenche esta lacuna?</b> e <b>qual curso a cobre?</b></p>
+      <div class="radar-txt">
+        <p class="a" style="--d:2.2s">A linha ocre é a <b>exigência</b> gravada a partir do DFT. Ela não muda de um dia para o outro: é a régua da unidade.</p>
+        <p class="a" style="--d:3.6s">A linha azul é a <b>média da equipe</b>, apurada a partir dos currículos. Onde ela fica dentro da ocre, há lacuna.</p>
+        <div class="lacuna a" style="--d:4.6s"><p>Aqui a lacuna tem nome: <b>competências técnicas</b>, <b>visão sistêmica</b> e <b>resolução de problemas</b>. Não é intuição — é a distância entre duas medidas.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ 4 · as nove dimensões ═══ -->
-<section class="slide" data-largo aria-label="As nove dimensões">
-  <div class="quadro">
-    <p class="eyebrow">O instrumento</p>
-    <h1>Nove dimensões, uma escala.</h1>
+<!-- ═══ 5 · as nove dimensões ═══ -->
+<section class="slide" aria-label="As nove dimensões">
+  <div class="q largo">
+    <p class="eyebrow a">O instrumento</p>
+    <h1 class="a" style="--d:.15s">Nove dimensões, uma escala.</h1>
     <ul class="dims">
-      <li><span class="nome">Competências Técnicas do Órgão</span><span class="def">Domínio técnico e especialização exigidos pela atividade-fim da área.</span></li>
-      <li><span class="nome">Mentalidade Digital</span><span class="def">Fluência tecnológica, uso de sistemas, análise de dados, disposição para inovar.</span></li>
-      <li><span class="nome">Resolução de Problemas</span><span class="def">Capacidade analítica para estruturar e resolver o que não é rotineiro.</span></li>
-      <li><span class="nome">Foco no Cidadão</span><span class="def">Orientação à entrega de valor público e à qualidade do serviço prestado.</span></li>
-      <li><span class="nome">Transversalidade e Visão Sistêmica</span><span class="def">Atuação integrada entre equipes, áreas e órgãos.</span></li>
-      <li><span class="nome">Habilidades Sociais</span><span class="def">Articulação institucional, negociação, comunicação, relacionamento.</span></li>
-      <li><span class="nome">Flexibilidade no Trabalho</span><span class="def">Adaptação a mudanças e desempenho em cenários dinâmicos.</span></li>
-      <li><span class="nome">Valores e Gestão por Resultados</span><span class="def">Busca por resultado, cumprimento de metas, gestão de projetos, liderança.</span></li>
-      <li><span class="nome">Alinhamento de Interesses</span><span class="def">Aderência aos temas da área e disposição para capacitação contínua.</span></li>
+      <li class="a" style="--d:.4s"><span class="nome">Competências Técnicas do Órgão</span><span class="def">Domínio técnico e especialização exigidos pela atividade-fim da área.</span></li>
+      <li class="a" style="--d:.55s"><span class="nome">Mentalidade Digital</span><span class="def">Fluência tecnológica, uso de sistemas, análise de dados, disposição para inovar.</span></li>
+      <li class="a" style="--d:.7s"><span class="nome">Resolução de Problemas</span><span class="def">Capacidade analítica para estruturar e resolver o que não é rotineiro.</span></li>
+      <li class="a" style="--d:.85s"><span class="nome">Foco no Cidadão</span><span class="def">Orientação à entrega de valor público e à qualidade do serviço prestado.</span></li>
+      <li class="a" style="--d:1s"><span class="nome">Transversalidade e Visão Sistêmica</span><span class="def">Atuação integrada entre equipes, áreas e órgãos.</span></li>
+      <li class="a" style="--d:1.15s"><span class="nome">Habilidades Sociais</span><span class="def">Articulação institucional, negociação, comunicação, relacionamento.</span></li>
+      <li class="a" style="--d:1.3s"><span class="nome">Flexibilidade no Trabalho</span><span class="def">Adaptação a mudanças e desempenho em cenários dinâmicos.</span></li>
+      <li class="a" style="--d:1.45s"><span class="nome">Valores e Gestão por Resultados</span><span class="def">Busca por resultado, cumprimento de metas, gestão de projetos, liderança.</span></li>
+      <li class="a" style="--d:1.6s"><span class="nome">Alinhamento de Interesses</span><span class="def">Aderência aos temas da área e disposição para capacitação contínua.</span></li>
     </ul>
-    <p class="rodape-medido">A régua é a mesma para os três lados. Uma dimensão não vale mais que outra — o que varia é o quanto cada unidade exige de cada uma.</p>
+    <p class="rodape-medido a" style="--d:2s">Da metodologia de perfil profissiográfico. Uma dimensão não vale mais que outra — o que varia é o quanto cada unidade exige de cada uma.</p>
   </div>
 </section>
 
-<!-- ═══ 5 · de onde vem cada nota ═══ -->
-<section class="slide" data-largo aria-label="De onde vem cada nota">
-  <div class="quadro">
-    <p class="eyebrow">Procedência</p>
-    <h1>Cada nota vem de um documento oficial — não de opinião.</h1>
+<!-- ═══ 6 · procedência ═══ -->
+<section class="slide" aria-label="De onde vem cada nota">
+  <div class="q largo">
+    <p class="eyebrow a">Procedência</p>
+    <h1 class="a" style="--d:.15s">Cada nota vem de um documento oficial — não de opinião.</h1>
     <div class="origens">
-      <div class="origem u">
-        <span class="rot">Unidade</span>
-        <h3>O que a área exige</h3>
-        <ul>
-          <li>Missão e entregas do <b>DFT</b></li>
-          <li>Competências técnicas e transversais exigidas</li>
-          <li>Sistemas que a unidade opera</li>
-          <li>Normas que ela aplica</li>
-        </ul>
+      <div class="origem u a-esq" style="--d:.5s">
+        <span class="rot">Unidade</span><h3>O que a área exige</h3>
+        <ul><li>Missão e entregas do <b>DFT</b></li><li>Competências técnicas e transversais exigidas</li><li>Sistemas que a unidade opera</li><li>Normas que ela aplica</li></ul>
         <p class="fonte">Dimensionamento da Força de Trabalho · SISDIP</p>
       </div>
-      <div class="origem p">
-        <span class="rot">Pessoa</span>
-        <h3>O que o currículo demonstra</h3>
-        <ul>
-          <li>Experiência profissional declarada</li>
-          <li>Formação e capacitação</li>
-          <li>Conhecimentos técnicos e áreas de atuação</li>
-          <li>Idiomas e competências comportamentais</li>
-        </ul>
+      <div class="origem p a-esq" style="--d:.8s">
+        <span class="rot">Pessoa</span><h3>O que o currículo demonstra</h3>
+        <ul><li>Experiência profissional declarada</li><li>Formação e capacitação</li><li>Conhecimentos técnicos e áreas de atuação</li><li>Idiomas e competências comportamentais</li></ul>
         <p class="fonte">Currículo do servidor · SouGov</p>
       </div>
-      <div class="origem c">
-        <span class="rot">Curso</span>
-        <h3>O que a capacitação desenvolve</h3>
-        <ul>
-          <li>Conteúdo programático</li>
-          <li>Competências oficiais declaradas</li>
-          <li>Público-alvo e nível</li>
-          <li>Carga horária</li>
-        </ul>
+      <div class="origem c a-esq" style="--d:1.1s">
+        <span class="rot">Curso</span><h3>O que a capacitação desenvolve</h3>
+        <ul><li>Conteúdo programático</li><li>Competências oficiais declaradas</li><li>Público-alvo e nível</li><li>Carga horária</li></ul>
         <p class="fonte">Catálogo da Escola Virtual de Governo · Enap</p>
       </div>
     </div>
+    <p class="rodape-medido a" style="--d:1.6s">A mesma pergunta, o mesmo prompt, a mesma escala para os três lados. É o que torna as notas comparáveis entre si.</p>
   </div>
 </section>
 
-<!-- ═══ 6 · os números ═══ -->
-<section class="slide" data-largo aria-label="A escala">
-  <div class="quadro">
-    <p class="eyebrow">A escala</p>
-    <h1>Não é protótipo. Está rodando sobre a base inteira.</h1>
+<!-- ═══ 7 · a escala ═══ -->
+<section class="slide" aria-label="A escala" data-conta>
+  <div class="q largo">
+    <p class="eyebrow a">A escala</p>
+    <h1 class="a" style="--d:.15s">Não é protótipo. Está rodando sobre a base inteira.</h1>
     <div class="cifras">
-      <div class="cifra forte"><span class="n">230.969</span><span class="q">currículos processados, de 212.801 servidores</span></div>
-      <div class="cifra forte"><span class="n">5.429</span><span class="q">unidades com DFT, pontuadas nas nove dimensões</span></div>
-      <div class="cifra"><span class="n">9.543</span><span class="q">oportunidades em 5.385 editais</span></div>
-      <div class="cifra"><span class="n">1.042</span><span class="q">cursos da EV.G, <b>100%</b> pontuados na mesma régua</span></div>
-      <div class="cifra"><span class="n">687.099</span><span class="q">vínculos do SIAPE cruzados por unidade</span></div>
-      <div class="cifra"><span class="n">94,5<small>%</small></span><span class="q">deles com ficha financeira — para custo e folha por área</span></div>
-      <div class="cifra"><span class="n">8</span><span class="q">etapas de pipeline, do dado bruto à nota gravada</span></div>
-      <div class="cifra forte"><span class="n">1.276</span><span class="q">verificações automáticas a cada alteração de código</span></div>
+      <div class="cifra forte a" style="--d:.4s"><span class="n" data-n="230969">0</span><span class="qq">currículos processados, de <b>212.801</b> servidores</span></div>
+      <div class="cifra forte a" style="--d:.5s"><span class="n" data-n="5429">0</span><span class="qq">unidades com DFT, pontuadas nas nove dimensões</span></div>
+      <div class="cifra a" style="--d:.6s"><span class="n" data-n="9543">0</span><span class="qq">oportunidades em <b>5.385</b> editais</span></div>
+      <div class="cifra a" style="--d:.7s"><span class="n" data-n="1042">0</span><span class="qq">cursos da EV.G, <b>100%</b> pontuados na mesma régua</span></div>
+      <div class="cifra a" style="--d:.8s"><span class="n" data-n="687099">0</span><span class="qq">vínculos do SIAPE cruzados por unidade</span></div>
+      <div class="cifra a" style="--d:.9s"><span class="n" data-n="94.5" data-dec="1">0<small>%</small></span><span class="qq">deles com ficha financeira — custo e folha por área</span></div>
+      <div class="cifra a" style="--d:1s"><span class="n" data-n="8">0</span><span class="qq">etapas de pipeline, do dado bruto à nota gravada</span></div>
+      <div class="cifra forte a" style="--d:1.1s"><span class="n" data-n="1276">0</span><span class="qq">verificações automáticas a cada alteração de código</span></div>
     </div>
-    <p class="rodape-medido">Todos os números acima foram medidos sobre a base de produção em 09/09/2026, não estimados.<br>
-    O sistema roda em servidor próprio, com modelo de linguagem local — nenhum currículo sai da máquina.</p>
+    <p class="rodape-medido a" style="--d:1.6s">Medidos sobre a base de produção em 09/09/2026 — não estimados. Servidor próprio, modelo de linguagem local: nenhum currículo sai da máquina.</p>
   </div>
 </section>
 
-<!-- ═══ 7 · os módulos ═══ -->
-<section class="slide" data-largo aria-label="O que o sistema faz">
-  <div class="quadro">
-    <p class="eyebrow">O que o sistema faz</p>
-    <h1>Seis perguntas que hoje não têm resposta rápida.</h1>
+<!-- ═══ 8 · os módulos ═══ -->
+<section class="slide" aria-label="O que o sistema faz">
+  <div class="q largo">
+    <p class="eyebrow a">O que o sistema faz</p>
+    <h1 class="a" style="--d:.15s">Seis perguntas que hoje não têm resposta rápida.</h1>
     <div class="mods">
-      <div class="mod"><h3>Busca de Talentos</h3><p>“Preciso de alguém com este perfil.” Busca semântica sobre os currículos, filtrada pelo público que você delimitar.</p></div>
-      <div class="mod"><h3>Gap Analysis (DFT)</h3><p>“O que falta nesta equipe?” Confronta o que a unidade exige com o que a equipe demonstra, dimensão a dimensão.</p></div>
-      <div class="mod"><h3>Mapa de Competências</h3><p>“O que esta equipe tem?” Retrato agregado das formações, experiências e competências de um conjunto de servidores.</p></div>
-      <div class="mod"><h3>Comparador</h3><p>“Como estes se comparam?” Pessoa × pessoa, unidade × unidade, e pessoa × unidade na mesma teia.</p></div>
-      <div class="mod"><h3>Trilha de Capacitação</h3><p>“Qual curso cobre esta lacuna?” Cruza a lacuna medida com o catálogo da EV.G — e diz quando não há curso adequado.</p></div>
-      <div class="mod"><h3>Simulador de Movimentação</h3><p>“O que acontece se esta pessoa sair?” Mede o efeito nas duas unidades antes da decisão, inclusive competências que ficariam sem detentor.</p></div>
+      <div class="mod a" style="--d:.4s"><span class="pergunta">“Preciso de alguém com este perfil.”</span><h3>Busca de Talentos</h3><p>Busca semântica sobre os currículos, filtrada pelo público que você delimitar.</p></div>
+      <div class="mod a" style="--d:.55s"><span class="pergunta">“O que falta nesta equipe?”</span><h3>Gap Analysis</h3><p>Confronta o que a unidade exige com o que a equipe demonstra, dimensão a dimensão.</p></div>
+      <div class="mod a" style="--d:.7s"><span class="pergunta">“O que esta equipe tem?”</span><h3>Mapa de Competências</h3><p>Retrato agregado das formações, experiências e competências de um conjunto de servidores.</p></div>
+      <div class="mod a" style="--d:.85s"><span class="pergunta">“Como estes se comparam?”</span><h3>Comparador</h3><p>Pessoa × pessoa, unidade × unidade, e pessoa × unidade na mesma teia.</p></div>
+      <div class="mod a" style="--d:1s"><span class="pergunta">“Qual curso cobre esta lacuna?”</span><h3>Trilha de Capacitação</h3><p>Cruza a lacuna medida com o catálogo da EV.G — e diz quando não há curso adequado.</p></div>
+      <div class="mod a" style="--d:1.15s"><span class="pergunta">“E se esta pessoa sair?”</span><h3>Simulador de Movimentação</h3><p>Mede o efeito nas duas unidades antes da decisão, inclusive competências que ficariam sem detentor.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ 8 · demo ═══ -->
-<section class="slide demo" data-largo aria-label="Demonstração">
-  <div class="quadro">
-    <p class="eyebrow">Agora, ao vivo</p>
-    <h1>Deixe o sistema falar.</h1>
-    <div class="roteiro">
-      <div class="passo"><span class="t">~3 min</span><span class="o"><b>Busca de Talentos.</b> Descreva um perfil em português e mostre os candidatos aderentes surgindo da base inteira.</span></div>
-      <div class="passo"><span class="t">~5 min</span><span class="o"><b>Gap Analysis de uma unidade real.</b> A teia com as duas linhas — e a lacuna nomeada.</span></div>
-      <div class="passo"><span class="t">~3 min</span><span class="o"><b>Trilha.</b> Da lacuna ao curso da EV.G, com o link de matrícula.</span></div>
-      <div class="passo"><span class="t">~4 min</span><span class="o"><b>Simulador.</b> Tire uma pessoa de uma unidade e mostre o efeito nos dois lados.</span></div>
+<!-- ═══ 9 · demo ═══ -->
+<section class="slide demo" aria-label="Demonstração">
+  <div class="q largo">
+    <p class="eyebrow ocre a">Agora, ao vivo</p>
+    <h1 class="a" style="--d:.15s">Deixe o sistema falar.</h1>
+    <div class="roteiro" id="roteiro">
+      <div class="passo a" style="--d:.5s" data-min="3"><span class="t">~3 min<small>clique para cronometrar</small></span><span class="o"><b>Busca de Talentos.</b> Descreva um perfil em português e mostre os candidatos aderentes surgindo da base inteira.</span></div>
+      <div class="passo a" style="--d:.65s" data-min="5"><span class="t">~5 min</span><span class="o"><b>Gap Analysis de uma unidade real.</b> A teia com as duas linhas — e a lacuna nomeada.</span></div>
+      <div class="passo a" style="--d:.8s" data-min="3"><span class="t">~3 min</span><span class="o"><b>Trilha.</b> Da lacuna ao curso da EV.G, com o link de matrícula.</span></div>
+      <div class="passo a" style="--d:.95s" data-min="4"><span class="t">~4 min</span><span class="o"><b>Simulador.</b> Tire uma pessoa de uma unidade e mostre o efeito nos dois lados.</span></div>
     </div>
-    <p class="aviso">Antes de começar: API reiniciada, telas já abertas em abas, e capturas de tela à mão como plano B.</p>
+    <p class="aviso a" style="--d:1.4s">Antes de entrar na sala: API reiniciada, telas abertas em abas, capturas de tela à mão como plano B. Se algo travar, siga para o próximo item sem consertar ao vivo.</p>
   </div>
 </section>
 
-<!-- ═══ 9 · como é construído ═══ -->
-<section class="slide" data-largo aria-label="Como é construído">
-  <div class="quadro">
-    <p class="eyebrow">Arquitetura</p>
-    <h1>O pipeline pensa devagar e uma vez. A tela responde rápido e sempre com o mesmo número.</h1>
+<!-- ═══ 10 · arquitetura ═══ -->
+<section class="slide" aria-label="Como é construído">
+  <div class="q largo">
+    <p class="eyebrow a">Arquitetura</p>
+    <h1 class="a" style="--d:.15s">O pipeline pensa devagar e uma vez. A tela responde rápido e sempre com o mesmo número.</h1>
+    <div class="fluxo">
+      <div class="etapas">
+        <div class="etapa" style="--i:0"><b>e01</b>extração</div>
+        <div class="etapa" style="--i:1"><b>e02</b>classificação</div>
+        <div class="etapa" style="--i:2"><b>e03</b>SIAPE</div>
+        <div class="etapa" style="--i:3"><b>e04</b>currículos</div>
+        <div class="etapa" style="--i:4"><b>e05</b>oportunidades</div>
+        <div class="etapa" style="--i:5"><b>e06</b>DFT</div>
+        <div class="etapa" style="--i:6"><b>e07</b>cursos</div>
+        <div class="etapa" style="--i:7"><b>e08</b>pessoal</div>
+      </div>
+      <div class="seta"><span>nota gravada junto do registro</span><span class="tr"></span><span>API · telas · PDF</span></div>
+      <div class="saidas">
+        <div class="saida lenta a" style="--d:2.2s"><div class="rot">Devagar e uma vez</div><h3>Cada etapa tem assinatura.</h3><p>O que não mudou não é reprocessado — e o que mudou não passa despercebido. A nota das nove dimensões é gravada uma vez e lida mil.</p></div>
+        <div class="saida rapida a" style="--d:2.5s"><div class="rot">Rápido e sempre igual</div><h3>A tela lê a nota pronta.</h3><p>Duas pessoas que abrem a mesma unidade veem o mesmo número — e verão o mesmo daqui a um mês. Onde a nota é calculada na hora, a tela <b>diz isso</b>, com um selo de origem.</p></div>
+      </div>
+    </div>
+    <p class="rodape-medido a" style="--d:3s">Modelo de linguagem local · busca vetorial multilíngue · reranking · cache por conteúdo</p>
+  </div>
+</section>
+
+<!-- ═══ 11 · medir, não ler ═══ -->
+<section class="slide" aria-label="Medir, não ler" data-conta>
+  <div class="q largo">
+    <p class="eyebrow a">A disciplina</p>
+    <h1 class="a" style="--d:.15s">Todo número deste sistema vem de medição — <span class="g">com o comando ao lado</span>.</h1>
     <div class="duas">
       <div class="bloco">
-        <span class="rot">Devagar e uma vez</span>
-        <p>Oito etapas processam o dado bruto — extração, classificação, SIAPE, currículos, oportunidades, DFT, cursos e pessoal — e <b>gravam a nota</b> junto do registro.</p>
-        <p>Cada etapa tem assinatura: o que não mudou não é reprocessado, e o que mudou não passa despercebido.</p>
-      </div>
-      <div class="bloco">
-        <span class="rot">Rápido e sempre igual</span>
-        <p>A tela <b>lê a nota pronta</b>. Duas pessoas que abrem a mesma unidade veem o mesmo número — e verão o mesmo daqui a um mês.</p>
-        <p>Onde a nota precisa ser calculada na hora, a tela <b>diz isso</b>, com um selo de origem ao lado do perfil.</p>
-      </div>
-    </div>
-    <p class="rodape-medido">Modelo de linguagem local (Ollama) · busca vetorial multilíngue · reranking · cache por conteúdo</p>
-  </div>
-</section>
-
-<!-- ═══ 10 · medir, não ler ═══ -->
-<section class="slide" aria-label="Medir, não ler">
-  <div class="quadro">
-    <p class="eyebrow">A disciplina</p>
-    <h1>Todo número deste sistema vem de medição — <em>com o comando ao lado</em>.</h1>
-    <ul class="pontos">
-      <li>Um sistema como este falha de um jeito específico: <b>ele degrada em silêncio</b>. A conta some, a coluna vem vazia, e a tela continua dizendo que está tudo bem.</li>
-      <li>Em setembro foram encontrados <b>sete defeitos silenciosos</b>. Nenhum dava erro, todos passavam nos testes — e nenhum foi achado lendo código. Foram achados <b>medindo</b>: quantos casam, quantos estão vazios, quantos vêm do cache.</li>
-      <li>Cada correção ganhou um teste que falha se alguém a desfizer. São <b>1.276 verificações</b> que rodam a cada alteração, mais 34 invariantes que conferem as bases.</li>
-    </ul>
-    <p class="destaque" style="margin-top:auto">Num sistema que apoia decisão sobre pessoas, o número errado é pior que a ausência do número.</p>
-  </div>
-</section>
-
-<!-- ═══ 11 · quando não sabe, diz ═══ -->
-<section class="slide" data-largo aria-label="Honestidade do número">
-  <div class="quadro">
-    <p class="eyebrow">Confiabilidade</p>
-    <h1>Quando o sistema não sabe, ele diz que não sabe.</h1>
-    <div class="duas">
-      <div class="bloco">
-        <span class="rot">Exemplos reais, no ar hoje</span>
-        <ul class="pontos">
-          <li>Se <b>nenhum curso da EV.G</b> trata do assunto da unidade, a lista vem <b>vazia com o motivo</b> — em vez de preenchida com o que sobrou.</li>
-          <li>Se a análise de um perfil não produziu notas válidas, ele <b>fica fora do gráfico</b> e a tela explica por quê e o que fazer.</li>
-          <li>Se a folha cobre parte da unidade, o relatório mostra <b>quantas matrículas de quantas</b> — nunca um total de aparência completa.</li>
+        <div class="big a" style="--d:.5s"><span class="n" data-n="1276">0</span><span class="qq">verificações automáticas, a cada alteração de código</span></div>
+        <ul class="pontos compacto">
+          <li class="a" style="--d:1s"><span class="m"></span><span>Mais <b>34 invariantes</b> que conferem as bases: quantos casam, quantos estão vazios, quantos vêm do cache.</span></li>
+          <li class="a" style="--d:1.2s"><span class="m"></span><span>Toda correção ganha um teste que <b>falha se alguém a desfizer</b>.</span></li>
         </ul>
       </div>
       <div class="bloco">
-        <span class="rot">Por que isso importa aqui</span>
-        <p>Um comitê que recebe um número redondo não tem como saber se ele cobre a área inteira ou um terço dela.</p>
-        <p>Preencher lacuna com o que sobrou é o que transforma uma ferramenta de apoio à decisão em <b>uma fonte de decisão errada</b>.</p>
-        <p class="destaque">O sistema prefere devolver menos a devolver algo irrelevante com cara de resposta.</p>
+        <span class="rot a" style="--d:.7s">Por que isso importa</span>
+        <ul class="pontos compacto">
+          <li class="grave a" style="--d:.9s"><span class="m"></span><span>Um sistema como este falha de um jeito específico: <b>degrada em silêncio</b>. A conta some, a coluna vem vazia, e a tela continua dizendo que está tudo bem.</span></li>
+          <li class="a" style="--d:1.1s"><span class="m"></span><span>Em setembro foram encontrados <b>sete defeitos silenciosos</b>. Nenhum dava erro, todos passavam nos testes — e nenhum foi achado lendo código. Foram achados <b>medindo</b>.</span></li>
+          <li class="bom a" style="--d:1.3s"><span class="m"></span><span>Quem nunca achou defeito é quem nunca procurou. <b>Aqui se procura.</b></span></li>
+        </ul>
       </div>
     </div>
+    <p class="destaque a" style="--d:1.9s; margin-top:auto">Num sistema que apoia decisão sobre pessoas, o número errado é pior que a ausência do número.</p>
   </div>
 </section>
 
-<!-- ═══ 12 · privacidade ═══ -->
-<section class="slide" data-largo aria-label="Privacidade e governança">
-  <div class="quadro">
-    <p class="eyebrow">Privacidade e governança</p>
-    <h1>Currículo é dado pessoal — e o desenho trata assim.</h1>
+<!-- ═══ 12 · quando não sabe, diz ═══ -->
+<section class="slide" aria-label="Confiabilidade">
+  <div class="q largo">
+    <p class="eyebrow a">Confiabilidade</p>
+    <h1 class="a" style="--d:.15s">Quando o sistema não sabe, ele <span class="o">diz que não sabe</span>.</h1>
     <div class="duas">
       <div class="bloco">
-        <span class="rot">O que sai da máquina</span>
-        <ul class="pontos">
-          <li><b>Nada, por padrão.</b> A análise de currículo roda em modelo local. Não há chamada externa no caminho normal.</li>
-          <li>Se um agente externo for escolhido, o texto passa por <b>anonimização obrigatória</b> antes de sair: nome, CPF, e-mail, telefone e matrícula viram marcadores.</li>
-          <li>Sem a anonimização carregada, a chamada externa <b>não acontece</b> — falha fechada, por desenho.</li>
+        <span class="rot a" style="--d:.4s">Exemplos reais, no ar hoje</span>
+        <ul class="pontos compacto">
+          <li class="a" style="--d:.6s"><span class="m"></span><span>Se <b>nenhum curso da EV.G</b> trata do assunto da unidade, a lista vem <b>vazia com o motivo</b> — em vez de preenchida com o que sobrou.</span></li>
+          <li class="a" style="--d:.85s"><span class="m"></span><span>Se a análise de um perfil não produziu notas válidas, ele <b>fica fora do gráfico</b> e a tela explica por quê — e o que fazer.</span></li>
+          <li class="a" style="--d:1.1s"><span class="m"></span><span>Se a folha cobre parte da unidade, o relatório mostra <b>quantas matrículas de quantas</b> — nunca um total de aparência completa.</span></li>
+          <li class="a" style="--d:1.35s"><span class="m"></span><span>Toda nota traz um <b>selo de origem</b>: gravada pelo pipeline, ou calculada nesta execução.</span></li>
         </ul>
       </div>
       <div class="bloco">
-        <span class="rot">Quem alcança o quê</span>
-        <ul class="pontos">
-          <li>A base de produção fica sob controle do responsável. O ambiente de desenvolvimento roda em <b>conta isolada</b>, sem permissão de leitura sobre ela.</li>
-          <li>Todo recorte de dado entregue para trabalho passa por <b>medição de k-anonimato</b> e é recusado se a maioria continuar identificável.</li>
-          <li>Chave de API, cache de IA e dossiês <b>nunca</b> vão para o repositório.</li>
+        <span class="rot a" style="--d:.7s">Por que isso importa aqui</span>
+        <p class="a" style="--d:1s">Um comitê que recebe um número redondo não tem como saber se ele cobre a área inteira ou um terço dela.</p>
+        <p class="a" style="--d:1.3s">Preencher lacuna com o que sobrou é o que transforma uma ferramenta de apoio à decisão em <b>uma fonte de decisão errada</b>.</p>
+        <p class="destaque a" style="--d:1.7s">O sistema prefere devolver menos a devolver algo irrelevante com cara de resposta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 13 · privacidade ═══ -->
+<section class="slide" aria-label="Privacidade e governança">
+  <div class="q largo">
+    <p class="eyebrow a">Privacidade e governança</p>
+    <h1 class="a" style="--d:.15s">Currículo é dado pessoal — e o desenho trata assim.</h1>
+    <div class="duas">
+      <div class="bloco">
+        <span class="rot a" style="--d:.4s">O que sai da máquina</span>
+        <ul class="pontos compacto">
+          <li class="bom a" style="--d:.6s"><span class="m"></span><span><b>Nada, por padrão.</b> A análise de currículo roda em modelo local. Não há chamada externa no caminho normal.</span></li>
+          <li class="a" style="--d:.85s"><span class="m"></span><span>Se um agente externo for escolhido, o texto passa por <b>anonimização obrigatória</b> antes de sair: nome, CPF, e-mail, telefone e matrícula viram marcadores.</span></li>
+          <li class="a" style="--d:1.1s"><span class="m"></span><span>Sem a anonimização carregada, a chamada externa <b>não acontece</b>. Falha fechada, por desenho.</span></li>
+        </ul>
+      </div>
+      <div class="bloco">
+        <span class="rot a" style="--d:.7s">Quem alcança o quê</span>
+        <ul class="pontos compacto">
+          <li class="a" style="--d:.9s"><span class="m"></span><span>A base de produção fica sob controle do responsável. O desenvolvimento roda em <b>conta isolada</b>, sem permissão de leitura sobre ela.</span></li>
+          <li class="a" style="--d:1.15s"><span class="m"></span><span>Todo recorte entregue para trabalho passa por <b>medição de k-anonimato</b> e é recusado se a maioria continuar identificável.</span></li>
+          <li class="a" style="--d:1.4s"><span class="m"></span><span>Chave de API, cache de IA e dossiês <b>nunca</b> vão para o repositório.</span></li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ 13 · estado ═══ -->
-<section class="slide" data-largo aria-label="Estado atual">
-  <div class="quadro">
-    <p class="eyebrow">Onde estamos</p>
-    <h1>O que está pronto, e o que ainda não está.</h1>
+<!-- ═══ 14 · estado ═══ -->
+<section class="slide" aria-label="Estado atual">
+  <div class="q largo">
+    <p class="eyebrow a">Onde estamos</p>
+    <h1 class="a" style="--d:.15s">O que está pronto, e o que ainda não está.</h1>
     <ul class="estado">
-      <li><span class="marca pronto">Pronto</span><span><b>Os seis módulos</b> funcionam sobre a base inteira, com nota gravada e reprodutível.</span></li>
-      <li><span class="marca pronto">Pronto</span><span><b>Unidade e curso</b> pontuados nas nove dimensões: 5.429 unidades e 1.042 cursos, cobertura de 100%.</span></li>
-      <li><span class="marca pronto">Pronto</span><span><b>Relatórios em PDF</b> para dossiê, gap, mapa, comparação e simulação — o documento que circula na reunião.</span></li>
-      <li><span class="marca pronto">Pronto</span><span><b>Quantitativo e folha por unidade</b>, cruzando SIAPE e ficha financeira.</span></li>
-      <li><span class="marca andando">Em curso</span><span><b>A pontuação dos currículos em escala.</b> A régua da pessoa é a que exige mais processamento — é o trabalho que segue rodando.</span></li>
-      <li><span class="marca andando">Em curso</span><span><b>Reprocessamento de qualidade</b> do resumo de currículo, com validação automática de saída.</span></li>
+      <li class="a" style="--d:.4s"><span class="marca pronto">Pronto</span><span><b>Os seis módulos</b> funcionam sobre a base inteira, com nota gravada e reprodutível.</span></li>
+      <li class="a" style="--d:.55s"><span class="marca pronto">Pronto</span><span><b>Unidade e curso</b> pontuados nas nove dimensões: 5.429 unidades e 1.042 cursos, cobertura de 100%.</span></li>
+      <li class="a" style="--d:.7s"><span class="marca pronto">Pronto</span><span><b>Relatórios em PDF</b> para dossiê, gap, mapa, comparação e simulação — o documento que circula na reunião.</span></li>
+      <li class="a" style="--d:.85s"><span class="marca pronto">Pronto</span><span><b>Quantitativo e folha por unidade</b>, cruzando SIAPE e ficha financeira.</span></li>
+      <li class="a" style="--d:1.1s"><span class="marca andando">Em curso</span><span><b>A pontuação dos currículos em escala.</b> A régua da pessoa é a que exige mais processamento — é o trabalho que segue rodando.</span></li>
+      <li class="a" style="--d:1.25s"><span class="marca andando">Em curso</span><span><b>Reprocessamento de qualidade</b> do resumo de currículo, com validação automática de saída.</span></li>
     </ul>
-    <p class="rodape-medido">A infraestrutura, a régua e as telas estão de pé. O que falta é volume de processamento, não desenho.</p>
+    <p class="rodape-medido a" style="--d:1.7s">A infraestrutura, a régua e as telas estão de pé. O que falta é volume de processamento, não desenho.</p>
   </div>
 </section>
 
-<!-- ═══ 14 · o pedido ═══ -->
+<!-- ═══ 15 · o pedido ═══ -->
 <section class="slide" aria-label="O pedido">
-  <div class="quadro">
-    <p class="eyebrow">O que precisamos para ir adiante</p>
-    <h1 class="grande">Três decisões.</h1>
+  <div class="q">
+    <p class="eyebrow a">O que precisamos para ir adiante</p>
+    <h1 class="a" style="--d:.15s">Três decisões.</h1>
     <ul class="pedidos">
-      <li>
-        <div><h3>Continuidade</h3><p>Reconhecer o Recruta.Gov como iniciativa apoiada da área, com responsável e horizonte definidos.</p></div>
-      </li>
-      <li>
-        <div><h3>Um piloto com unidade real</h3><p>Uma coordenação disposta a usar o Gap Analysis e a Trilha numa decisão de verdade — e a dizer onde o sistema erra.</p></div>
-      </li>
-      <li>
-        <div><h3>Capacidade de processamento</h3><p>Para levar a pontuação dos currículos à escala da base, que é o que falta para o sistema responder por qualquer unidade do SIPEC.</p></div>
-      </li>
+      <li class="a" style="--d:.5s"><div><h3>Continuidade</h3><p>Reconhecer o Recruta.Gov como iniciativa apoiada da área, com responsável e horizonte definidos.</p></div></li>
+      <li class="a" style="--d:.8s"><div><h3>Um piloto com unidade real</h3><p>Uma coordenação disposta a usar o Gap Analysis e a Trilha numa decisão de verdade — e a dizer onde o sistema erra.</p></div></li>
+      <li class="a" style="--d:1.1s"><div><h3>Capacidade de processamento</h3><p>Para levar a pontuação dos currículos à escala da base — o que falta para o sistema responder por qualquer unidade do SIPEC.</p></div></li>
     </ul>
+    <p class="fecho a" style="--d:1.7s">A régua já existe. A pergunta é se vamos <span>usá-la</span>.</p>
   </div>
 </section>
 
@@ -629,181 +690,251 @@ p.destaque{color:var(--tinta); font-size:2cqw}
 
 <div class="notas" id="notas" aria-live="polite"></div>
 
+<div class="camada preta" id="preta" aria-hidden="true"></div>
+<div class="camada geral" id="geral" aria-label="Visão geral dos slides"><h2>Visão geral</h2><div class="grade" id="grade"></div></div>
+<div class="camada ajuda" id="ajuda" aria-label="Atalhos">
+  <div class="cx">
+    <h2>Atalhos</h2>
+    <dl>
+      <dt><kbd>→</kbd> <kbd>espaço</kbd></dt><dd>próximo slide</dd>
+      <dt><kbd>←</kbd></dt><dd>slide anterior</dd>
+      <dt><kbd>N</kbd></dt><dd>notas do apresentador</dd>
+      <dt><kbd>O</kbd></dt><dd>visão geral, para pular</dd>
+      <dt><kbd>B</kbd></dt><dd>tela preta (pausa)</dd>
+      <dt><kbd>F</kbd></dt><dd>tela cheia</dd>
+      <dt><kbd>T</kbd></dt><dd>tema claro / escuro</dd>
+      <dt><kbd>R</kbd></dt><dd>reinicia o cronômetro</dd>
+      <dt><kbd>Esc</kbd></dt><dd>fecha esta ajuda ou a visão geral</dd>
+    </dl>
+  </div>
+</div>
+
 <nav class="regua" aria-label="Navegação da apresentação">
   <span class="titulo" id="rotulo">Capa</span>
-  <div class="trilho"><div class="marcas" id="marcas"></div></div>
-  <span class="conta mono" id="conta">01 / 14</span>
+  <div class="trilho"><div class="cheio" id="cheio"></div><div class="marcas" id="marcas"></div></div>
+  <span class="relogio" id="relogio" title="tempo decorrido — R reinicia">00:00</span>
+  <span class="conta" id="conta">01 / 15</span>
   <button class="botao" id="btn-notas" aria-pressed="false">Notas</button>
+  <button class="botao" id="btn-geral">Geral</button>
   <button class="botao" id="btn-tema">Tema</button>
+  <button class="botao" id="btn-ajuda">?</button>
 </nav>
 
 <script>
 (function(){
   "use strict";
+  var reduz = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ── o radar, desenhado na escala 0–5 ─────────────────────────────────
-     Números reais de uma coordenação-geral do MGI, medidos em 09/09/2026.
-     A linha ocre é a exigência gravada pelo pipeline; a azul, a média da
-     equipe apurada a partir dos currículos.                              */
-  var DIMS = [
-    ["Comp. Técnicas", 5, 2.2],
-    ["Ment. Digital",  2, 1.9],
-    ["Res. Problemas", 4, 2.0],
-    ["Foco Cidadão",   1, 2.1],
-    ["Visão Sistêmica",4, 1.4],
-    ["Hab. Sociais",   3, 2.2],
-    ["Flexibilidade",  2, 1.9],
-    ["Gestão/Result.", 3, 2.5],
-    ["Alinhamento",    3, 2.1]
-  ];
+  /* ── o radar da capa: nove eixos que se traçam, cinco anéis ────────── */
+  (function(){
+    var svg = document.getElementById("capa-radar"); if(!svg) return;
+    var cx=200, cy=200, R=180, n=9, s=[];
+    for(var i=0;i<n;i++){
+      var a=-Math.PI/2+i*(2*Math.PI/n);
+      s.push('<line class="eixo" style="--i:'+i+'" pathLength="1" x1="'+cx+'" y1="'+cy+'" x2="'+(cx+R*Math.cos(a)).toFixed(1)+'" y2="'+(cy+R*Math.sin(a)).toFixed(1)+'"/>');
+    }
+    for(var k=1;k<=5;k++){
+      var pts=[]; for(var j=0;j<n;j++){var b=-Math.PI/2+j*(2*Math.PI/n), r=R*k/5; pts.push((cx+r*Math.cos(b)).toFixed(1)+","+(cy+r*Math.sin(b)).toFixed(1));}
+      s.push('<polygon class="anel" style="--i:'+k+'" points="'+pts.join(" ")+'"/>');
+    }
+    svg.innerHTML=s.join("");
+  })();
 
+  /* ── o radar da tese: números reais, escala 0–5 ─────────────────────
+     Exigência gravada pelo pipeline para uma coordenação-geral do MGI, e a
+     média da equipe apurada dos currículos. Medidos em 09/09/2026.       */
+  var DIMS=[["Comp. Técnicas",5,2.2],["Ment. Digital",2,1.9],["Res. Problemas",4,2.0],["Foco Cidadão",1,2.1],
+            ["Visão Sistêmica",4,1.4],["Hab. Sociais",3,2.2],["Flexibilidade",2,1.9],["Gestão/Result.",3,2.5],["Alinhamento",3,2.1]];
   function desenharRadar(){
-    var svg = document.getElementById("radar");
-    if(!svg) return;
-    var cx = 310, cy = 232, R = 152, n = DIMS.length, MAX = 5;
-    var ns = "http://www.w3.org/2000/svg", partes = [];
-
-    function ponto(i, v){
-      var ang = -Math.PI/2 + i * (2*Math.PI/n), r = (v/MAX) * R;
-      return [cx + r*Math.cos(ang), cy + r*Math.sin(ang)];
-    }
-    function poli(serie){
-      return DIMS.map(function(_, i){ return ponto(i, serie(i)).join(","); }).join(" ");
-    }
-
-    /* anéis, um por nota inteira — a escala fica legível sem eixo numérico */
-    for(var k = 1; k <= MAX; k++){
-      partes.push('<polygon points="' + DIMS.map(function(_, i){ return ponto(i, k).join(","); }).join(" ") +
-        '" fill="none" stroke="var(--linha)" stroke-width="1"' + (k === MAX ? ' stroke-width="1.5"' : '') + '/>');
-    }
-    /* raios */
-    for(var i = 0; i < n; i++){
-      var p = ponto(i, MAX);
-      partes.push('<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0] + '" y2="' + p[1] +
-        '" stroke="var(--linha)" stroke-width="1"/>');
-    }
-    /* a escala, marcada num eixo só */
-    for(var k2 = 1; k2 <= MAX; k2++){
-      var pe = ponto(0, k2);
-      partes.push('<text x="' + (pe[0] + 6) + '" y="' + (pe[1] + 4) +
-        '" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--tinta-3)">' + k2 + '</text>');
-    }
-    /* as duas séries */
-    partes.push('<polygon points="' + poli(function(i){ return DIMS[i][1]; }) +
-      '" fill="var(--exig)" fill-opacity="0.13" stroke="var(--exig)" stroke-width="2.5" stroke-linejoin="round"/>');
-    partes.push('<polygon points="' + poli(function(i){ return DIMS[i][2]; }) +
-      '" fill="var(--gov)" fill-opacity="0.16" stroke="var(--gov)" stroke-width="2.5" stroke-linejoin="round"/>');
-    /* vértices da equipe, para a leitura ponto a ponto */
-    DIMS.forEach(function(d, i){
-      var p2 = ponto(i, d[2]);
-      partes.push('<circle cx="' + p2[0] + '" cy="' + p2[1] + '" r="3" fill="var(--gov)"/>');
+    var svg=document.getElementById("radar"); if(!svg) return;
+    var cx=310, cy=232, R=152, n=DIMS.length, MAX=5, p=[];
+    function pt(i,v){var a=-Math.PI/2+i*(2*Math.PI/n), r=(v/MAX)*R; return [cx+r*Math.cos(a), cy+r*Math.sin(a)];}
+    function poli(f){return DIMS.map(function(_,i){return pt(i,f(i)).map(function(x){return x.toFixed(1)}).join(",")}).join(" ");}
+    for(var k=1;k<=MAX;k++) p.push('<polygon class="anel" style="--i:'+k+'" points="'+poli(function(){return k})+'"/>');
+    for(var i=0;i<n;i++){var e=pt(i,MAX); p.push('<line class="raio" x1="'+cx+'" y1="'+cy+'" x2="'+e[0].toFixed(1)+'" y2="'+e[1].toFixed(1)+'"/>');}
+    for(var k2=1;k2<=MAX;k2++){var t=pt(0,k2); p.push('<text class="tick" x="'+(t[0]+6).toFixed(1)+'" y="'+(t[1]+4).toFixed(1)+'">'+k2+'</text>');}
+    p.push('<polygon class="serie exig" pathLength="1" points="'+poli(function(i){return DIMS[i][1]})+'"/>');
+    p.push('<polygon class="serie equipe" pathLength="1" points="'+poli(function(i){return DIMS[i][2]})+'"/>');
+    DIMS.forEach(function(d,i){var q=pt(i,d[2]); p.push('<circle class="pt" style="--i:'+i+'" cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="3.2"/>');});
+    /* as três maiores lacunas: um traço entre as duas linhas, no eixo */
+    var gaps=DIMS.map(function(d,i){return [i, d[1]-d[2]]}).filter(function(g){return g[1]>0}).sort(function(a,b){return b[1]-a[1]}).slice(0,3);
+    gaps.forEach(function(g,k){
+      var i=g[0], a=pt(i,DIMS[i][2]), b=pt(i,DIMS[i][1]);
+      p.push('<line class="gap" style="--i:'+k+'" x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'"/>');
+      var m=[(a[0]+b[0])/2,(a[1]+b[1])/2], ang=-Math.PI/2+i*(2*Math.PI/n), dx=Math.cos(ang), dy=Math.sin(ang);
+      var lx=m[0]+(-dy)*14, ly=m[1]+dx*14;
+      p.push('<text class="gap-rot" style="--i:'+k+'" x="'+lx.toFixed(1)+'" y="'+(ly+4).toFixed(1)+'" text-anchor="middle">−'+g[1].toFixed(1).replace(".",",")+'</text>');
     });
-    /* rótulos, fora do último anel e ancorados pelo lado em que caem */
-    DIMS.forEach(function(d, i){
-      var ang = -Math.PI/2 + i * (2*Math.PI/n), rr = R + 26;
-      var x = cx + rr*Math.cos(ang), y = cy + rr*Math.sin(ang);
-      var anc = Math.abs(Math.cos(ang)) < 0.2 ? "middle" : (Math.cos(ang) > 0 ? "start" : "end");
-      partes.push('<text x="' + x.toFixed(1) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="' + anc +
-        '" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--tinta-2)">' + d[0] + '</text>');
+    DIMS.forEach(function(d,i){
+      var a=-Math.PI/2+i*(2*Math.PI/n), rr=R+26, x=cx+rr*Math.cos(a), y=cy+rr*Math.sin(a);
+      var anc=Math.abs(Math.cos(a))<0.2?"middle":(Math.cos(a)>0?"start":"end");
+      p.push('<text class="rot" x="'+x.toFixed(1)+'" y="'+(y+4).toFixed(1)+'" text-anchor="'+anc+'">'+d[0]+'</text>');
     });
-    svg.innerHTML = partes.join("");
+    svg.innerHTML=p.join("");
   }
 
-  /* ── navegação ───────────────────────────────────────────────────────── */
-  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
-  var marcas = document.getElementById("marcas");
-  var conta  = document.getElementById("conta");
-  var rotulo = document.getElementById("rotulo");
-  var notas  = document.getElementById("notas");
-  var atual = 0;
+  /* ── números que contam a partir do zero ────────────────────────────── */
+  function contar(slide){
+    var els=slide.querySelectorAll("[data-n]");
+    els.forEach(function(el){
+      var alvo=parseFloat(el.getAttribute("data-n")), dec=parseInt(el.getAttribute("data-dec")||"0",10);
+      var sufixo=el.querySelector("small")?el.querySelector("small").outerHTML:"";
+      function fmt(v){ return v.toLocaleString("pt-BR",{minimumFractionDigits:dec, maximumFractionDigits:dec}); }
+      if(reduz){ el.innerHTML=fmt(alvo)+sufixo; return; }
+      var atraso=parseFloat((el.closest(".a")||{style:{}}).style.getPropertyValue("--d")||"0")*1000;
+      var t0=null, dur=1600;
+      function passo(ts){
+        if(t0===null) t0=ts;
+        var k=Math.min(1,(ts-t0)/dur), e=1-Math.pow(1-k,3);
+        el.innerHTML=fmt(alvo*e)+sufixo;
+        if(k<1) requestAnimationFrame(passo);
+      }
+      el.innerHTML=fmt(0)+sufixo;
+      setTimeout(function(){requestAnimationFrame(passo)}, atraso+250);
+    });
+  }
 
-  var NOTAS = [
-    ["Capa · 30 segundos",
-     "Não leia o slide. Diga o nome, diga a frase, e passe. O tempo é curto e a demo é o que decide."],
-    ["O problema · 2 min",
-     "Este é o slide que compra a atenção. Se houver alguém na sala que já disse <b>“a equipe está sempre pendente”</b>, cite a pessoa. O problema tem de ser deles, não seu."],
-    ["A régua · 3 min",
-     "O slide-tese. Aponte a teia e diga a frase inteira: <b>a distância entre as duas linhas é a lacuna</b>. Se só houver tempo para um slide antes da demo, é este."],
-    ["As nove dimensões · 1,5 min",
-     "Não leia as nove. Diga que são nove, leia <b>duas ou três</b> e diga que a lista veio da metodologia de perfil profissiográfico. Quem quiser detalhe pergunta."],
-    ["Procedência · 1,5 min",
-     "Aqui você responde antecipadamente a pergunta mais provável do comitê: <b>“de onde saiu esse número?”</b>. Três documentos oficiais, nenhuma opinião."],
-    ["A escala · 2 min",
-     "Fique no primeiro e no último número: <b>230.969 currículos</b> e <b>1.276 verificações</b>. Um mostra que não é maquete; o outro, que não é improviso. E diga que tudo ali foi medido, não estimado."],
-    ["Os módulos · 1,5 min",
-     "Este slide existe para dar o mapa antes da demo. Leia os títulos, não as descrições — e avise que vai mostrar quatro deles funcionando."],
-    ["DEMO · 15 min",
-     "<b>É aqui que a apresentação é ganha ou perdida.</b> Deixe a demo antes da metodologia de propósito: método explicado depois do que se viu convence muito mais que método explicado antes. Se algo travar, siga para o próximo item sem consertar ao vivo — as capturas de tela cobrem."],
-    ["Arquitetura · 2 min",
-     "Só depois da demo isso faz sentido. A frase do slide é a promessa que o sistema cumpre: <b>o mesmo número hoje e daqui a um mês</b>. Num órgão, reprodutibilidade vale mais que sofisticação."],
-    ["Medir, não ler · 2 min",
-     "Este é o slide da credibilidade, e é onde um comitê técnico decide se confia em você. Assuma os sete defeitos com naturalidade: <b>foram encontrados porque o sistema é medido</b>. Quem nunca achou defeito é quem nunca procurou."],
-    ["Confiabilidade · 2 min",
-     "O argumento que diferencia de qualquer ferramenta de IA genérica: <b>ele recusa responder quando não tem base</b>. Se alguém perguntar “e se a IA errar?”, este slide é a resposta."],
-    ["Privacidade · 2 min",
-     "Num comitê de governo, esta é frequentemente a pergunta que trava projeto. Chegue nela antes que perguntem. A frase-chave é <b>falha fechada</b>: sem anonimização, a chamada externa não acontece."],
-    ["Estado · 1,5 min",
-     "Seja honesto sobre o que falta. Um projeto que se apresenta 100% pronto não é acreditado — e a frase final do slide é o enquadramento certo: <b>falta volume de processamento, não desenho</b>."],
-    ["O pedido · 2 min",
-     "Termine com pedido concreto, nunca com “obrigado”. <b>Ajuste os três itens ao que você realmente precisa</b> antes de apresentar. E dê nome à unidade-piloto se já tiver uma em mente — pedido com nome é muito mais difícil de adiar."]
+  /* ── navegação ──────────────────────────────────────────────────────── */
+  var slides=Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var marcas=document.getElementById("marcas"), cheio=document.getElementById("cheio");
+  var conta=document.getElementById("conta"), rotulo=document.getElementById("rotulo"), notas=document.getElementById("notas");
+  var atual=0, N=slides.length;
+
+  var NOTAS=[
+    ["Capa · 30 s","Não leia o slide. Diga o nome, diga a frase, e passe. O tempo é curto e a demo é o que decide. Deixe os eixos terminarem de se desenhar antes de falar — são três segundos."],
+    ["O problema · 2 min","O slide que compra a atenção. Se houver alguém na sala que já disse <b>“a equipe está sempre pendente”</b>, cite a pessoa. O problema tem de ser deles, não seu."],
+    ["A tese · 1,5 min","Uma frase, três palavras. <b>Se as três coisas forem medidas na mesma régua, a distância entre elas é a decisão.</b> Não explique as nove dimensões ainda — só diga que a régua existe."],
+    ["A régua · 3 min","O slide que sustenta a apresentação. <b>Espere o radar terminar</b>: primeiro a ocre (o que a unidade exige), depois a azul (a equipe), depois os traços das três lacunas. Aponte a maior — competências técnicas, 2,8 abaixo — e diga: <b>isto é uma medida, não uma opinião</b>."],
+    ["As nove dimensões · 1,5 min","Não leia as nove. Diga que são nove, leia <b>duas ou três</b>, e diga que a lista vem da metodologia de perfil profissiográfico. Quem quiser detalhe pergunta."],
+    ["Procedência · 1,5 min","Responde de antemão a pergunta mais provável: <b>“de onde saiu esse número?”</b>. Três documentos oficiais, nenhuma opinião. A frase do rodapé é a chave — a mesma pergunta para os três lados."],
+    ["A escala · 2 min","Deixe os números contarem. Fique no primeiro e no último: <b>230.969 currículos</b> e <b>1.276 verificações</b>. Um mostra que não é maquete; o outro, que não é improviso. Diga que tudo ali foi medido, não estimado."],
+    ["Os módulos · 1,5 min","O mapa antes da demo. Leia as <b>perguntas</b>, não as descrições — cada módulo responde uma. E avise que vai mostrar quatro deles funcionando."],
+    ["DEMO · 15 min","<b>É aqui que a apresentação é ganha ou perdida.</b> Clique em cada passo para cronometrá-lo — o relógio da régua continua correndo. A demo está antes da metodologia de propósito: método explicado depois do que se viu convence muito mais. Se algo travar, siga sem consertar ao vivo."],
+    ["Arquitetura · 2 min","Só depois da demo isto faz sentido. Espere as oito etapas acenderem. A frase do slide é a promessa que o sistema cumpre: <b>o mesmo número hoje e daqui a um mês</b>. Num órgão, reprodutibilidade vale mais que sofisticação."],
+    ["Medir, não ler · 2 min","O slide da credibilidade. Assuma os sete defeitos com naturalidade: <b>foram encontrados porque o sistema é medido</b>. Quem nunca achou defeito é quem nunca procurou."],
+    ["Confiabilidade · 2 min","O que diferencia de qualquer ferramenta de IA genérica: <b>ele recusa responder quando não tem base</b>. Se alguém perguntar “e se a IA errar?”, este slide é a resposta."],
+    ["Privacidade · 2 min","Num comitê de governo, esta é frequentemente a pergunta que trava projeto. Chegue nela antes que perguntem. A frase-chave é <b>falha fechada</b>: sem anonimização, a chamada externa não acontece."],
+    ["Estado · 1,5 min","Seja honesto sobre o que falta — um projeto que se apresenta 100% pronto não é acreditado. O enquadramento certo está no rodapé: <b>falta volume de processamento, não desenho</b>."],
+    ["O pedido · 2 min","Termine com pedido concreto, nunca com “obrigado”. <b>Ajuste os três itens ao que você realmente precisa.</b> Se já tem uma unidade-piloto em mente, dê o nome — pedido com nome é muito mais difícil de adiar. A última frase fica na tela enquanto respondem."]
   ];
 
-  slides.forEach(function(s, i){
-    var b = document.createElement("span");
-    b.setAttribute("role", "button");
-    b.setAttribute("tabindex", "0");
-    b.setAttribute("aria-label", "Ir para o slide " + (i+1));
-    b.addEventListener("click", function(){ ir(i); });
-    b.addEventListener("keydown", function(e){
-      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); ir(i); }
-    });
-    marcas.appendChild(b);
+  slides.forEach(function(s,i){
+    var b=document.createElement("button"); b.type="button"; b.setAttribute("aria-label","Ir para o slide "+(i+1));
+    b.addEventListener("click",function(){ir(i)}); marcas.appendChild(b);
   });
-  var pontos = Array.prototype.slice.call(marcas.children);
+  var pontos=Array.prototype.slice.call(marcas.children);
+  var grade=document.getElementById("grade");
+  slides.forEach(function(s,i){
+    var b=document.createElement("button"); b.innerHTML='<span class="n">'+dois(i+1)+'</span><span>'+(s.getAttribute("aria-label")||"")+'</span>';
+    b.addEventListener("click",function(){fechar("geral"); ir(i)}); grade.appendChild(b);
+  });
+  var cartoes=Array.prototype.slice.call(grade.children);
 
-  function dois(n){ return (n < 10 ? "0" : "") + n; }
+  function dois(n){return (n<10?"0":"")+n}
+  var iniciou=false;
 
-  function ir(i){
-    atual = Math.max(0, Math.min(slides.length - 1, i));
-    slides.forEach(function(s, k){ s.classList.toggle("on", k === atual); });
-    pontos.forEach(function(p, k){
-      p.classList.toggle("aqui", k === atual);
-      p.classList.toggle("visto", k < atual);
+  function ir(i, semHist){
+    var novo=Math.max(0,Math.min(N-1,i)), volta=novo<atual;
+    if(novo===atual && iniciou && !semHist) return;
+    slides.forEach(function(s,k){
+      s.classList.toggle("volta", volta);
+      s.classList.toggle("on", k===novo);
     });
-    conta.textContent = dois(atual + 1) + " / " + dois(slides.length);
-    rotulo.textContent = slides[atual].getAttribute("aria-label") || "";
-    var nt = NOTAS[atual];
-    notas.innerHTML = nt ? '<span class="t">' + nt[0] + "</span>" + nt[1] : "";
-    if(atual === 2) desenharRadar();
+    atual=novo;
+    pontos.forEach(function(p,k){p.classList.toggle("aqui",k===atual); p.classList.toggle("visto",k<atual)});
+    cartoes.forEach(function(c,k){c.classList.toggle("aqui",k===atual)});
+    cheio.style.width=(atual/(N-1)*100)+"%";
+    conta.textContent=dois(atual+1)+" / "+dois(N);
+    rotulo.textContent=slides[atual].getAttribute("aria-label")||"";
+    var nt=NOTAS[atual]; notas.innerHTML=nt?'<span class="t">'+nt[0]+"</span>"+nt[1]:"";
+    if(!semHist) history.replaceState(null,"","#"+(atual+1));
+    if(slides[atual].querySelector("#radar")) desenharRadar();
+    if(slides[atual].hasAttribute("data-conta")) contar(slides[atual]);
+    if(atual>0 && !iniciou){ iniciou=true; iniciarRelogio(); }
   }
 
-  document.addEventListener("keydown", function(e){
-    if(e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
-    if(e.key === "ArrowRight" || e.key === "PageDown" || e.key === " "){ e.preventDefault(); ir(atual + 1); }
-    else if(e.key === "ArrowLeft" || e.key === "PageUp"){ e.preventDefault(); ir(atual - 1); }
-    else if(e.key === "Home"){ e.preventDefault(); ir(0); }
-    else if(e.key === "End"){ e.preventDefault(); ir(slides.length - 1); }
-    else if(e.key === "n" || e.key === "N"){ alternarNotas(); }
-    else if(e.key === "t" || e.key === "T"){ alternarTema(); }
-  });
+  /* ── o relógio dos 30–40 minutos ───────────────────────────────────── */
+  var relogio=document.getElementById("relogio"), t0=null;
+  function iniciarRelogio(){ t0=Date.now(); tique(); }
+  function tique(){
+    if(t0===null) return;
+    var s=Math.floor((Date.now()-t0)/1000), m=Math.floor(s/60);
+    relogio.textContent=dois(m)+":"+dois(s%60);
+    relogio.classList.toggle("aviso", m>=30 && m<38);
+    relogio.classList.toggle("estouro", m>=38);
+    setTimeout(tique,1000);
+  }
 
+  /* ── o roteiro da demo: clique para cronometrar cada passo ─────────── */
+  (function(){
+    var passos=Array.prototype.slice.call(document.querySelectorAll("#roteiro .passo")), corrente=null, timer=null;
+    passos.forEach(function(p){
+      var rot=p.querySelector(".t"), base=rot.firstChild.textContent, min=parseInt(p.getAttribute("data-min"),10);
+      p.addEventListener("click",function(){
+        if(corrente===p){ p.classList.remove("andando"); p.classList.add("feito"); clearInterval(timer); corrente=null; return; }
+        if(corrente){ corrente.classList.remove("andando"); corrente.classList.add("feito"); clearInterval(timer); }
+        corrente=p; p.classList.add("andando"); p.classList.remove("feito");
+        var ini=Date.now();
+        timer=setInterval(function(){
+          var s=Math.floor((Date.now()-ini)/1000), m=Math.floor(s/60);
+          rot.firstChild.textContent=dois(m)+":"+dois(s%60)+" / "+min+" min";
+          rot.style.color=(m>=min)?"var(--alerta)":"";
+        },1000);
+      });
+    });
+  })();
+
+  /* ── camadas ────────────────────────────────────────────────────────── */
+  function alternar(id){var el=document.getElementById(id); el.classList.toggle("on"); return el.classList.contains("on")}
+  function fechar(id){document.getElementById(id).classList.remove("on")}
   function alternarNotas(){
-    var on = document.documentElement.getAttribute("data-notas") === "1";
-    document.documentElement.setAttribute("data-notas", on ? "0" : "1");
-    document.getElementById("btn-notas").setAttribute("aria-pressed", on ? "false" : "true");
+    var on=document.documentElement.getAttribute("data-notas")==="1";
+    document.documentElement.setAttribute("data-notas",on?"0":"1");
+    document.getElementById("btn-notas").setAttribute("aria-pressed",on?"false":"true");
   }
   function alternarTema(){
-    var r = document.documentElement, atualT = r.getAttribute("data-theme");
-    var escuroAgora = atualT ? atualT === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    r.setAttribute("data-theme", escuroAgora ? "light" : "dark");
-    desenharRadar();
+    var r=document.documentElement; r.setAttribute("data-theme", r.getAttribute("data-theme")==="light"?"dark":"light");
+    try{localStorage.setItem("recruta-tema", r.getAttribute("data-theme"))}catch(e){}
+    if(slides[atual].querySelector("#radar")) desenharRadar();
   }
-  document.getElementById("btn-notas").addEventListener("click", alternarNotas);
-  document.getElementById("btn-tema").addEventListener("click", alternarTema);
+  try{ var tm2=localStorage.getItem("recruta-tema"); if(tm2==="light") document.documentElement.setAttribute("data-theme","light"); }catch(e){}
+  function telaCheia(){
+    var d=document; if(!d.fullscreenElement){ (d.documentElement.requestFullscreen||function(){}).call(d.documentElement); }
+    else{ (d.exitFullscreen||function(){}).call(d); }
+  }
 
-  desenharRadar();
-  ir(0);
+  document.getElementById("btn-notas").addEventListener("click",alternarNotas);
+  document.getElementById("btn-geral").addEventListener("click",function(){alternar("geral")});
+  document.getElementById("btn-tema").addEventListener("click",alternarTema);
+  document.getElementById("btn-ajuda").addEventListener("click",function(){alternar("ajuda")});
+  document.getElementById("geral").addEventListener("click",function(e){if(e.target===this) fechar("geral")});
+  document.getElementById("ajuda").addEventListener("click",function(e){if(e.target===this) fechar("ajuda")});
+  document.getElementById("preta").addEventListener("click",function(){fechar("preta")});
+  document.getElementById("palco").addEventListener("click",function(e){
+    if(e.target.closest("button, a, .passo")) return;
+    var r=this.getBoundingClientRect(); ir(atual + ((e.clientX-r.left) < r.width*0.25 ? -1 : 1));
+  });
+
+  document.addEventListener("keydown",function(e){
+    if(e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+    var k=e.key;
+    if(k==="Escape"){ fechar("geral"); fechar("ajuda"); fechar("preta"); return; }
+    if(document.getElementById("geral").classList.contains("on") && k!=="o" && k!=="O") return;
+    if(k==="ArrowRight"||k==="PageDown"||k===" "){e.preventDefault(); ir(atual+1)}
+    else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault(); ir(atual-1)}
+    else if(k==="Home"){e.preventDefault(); ir(0)}
+    else if(k==="End"){e.preventDefault(); ir(N-1)}
+    else if(k==="n"||k==="N") alternarNotas();
+    else if(k==="t"||k==="T") alternarTema();
+    else if(k==="o"||k==="O") alternar("geral");
+    else if(k==="b"||k==="B") alternar("preta");
+    else if(k==="f"||k==="F") telaCheia();
+    else if(k==="r"||k==="R"){ t0=Date.now(); }
+    else if(k==="?") alternar("ajuda");
+  });
+
+  var h=parseInt((location.hash||"#1").slice(1),10);
+  ir(isNaN(h)?0:h-1, true);
 })();
 </script>
 </body>
