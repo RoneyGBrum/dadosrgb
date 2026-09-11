@@ -34,6 +34,7 @@
   --exig-fraco:rgba(232,169,74,.14);
   --ok:#4CCB9B;
   --alerta:#FF8A5B;
+  --topo:#FF6B7A;         /* a maior nota individual — o vermelho da tela, levantado */
   --linha:#1B2F45;
   --linha-forte:#2E4864;
   --brilho:0 0 0 1px rgba(255,255,255,.04), 0 24px 60px -30px rgba(0,0,0,.8);
@@ -53,6 +54,7 @@
   --exig-fraco:rgba(180,113,26,.12);
   --ok:#0F6647;
   --alerta:#B8461A;
+  --topo:#D1202F;         /* o mesmo vermelho do radar do Gap Analysis */
   --linha:#D9E1EB;
   --linha-forte:#B7C5D6;
   --brilho:0 1px 2px rgba(15,34,56,.06), 0 24px 60px -30px rgba(15,34,56,.35);
@@ -186,14 +188,18 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
 
 /* ── radar ────────────────────────────────────────────────────────────── */
 .radar-linha{display:grid; grid-template-columns:1.1fr .9fr; gap:3cqw; flex:1; align-items:center; min-height:0}
-.radar-caixa{display:flex; flex-direction:column; align-items:center; gap:1cqh; min-height:0}
-.radar-caixa svg{width:100%; height:auto; max-height:58cqh}
+.radar-caixa{display:flex; flex-direction:column; align-items:center; gap:1cqh; min-height:0; max-height:100%}
+.radar-caixa svg{width:100%; height:auto; max-height:47cqh; min-height:0; flex:0 1 auto}
 .radar-caixa .legenda i.al{color:var(--ok)}
 .radar-caixa .legenda i.al::before{background:var(--ok)}
-.legenda{display:flex; gap:2.4cqw; font-family:"IBM Plex Mono", monospace; font-size:1.15cqw; color:var(--tinta-2)}
+.legenda{display:flex; flex-wrap:wrap; justify-content:center; row-gap:.4cqh; column-gap:1.7cqw;
+  font-family:"IBM Plex Mono", monospace; font-size:1.1cqw; color:var(--tinta-2)}
 .legenda i{display:inline-flex; align-items:center; gap:.6cqw; font-style:normal}
 .legenda i::before{content:""; width:1.8cqw; height:3px; border-radius:2px; background:currentColor}
 .legenda .e{color:var(--exig)} .legenda .qq{color:var(--gov)}
+/* o máximo é um PONTO, não uma linha — e a legenda tem de dizer isso pela forma */
+.legenda .mx{color:var(--topo)}
+.legenda .mx::before{width:.9cqw; height:.9cqw; border-radius:50%; box-shadow:0 0 0 1.5px var(--carta)}
 .nota-fig{font-family:"IBM Plex Mono", monospace; font-size:1.05cqw; color:var(--tinta-3); text-align:center}
 .teia .anel{fill:none; stroke:var(--linha); stroke-width:1}
 .teia .raio{stroke:var(--linha); stroke-width:1}
@@ -203,6 +209,9 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
 .teia .serie.exig{stroke:var(--exig); fill:var(--exig)}
 .teia .serie.equipe{stroke:var(--gov); fill:var(--gov)}
 .teia .pt{fill:var(--gov); opacity:0}
+/* o ponto vermelho: a MAIOR nota individual. O anel branco o separa da malha e da
+   linha azul quando os dois caem quase no mesmo lugar. */
+.teia .topo{fill:var(--topo); stroke:var(--carta); stroke-width:1.6; opacity:0}
 .teia .gap{stroke:var(--exig); stroke-width:2; stroke-dasharray:4 3; opacity:0}
 .teia .gap-rot{font-family:"IBM Plex Mono", monospace; font-size:12px; fill:var(--exig); font-weight:600; opacity:0}
 /* O excedente: onde o perfil passa do que se pede. Verde, e nunca somado ao encaixe. */
@@ -218,6 +227,8 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
 .slide.on .teia .pt{animation:aparece .3s ease both; animation-delay:calc(3.4s + .06s * var(--i))}
 .slide.on .teia .gap{animation:aparece .5s ease both; animation-delay:calc(4.2s + .25s * var(--i))}
 .slide.on .teia .gap-rot{animation:aparece .5s ease both; animation-delay:calc(4.4s + .25s * var(--i))}
+/* por último, depois da lacuna: primeiro o problema, depois quem já o resolve */
+.slide.on .teia .topo{animation:aparece .4s ease both; animation-delay:calc(5.2s + .05s * var(--i))}
 .radar-txt{display:flex; flex-direction:column; gap:1.6cqh}
 .radar-txt p{font-size:1.6cqw}
 .radar-txt .lacuna{
@@ -225,6 +236,7 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
   border-radius:0 4px 4px 0;
 }
 .radar-txt .lacuna b{color:var(--tinta)}
+.radar-txt .vm{color:var(--topo)}
 .radar-txt .lacuna.alem{border-left-color:var(--ok); background:color-mix(in srgb, var(--ok) 8%, transparent)}
 
 /* ── as nove dimensões ────────────────────────────────────────────────── */
@@ -406,7 +418,8 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
 
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{animation-duration:.001s !important; animation-delay:0s !important; transition-duration:.001s !important}
-  #radar .serie{stroke-dashoffset:0; fill-opacity:.16} #radar .pt, #radar .gap, #radar .gap-rot{opacity:1}
+  #radar .serie{stroke-dashoffset:0; fill-opacity:.16}
+  #radar .pt, #radar .gap, #radar .gap-rot, #radar .topo, #radar .alem, #radar .alem-rot{opacity:1}
   .etapa{opacity:1; transform:none} .seta .tr{transform:none}
 }
 @media print{
@@ -497,22 +510,7 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
   </div>
 </section>
 
-<!-- ═══ 3 · a ideia ═══ -->
-<section class="slide" aria-label="A ideia">
-  <div class="q ideia">
-    <p class="eyebrow a">A tese</p>
-    <h1 class="a" style="--d:.2s">Se todas forem medidas na <span class="g">mesma régua</span>, a distância entre elas é a decisão.</h1>
-    <div class="tres">
-      <div class="u a" style="--d:.9s">Unidade<small>o que ela <b>exige</b> — pelo DFT</small></div>
-      <div class="o a" style="--d:1.1s">Oportunidade<small>o que a vaga <b>pede</b> — pelo edital</small></div>
-      <div class="p a" style="--d:1.3s">Pessoa<small>o que o currículo <b>demonstra</b></small></div>
-      <div class="c a" style="--d:1.5s">Curso<small>o que a capacitação <b>desenvolve</b></small></div>
-    </div>
-    <p class="destaque a" style="--d:1.9s; margin-top:auto">Nove dimensões, de 0 a 5, a mesma pergunta para os quatro.</p>
-  </div>
-</section>
-
-<!-- ═══ 3b · a busca ativa ═══ -->
+<!-- ═══ 3 · a busca ativa ═══ -->
 <section class="slide" aria-label="Busca ativa">
   <div class="q largo">
     <p class="eyebrow a">A virada</p>
@@ -541,6 +539,21 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
       </div>
     </div>
     <p class="destaque a" style="--d:1.7s">O edital continua. O que muda é que ele deixa de ser <b>o único caminho</b> até a pessoa certa.</p>
+  </div>
+</section>
+
+<!-- ═══ 3b · a ideia ═══ -->
+<section class="slide" aria-label="A ideia">
+  <div class="q ideia">
+    <p class="eyebrow a">A tese</p>
+    <h1 class="a" style="--d:.2s">Se todas forem medidas na <span class="g">mesma régua</span>, a distância entre elas é a decisão.</h1>
+    <div class="tres">
+      <div class="u a" style="--d:.9s">Unidade<small>o que ela <b>exige</b> — pelo DFT</small></div>
+      <div class="o a" style="--d:1.1s">Oportunidade<small>o que a vaga <b>pede</b> — pelo edital</small></div>
+      <div class="p a" style="--d:1.3s">Pessoa<small>o que o currículo <b>demonstra</b></small></div>
+      <div class="c a" style="--d:1.5s">Curso<small>o que a capacitação <b>desenvolve</b></small></div>
+    </div>
+    <p class="destaque a" style="--d:1.9s; margin-top:auto">Nove dimensões, de 0 a 5, a mesma pergunta para os quatro.</p>
   </div>
 </section>
 
@@ -579,13 +592,14 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
       <div class="radar-caixa a" style="--d:.4s">
         <svg id="radar" class="teia" viewBox="0 0 620 470" role="img"
              aria-label="Gráfico de teia com nove dimensões comparando a exigência da unidade com o nível atual da equipe."></svg>
-        <div class="legenda"><i class="e">o que a unidade exige</i><i class="qq">o que a equipe demonstra</i></div>
-        <p class="nota-fig">Uma coordenação-geral do MGI · notas medidas, não ilustrativas</p>
+        <div class="legenda"><i class="e">a unidade exige</i><i class="qq">a média da equipe</i><i class="mx">a maior nota individual</i></div>
+        <p class="nota-fig">Coordenação-geral do MGI · nota medida em 11 das 14 pessoas</p>
       </div>
       <div class="radar-txt">
         <p class="a" style="--d:2.2s">A linha ocre é a <b>exigência</b> gravada a partir do DFT. Ela não muda de um dia para o outro: é a régua da unidade.</p>
         <p class="a" style="--d:3.6s">A linha azul é a <b>média da equipe</b>, apurada a partir dos currículos. Onde ela fica dentro da ocre, há lacuna.</p>
         <div class="lacuna a" style="--d:4.6s"><p>Aqui a lacuna tem nome: <b>competências técnicas</b>, <b>visão sistêmica</b> e <b>resolução de problemas</b>. Não é intuição — é a distância entre duas medidas.</p></div>
+        <p class="a" style="--d:5.6s">Os <b class="vm">pontos vermelhos</b> são a <b>maior nota individual</b> — o que a média esconde. Em competências técnicas a média é 1,9, mas <b>alguém já está em 4</b>: capacitar todo mundo e aproveitar quem já sabe são decisões diferentes.</p>
       </div>
     </div>
   </div>
@@ -711,7 +725,7 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
       </div>
       <div class="seta"><span>nota gravada junto do registro</span><span class="tr"></span><span>API · telas · PDF</span></div>
       <div class="saidas">
-        <div class="saida lenta a" style="--d:2.2s"><div class="rot">Devagar e uma vez</div><h3>Cada etapa tem assinatura.</h3><p>O que não mudou não é reprocessado — e o que mudou não passa despercebido. A nota das nove dimensões é gravada uma vez e lida mil.</p></div>
+        <div class="saida lenta a" style="--d:2.2s"><div class="rot">Devagar e uma vez</div><h3>Cada etapa tem assinatura.</h3><p>O que não mudou não é reprocessado — e o que mudou não passa despercebido. A nota das nove dimensões é gravada uma vez e só é alterada se houver modificação daquela informação.</p></div>
         <div class="saida rapida a" style="--d:2.5s"><div class="rot">Rápido e sempre igual</div><h3>A tela lê a nota pronta.</h3><p>Duas pessoas que abrem a mesma unidade veem o mesmo número — e verão o mesmo daqui a um mês. Onde a nota é calculada na hora, a tela <b>diz isso</b>, com um selo de origem.</p></div>
       </div>
     </div>
@@ -735,7 +749,7 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
       </div>
       <div class="bloco">
         <span class="rot a" style="--d:.7s">Por que isso importa aqui</span>
-        <p class="a" style="--d:1s">Um comitê que recebe um número redondo não tem como saber se ele cobre a área inteira ou um terço dela.</p>
+        <p class="a" style="--d:1s">Um número sozinho não diz <b>sobre quantas pessoas</b> foi calculado — e uma nota 2,1 apurada sobre metade da equipe não é a mesma nota 2,1 apurada sobre a equipe inteira.</p>
         <p class="a" style="--d:1.3s">Preencher lacuna com o que sobrou é o que transforma uma ferramenta de apoio à decisão em <b>uma fonte de decisão errada</b>.</p>
         <p class="destaque a" style="--d:1.7s">O sistema prefere devolver menos a devolver algo irrelevante com cara de resposta.</p>
       </div>
@@ -857,10 +871,20 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
   })();
 
   /* ── o radar da tese: números reais, escala 0–5 ─────────────────────
-     Exigência gravada pelo pipeline para uma coordenação-geral do MGI, e a
-     média da equipe apurada dos currículos. Medidos em 09/09/2026.       */
-  var DIMS=[["Comp. Técnicas",5,2.2],["Ment. Digital",2,1.9],["Res. Problemas",4,2.0],["Foco Cidadão",1,2.1],
-            ["Visão Sistêmica",4,1.4],["Hab. Sociais",3,2.2],["Flexibilidade",2,1.9],["Gestão/Result.",3,2.5],["Alinhamento",3,2.1]];
+     [rótulo, EXIGÊNCIA da unidade, MÉDIA da equipe, MAIOR nota individual].
+
+     Uma coordenação-geral do MGI. A exigência é a gravada pelo pipeline a partir do DFT;
+     a média e o máximo saem da MESMA fonte — a nota fixa que o pipeline gravou por
+     currículo. Isso não é detalhe de implementação: a média que estava aqui antes vinha
+     da leitura do modelo, e pôr o máximo de uma régua ao lado da média de outra é
+     exatamente o defeito que o sistema corrigiu em 10/09, quando um máximo apareceu
+     ABAIXO da média — aritmeticamente impossível, e verdadeiro quando são duas réguas.
+
+     Medido em 11/09/2026 sobre os 14 currículos da unidade; 11 deles têm nota gravada, e
+     é sobre esses 11 que a média e o máximo são apurados — por isso a legenda do gráfico
+     diz «11 das 14». As três maiores lacunas não mudaram.                */
+  var DIMS=[["Comp. Técnicas",5,1.9,4],["Ment. Digital",2,2.1,5],["Res. Problemas",4,1.9,3],["Foco Cidadão",1,1.8,3],
+            ["Visão Sistêmica",4,1.4,2],["Hab. Sociais",3,1.9,3],["Flexibilidade",2,1.5,3],["Gestão/Result.",3,2.4,4],["Alinhamento",3,2.0,4]];
   /* Vaga × candidato, do dossiê de 10/09/2026 (GSISTE NS · sustentação das plataformas
      de automação · MGI). Notas medidas; o candidato é anônimo a pedido dele. */
   var DIMS_VAGA=[["Comp. Técnicas",5,3],["Ment. Digital",5,5],["Res. Problemas",3,3],["Foco Cidadão",3,2],
@@ -879,17 +903,28 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
     p.push('<polygon class="serie exig" pathLength="1" points="'+poli(function(i){return DIMS[i][1]})+'"/>');
     p.push('<polygon class="serie equipe" pathLength="1" points="'+poli(function(i){return DIMS[i][2]})+'"/>');
     DIMS.forEach(function(d,i){var q=pt(i,d[2]); p.push('<circle class="pt" style="--i:'+i+'" cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="3.2"/>');});
+    /* O PONTO VERMELHO: a MAIOR nota individual da equipe naquela dimensão.
+       A média sozinha esconde a decisão — uma média 1,9 com alguém em 4 e uma média 1,9
+       com todo mundo em 2 levam a caminhos opostos: capacitar a equipe, ou usar quem já
+       sabe. Só desenha quando o dado existe: o radar da vaga não tem equipe. */
+    DIMS.forEach(function(d,i){
+      if(d[3]==null) return;
+      var q=pt(i,d[3]);
+      p.push('<circle class="topo" style="--i:'+i+'" cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="5"/>');
+    });
     /* as três maiores lacunas: um traço entre as duas linhas, no eixo */
     var gaps=DIMS.map(function(d,i){return [i, d[1]-d[2]]}).filter(function(g){return g[1]>0}).sort(function(a,b){return b[1]-a[1]}).slice(0,3);
     /* O EXCEDENTE tem traço próprio: onde o candidato passa do que a vaga pede. É o que
        este segundo radar mostra e o primeiro não — e é o ponto metodológico que interessa
        ao comitê, porque excedente NUNCA é somado ao encaixe. */
     DIMS.forEach(function(d,i){
-      if(d[2]-d[1] <= 0) return;
+      // abaixo de meio ponto o traço é um pixel e o rótulo, ruído: «+0,1» não é
+      // informação, é uma casa decimal.
+      if(d[2]-d[1] < 0.5) return;
       var a=pt(i,d[1]), b=pt(i,d[2]);
       p.push('<line class="alem" style="--i:0" x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'"/>');
       var m=[(a[0]+b[0])/2,(a[1]+b[1])/2], an=-Math.PI/2+i*(2*Math.PI/n);
-      p.push('<text class="alem-rot" style="--i:0" x="'+(m[0]+(-Math.sin(an))*16).toFixed(1)+'" y="'+(m[1]+Math.cos(an)*16+4).toFixed(1)+'" text-anchor="middle">+'+(d[2]-d[1]).toFixed(0)+'</text>');
+      p.push('<text class="alem-rot" style="--i:0" x="'+(m[0]+(-Math.sin(an))*16).toFixed(1)+'" y="'+(m[1]+Math.cos(an)*16+4).toFixed(1)+'" text-anchor="middle">+'+(d[2]-d[1]).toFixed(1).replace(/\.0$/,"").replace(".",",")+'</text>');
     });
     gaps.forEach(function(g,k){
       var i=g[0], a=pt(i,DIMS[i][2]), b=pt(i,DIMS[i][1]);
@@ -937,10 +972,10 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
   var NOTAS=[
     ["Capa · 30 s","Não leia o slide. Diga o nome, diga a frase, e passe. O tempo é curto e a demo é o que decide."],
     ["O problema · 1,5 min","O slide que compra a atenção. Diga a frase e <b>pare</b>: «hoje a gente publica e espera». Se alguém na sala já disse «a equipe está sempre pendente», olhe para essa pessoa ao ler o terceiro ponto."],
-    ["A tese · 1 min","Uma frase, quatro palavras: <b>unidade, oportunidade, pessoa e curso na mesma régua</b>. Não explique as nove dimensões aqui — o próximo slide mostra."],
     ["A virada · 2 min","<b>Este é o fio da apresentação.</b> Aponte para o lado esquerdo e diga: é assim que se faz hoje. Aponte para o direito: é isto que o sistema permite. E deixe claro que o edital continua — o que muda é ele deixar de ser o único caminho. Se a sala só levar uma ideia embora, que seja esta."],
+    ["A tese · 1 min","Uma frase, quatro palavras: <b>unidade, oportunidade, pessoa e curso na mesma régua</b>. Não explique as nove dimensões aqui — o próximo slide mostra."],
     ["Vaga e candidato · 2,5 min","O primeiro radar, e o mais concreto: uma vaga real e uma pessoa real. <b>Espere o desenho terminar</b> — ocre é o que a vaga pede, azul é o que o currículo demonstra. Diga os 82,8% e aponte a lacuna em competências técnicas. Depois aponte o traço verde e diga a frase que mais constrói confiança: <b>a vaga não pede flexibilidade, ele tem — e isso não é somado ao encaixe</b>. Se somasse, bastaria ser bom em qualquer coisa para parecer aderente."],
-    ["A régua da unidade · 2,5 min","A mesma régua, agora sobre uma equipe inteira. <b>Espere o radar terminar</b>: primeiro a ocre (o que a unidade exige), depois a azul (a média das notas individuais). Aponte o espaço entre as duas e diga: <b>isto é a lacuna</b>. Se perguntarem de onde vem a azul: é a média dos currículos, não uma nota que a IA inventa a cada consulta. Notas medidas."],
+    ["A régua da unidade · 2,5 min","A mesma régua, agora sobre uma equipe inteira. <b>Espere o radar terminar</b>: primeiro a ocre (o que a unidade exige), depois a azul (a média das notas individuais). Aponte o espaço entre as duas e diga: <b>isto é a lacuna</b>. Se perguntarem de onde vem a azul: é a média dos currículos, não uma nota que a IA inventa a cada consulta. Notas medidas. Por fim aparecem os <b>pontos vermelhos</b>: a maior nota individual. Essa é a frase que vale a pena dizer devagar — <b>a média manda capacitar todo mundo, o ponto vermelho mostra quem já sabe</b>. E note o rodapé: 11 das 14 pessoas têm nota gravada, e o gráfico diz isso em vez de fingir a unidade inteira."],
     ["As nove dimensões · 1 min","Não leia as nove. Diga que são nove, leia <b>duas</b>, e diga que vêm da metodologia de perfil profissiográfico. Passe."],
     ["Procedência · 1,5 min","Responde de antemão a pergunta mais provável: <b>«de onde saiu esse número?»</b>. Documento oficial de um lado, currículo do outro."],
     ["A escala · 1 min","Quatro números, e o primeiro é o que importa: <b>212.801 servidores</b> — esse é o universo em que a busca ativa acontece. Não decore os outros três."],
