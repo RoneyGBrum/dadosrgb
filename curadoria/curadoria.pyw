@@ -1030,32 +1030,134 @@ class App(tk.Tk):
         self.pintar_problemas()
         self.estado("backup carregado (ainda não salvo)")
 
+    # ------------------------------------------------------------------ git
+    def _git(self, *args):
+        """Roda um git na raiz do site. Devolve (codigo, saida unificada)."""
+        r = subprocess.run(["git"] + list(args), cwd=RAIZ, capture_output=True,
+                           text=True, encoding="utf-8", errors="replace")
+        return r.returncode, ((r.stdout or "") + (r.stderr or "")).rstrip()
+
+    def _pendentes(self):
+        """O que mudou no disco e ainda não virou commit: [(rótulo, caminho)]."""
+        cod, saida = self._git("status", "--porcelain")
+        if cod != 0:
+            raise RuntimeError(saida)
+        rotulos = {"?": "novo", "A": "novo", "D": "removido", "R": "renomeado"}
+        itens = []
+        for linha in saida.splitlines():
+            if len(linha) < 4:
+                continue
+            marca, caminho = linha[:2], linha[2:].strip()
+            if " -> " in caminho:
+                caminho = caminho.split(" -> ", 1)[1]
+            itens.append((rotulos.get(marca.strip()[:1], "alterado"),
+                          caminho.strip('"')))
+        return sorted(itens, key=lambda t: t[1])
+
+    def _por_enviar(self):
+        """Commits que já existem aqui mas ainda não foram ao GitHub.
+
+        Devolve None quando não dá para saber (branch sem remoto configurado).
+        """
+        cod, saida = self._git("log", "--oneline", "@{u}..HEAD")
+        if cod != 0:
+            return None
+        return [l.strip() for l in saida.splitlines() if l.strip()]
+
+    def _mensagem_padrao(self, pendentes):
+        """Sugere uma mensagem de commit que combine com o que está subindo."""
+        caminhos = [c for _, c in pendentes]
+        if not caminhos:
+            return ""
+        if caminhos == ["catalogo.js"]:
+            return "catálogo: atualiza índice"
+        topos = {c.split("/")[0] for c in caminhos}
+        if len(topos) == 1 and "/" in caminhos[0]:
+            return "%s: atualiza páginas" % topos.pop()
+        return "Atualiza o site (%d arquivos)" % len(caminhos)
+
     def publicar(self):
         if self.sujo:
             messagebox.showwarning("Salve antes",
                                    "Há alterações não salvas. Clique em «Salvar catálogo» primeiro.")
             return
-        if not messagebox.askyesno(
-                "Publicar no GitHub",
-                "Vou rodar:\n\n  git add catalogo.js\n  git commit\n  git push\n\n"
-                "O site atualiza cerca de 1 minuto depois. Continuar?"):
-            return
-        msg = "catálogo: atualiza índice"
         try:
-            for cmd in (["git", "add", "catalogo.js"],
-                        ["git", "commit", "-m", msg],
-                        ["git", "push"]):
-                r = subprocess.run(cmd, cwd=RAIZ, capture_output=True, text=True)
-                if r.returncode != 0 and "nothing to commit" not in (r.stdout + r.stderr):
-                    messagebox.showerror("Falhou em: %s" % " ".join(cmd),
-                                         (r.stdout + "\n" + r.stderr).strip()[:900])
-                    return
+            pendentes = self._pendentes()
+            por_enviar = self._por_enviar()
         except FileNotFoundError:
             messagebox.showerror("git não encontrado",
                                  "Não achei o git no PATH. Publique pelo GitHub Desktop.")
             return
-        messagebox.showinfo("Publicado", "Enviado. O site atualiza em cerca de 1 minuto.")
-        self.estado("publicado")
+        except RuntimeError as e:
+            messagebox.showerror("O git reclamou", str(e)[:900])
+            return
+
+        if not pendentes and not por_enviar:
+            messagebox.showinfo(
+                "Nada a publicar",
+                "O site já está em dia. Não há alteração pendente aqui na pasta, "
+                "nem commit esperando para subir.")
+            self.estado("nada a publicar")
+            return
+
+        dlg = DialogoPublicar(self, pendentes, por_enviar,
+                              self._mensagem_padrao(pendentes))
+        if not dlg.resultado:
+            return
+        msg = dlg.resultado
+
+        self.config(cursor="watch")
+        self.update()
+        try:
+            if pendentes:
+                for cmd in (("add", "-A"), ("commit", "-m", msg)):
+                    cod, saida = self._git(*cmd)
+                    if cod != 0:
+                        messagebox.showerror("Falhou em: git %s" % " ".join(cmd),
+                                             saida[:900])
+                        return
+            cod, saida = self._git("push")
+            if cod != 0:
+                messagebox.showerror("Falhou em: git push", saida[:900])
+                return
+            restante = self._por_enviar()
+        except FileNotFoundError:
+            messagebox.showerror("git não encontrado",
+                                 "Não achei o git no PATH. Publique pelo GitHub Desktop.")
+            return
+        finally:
+            self.config(cursor="")
+
+        # só diz "publicado" depois de conferir que o GitHub ficou mesmo com tudo
+        if restante:
+            messagebox.showwarning(
+                "Subiu pela metade",
+                "O push rodou, mas %d commit(s) continuam parados aqui:\n\n%s\n\n"
+                "O site NÃO está em dia."
+                % (len(restante), "\n".join(restante[:8])))
+            self.estado("publicação incompleta")
+            return
+        if restante is None:
+            messagebox.showwarning(
+                "Enviado, mas sem conferência",
+                "O push rodou sem erro, porém este branch não tem remoto "
+                "configurado, então não consegui confirmar o que chegou lá. "
+                "Vale conferir pelo GitHub Desktop.")
+            self.estado("enviado (sem conferência)")
+            return
+
+        if pendentes:
+            lista = "\n".join("  • %s" % c for _, c in pendentes[:12])
+            if len(pendentes) > 12:
+                lista += "\n  … e mais %d" % (len(pendentes) - 12)
+            corpo = ("Subiu %d arquivo%s:\n\n%s\n\nO site atualiza em cerca de "
+                     "1 minuto." % (len(pendentes),
+                                    "s" if len(pendentes) != 1 else "", lista))
+        else:
+            corpo = ("Enviei os commits que já estavam prontos aqui. "
+                     "O site atualiza em cerca de 1 minuto.")
+        messagebox.showinfo("Publicado", corpo)
+        self.estado("publicado — %d arquivo(s)" % len(pendentes))
 
     def abrir_pasta(self):
         try:
@@ -1071,9 +1173,13 @@ class App(tk.Tk):
         messagebox.showinfo(
             "Como publicar",
             "1. Edite aqui e clique em «Salvar catálogo» (faz backup automático).\n"
-            "2. Clique em «Publicar (git)» — ele faz add, commit e push.\n"
+            "2. Clique em «Publicar (git)»: ele mostra a lista de tudo que está\n"
+            "   pendente na pasta do site — não só o catálogo — para você\n"
+            "   conferir antes de subir. O que estiver na lista vai ao ar junto.\n"
             "3. Espere cerca de 1 minuto: o GitHub Pages reconstrói o site.\n\n"
-            "Se preferir, pule o passo 2 e use o GitHub Desktop.")
+            "O aviso «Publicado» só aparece depois de conferir que os commits\n"
+            "chegaram mesmo ao GitHub. Se preferir, pule o passo 2 e use o\n"
+            "GitHub Desktop.")
 
     def ajuda_restrito(self):
         messagebox.showinfo(
@@ -1138,6 +1244,72 @@ class EscolherDestino(tk.Toplevel):
     def ok(self):
         s = self.lb.curselection()
         self.resultado = s[0] if s else None
+        self.destroy()
+
+
+
+class DialogoPublicar(tk.Toplevel):
+    """Mostra exatamente o que vai para o ar antes de mexer no GitHub."""
+
+    def __init__(self, pai, pendentes, por_enviar, msg_padrao):
+        super().__init__(pai)
+        self.resultado = None
+        self.precisa_msg = bool(pendentes)
+        self.title("Publicar no GitHub")
+        self.transient(pai)
+        self.geometry("660x500")
+
+        fr = ttk.Frame(self, padding=16)
+        fr.pack(fill="both", expand=True)
+        ttk.Label(fr, text="Isto é o que vai para o site",
+                  style="Titulo.TLabel").pack(anchor="w")
+        ttk.Label(fr, wraplength=610, justify="left", style="Dica.TLabel",
+                  text="Tudo que está na lista entra no mesmo commit e vai ao ar. "
+                       "O que não estiver aqui continua só no seu computador."
+                  ).pack(anchor="w", pady=(2, 10))
+
+        tv = ttk.Treeview(fr, columns=("o", "a"), show="headings", height=11)
+        tv.heading("o", text="O quê")
+        tv.heading("a", text="Arquivo")
+        tv.column("o", width=120, stretch=False)
+        tv.column("a", width=470)
+        for rotulo, caminho in pendentes:
+            tv.insert("", "end", values=(rotulo, caminho))
+        for linha in (por_enviar or []):
+            tv.insert("", "end", values=("commit pronto", linha))
+        tv.pack(fill="both", expand=True)
+
+        ttk.Label(fr, text="Mensagem do commit").pack(anchor="w", pady=(12, 2))
+        self.v_msg = tk.StringVar(value=msg_padrao)
+        ent = ttk.Entry(fr, textvariable=self.v_msg)
+        ent.pack(fill="x")
+        if not self.precisa_msg:
+            self.v_msg.set("(nada novo para commitar — só falta enviar ao GitHub)")
+            ent.state(["disabled"])
+
+        bar = ttk.Frame(fr)
+        bar.pack(fill="x", pady=(14, 0))
+        ttk.Button(bar, text="Publicar", command=self.ok).pack(side="right")
+        ttk.Button(bar, text="Cancelar", command=self.destroy).pack(side="right", padx=6)
+
+        self.bind("<Return>", lambda ev: self.ok())
+        self.bind("<Escape>", lambda ev: self.destroy())
+        if self.precisa_msg:
+            ent.focus_set()
+        self.grab_set()
+        pai.wait_window(self)
+
+    def ok(self):
+        if not self.precisa_msg:
+            self.resultado = "(sem commit novo)"
+            self.destroy()
+            return
+        texto = self.v_msg.get().strip()
+        if not texto:
+            messagebox.showwarning("Falta a mensagem",
+                                   "Escreva uma linha dizendo o que mudou.", parent=self)
+            return
+        self.resultado = texto
         self.destroy()
 
 
@@ -1337,8 +1509,9 @@ class DialogoSenha(tk.Toplevel):
         messagebox.showinfo(
             "Senhas trocadas",
             "Atualizei %d página(s) e a lista viva.%s\n\n"
-            "Falta publicar: as páginas de painel_CGMOP mudaram, então precisam de "
-            "commit e push para valerem no site." % (len(trocadas), aviso), parent=self)
+            "Falta publicar: as páginas de painel_CGMOP mudaram. Feche esta janela "
+            "e use «Publicar (git)» — elas vão aparecer na lista do que sobe."
+            % (len(trocadas), aviso), parent=self)
 
 
 if __name__ == "__main__":
