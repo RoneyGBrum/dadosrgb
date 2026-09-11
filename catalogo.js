@@ -8,7 +8,7 @@
    largura (projeto): "auto" | "normal" | "largo" (2 col.) | "cheio" (linha toda). */
 window.CATALOGO = {
   "versao": 1,
-  "atualizadoEm": "2026-09-07",
+  "atualizadoEm": "2026-09-11",
   "colecoes": [
     {
       "id": "movimentacao-cgmop",
