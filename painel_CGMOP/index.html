@@ -376,7 +376,7 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 #portao .ajuda .obs{margin-top:9px;color:#7a8090;font-size:11.5px;font-style:italic}
 </style>
 </head><body>
-<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="manual.html"><span class="ic">📘</span><span class="lab">Manual</span></a><span class="onde"><span class="sep">›</span>você está em: <b>Início — todos os painéis</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
+<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="manual.html"><span class="ic">📘</span><span class="lab">Manual</span></a><a href="https://notebook.google.com/notebook/f526e962-e813-443b-bee0-87f059d46800" target="_blank" rel="noopener"><span class="ic">📚</span><span class="lab">Mara Legis<span class="fora" aria-hidden="true">↗</span></span></a><span class="onde"><span class="sep">›</span>você está em: <b>Início — todos os painéis</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 <div class="wrap">
   <header class="hero">
     <span class="eyebrow">Ecossistema de dados · CGMOP / SGP / MGI</span>
@@ -735,7 +735,61 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     pop.querySelector(".cta").onclick=()=>fechar(true);
     document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
     abrir_=()=>fechar(false);};};})();
-const META={"gerado_em": "14/09/2026 09:31", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+
+/* ===== Caixa de apresentação RECOLHÍVEL (pedido do usuário, 14/09/2026) =====
+   O bloco ".expl" no topo dos painéis explica o que a página é — indispensável na primeira
+   visita, estorvo na décima, porque empurra os filtros e os números para baixo da dobra.
+   Agora ele recolhe, e a escolha FICA GUARDADA por página (localStorage): quem já leu não
+   precisa recolher de novo a cada abertura.
+
+   Auto-instala: nenhum painel precisa chamar nada, e painel novo já nasce com o recurso.
+   Roda num setTimeout(0) para acontecer DEPOIS do init() síncrono da página — há painel
+   (afastamentos) que preenche o texto da caixa dentro do init.
+   Só a PRIMEIRA .expl da página é tratada: é a de apresentação. As demais, quando existem
+   (reembolso), são legendas curtas dentro das abas — recolher cada uma seria ruído. */
+(function(){const CSS=`.expl{position:relative}
+  .expl-bt{position:absolute;top:7px;right:9px;background:none;border:0;cursor:pointer;
+    color:var(--ink-2);font:inherit;font-size:11.5px;font-weight:700;opacity:.72;
+    display:flex;align-items:center;gap:4px;padding:3px 7px;border-radius:7px}
+  .expl-bt:hover{opacity:1;background:var(--surface)}
+  .expl-bt .ch{font-size:10px}
+  .expl.recolhida{padding-top:9px;padding-bottom:9px}
+  .expl.recolhida .expl-corpo{display:none}
+  .expl-tit{display:none;font-weight:700;color:var(--ink-2);padding-right:110px}
+  .expl.recolhida .expl-tit{display:block}
+  @media print{.expl-bt{display:none}.expl.recolhida .expl-corpo{display:block}.expl-tit{display:none}}`;
+  let inj=false;
+  function css(){if(inj)return;inj=true;const s=document.createElement("style");
+    s.textContent=CSS;document.head.appendChild(s);}
+  function chave(){return "expl_recolhida_v1:"+location.pathname.split("/").pop();}
+  function ler(){try{return localStorage.getItem(chave())==="1";}catch(e){return false;}}
+  function gravar(v){try{localStorage.setItem(chave(),v?"1":"0");}catch(e){}}
+  window.ligarRecolher=function(sel){
+    const cx=document.querySelector(sel||".expl");
+    if(!cx||cx.dataset.recolhivel)return;          // idempotente
+    if(!cx.textContent.trim())return;              // caixa ainda vazia: nada a recolher
+    cx.dataset.recolhivel="1";css();
+    // Título do estado recolhido = o primeiro <b> da caixa ("Quem são os anistiados?"),
+    // que é justamente a pergunta que ela responde. Sem <b>, um rótulo genérico.
+    const b=cx.querySelector("b");
+    const tit=b?b.textContent.replace(/[:?]\s*$/,""):"Sobre este painel";
+    const corpo=document.createElement("div");corpo.className="expl-corpo";
+    while(cx.firstChild)corpo.appendChild(cx.firstChild);
+    const cab=document.createElement("div");cab.className="expl-tit";cab.textContent="ⓘ "+tit;
+    const bt=document.createElement("button");bt.className="expl-bt";bt.type="button";
+    cx.appendChild(cab);cx.appendChild(corpo);cx.appendChild(bt);
+    function pinta(){const r=cx.classList.contains("recolhida");
+      bt.innerHTML=`<span class="ch">${r?"▸":"▾"}</span>${r?"mostrar":"recolher"}`;
+      bt.setAttribute("aria-expanded",r?"false":"true");
+      bt.title=r?"Mostrar a apresentação do painel":"Recolher — fica guardado para as próximas visitas";}
+    function alterna(){cx.classList.toggle("recolhida");gravar(cx.classList.contains("recolhida"));pinta();}
+    bt.onclick=alterna;
+    // no estado recolhido, a faixa inteira volta a abrir com um clique
+    cab.style.cursor="pointer";cab.onclick=alterna;
+    if(ler())cx.classList.add("recolhida");
+    pinta();};
+  setTimeout(()=>{try{window.ligarRecolher();}catch(e){}},0);})();
+const META={"gerado_em": "14/09/2026 10:25", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
