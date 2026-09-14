@@ -8,7 +8,7 @@
    largura (projeto): "auto" | "normal" | "largo" (2 col.) | "cheio" (linha toda). */
 window.CATALOGO = {
   "versao": 1,
-  "atualizadoEm": "2026-09-11",
+  "atualizadoEm": "2026-09-14",
   "colecoes": [
     {
       "id": "movimentacao-cgmop",
@@ -60,7 +60,7 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false,
+          "oculto": true,
           "acesso": "publico"
         },
         {
@@ -250,7 +250,7 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false,
+          "oculto": true,
           "acesso": "publico"
         },
         {
@@ -280,7 +280,7 @@ window.CATALOGO = {
           "destaque": false,
           "selo": "",
           "externo": false,
-          "oculto": false,
+          "oculto": true,
           "acesso": "publico"
         },
         {

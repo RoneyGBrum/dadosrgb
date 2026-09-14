@@ -269,6 +269,7 @@ class App(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.sair)
         self.bind("<Control-s>", lambda e: self.salvar())
         self.bind("<Control-z>", lambda e: self.desfazer())
+        self.bind("<Control-e>", self.alternar_ar)
 
     # ---------- estilo ----------
     def _estilo(self):
@@ -298,6 +299,8 @@ class App(tk.Tk):
 
         ed = tk.Menu(m, tearoff=0)
         ed.add_command(label="Desfazer  (Ctrl+Z)", command=self.desfazer)
+        ed.add_separator()
+        ed.add_command(label="Pôr no ar / tirar do ar  (Ctrl+E)", command=self.alternar_ar)
         ed.add_separator()
         ed.add_command(label="Validar agora", command=self.pintar_problemas)
         m.add_cascade(label="Editar", menu=ed)
@@ -342,6 +345,15 @@ class App(tk.Tk):
         ttk.Button(bar, text="Mover para…", command=self.mover_para, width=11).pack(side="left", padx=4)
         ttk.Button(bar, text="Duplicar", command=self.duplicar, width=9).pack(side="left")
         ttk.Button(bar, text="Excluir", command=self.excluir, width=9).pack(side="left", padx=4)
+
+        # segunda fileira: publicar ou não o item selecionado
+        bar2 = ttk.Frame(esq)
+        bar2.pack(fill="x", pady=(5, 0))
+        self.bt_ar = ttk.Button(bar2, text="Tirar do ar", width=13,
+                                command=self.alternar_ar, state="disabled")
+        self.bt_ar.pack(side="left")
+        self.lb_ar = ttk.Label(bar2, text="", style="Dica.TLabel")
+        self.lb_ar.pack(side="left", padx=8)
 
         # ----- direita: formulário + problemas -----
         dir_ = ttk.Frame(corpo)
@@ -404,7 +416,7 @@ class App(tk.Tk):
         for ci, c in enumerate(self.cat["colecoes"]):
             _, nome_cor = CORES[c["cor"]]
             rot = "%s   [%s]%s" % (c["titulo"] or "(sem título)", nome_cor,
-                                   "  · oculta" if c.get("oculta") else "")
+                                   "  · fora do ar" if c.get("oculta") else "")
             iid = "c%d" % ci
             tags = ["cor%d" % c["cor"]] + (["oculto"] if c.get("oculta") else [])
             self.arv.insert("", "end", iid=iid, text=rot, open=(iid in aberto or True),
@@ -418,7 +430,7 @@ class App(tk.Tk):
                 if p.get("externo"):
                     marcas.append("↗")
                 if p.get("oculto"):
-                    marcas.append("oculto")
+                    marcas.append("· fora do ar")
                 suf = ("   " + " ".join(marcas)) if marcas else ""
                 self.arv.insert(iid, "end", iid="c%dp%d" % (ci, pi),
                                 text=(p["titulo"] or "(sem título)") + suf,
@@ -441,6 +453,64 @@ class App(tk.Tk):
             self.arv.selection_set(iid)
             self.arv.see(iid)
 
+    # --------------------------------------------------------- no ar / fora
+    # O item continua existindo no catálogo; ele só deixa de ser exportado
+    # para o site. Quem filtra é o index.html (!c.oculta / !p.oculto).
+    def _iid_sel(self):
+        if not self.sel:
+            return None
+        if self.sel[0] == "col":
+            return "c%d" % self.sel[1]
+        return "c%dp%d" % (self.sel[1], self.sel[2])
+
+    def _alvo_ar(self):
+        """(item, chave, rótulo) do que está selecionado, ou None."""
+        self._validar_sel()
+        if not self.sel:
+            return None
+        if self.sel[0] == "col":
+            c = self.cat["colecoes"][self.sel[1]]
+            return c, "oculta", "A coleção «%s»" % (c["titulo"] or "sem título")
+        _, ci, pi = self.sel
+        p = self.cat["colecoes"][ci]["projetos"][pi]
+        return p, "oculto", "O projeto «%s»" % (p["titulo"] or "sem título")
+
+    def _atualizar_bt_ar(self):
+        alvo = self._alvo_ar()
+        if not alvo:
+            self.bt_ar.config(text="Tirar do ar", state="disabled")
+            self.lb_ar.config(text="")
+            return
+        item, chave, _ = alvo
+        fora = bool(item.get(chave))
+        # o rótulo diz o que o clique FAZ, não o estado atual
+        self.bt_ar.config(text="Pôr no ar" if fora else "Tirar do ar", state="normal")
+        if fora:
+            self.lb_ar.config(text="Fora do ar — não vai para o site.")
+        elif chave == "oculto" and self.cat["colecoes"][self.sel[1]].get("oculta"):
+            self.lb_ar.config(text="No ar, mas a coleção está fora do ar.")
+        else:
+            self.lb_ar.config(text="No ar.")
+
+    def alternar_ar(self, _=None):
+        alvo = self._alvo_ar()
+        if not alvo:
+            self.estado("selecione uma coleção ou um projeto primeiro")
+            return
+        item, chave, rotulo = alvo
+        fora = not bool(item.get(chave))
+        self._mudou_campo(item, chave, fora, True)
+        self._selecionar_iid(self._iid_sel())      # pintar_arvore perde o realce
+        self.pintar_form()
+        if fora:
+            recado = "%s saiu do ar — continua aqui no catálogo." % rotulo
+        elif chave == "oculto" and self.cat["colecoes"][self.sel[1]].get("oculta"):
+            recado = ("%s voltou ao ar, mas a coleção dele está fora do ar — "
+                      "então ainda não aparece no site." % rotulo)
+        else:
+            recado = "%s está no ar." % rotulo
+        self.estado(recado)
+
     # ------------------------------------------------------------ formulário
     def _validar_sel(self):
         """A seleção pode ter ficado para trás (desfazer, exclusão, reordenação)."""
@@ -456,6 +526,7 @@ class App(tk.Tk):
 
     def pintar_form(self):
         self._validar_sel()
+        self._atualizar_bt_ar()
         for w in self.form.winfo_children():
             w.destroy()
         if not self.sel:
@@ -534,6 +605,7 @@ class App(tk.Tk):
         if repintar:
             self.pintar_arvore()
         self.pintar_problemas()
+        self._atualizar_bt_ar()      # a caixa do formulário também mexe no "no ar"
         self.estado()
 
     # --- coleção ---
@@ -598,7 +670,8 @@ class App(tk.Tk):
                       lambda v: self._mudou_campo(c, "id", v), 40)
         ttk.Label(self.form, text="O id vira a âncora da seção no site (#col-N usa a posição).",
                   style="Dica.TLabel").pack(anchor="w")
-        self._check(self.form, "Ocultar esta coleção do site", c.get("oculta"),
+        self._check(self.form, "Tirar esta coleção do ar (continua aqui no catálogo)",
+                    c.get("oculta"),
                     lambda v: self._mudou_campo(c, "oculta", v, True))
         self._carregando = False
 
@@ -763,7 +836,8 @@ class App(tk.Tk):
                       lambda v: self._mudou_campo(p, "selo", v), 18)
         self._check(ab2, "Abrir em nova aba (link externo)", p.get("externo"),
                     lambda v: self._mudou_campo(p, "externo", v, True))
-        self._check(ab2, "Ocultar do site (mantém o conteúdo aqui)", p.get("oculto"),
+        self._check(ab2, "Tirar este projeto do ar (continua aqui no catálogo)",
+                    p.get("oculto"),
                     lambda v: self._mudou_campo(p, "oculto", v, True))
 
         ttk.Separator(ab3).pack(fill="x", pady=10)
