@@ -379,7 +379,7 @@ html:not(.autenticado) body>*:not(#portao){display:none!important}
 <nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="manual.html"><span class="ic">📘</span><span class="lab">Manual</span></a><a href="https://notebook.google.com/notebook/f526e962-e813-443b-bee0-87f059d46800" target="_blank" rel="noopener"><span class="ic">📚</span><span class="lab">Mara Legis<span class="fora" aria-hidden="true">↗</span></span></a><span class="onde"><span class="sep">›</span>você está em: <b>Início — todos os painéis</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
 <div class="wrap">
   <header class="hero">
-    <span class="eyebrow">Ecossistema de dados · CGMOP / DEPRO / SGP / MGI</span>
+    <span class="eyebrow">Ecossistema de dados · CGMOP / SGP / MGI</span>
     <h1>Movimentação de pessoal na palma da mão</h1>
     <p class="deck">Painéis integrados sobre servidores federais entre órgãos — cessão, requisição,
       força de trabalho (§7º do art. 93), afastamentos e reforma administrativa.</p>
@@ -796,7 +796,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     if(ler())cx.classList.add("recolhida");
     pinta();};
   setTimeout(()=>{try{window.ligarRecolher();}catch(e){}},0);})();
-const META={"gerado_em": "14/09/2026 16:00", "mes_referencia": "2026-06", "total": 215590, "vigentes": 53820};
+const META={"gerado_em": "21/09/2026 11:04", "mes_referencia": "2026-08", "total": 218450, "vigentes": 55472};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
