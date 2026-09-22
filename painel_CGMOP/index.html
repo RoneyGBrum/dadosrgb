@@ -188,6 +188,13 @@ svg text{fill:var(--muted);font-size:11px}svg text.t{fill:var(--ink);font-weight
 #pdf-doc table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
 #pdf-doc th{background:#fff;color:#12336e;padding:9px 11px;text-align:left;font-weight:800;font-size:12.5px;border-bottom:2px solid #12336e}
 #pdf-doc td{border-bottom:1px solid #e2e6ec;padding:8px 11px;color:#1c1c1c}#pdf-doc td.n,#pdf-doc th.num{text-align:right;font-variant-numeric:tabular-nums}
+/* Num documento impresso a largura da folha não cede: texto QUEBRA, nunca transborda.
+   A regra genérica de tabela de tela (thead th / tbody td) impõe white-space:nowrap a todas as
+   tabelas do documento — inclusive a do relatório — e até 22/09/2026 vencia aqui por omissão,
+   fazendo o nome do órgão invadir a coluna vizinha e cortar os cabeçalhos. Número segue
+   inteiro (td.n / th.num): "16.750" e "-7.400,0%" não podem quebrar no meio. */
+#pdf-doc th,#pdf-doc td{white-space:normal;overflow-wrap:break-word}
+#pdf-doc td.n,#pdf-doc th.num{white-space:nowrap}
 #pdf-doc tbody tr:nth-child(even){background:#f5f6f8}
 #pdf-doc .pos{color:#b3541c;font-weight:700}#pdf-doc .neg{color:#0f6b56;font-weight:700}
 #pdf-doc .seta{font-weight:800}#pdf-doc .seta.o{color:#c26a27}#pdf-doc .seta.d{color:#178a6e}
@@ -418,6 +425,11 @@ const fmtMoeda=n=>(n==null||isNaN(n)||+n===0)?"—":(+n).toLocaleString("pt-BR",
 const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const cap=s=>{s=String(s||"");if(s.length<=4&&s===s.toUpperCase())return s;return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();};
 // Data sempre em dd/mm/aaaa (aceita AAAA-MM-DD, AAAA-MM-DDT..., ou já formatada).
+// "Emitido em" é a hora em que o DOCUMENTO sai — não a da geração do painel. O .html é montado
+// uma vez e usado o dia inteiro: em 22/09/2026 um relatório impresso às 8h dizia 04:51, que era
+// a hora do build. Mesmo formato do gerado_em do Python (%d/%m/%Y %H:%M), para os dois lerem igual.
+const agoraBR=()=>{const d=new Date(),p=n=>String(n).padStart(2,"0");
+  return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;};
 const fmtData=s=>{if(s==null||s===""||s==="1889-09-09")return"";const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:String(s);};
 function showTT(e,h){if(!tt)return;tt.innerHTML=h;tt.style.opacity=1;moveTT(e);}
 function moveTT(e){if(!tt)return;let x=e.clientX+14,y=e.clientY+14;if(x+tt.offsetWidth>innerWidth)x=e.clientX-tt.offsetWidth-14;tt.style.left=x+"px";tt.style.top=y+"px";}
@@ -803,7 +815,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     if(ler())cx.classList.add("recolhida");
     pinta();};
   setTimeout(()=>{try{window.ligarRecolher();}catch(e){}},0);})();
-const META={"gerado_em": "22/09/2026 04:54", "mes_referencia": "2026-08", "total": 218450, "vigentes": 55472};
+const META={"gerado_em": "22/09/2026 08:27", "mes_referencia": "2026-08", "total": 218450, "vigentes": 55472};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
