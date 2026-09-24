@@ -768,6 +768,7 @@ figure.captura{margin:1.2em 0;text-align:center}figure.captura img{max-width:100
 }
 @media print { .sim-trilho, .sim-pe { display: none } }
 
+
 /* ── O GUIA PASSO A PASSO — acréscimos da segunda versão ─────────────────────
    O dono: «este guia é o que tem que ser mais didático do manual». O que mudou
    visualmente: um termo novo ganha destaque na tela em que nasce; o
@@ -871,60 +872,47 @@ figure.captura{margin:1.2em 0;text-align:center}figure.captura img{max-width:100
   .sim-mapa { height: 150px }
 }
 
-
-
-/* ── A SEGUNDA ÁRVORE (currículo → XML) e a retirada dos números da primeira ──
-   Ela reaproveita as classes `arv-*`: mesma moldura, mesma busca, mesma caixa,
-   mesma linha. Só o que é PRÓPRIO dela está aqui — o selo de estado e os dois
-   parágrafos da ficha. Repetir o resto criaria dois visuais que divergem na
-   primeira correção.
-
-   `.arv-sub` ganha `margin-left:auto` porque quem empurrava o fim da linha para
-   a direita era o `.arv-med` (a barra e o «48/48»), que saiu em 23/09/2026 a
-   pedido do dono: «retire os números dos currículos existentes, está
-   dificultando a leitura». Sem esta linha, o «N abaixo» colaria no nome. */
-.arv-sub { margin-left: auto }
-
-.acv-nome { font-family: inherit; font-size: 12.5px; letter-spacing: 0 }
-.acv-selo {
-  margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: .02em;
-  padding: 1px 7px; border-radius: 999px; border: 1px solid transparent;
-  white-space: nowrap; flex: 0 0 auto
+/* ── A RÉGUA DE PESOS e AS ROTAS (24/09, 2ª revisão) ─────────────────────────
+   O dono: «coloque TODOS os pesos utilizados para esse exemplo» e «são pessoas
+   leigas que farão a avaliação e os ajustes finais no dicionário». Quem vai
+   mexer num número precisa ver a régua inteira — o valor que venceu E as
+   alternativas que existiam. Mostrar só o vencedor esconde justamente o que
+   está em jogo na hora de ajustar. */
+.sim-regua { background: var(--bg-2); border-radius: 8px; padding: 9px 12px; margin: 8px 0 }
+.sim-regua-tit { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--tinta-3); margin-bottom: 5px }
+.sim-op {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 5px 8px; border-radius: 5px; font-size: 12.5px; color: var(--tinta-3)
 }
-/* Com selo E «N subseções» na mesma linha, o selo já empurrou: o sub só se
-   descola dele. Sem isto os dois encostam. */
-.acv-selo + .arv-sub { margin-left: 8px }
+.sim-op b { font-family: "SF Mono", ui-monospace, Consolas, monospace; font-weight: 600 }
+.sim-op.on { background: var(--azul-claro); color: var(--tinta); font-weight: 500 }
+.sim-op.on b { color: var(--azul); font-weight: 700 }
 
-.acv-lido { color: #1A6B47; background: #E8F3EE; border-color: #BFDDD0 }
-.acv-parte { color: #8A5D00; background: #FBF2DE; border-color: #E6D3A6 }
-.acv-nao { color: #8B5A52; background: #F5ECEA; border-color: #E0CCC7 }
-[data-tema="escuro"] .acv-lido { color: #6FCBA0; background: #17301F; border-color: #2C5A3C }
-[data-tema="escuro"] .acv-parte { color: #D8B45A; background: #302713; border-color: #5A4A1E }
-[data-tema="escuro"] .acv-nao { color: #D2A59B; background: #2E201D; border-color: #5A3A33 }
+.sim-soma {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  margin-top: 7px; padding-top: 8px; border-top: 2px solid var(--linha);
+  font-size: 12px; color: var(--tinta-3)
+}
+.sim-soma b { font-family: "SF Mono", ui-monospace, Consolas, monospace; color: var(--tinta); font-size: 13px }
 
-.acv-ficha .arv-atrs-tit {
-  display: flex; align-items: center; gap: 8px; text-transform: none;
-  letter-spacing: 0; margin-bottom: 2px
+.sim-rotas { display: grid; gap: 5px; margin: 6px 0 }
+.sim-rota {
+  display: grid; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1.05fr);
+  gap: 8px; align-items: center; background: var(--bg-2); border-radius: 7px;
+  padding: 8px 11px; font-size: 12.5px
 }
-.acv-nota { font-size: 11px; font-style: italic; color: var(--tinta-3); font-weight: 400 }
-.acv-par { display: grid; grid-template-columns: 136px 1fr; gap: 10px; margin-top: 9px }
-.acv-par > b {
-  font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
-  color: var(--tinta-3); padding-top: 2px
-}
-.acv-par > span { font-size: 12.3px; line-height: 1.6; color: var(--tinta-2) }
-.acv-par code {
-  font-family: "SF Mono", ui-monospace, Consolas, monospace; font-size: .88em;
-  color: var(--tinta); overflow-wrap: anywhere
-}
-.acv-ficha .arv-atrs-diz { margin: 10px 0 0 }
+.sim-rota-de { color: var(--tinta-2) }
+.sim-seta { text-align: center; color: var(--tinta-3) }
+.sim-rota-para { font-weight: 600 }
+.sim-rota-para i { font-weight: 400; font-size: 11px; color: var(--tinta-3) }
+.sim-rota-off { opacity: .5 }
+.sim-rota-alvo { background: var(--azul-claro); box-shadow: inset 3px 0 0 var(--azul) }
+.sim-rota-alvo .sim-rota-para { color: var(--azul) }
 
-@media (max-width:640px) {
-  .acv-par { grid-template-columns: 1fr; gap: 1px }
-  .acv-selo { margin-left: 0 }
-  .acv-selo + .arv-sub { margin-left: 0 }
+@media (max-width: 620px) {
+  .sim-rota { grid-template-columns: 1fr; gap: 2px }
+  .sim-seta { text-align: left }
 }
-
 
 </style>
 </head>
@@ -2833,6 +2821,20 @@ const SIM_PERFIL = [
   { r: 'Química e Petroquímica Fina', v: 31 },
   { r: 'Plásticos, Borracha e Compósitos', v: 31 },
   { r: 'Serviços Técnicos Especializados e Metrologia', v: 25 },
+  { r: 'Logística e Cadeia de Suprimentos', v: 24 },
+  { r: 'Tecnologia da Informação e Software', v: 11 },
+  { r: 'Agroindústria e Bioeconomia', v: 10 },
+  { r: 'Aeroespacial e Defesa', v: 8 },
+  { r: 'Alimentos e Bebidas', v: 7 },
+  { r: 'Metalurgia e Siderurgia', v: 6 },
+  { r: 'Têxtil, Couro e Calçados', v: 5 },
+  { r: 'Petróleo, Gás e Petroquímica', v: 5 },
+  { r: 'Meio Ambiente e Economia Circular', v: 2 },
+  { r: 'Papel, Celulose e Madeira', v: 2 },
+  { r: 'Metalmecânica e Bens de Capital', v: 1 },
+  { r: 'Descarbonização e Transição Energética', v: 1 },
+  { r: 'Mineração e Beneficiamento Mineral', v: 1 },
+  { r: 'Eletroeletrônica e Semicondutores', v: 1 },
 ];
 
 const SIM_DEGRAUS = [
@@ -2875,7 +2877,38 @@ const SIM_DEGRAUS = [
           <p><i>Financiador(es):</i> Fundo de Apoio à Pesquisa e Extensão da Unicamp</p>
         </div>
       </div>
-      <p class="sim-guia">Guarde quatro coisas desta tela — <b>a descrição</b>, <b>a natureza</b>, <b>o financiador</b> e <b>os três doutorandos</b>. Cada uma segue por um caminho diferente, e uma delas o modelo nunca vai ver.</p>`,
+      <p class="sim-guia">Guarde quatro coisas desta tela — <b>a descrição</b>, <b>a natureza</b>, <b>o financiador</b> e <b>os três doutorandos</b>. Cada uma segue por um caminho diferente, e uma delas o modelo nunca vai ver.</p>
+      ${simMais('Ver o registro completo deste projeto (para conferir sem abrir o currículo)', `
+        <p>Este é o conteúdo bruto, campo a campo, do jeito que o CNPq entrega. Os nomes das pessoas foram trocados por rótulos: o currículo é público, mas a avaliação que este sistema faz de alguém não é.</p>
+        <pre class="sim-xml">NOME-DO-PROJETO ............. DESENVOLVIMENTO DE RECOBRIMENTOS ANTIVIRAIS
+                              PARA FUNCIONALIZAÇÃO DE EPIs PARA CONTROLE
+                              DA COVID-19
+NATUREZA .................... PESQUISA
+ANO-INICIO · ANO-FIM ........ 2020 · 2021
+SITUACAO .................... CONCLUIDO
+FLAG-POTENCIAL-INOVACAO ..... NAO
+NUMERO-GRADUACAO ............ (vazio)
+NUMERO-ESPECIALIZACAO ....... (vazio)
+NUMERO-MESTRADO-ACADEMICO ... (vazio)
+NUMERO-MESTRADO-PROF ........ (vazio)
+NUMERO-DOUTORADO ............ 3
+NUMERO_TECNICO_NIVEL_MEDIO .. (vazio)
+IDENTIFICADOR-PROJETO ....... (vazio)
+NOME-DO-PROJETO-INGLES ...... (vazio)
+DESCRICAO-DO-PROJETO-INGLES . (vazio)
+NOME-COORDENADOR-CERTIFICACAO (vazio)
+DATA-CERTIFICACAO ........... (vazio)
+FINANCIADORES-DO-PROJETO .... Fundo de Apoio Pesquisa e Extensão da Unicamp</pre>
+        <p style="margin-top:9px">E a descrição, que é o campo longo — <b>inteira, sem cortar nada</b>:</p>
+        <pre class="sim-texto">DESCRICAO-DO-PROJETO:
+
+A partir de uma colaboração entre grupos com experiência no desenvolvimento de biomateriais e testes com atividade antiviral, esta proposta visa o desenvolvimento de recobrimentos híbridos, à base de biopolímeros, com propriedade antiviral, para a funcionalização de máscaras de proteção visando proporcionar à superfície das máscaras, além de uma barreira física, propriedades bioativas contra o Covid-19.Situação: Em andamento Natureza: Projetos de pesquisaAlunos envolvidos: Graduação (1); Mestrado acadêmico (2); Doutorado (2); Integrantes: [coordenadora] (Responsável); ;  [integrante 2];  [integrante 3];  [integrante 4];  [integrante 5]Financiador(es): Fundo de Apoio Pesquisa e Extensão da Unicamp-FAEPEX.</pre>
+        <p style="margin-top:9px">As palavras grudadas — «Covid-19.Situação:», «pesquisaAlunos», «arnsFinanciador(es):» — não são erro de digitação nosso. É assim que o texto chega do CNPq, e é assim que o modelo o recebe.</p>`)}
+      <p class="sim-atencao"><b>Três desencontros dentro do próprio registro</b>, todos reais e todos neste mesmo projeto:<br>
+        · o campo <b>SITUACAO</b> diz «CONCLUIDO»; a prosa da descrição diz «Em andamento».<br>
+        · o campo <b>NUMERO-DOUTORADO</b> diz «3»; a prosa diz «Doutorado (2)».<br>
+        · os campos de <b>graduação e mestrado estão vazios</b>; a prosa diz «Graduação (1); Mestrado acadêmico (2)».<br>
+        O sistema conta <b>o campo</b>, nunca a prosa. Por isso este projeto entra com três doutorandos e nenhum graduando. Guarde isto: quando um número parecer estranho, o que se confere é o campo.</p>`,
   },
   {
     n: 4, titulo: 'O mesmo item, no arquivo',
@@ -2912,12 +2945,9 @@ const SIM_DEGRAUS = [
     n: 6, titulo: 'A frase que vai ao modelo',
     linha: 'e o que ele nunca vai saber',
     corpo: `<p class="sim-lead">A <b>etapa 2</b> não manda a linha inteira. Ela monta uma frase, sempre no mesmo formato, com os campos que interessam àquele tipo de item:</p>
-      <pre class="sim-texto">Projeto: DESENVOLVIMENTO DE RECOBRIMENTOS ANTIVIRAIS PARA
-FUNCIONALIZAÇÃO DE EPIs PARA CONTROLE DA COVID-19.
-Natureza: PESQUISA.
-Descrição: A partir de uma colaboração entre grupos com experiência
-no desenvolvimento de biomateriais e testes com atividade antiviral…</pre>
-      <div class="sim-atencao"><b>Esta frase é tudo o que o modelo vê.</b> Ele não sabe o ano, não sabe o financiador e <b>não sabe dos três doutorandos</b>. Esses três entram na conta muito depois, por outro caminho — e é por isso que pedimos que você os guardasse.</div>
+      <pre class="sim-texto">Projeto: DESENVOLVIMENTO DE RECOBRIMENTOS ANTIVIRAIS PARA FUNCIONALIZAÇÃO DE EPIs PARA CONTROLE DA COVID-19. Natureza: PESQUISA. Descrição: A partir de uma colaboração entre grupos com experiência no desenvolvimento de biomateriais e testes com atividade antiviral, esta proposta visa o desenvolvimento de recobrimentos híbridos, à base de biopolímeros, com propriedade antiviral, para a funcionalização de máscaras de proteção visando proporcionar à superfície das máscaras, além de uma barreira física, propriedades bioativas contra o Covid-19.Situação: Em andamento Natureza: Projetos de pesquisaAlunos envolvidos: Graduação (1); Mestrado acadêmico (2); Doutorado (2); Integrantes: [coordenadora] (Responsável); ;  [integrante 2];  [integrante 3];  [integrante 4];  [integrante 5]Financiador(es): Fundo de Apoio Pesquisa e Extensão da Unicamp-FAEPEX. Financiador: Fundo de Apoio Pesquisa e Extensão da Unicamp</pre>
+      <p class="sim-nota">É esta a frase inteira, sem cortes. Quatro campos, sempre nesta ordem: <b>Projeto</b>, <b>Natureza</b>, <b>Descrição</b>, <b>Financiador</b>. O formato é sempre o mesmo para todo projeto de todo currículo — o que muda é o conteúdo.</p>
+      <div class="sim-atencao"><b>Esta frase é tudo o que o modelo vê.</b> Ele não sabe o ano, não sabe a situação e <b>não sabe dos três doutorandos</b> — esses entram na conta muito depois, por outro caminho, e é por isso que pedimos que você os guardasse. O <b>financiador</b>, ao contrário, ele vê: está na última linha de propósito, porque projeto com fomento identificado é outra coisa que projeto sem fomento.</div>
       ${simMais('Uma armadilha que custou caro', `<p>Repare que a frase começa com a palavra <b>«Projeto»</b>. Duas definições do dicionário também começavam com ela. Resultado medido: <b>um em cada três projetos da base</b> caía num setor errado — o de «Aeroespacial e Defesa» — só por causa dessa coincidência de palavra. A correção foi tirar a palavra das duas definições.</p>`)}`,
   },
   {
@@ -2987,8 +3017,9 @@ no desenvolvimento de biomateriais e testes com atividade antiviral…</pre>
   {
     n: 11, titulo: 'O perfil dela',
     linha: 'e por que «o setor principal» pode enganar',
-    corpo: `<p class="sim-lead">Estes são os 299 itens dela, distribuídos por setor:</p>
+    corpo: `<p class="sim-lead">Esta é a lista <b>inteira</b> — as 299 classificações de setor dela, sem corte, somando 100%:</p>
       ${simBarras(SIM_PERFIL, 0)}
+      <div class="sim-soma"><span>20 categorias usadas, de 23 possíveis</span><b>299 itens · 100%</b></div>
       <p class="sim-nota">O ${simP('predominante', 'A categoria mais frequente nos itens de uma pessoa. É o que o painel mostra como «o setor dela».')} é o primeiro da lista. Mas repare: ele ganha do segundo por <b>dois itens</b>, e responde por apenas <b>15%</b> do total.</p>
       <div class="sim-atencao">Esse 15% tem nome — a ${simP('concentração', 'A fatia das evidências de alguém que aponta para a categoria principal. Perto de 1, o rótulo é sólido; perto de 0, é quase empate.')} — e aparece na ficha ao lado de cada categoria, como «44 de 299». <b>Concentração baixa é um aviso: a pessoa é dispersa, e o rótulo principal quase não se sustenta.</b></div>
       ${simMais('Por isso o filtro tem dois modos', `<p>Procurar pelo «setor principal» acha só quem tem aquela categoria em primeiro lugar. Procurar por «qualquer item» acha quem tem <b>ao menos um</b>. A diferença é enorme: nesta base, «Logística» é o setor principal de <b>ninguém</b> e aparece em <b>42 dos 50</b> currículos.</p>`)}`,
@@ -2996,23 +3027,47 @@ no desenvolvimento de biomateriais e testes com atividade antiviral…</pre>
   {
     n: 12, titulo: 'De contagem a peso',
     linha: 'nem todo item vale o mesmo',
-    corpo: `<p class="sim-lead">Contar itens trataria uma patente como um resumo de congresso. Por isso cada um recebe um <b>peso</b>, e o nosso projeto é pesado assim:</p>
-      <div class="sim-conta">
-        <div class="sim-linha"><span>tem financiador</span><b>× 1,6</b></div>
-        <div class="sim-linha"><span>potencial de inovação = <i>NÃO</i></span><b>× 1,0</b></div>
-        <div class="sim-linha"><span>natureza «pesquisa»</span><b>× 1,0</b></div>
-        <div class="sim-total"><span>peso deste projeto</span><b>1,60</b></div>
-      </div>
-      <p class="sim-nota">Se a flag de inovação fosse <i>SIM</i>, o peso seria <b>2,08</b> — o mesmo projeto valendo 30% mais por um atributo que a tela do Lattes mostra como seção à parte.</p>
-      <p class="sim-lead" style="margin-top:.9rem">E lembra dos <b>três doutorandos</b>, que o modelo nunca viu? Eles entram aqui, noutra dimensão:</p>
-      <div class="sim-conta">
-        <div class="sim-linha"><span>3 doutorandos × 3,0</span><b>9,0</b></div>
-        <div class="sim-linha"><span>a dimensão 8 (Formação de pessoas) usa 0,6 disso</span><b>5,4</b></div>
-      </div>
-      ${simMais('Uma comparação que vale pensar', `<p>Uma orientação de doutorado <b>concluída</b> pesa 4,0. Este projeto sozinho entrega 5,4 à mesma dimensão — mais que uma tese. É defensável, porque são três pessoas conduzidas. Mas é o tipo de escolha que só se percebe quando se segue o fio até aqui, e que pode ser recalibrada.</p>`)}`,
+    corpo: `<p class="sim-lead">Contar itens trataria uma patente como um resumo de congresso. Por isso cada item recebe um <b>peso</b>. Abaixo está a <b>régua inteira</b> que se aplica a um projeto — com o valor que valeu para o nosso em destaque.</p>
+      <div class="sim-regua"><div class="sim-regua-tit">1 · tem financiador?</div>
+        <div class="sim-op on"><span>sim — «Fundo de Apoio à Pesquisa e Extensão da Unicamp»</span><b>1,6</b></div>
+        <div class="sim-op"><span>não</span><b>1,0</b></div></div>
+      <div class="sim-regua"><div class="sim-regua-tit">2 · tem potencial de inovação declarado?</div>
+        <div class="sim-op"><span>sim</span><b>1,3</b></div>
+        <div class="sim-op on"><span>não — o currículo diz NAO neste projeto</span><b>1,0</b></div></div>
+      <div class="sim-regua"><div class="sim-regua-tit">3 · qual a natureza?</div>
+        <div class="sim-op on"><span>pesquisa</span><b>1,0</b></div>
+        <div class="sim-op"><span>desenvolvimento</span><b>1,0</b></div>
+        <div class="sim-op"><span>extensão</span><b>1,0</b></div>
+        <div class="sim-op"><span>ensino</span><b>1,0</b></div>
+        <div class="sim-op"><span>outra</span><b>1,0</b></div></div>
+      <div class="sim-conta"><div class="sim-total"><span>1,6 × 1,0 × 1,0</span><b>1,60</b></div></div>
+      <div class="sim-atencao">As cinco naturezas valem <b>1,0</b> — ou seja, hoje a natureza <b>não muda nada</b>. Isso foi uma escolha deliberada: antes elas eram simplesmente ignoradas, e passaram a ser um peso <b>declarado e igual</b>, para que a decisão de diferenciá-las possa ser tomada um dia, à vista de todos. <b>É exatamente o tipo de número que quem revisa o dicionário pode mudar.</b></div>
+      <p class="sim-lead" style="margin-top:1rem">E lembra dos <b>três doutorandos</b>, que o modelo nunca viu? Eles têm régua própria:</p>
+      <div class="sim-regua"><div class="sim-regua-tit">4 · quantos alunos, e de que nível</div>
+        <div class="sim-op"><span>cada graduando</span><b>1,0</b></div>
+        <div class="sim-op"><span>cada mestrando</span><b>2,0</b></div>
+        <div class="sim-op on"><span>cada doutorando — há 3 neste projeto</span><b>3,0</b></div></div>
+      <div class="sim-conta"><div class="sim-total"><span>3 × 3,0</span><b>9,00</b></div></div>
+      ${simMais('Uma comparação que vale pensar', `<p>Na régua das orientações formais, um <b>doutorado concluído</b> pesa 4,0; um mestrado, 2,5; uma iniciação científica, 0,8. Este projeto sozinho entrega 9,0 (depois reduzidos a 5,4) à mesma dimensão — <b>mais que uma tese concluída</b>. É defensável, porque são três pessoas conduzidas; mas é o tipo de escolha que só se percebe seguindo o fio até aqui, e que pode ser recalibrada.</p>`)}`,
   },
   {
-    n: 13, titulo: 'De peso a nota',
+    n: 13, titulo: 'Por onde este projeto entra nas notas',
+    linha: 'a pergunta mais importante do guia',
+    corpo: `<p class="sim-lead">O sistema resume cada pessoa em <b>nove ${simP('dimensão', 'Um dos nove aspectos em que o sistema resume uma pessoa. Juntas formam o índice DPI-9 — as nove Dimensões do Perfil Industrial.')}s</b>. Um mesmo item não alimenta uma só: ele entra em várias, <b>por caminhos diferentes</b>.</p>
+      <div class="sim-rotas">
+        <div class="sim-rota"><span class="sim-rota-de">a classificação de <b>setor</b></span><span class="sim-seta">→</span><span class="sim-rota-para">1 · Domínio setorial</span></div>
+        <div class="sim-rota sim-rota-off"><span class="sim-rota-de">a classificação de <b>competência</b></span><span class="sim-seta">→</span><span class="sim-rota-para">2 · Competência técnica <i>(projetos não têm este eixo)</i></span></div>
+        <div class="sim-rota"><span class="sim-rota-de">a classificação de <b>tecnologia</b></span><span class="sim-seta">→</span><span class="sim-rota-para">3 · Tecnologias habilitadoras</span></div>
+        <div class="sim-rota"><span class="sim-rota-de">a classificação de <b>estágio</b></span><span class="sim-seta">→</span><span class="sim-rota-para">4 · Maturidade tecnológica</span></div>
+        <div class="sim-rota"><span class="sim-rota-de">os <b>3 doutorandos</b></span><span class="sim-seta">→</span><span class="sim-rota-para">8 · Formação de pessoas</span></div>
+        <div class="sim-rota sim-rota-alvo"><span class="sim-rota-de">o <b>peso 1,60</b></span><span class="sim-seta">→</span><span class="sim-rota-para">9 · Articulação e fomento</span></div>
+      </div>
+      <div class="sim-atencao"><b>A regra por trás:</b> o que o item <b>é</b> — a sua classificação — alimenta as dimensões de «em quê»: setor, tecnologia, estágio. O que o item <b>tem</b> — financiador, equipe, natureza — alimenta as dimensões de «quanto»: formação de pessoas e articulação.</div>
+      <p class="sim-nota">As outras quatro dimensões deste projeto ficam vazias porque vêm de outro tipo de item: <b>5 · Produção tecnológica</b> vem de patentes e software, <b>6 · Experiência produtiva</b> de vínculos de emprego, <b>7 · Densidade científica</b> de publicações, e <b>2 · Competência</b> não é perguntada a projetos.</p>
+      ${simMais('A conta da dimensão 9, por extenso', `<p><code>dimensão 9 = soma do peso de TODOS os projetos + 2,0 × número de prêmios</code></p><p>Nosso projeto contribui com 1,60 dessa soma. A pessoa tem 53 projetos, e o total dela é <b>176,2</b>. Ou seja: este projeto é cerca de <b>1%</b> da dimensão 9 dela — nenhum item sozinho decide uma nota, e é bom que seja assim.</p>`)}`,
+  },
+  {
+    n: 14, titulo: 'De peso a nota',
     linha: 'a fila, e por que a nota é comparativa',
     corpo: `<p class="sim-lead">Os pesos de todos os itens se somam e viram a medida bruta de uma ${simP('dimensão', 'Um dos nove aspectos em que o sistema resume uma pessoa. Juntos formam o índice DPI-9 — as nove Dimensões do Perfil Industrial.')}. Essa soma <b>não</b> é a nota.</p>
       <div class="sim-conta">
@@ -3032,7 +3087,7 @@ no desenvolvimento de biomateriais e testes com atividade antiviral…</pre>
     },
   },
   {
-    n: 14, titulo: 'Onde o sistema erra',
+    n: 15, titulo: 'Onde o sistema erra',
     linha: 'e como você percebe',
     corpo: `<p class="sim-lead">Você chegou ao fim do caminho. Falta a parte que uma demonstração honesta não pode omitir.</p>
       <div class="sim-erro">
@@ -3051,10 +3106,11 @@ no desenvolvimento de biomateriais e testes com atividade antiviral…</pre>
       <div class="sim-teste"><b>margem pequena</b> → a segunda colocada quase venceu</div>
       <div class="sim-teste"><b>concentração baixa</b> → o rótulo principal representa pouco</div>
       <div class="sim-teste"><b>percentil, não média</b> → a nota é posição nesta base, não valor absoluto</div>
+      <div class="sim-teste"><b>prosa ≠ campo</b> → o que entra na conta é o campo preenchido, nunca o texto corrido</div>
       <p class="sim-nota">Nenhum número deste sistema é a resposta sozinho. Quem chegou até aqui sabe percorrer o caminho — e sabe onde desconfiar dele.</p>`,
   },
   {
-    n: 15, titulo: 'As palavras que você aprendeu',
+    n: 16, titulo: 'As palavras que você aprendeu',
     linha: 'para consultar quando aparecerem no resto do manual',
     corpo: `<p class="sim-lead">Estas são as palavras que o restante do manual usa sem parar para explicar. Aqui elas estão, na ordem em que apareceram:</p>
       <div data-sim-glossario></div>
@@ -3072,7 +3128,7 @@ no desenvolvimento de biomateriais e testes com atividade antiviral…</pre>
 
 LABS.simulacao = host => {
   const c = moldura(host, 'guia passo a passo', 'De um item do currículo até a nota',
-    'quinze telas · dados reais de um currículo público · comece pelo começo');
+    'dezesseis telas · dados reais de um currículo público · comece pelo começo');
   let i = 0;
 
   const trilho = el('div', 'sim-trilho');
