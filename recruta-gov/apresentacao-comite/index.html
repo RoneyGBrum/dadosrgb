@@ -477,6 +477,54 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
   .slide[aria-label="A escala"] .cifra{padding-left:clamp(.8rem,1.6cqw,1.4rem);}
   @media(max-width:820px){.slide[aria-label="A escala"] .cifras{grid-template-columns:1fr;}}
 
+
+/* ═══ slide da RÉGUA: quatro documentos, uma escala ═══
+   Ocre = o que se EXIGE (unidade e vaga) · azul = o que a pessoa DEMONSTRA ·
+   verde = o que DESENVOLVE. O agrupamento por cor é o argumento do slide. */
+.reg-quadro{display:flex; flex-direction:column; gap:1.3cqh; flex:1; min-height:0}
+/* O `.rodape-medido` do deck tem `margin-top:auto` — ele engolia TODO o espaço livre, e a
+   régua ficava com 243px enquanto o trecho de um currículo precisava de 211 e mostrava 6.
+   Medido no navegador; nenhuma quantidade de leitura do CSS teria mostrado isso. */
+.slide:has(.reg-quadro) .rodape-medido{margin-top:0}
+.reg-chips{display:flex; flex-wrap:wrap; gap:.55cqw}
+.reg-chip{
+  font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:1.02cqw; font-weight:500;
+  color:var(--tinta-2); background:transparent; border:1px solid var(--linha-forte);
+  border-radius:999px; padding:.55cqh 1cqw; cursor:pointer; transition:.18s;
+  white-space:nowrap;
+}
+.reg-chip:hover{color:var(--tinta); border-color:var(--gov); background:var(--gov-fraco)}
+.reg-chip[aria-selected="true"]{
+  color:var(--fundo); background:var(--gov); border-color:var(--gov); font-weight:600;
+}
+.reg-chip:focus-visible{outline:2px solid var(--gov-forte); outline-offset:2px}
+.reg-def{font-size:1.2cqw; line-height:1.35; color:var(--tinta-2); margin:0}
+.reg-def b{color:var(--tinta); font-family:"Archivo", sans-serif; font-weight:600}
+.reg-grade{display:grid; grid-template-columns:repeat(4,1fr); gap:1cqw; flex:1; min-height:0}
+.reg-col{
+  display:flex; flex-direction:column; gap:.8cqh; min-height:0;
+  background:var(--carta-2); border:1px solid var(--linha); border-top:2px solid var(--cor);
+  border-radius:4px; padding:1.3cqh 1.1cqw;
+}
+.reg-col.exige{--cor:var(--exig)}
+.reg-col.demonstra{--cor:var(--gov)}
+.reg-col.desenvolve{--cor:var(--ok)}
+.reg-topo{display:flex; align-items:baseline; justify-content:space-between; gap:.6cqw}
+.reg-rot{
+  font-family:"IBM Plex Mono", monospace; font-size:.98cqw; font-weight:500;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--cor);
+}
+.reg-nota{font-family:"Archivo", sans-serif; font-weight:700; font-size:1.7cqw; color:var(--cor); line-height:1}
+.reg-nota small{font-size:.95cqw; font-weight:500; color:var(--tinta-3)}
+.reg-sem{font-family:"IBM Plex Mono", monospace; font-size:.92cqw; color:var(--tinta-3)}
+.reg-trecho{font-size:1cqw; line-height:1.42; color:var(--tinta-2); margin:0; flex:1; overflow:hidden}
+.reg-trecho mark{background:var(--gov-fraco); color:var(--tinta); padding:0 .25cqw; border-radius:2px; font-weight:500}
+.reg-col.exige .reg-trecho mark{background:var(--exig-fraco)}
+.reg-curso{font-family:"Archivo", sans-serif; font-weight:600; font-size:1.12cqw; color:var(--tinta); line-height:1.35; margin:0}
+.reg-fonte{
+  font-family:"IBM Plex Mono", monospace; font-size:.92cqw; color:var(--tinta-3);
+  border-top:1px solid var(--linha); padding-top:.7cqh; margin:0; line-height:1.45;
+}
 </style>
 </head>
 <body>
@@ -606,22 +654,19 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
 </section>
 
 <!-- ═══ 5 · as nove dimensões ═══ -->
-<section class="slide" aria-label="As nove dimensões">
+<section class="slide" aria-label="A mesma régua em quatro documentos">
   <div class="q largo">
     <p class="eyebrow a">O instrumento</p>
-    <h1 class="a" style="--d:.15s">Nove dimensões, uma escala.</h1>
-    <ul class="dims">
-      <li class="a" style="--d:.4s"><span class="nome">Competências Técnicas do Órgão</span><span class="def">Domínio técnico e especialização exigidos pela atividade-fim da área.</span></li>
-      <li class="a" style="--d:.55s"><span class="nome">Mentalidade Digital</span><span class="def">Fluência tecnológica, uso de sistemas, análise de dados, disposição para inovar.</span></li>
-      <li class="a" style="--d:.7s"><span class="nome">Resolução de Problemas</span><span class="def">Capacidade analítica para estruturar e resolver o que não é rotineiro.</span></li>
-      <li class="a" style="--d:.85s"><span class="nome">Foco no Cidadão</span><span class="def">Orientação à entrega de valor público e à qualidade do serviço prestado.</span></li>
-      <li class="a" style="--d:1s"><span class="nome">Transversalidade e Visão Sistêmica</span><span class="def">Atuação integrada entre equipes, áreas e órgãos.</span></li>
-      <li class="a" style="--d:1.15s"><span class="nome">Habilidades Sociais</span><span class="def">Articulação institucional, negociação, comunicação, relacionamento.</span></li>
-      <li class="a" style="--d:1.3s"><span class="nome">Flexibilidade no Trabalho</span><span class="def">Adaptação a mudanças e desempenho em cenários dinâmicos.</span></li>
-      <li class="a" style="--d:1.45s"><span class="nome">Valores e Gestão por Resultados</span><span class="def">Busca por resultado, cumprimento de metas, gestão de projetos, liderança.</span></li>
-      <li class="a" style="--d:1.6s"><span class="nome">Alinhamento de Interesses</span><span class="def">Aderência aos temas da área e disposição para capacitação contínua.</span></li>
-    </ul>
-    <p class="rodape-medido a" style="--d:2s">Da metodologia de perfil profissiográfico. Uma dimensão não vale mais que outra — o que varia é o quanto cada unidade exige de cada uma.</p>
+    <h1 class="a" style="--d:.15s">Quatro documentos, a mesma escala.</h1>
+    <div class="reg-quadro a" style="--d:.35s">
+      <div class="reg-chips" role="tablist" aria-label="Escolha a dimensão"><button type="button" class="reg-chip" role="tab" aria-selected="true" data-i="0">1. Comp. Técnicas</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="1">2. Ment. Digital</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="2">3. Res. Problemas</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="3">4. Foco no Cidadão</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="4">5. Visão Sistêmica</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="5">6. Hab. Sociais</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="6">7. Flexibilidade</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="7">8. Valores/Metas</button><button type="button" class="reg-chip" role="tab" aria-selected="false" data-i="8">9. Alinhamento</button></div>
+      <p class="reg-def"><b id="reg-nome">—</b> <span id="reg-def">—</span></p>
+      <div class="reg-grade"><article class="reg-col exige"><div class="reg-topo"><span class="reg-rot">Unidade</span><span class="reg-nota" id="reg-unidade-nota">—</span></div><p class="reg-trecho" id="reg-unidade">—</p><p class="reg-fonte" id="reg-unidade-fonte">SISDIP · 5.793 unidades</p></article><article class="reg-col exige"><div class="reg-topo"><span class="reg-rot">Oportunidade</span><span class="reg-sem">trecho citado</span></div><p class="reg-trecho" id="reg-vaga">—</p><p class="reg-fonte" id="reg-vaga-fonte">Sigepe Oportunidades</p></article><article class="reg-col demonstra"><div class="reg-topo"><span class="reg-rot">Pessoa</span><span class="reg-sem">trecho citado</span></div><p class="reg-trecho" id="reg-pessoa">—</p><p class="reg-fonte" id="reg-pessoa-fonte">SouGov · caso real publicado</p></article><article class="reg-col desenvolve"><div class="reg-topo"><span class="reg-rot">Curso</span><span class="reg-nota" id="reg-curso-nota">—</span></div><p class="reg-curso" id="reg-curso-nome">—</p><p class="reg-trecho" id="reg-curso">—</p><p class="reg-fonte" id="reg-curso-fonte">EV.G/Enap · 1.042 cursos</p></article></div>
+    </div>
+    <p class="rodape-medido a" style="--d:.9s">
+      Quatro origens, a mesma pergunta, a mesma escala de 0 a 5 — é o que torna as notas
+      comparáveis. <span class="reg-sem">Teclas 1–9 trocam a dimensão.</span>
+    </p>
   </div>
 </section>
 
@@ -1107,6 +1152,54 @@ p.destaque{color:var(--tinta); font-size:1.95cqw}
 
   var h=parseInt((location.hash||"#1").slice(1),10);
   ir(isNaN(h)?0:h-1, true);
+})();
+</script>
+
+<script>
+/* O slide da RÉGUA. Script à parte de propósito: o IIFE do deck controla a navegação da
+   apresentação inteira, e um erro dentro dele derrubaria tudo no palco. Aqui, se algo
+   quebrar, quebra só este slide. */
+(function(){
+  var DIMS = [{"chave": "competencias_orgao", "nome": "Competências Técnicas do Órgão", "curto": "1. Comp. Técnicas", "definicao": "Domínio técnico e especialização exigidos pela atividade-fim da área.", "unidade": {"texto": "<mark>Análise e aplicação da legislação de pessoal do SIPEC</mark>; Análise de modalidades de movimentação de pessoal; Elaboração de Nota Técnica e…", "nota": 5, "campo": "competencias_tecnicas_ia"}, "vaga": {"texto": "O servidor selecionado atuará no suporte operacional... auxiliando na execução de extrações. Ferramentas essenciais como <mark>Python, Power BI</mark>."}, "pessoa": {"texto": "Utilização da linguagem <mark>Python</mark>, principalmente com a biblioteca <mark>Pandas</mark>. Elaboração de apresentações interativas com <mark>Power BI</mark>."}, "curso": {"nome": "Técnica Legislativa", "carga": "15", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/818", "competencias": "elaboração de textos legais; redação legislativa; técnica de alteração de leis…"}}, {"chave": "mentalidade_digital", "nome": "Mentalidade Digital", "curto": "2. Ment. Digital", "definicao": "Fluência tecnológica, uso de sistemas, análise de dados, disposição para inovar.", "unidade": {"texto": "<mark>SEI</mark>; <mark>SIAPE</mark>; <mark>Sigepe Legis</mark>", "nota": 2, "campo": "sistemas_ia"}, "vaga": {"texto": "Auxiliando na... manutenção de <mark>rotinas administrativas automatizadas</mark>."}, "pessoa": {"texto": "Utilizo ferramentas de <mark>IA (Inteligência Artificial)</mark> para auxiliar desenvolvimento e <mark>criação de aplicações</mark>."}, "curso": {"nome": "Aprendendo com Python", "carga": "20", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/629", "competencias": "uso de variáveis; operações e condições; loops; funções; estruturas básicas de dados; programação orientada a objetos…"}}, {"chave": "resolucao_problemas", "nome": "Resolução de Problemas", "curto": "3. Res. Problemas", "definicao": "Capacidade analítica para estruturar e resolver o que não é rotineiro.", "unidade": {"texto": "…<mark>Analisa a conveniência e oportunidade para retorno de anistiados</mark> e a aplicação de normas sobre empregados públicos da administração…", "nota": 4, "campo": "missao_unidade_ia"}, "vaga": {"texto": "Valoriza-se o comprometimento em aprender, a <mark>curiosidade para solucionar problemas</mark> e a disposição para aplicar novas tecnologias."}, "pessoa": {"texto": "COMPETÊNCIAS SOFT SKILLS: <mark>RESOLUÇÃO DE PROBLEMAS COM BASE DE DADOS</mark>."}, "curso": {"nome": "Análise e Melhoria de Processos", "carga": "20", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/424", "competencias": "analisar processos organizacionais; aplicar gestão por processos; usar ferramentas de melhoria de processos…"}}, {"chave": "foco_cidadao", "nome": "Foco no Cidadão", "curto": "4. Foco no Cidadão", "definicao": "Orientação à entrega de valor público e à qualidade do serviço prestado.", "unidade": {"texto": "<mark>órgãos e entidades integrantes do SIPEC</mark>; servidores públicos federais; empregados públicos da Administração direta e indireta…", "nota": 1, "campo": "publico_atendido_ia"}, "vaga": {"texto": "A oportunidade é destinada a profissionais que almejam integrar uma equipe dedicada a <mark>construir um serviço público mais dinâmico e eficiente</mark>."}, "pessoa": {"texto": "Interessado em desenvolver ideias e <mark>facilitar atividades cotidianas</mark>."}, "curso": {"nome": "Gestão em Ouvidoria", "carga": "20", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/119", "competencias": "gestão de ouvidoria pública; atendimento ao cidadão; processamento de manifestações…"}}, {"chave": "transversalidade_visao", "nome": "Transversalidade e Visão Sistêmica", "curto": "5. Visão Sistêmica", "definicao": "Atuação integrada entre equipes, áreas e órgãos.", "unidade": {"texto": "A unidade analisa e <mark>aplica a legislação de pessoal para órgãos e entidades integrantes do SIPEC</mark>. Realiza o deferimento, indeferimento…", "nota": 4, "campo": "missao_unidade_ia"}, "vaga": {"texto": "A unidade depende da análise de dados para (...) inovar na gestão da mobilidade de pessoal em <mark>toda a Administração Pública</mark>."}, "pessoa": {"texto": "Órgão de Exercício: <mark>MGI (Ministério da Gestão e Inovação)</mark>. Cargo: <mark>Chefe de Divisão</mark>. Experiências com <mark>DW SIAPE e Extrator SIAPE</mark>."}, "curso": {"nome": "Instrumentos de Desenvolvimento Urbano Sustentável - Governança", "carga": "20", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/1016", "competencias": "compreender governança urbana interfederativa; articular consórcios públicos intermunicipais…"}}, {"chave": "habilidades_sociais", "nome": "Habilidades Sociais", "curto": "6. Hab. Sociais", "definicao": "Articulação institucional, negociação, comunicação, relacionamento.", "unidade": {"texto": "<mark>Articulação institucional</mark>; Gestão de projetos; <mark>Redação oficial</mark>; Análise processual e triagem", "nota": 3, "campo": "competencias_transversais_ia"}, "vaga": {"texto": "Apoio Administrativo: Prestar <mark>suporte à equipe</mark> no uso de ferramentas digitais."}, "pessoa": {"texto": "Cursos: <mark>FORMAÇÃO DE FACILITADORES DE APRENDIZAGEM</mark> (40 Hrs) e <mark>TEMOS QUE DAR AULAS REMOTAS... E AGORA?</mark>."}, "curso": {"nome": "Gestão de Conflitos e Negociação", "carga": "20", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/372", "competencias": "analisar conflitos; administrar e resolver conflitos; comunicar-se com rapport; negociar com base em interesses…"}}, {"chave": "flexibilidade_trabalho", "nome": "Flexibilidade no Trabalho", "curto": "7. Flexibilidade", "definicao": "Adaptação a mudanças e desempenho em cenários dinâmicos.", "unidade": {"texto": "…<mark>Processa a lotação provisória de Analistas Técnicos de Políticas Sociais</mark> e afastamentos para organismos internacionais. Principais…", "nota": 2, "campo": "missao_unidade_ia"}, "vaga": {"texto": "Esta oportunidade é ideal para servidores que <mark>vislumbram uma possível transição de carreira</mark>."}, "pessoa": {"texto": "GRADUAÇÃO - <mark>ADMINISTRAÇÃO</mark> (2012) / ESPECIALIZAÇÃO - <mark>CIÊNCIA DE DADOS</mark> (BIG DATA PROCESSING AND ANALYTICS) - 2023."}, "curso": {"nome": "Ágil no Contexto do Serviço Público", "carga": "15", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/317", "competencias": "aplicação de princípios ágeis no setor público; adaptação de práticas ágeis ao contexto governamental…"}}, {"chave": "valores_trabalho", "nome": "Valores e Gestão por Resultados", "curto": "8. Valores/Metas", "definicao": "Busca por resultado, cumprimento de metas, gestão de projetos, liderança.", "unidade": {"texto": "Articulação institucional; <mark>Gestão de projetos</mark>; Redação oficial; Análise processual e triagem", "nota": 3, "campo": "competencias_transversais_ia"}, "vaga": {"texto": "Para cumprir sua <mark>missão estratégica de otimizar a força de trabalho</mark> e valorizar talentos."}, "pessoa": {"texto": "Função/DAS: <mark>Chefe de Divisão</mark>. Soft Skill declarada: <mark>Gestão para Resultados</mark>."}, "curso": {"nome": "Gerenciamento de Projetos na Prática", "carga": "40", "nota": 5, "link": "https://www.escolavirtual.gov.br/curso/680", "competencias": "conceitos de gerenciamento de projetos; iniciação e planejamento de projetos; execução de projetos…"}}, {"chave": "alinhamento_interesses", "nome": "Alinhamento de Interesses", "curto": "9. Alinhamento", "definicao": "Aderência aos temas da área e disposição para capacitação contínua.", "unidade": {"texto": "<mark>Movimentação de pessoal</mark>; <mark>SIPEC</mark>; <mark>Mobilidade</mark>; Nota Técnica; Portaria; ATPS; Anistiados; Organismos Internacionais; Legislação de…", "nota": 3, "campo": "palavras_chave_ia"}, "vaga": {"texto": "Servindo como <mark>porta de entrada para a atuação com dados e tecnologia</mark>."}, "pessoa": {"texto": "<mark>Interessado</mark> em desenvolver ideias... relacionadas a banco de dados."}, "curso": {"nome": "Sistema Eletrônico de Informações - SEI! USAR", "carga": "20", "nota": 4, "link": "https://www.escolavirtual.gov.br/curso/74", "competencias": "uso do Sistema Eletrônico de Informações (SEI); criação e tramitação de processos; assinatura eletrônica de documentos…"}}];
+  var caixa = document.querySelector(".reg-quadro");
+  if(!caixa) return;
+  var chips = caixa.querySelectorAll(".reg-chip");
+  var alvo = {
+    nome: document.getElementById("reg-nome"), def: document.getElementById("reg-def"),
+    unidade: document.getElementById("reg-unidade"), vaga: document.getElementById("reg-vaga"),
+    pessoa: document.getElementById("reg-pessoa"), curso: document.getElementById("reg-curso"),
+    notaU: document.getElementById("reg-unidade-nota"), notaC: document.getElementById("reg-curso-nota"),
+    nomeC: document.getElementById("reg-curso-nome"), fonteU: document.getElementById("reg-unidade-fonte")
+  };
+  var FONTE_U = alvo.fonteU.textContent;   /* guarda o rótulo antes de anexar o campo */
+  var atual = -1;
+  function mostrar(i){
+    var d = DIMS[i]; if(!d || i === atual) return; atual = i;
+    chips.forEach(function(c, k){ c.setAttribute("aria-selected", k === i ? "true" : "false"); });
+    alvo.nome.textContent = d.nome;
+    alvo.def.textContent = d.definicao;
+    alvo.unidade.innerHTML = d.unidade.texto;
+    alvo.vaga.innerHTML = d.vaga.texto;
+    alvo.pessoa.innerHTML = d.pessoa.texto;
+    alvo.curso.innerHTML = d.curso.competencias || "";
+    alvo.nomeC.textContent = d.curso.nome + " · " + d.curso.carga + "h";
+    alvo.notaU.innerHTML = d.unidade.nota + '<small>/5</small>';
+    alvo.notaC.innerHTML = d.curso.nota + '<small>/5</small>';
+    /* O campo de onde o trecho saiu fica à vista: quem duvidar confere na base. */
+    alvo.fonteU.textContent = FONTE_U + " · campo " + d.unidade.campo;
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){ mostrar(parseInt(c.dataset.i, 10)); });
+  });
+  /* Teclas 1–9: no palco, trocar de dimensão sem mirar o mouse. Só quando ESTE slide
+     está em cena, senão os dígitos mudariam a dimensão de um slide que ninguém vê. */
+  document.addEventListener("keydown", function(e){
+    if(e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if(!caixa.closest(".slide").classList.contains("on")) return;
+    var n = "123456789".indexOf(e.key);
+    if(n >= 0){ e.preventDefault(); mostrar(n); }
+  });
+  mostrar(0);
 })();
 </script>
 </body>
