@@ -430,6 +430,11 @@ const cap=s=>{s=String(s||"");if(s.length<=4&&s===s.toUpperCase())return s;retur
 // a hora do build. Mesmo formato do gerado_em do Python (%d/%m/%Y %H:%M), para os dois lerem igual.
 const agoraBR=()=>{const d=new Date(),p=n=>String(n).padStart(2,"0");
   return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;};
+// Painel gerado no MESMO dia: repetir a data ao lado da hora de emissão é ruído
+// ("Emitido em 22/09/2026 08:52 · painel gerado em 22/09/2026 08:25"). Mesmo dia, só a hora;
+// dia anterior, a data inteira — que é quando ela realmente informa alguma coisa.
+const geradoEm=g=>{const t=String(g||"").trim(); if(!t)return"";
+  return t.slice(0,10)===agoraBR().slice(0,10) ? ("às "+t.slice(11)) : ("em "+t);};
 const fmtData=s=>{if(s==null||s===""||s==="1889-09-09")return"";const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:String(s);};
 function showTT(e,h){if(!tt)return;tt.innerHTML=h;tt.style.opacity=1;moveTT(e);}
 function moveTT(e){if(!tt)return;let x=e.clientX+14,y=e.clientY+14;if(x+tt.offsetWidth>innerWidth)x=e.clientX-tt.offsetWidth-14;tt.style.left=x+"px";tt.style.top=y+"px";}
@@ -815,7 +820,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     if(ler())cx.classList.add("recolhida");
     pinta();};
   setTimeout(()=>{try{window.ligarRecolher();}catch(e){}},0);})();
-const META={"gerado_em": "22/09/2026 08:27", "mes_referencia": "2026-08", "total": 218450, "vigentes": 55472};
+const META={"gerado_em": "30/09/2026 09:20", "mes_referencia": "2026-08", "total": 218450, "vigentes": 55472};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
