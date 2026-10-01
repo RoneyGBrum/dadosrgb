@@ -1,6 +1,6 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Painéis CGMOP — Movimentação de Pessoal</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48ZyBzdHJva2Utd2lkdGg9IjExIj48cGF0aCBkPSJNMTIgNTJWMzMiIHN0cm9rZT0iI0Y1OUUwQiIvPjxwYXRoIGQ9Ik0zMiA1MlYxMyIgc3Ryb2tlPSIjM0I4MkY2Ii8+PHBhdGggZD0iTTUyIDUyVjI1IiBzdHJva2U9IiMxMEI5ODEiLz48L2c+PC9zdmc+">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48ZyBzdHJva2Utd2lkdGg9IjExIj48cGF0aCBkPSJNMTIgNTJWMzMiIHN0cm9rZT0iI0ZGOTUwMCIvPjxwYXRoIGQ9Ik0zMiA1MlYxMyIgc3Ryb2tlPSIjMEE4NEZGIi8+PHBhdGggZD0iTTUyIDUyVjI1IiBzdHJva2U9IiMwMEM4NTMiLz48L2c+PC9zdmc+">
 <style>:root{color-scheme:light;--plane:#f4f6fb;--surface:#fff;--surface-2:#fafbfe;--ink:#0b0b0b;--ink-2:#52514e;--muted:#898781;--linha:#e3e8f0;--baseline:#c3c2b7;
 --gov:#12336e;--gov2:#1b4a9e;--claro:#eaf0fb;--serie:#2a78d6;--serie-suave:#cde2fb;--serie-med:#86b6ef;--magenta:#e87ba4;
 --origem:#c26a27;--origem-suave:#f0dcc7;--origem-med:#e0a267;
@@ -820,7 +820,7 @@ async function baixarXLSX(linhas,nomeAba,nomeArq){
     if(ler())cx.classList.add("recolhida");
     pinta();};
   setTimeout(()=>{try{window.ligarRecolher();}catch(e){}},0);})();
-const META={"gerado_em": "01/10/2026 14:15", "mes_referencia": "2026-09", "total": 219188, "vigentes": 55846};
+const META={"gerado_em": "01/10/2026 15:09", "mes_referencia": "2026-09", "total": 219188, "vigentes": 55846};
 el("subtitulo").textContent=(META.mes_referencia?"Competência "+META.mes_referencia+" · ":"")+"Fonte: SIAPE / Data Lake MGI";
 if(META.total!=null)el("stat").innerHTML=`<div><b>${fmtInt(META.total)}</b><span>movimentos na base</span></div>`+(META.vigentes!=null?`<div><b>${fmtInt(META.vigentes)}</b><span>vigentes hoje</span></div>`:"");
 el("rodape").innerHTML=`Ecossistema CGMOP · gerado em ${esc(META.gerado_em)} · dadosrgb.dev.br · uso interno`;
