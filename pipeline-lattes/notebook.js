@@ -2,7 +2,7 @@
    O LINK DO NOTEBOOK: troque só a linha abaixo.
    Deixe as aspas vazias ("") para esconder o botão.
    ═══════════════════════════════════════════════════════════════════════════ */
-const LINK_NOTEBOOK = "https://notebook.google.com/notebook/36693488-a225-4fe8-99db-2ca4f51fd8c8";
+const LINK_NOTEBOOK = "https://notebook.google.com/notebook/8da91464-bb89-46d1-b1bc-330ea66f7fbf";
 
 
 /* ───────────────────────────────────────────────────────────────────────────
