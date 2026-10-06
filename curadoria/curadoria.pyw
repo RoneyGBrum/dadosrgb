@@ -1138,6 +1138,71 @@ class App(tk.Tk):
             return None
         return [l.strip() for l in saida.splitlines() if l.strip()]
 
+    def _a_receber(self):
+        """Commits que já estão no GitHub e ainda não chegaram aqui.
+
+        Devolve None quando não dá para saber (branch sem remoto configurado).
+        """
+        cod, saida = self._git("log", "--oneline", "HEAD..@{u}")
+        if cod != 0:
+            return None
+        return [l.strip() for l in saida.splitlines() if l.strip()]
+
+    def _conflitados(self):
+        cod, saida = self._git("diff", "--name-only", "--diff-filter=U")
+        if cod != 0:
+            return []
+        return [l.strip() for l in saida.splitlines() if l.strip()]
+
+    def _sincronizar(self):
+        """Traz o que o GitHub tem de novo ANTES de enviar.
+
+        Sem isto o push é recusado (non-fast-forward) sempre que o site tiver
+        sido publicado de outro lugar. Devolve True se dá para seguir ao push.
+        """
+        self._git("fetch", "origin")          # sem rede, o push adiante explica
+        chegando = self._a_receber()
+        if not chegando:
+            return True
+        if not messagebox.askyesno(
+                "O GitHub andou sem você",
+                "Há %d alteração(ões) publicadas de outro lugar que ainda não "
+                "estão neste computador:\n\n%s\n\nPreciso juntá-las às suas antes "
+                "de enviar — senão o GitHub recusa. Posso fazer isso agora?"
+                % (len(chegando), "\n".join("  • " + c for c in chegando[:8]))):
+            self.estado("publicação cancelada: falta sincronizar")
+            return False
+        cod, saida = self._git("merge", "@{u}", "--no-edit")
+        if cod == 0:
+            return True
+        conflitos = self._conflitados()
+        self._git("merge", "--abort")         # desfaz: nada fica pela metade
+        messagebox.showerror(
+            "Os dois lados mexeram no mesmo arquivo",
+            "Não consegui juntar sozinho. Desfiz a tentativa, então nada "
+            "foi perdido nem ficou pela metade.\n\nPrecisa de decisão humana:"
+            "\n\n%s\n\nResolva pelo GitHub Desktop e publique de novo."
+            % ("\n".join("  • " + c for c in conflitos[:10]) or "  • (ver o git)"))
+        self.estado("conflito: precisa resolver à mão")
+        return False
+
+    @staticmethod
+    def _explicar_push(saida):
+        """Troca o paredão do git por uma frase que diz o que fazer."""
+        if "non-fast-forward" in saida or "[rejected]" in saida:
+            return ("O GitHub recusou: lá existe trabalho que não está aqui, e "
+                    "enviar agora o apagaria.\n\nClique em «Publicar (git)» de "
+                    "novo — desta vez eu trago as novidades antes de enviar."
+                    "\n\nMensagem do git:\n" + saida[:500])
+        if "Authentication failed" in saida or "could not read Username" in saida:
+            return ("O git não conseguiu entrar no GitHub.\n\nAbra o GitHub "
+                    "Desktop uma vez para renovar o acesso e tente de novo."
+                    "\n\nMensagem do git:\n" + saida[:500])
+        if "Could not resolve host" in saida or "unable to access" in saida:
+            return ("Não consegui falar com o GitHub — parece falta de internet."
+                    "\n\nMensagem do git:\n" + saida[:500])
+        return saida[:900]
+
     def _mensagem_padrao(self, pendentes):
         """Sugere uma mensagem de commit que combine com o que está subindo."""
         caminhos = [c for _, c in pendentes]
@@ -1190,9 +1255,12 @@ class App(tk.Tk):
                         messagebox.showerror("Falhou em: git %s" % " ".join(cmd),
                                              saida[:900])
                         return
+            if not self._sincronizar():       # traz o remoto antes de empurrar
+                return
             cod, saida = self._git("push")
             if cod != 0:
-                messagebox.showerror("Falhou em: git push", saida[:900])
+                messagebox.showerror("Falhou em: git push",
+                                     self._explicar_push(saida))
                 return
             restante = self._por_enviar()
         except FileNotFoundError:
