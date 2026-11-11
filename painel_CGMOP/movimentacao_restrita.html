@@ -1,0 +1,814 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Movimentação com Dados Restritos — MGI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48ZyBzdHJva2U9IiNCMDVDRTgiIHN0cm9rZS13aWR0aD0iNiI+PHBhdGggZD0iTTIyIDMxVjEyIi8+PHBhdGggZD0iTTMwIDMwVjgiLz48cGF0aCBkPSJNMzggMzBWMTAiLz48cGF0aCBkPSJNNDYgMzNWMTYiLz48cGF0aCBkPSJNMTYgMzB2MTRjMCA4IDYgMTQgMTUgMTRoM2M4IDAgMTQtNiAxNC0xNFYzMSIvPjwvZz48cGF0aCBkPSJNMTcgNDdsMTctOSIgc3Ryb2tlPSIjRkY5NTAwIiBzdHJva2Utd2lkdGg9IjYiLz48L3N2Zz4=">
+<style>:root{color-scheme:light;--plane:#f4f6fb;--surface:#fff;--surface-2:#fafbfe;--ink:#0b0b0b;--ink-2:#52514e;--muted:#898781;--linha:#e3e8f0;--baseline:#c3c2b7;
+--gov:#12336e;--gov2:#1b4a9e;--claro:#eaf0fb;--serie:#2a78d6;--serie-suave:#cde2fb;--serie-med:#86b6ef;--magenta:#e87ba4;
+--origem:#c26a27;--origem-suave:#f0dcc7;--origem-med:#e0a267;
+--destino:#178a6e;--destino-suave:#c9e6de;--destino-med:#5cbfa6;
+--div-pos:#c26a27;--div-neg:#178a6e;--neutro:#eef1f6;--good:#0ca30c;--good-ink:#006300;--critical:#d03b3b;--sombra:0 1px 2px rgba(20,40,80,.06),0 8px 24px rgba(20,40,80,.06)}
+:root[data-theme="dark"]{color-scheme:dark;--plane:#0d0d0d;--surface:#1a1a19;--surface-2:#201f1d;--ink:#fff;--ink-2:#c3c2b7;--muted:#898781;--linha:#2c2c2a;--baseline:#383835;
+--gov:#12336e;--gov2:#1b4a9e;--claro:#16243f;--serie:#3987e5;--serie-suave:#16375f;--serie-med:#1c5cab;--magenta:#d55181;
+--origem:#d98a4e;--origem-suave:#3f2c17;--origem-med:#a5652f;--destino:#2aa588;--destino-suave:#123a30;--destino-med:#1c6b57;
+--div-pos:#d98a4e;--div-neg:#2aa588;--neutro:#26262a;--good:#0ca30c;--good-ink:#0ca30c;--critical:#d03b3b}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--plane);color:var(--ink);font-size:14px;line-height:1.45}
+a{color:var(--serie)}
+header.topo{background:linear-gradient(120deg,var(--gov),var(--gov2));color:#fff;padding:14px 24px}
+header.topo h1{margin:0;font-size:18px;font-weight:800}.sub{margin-top:3px;font-size:12px;color:#cdddf6}
+.nav{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.nav a{color:#cdddf6;text-decoration:none;font-size:13px;font-weight:700;padding:6px 12px;border:1px solid rgba(255,255,255,.3);border-radius:8px}
+.nav a.on{background:#fff;color:var(--gov)}.nav a:hover:not(.on){background:rgba(255,255,255,.14);color:#fff}
+.btn-tema{float:right;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:9px;padding:7px 11px;cursor:pointer;font-size:15px}
+.wrap{max-width:1200px;margin:0 auto;padding:16px 20px 70px}
+.controles{background:var(--surface);border:1px solid var(--linha);border-radius:12px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--sombra)}
+.linha{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.campo{display:flex;flex-direction:column;gap:3px}.campo label{font-size:11px;font-weight:800;color:var(--ink-2);text-transform:uppercase;letter-spacing:.4px}
+.campo input,.campo select{padding:8px 10px;border:1px solid var(--linha);border-radius:8px;font-size:13px;background:var(--surface);color:var(--ink);min-width:150px}
+.dica{font-size:12px;color:var(--muted);margin:10px 0 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--claro);border:1px solid var(--serie);color:var(--serie);border-radius:20px;padding:3px 6px 3px 10px;font-size:12px;font-weight:600}
+.chip .x{cursor:pointer;background:var(--serie);color:#fff;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:11px}
+.btn{padding:9px 14px;border:1px solid var(--linha);background:var(--surface);border-radius:8px;cursor:pointer;font-weight:700;color:var(--ink-2)}.btn:hover{border-color:var(--serie);color:var(--serie)}
+.btn-rel{background:var(--destino);color:#fff;border-color:var(--destino)}.btn-rel:hover{color:#fff;filter:brightness(1.06)}
+.btn-limpar{border:1.5px solid var(--critical);color:var(--critical)}.btn-limpar:hover{background:var(--critical);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:var(--surface);border:1px solid var(--linha);border-radius:14px;padding:14px 16px;box-shadow:var(--sombra)}
+.kpi .rot{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+.kpi .val{font-size:30px;font-weight:800;margin-top:2px;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi.destaque{background:linear-gradient(120deg,var(--gov),var(--gov2));border-color:transparent;color:#fff}.kpi.destaque .rot{color:#bcd2f4}
+.kpi.dev .val{color:var(--origem)}.kpi.rec .val{color:var(--destino)}
+.grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
+.card{background:var(--surface);border:1px solid var(--linha);border-radius:14px;padding:14px 16px 12px;box-shadow:var(--sombra)}
+.card.wide{grid-column:1/-1}
+/* fixa o cartão na 2ª coluna (a do destino), quando não há par de origem para a linha */
+@media (min-width:900px){.grid.c2>.card.col-dir{grid-column:2}}.card h3{margin:0 0 1px;font-size:14px;font-weight:700}.card .leg{font-size:11.5px;color:var(--muted);margin:0 0 11px}
+/* dado secundário discreto dentro da barra / abaixo da coluna */
+.bar-track{position:relative}
+.bar-row .bar-ex{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9.5px;
+  font-weight:700;color:var(--muted);opacity:.85;pointer-events:none;font-variant-numeric:tabular-nums;
+  text-shadow:0 0 3px var(--surface),0 0 3px var(--surface)}
+.vbars .vb-ex{display:block;font-size:9.5px;color:var(--muted);font-variant-numeric:tabular-nums;margin-top:1px}
+/* mapa de blocos por UF */
+.tilemap{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(9,1fr);gap:4px;max-width:430px;margin:0 auto}
+.tile{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;cursor:pointer;background:var(--neutro);color:var(--muted)}
+.tile .v{font-size:8.5px;font-weight:600;opacity:.9;font-variant-numeric:tabular-nums}
+.tile.sel{outline:2px solid var(--gov);outline-offset:1px}
+.map-leg{display:flex;align-items:center;gap:5px;justify-content:center;margin-top:8px;font-size:10px;color:var(--muted)}
+.map-leg .sw{width:15px;height:9px;border-radius:3px;display:inline-block}
+/* colunas verticais (vbars) */
+.vbars{display:flex;align-items:flex-end;gap:6px;padding-top:4px}
+.vbars .vb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border-radius:7px;padding:2px 1px}
+.vbars .vb:hover{background:var(--surface-2)}
+.vbars .vb.sel{background:var(--claro);outline:1px solid var(--serie)}
+.vbars .vb-n{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.vbars .vb-col{width:100%;height:var(--alt);display:flex;align-items:flex-end;background:var(--neutro);border-radius:5px;overflow:hidden}
+.vbars .vb-fill{width:100%;border-radius:5px 5px 0 0;transform-origin:bottom center}
+.vbars .vb-lab{font-size:10.5px;color:var(--muted);text-align:center;line-height:1.15;overflow-wrap:anywhere}
+@media (prefers-reduced-motion:no-preference){.vbars .vb-fill{animation:colGrow .8s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes colGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}}
+/* rosca (donut) */
+.rz{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.rz svg{flex:none}.rz .fat{cursor:pointer;transition:stroke-width .15s}
+.rz .rz-tot{font-size:19px;font-weight:800;fill:var(--ink)}
+.rz .rz-sub{font-size:10px;fill:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.rz-leg{flex:1;min-width:148px;display:flex;flex-direction:column;gap:3px}
+.rz-it{position:relative;display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;border-radius:6px;padding:3px 6px;overflow:hidden}
+.rz-it .rz-bg{position:absolute;left:0;top:0;bottom:0;opacity:.13;border-radius:6px;pointer-events:none}
+.rz-it>*:not(.rz-bg){position:relative}
+.rz-it .rz-ex{font-style:normal;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rz-it:hover{background:var(--surface-2)}.rz-it.sel{background:var(--claro);outline:1px solid var(--serie)}
+.rz-it .pt{width:10px;height:10px;border-radius:3px;flex:none}
+.rz-it .tx{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
+.rz-it b{font-variant-numeric:tabular-nums}.rz-it small{color:var(--muted);font-variant-numeric:tabular-nums}
+/* ⓘ com a explicação junto do dado */
+.ibtn{width:16px;height:16px;border-radius:50%;border:1px solid var(--serie);background:transparent;
+  color:var(--serie);font:800 11px/1 Georgia,serif;cursor:pointer;padding:0;vertical-align:middle;margin-left:5px}
+.ibtn:hover{background:var(--serie);color:#fff}
+.ibpop{position:fixed;z-index:2100;width:min(430px,92vw);max-height:60vh;overflow:auto;background:var(--surface);
+  border:1px solid var(--linha);border-radius:12px;box-shadow:0 16px 46px rgba(20,40,80,.28);font-size:12.5px;line-height:1.55}
+.ibpop .cab{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--linha);
+  font-weight:800;color:var(--gov);position:sticky;top:0;background:var(--surface)}
+.ibpop .cab .x{margin-left:auto;background:none;border:0;color:var(--muted);font-size:17px;cursor:pointer;line-height:1}
+.ibpop .cp{padding:10px 13px;color:var(--ink-2)}.ibpop .cp p{margin:0 0 8px}.ibpop .cp p:last-child{margin:0}
+/* matriz de calor origem x destino */
+.mtz-wrap{overflow:auto;max-height:64vh;border:1px solid var(--linha);border-radius:10px}
+table.mtz{border-collapse:separate;border-spacing:0;font-size:11.5px;width:max-content;min-width:100%}
+table.mtz th,table.mtz td{padding:5px 7px;border-bottom:1px solid var(--linha);white-space:nowrap}
+table.mtz thead th{position:sticky;top:0;z-index:3;background:var(--surface-2);color:var(--gov);font-weight:800;
+  border-bottom:2px solid var(--linha)}
+table.mtz thead th.rot span{display:inline-block;max-width:74px;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+table.mtz th.cnt{position:sticky;left:0;z-index:2;background:var(--surface-2);text-align:left;font-weight:700;
+  color:var(--ink-2);max-width:150px;overflow:hidden;text-overflow:ellipsis;border-right:2px solid var(--linha)}
+table.mtz thead th.cnt{z-index:4}
+table.mtz td.cl{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+table.mtz td.cl.tem{cursor:pointer;font-weight:700}
+table.mtz td.cl.tem:hover{outline:2px solid var(--serie);outline-offset:-2px}
+table.mtz td.tot,table.mtz th.tot{text-align:right;font-variant-numeric:tabular-nums;font-weight:800;
+  color:var(--gov);background:var(--claro)}
+table.mtz tr.rodape th,table.mtz tr.rodape td{border-bottom:0}
+.bars{display:flex;flex-direction:column;gap:7px}
+.bars{--lab:minmax(120px,240px)}
+.bar-row{display:grid;grid-template-columns:var(--lab) 1fr auto;align-items:center;gap:10px;font-size:12.5px;cursor:pointer;border-radius:6px}
+.bar-row:hover{background:var(--surface-2)}
+/* rótulo INTEIRO: quebra em duas linhas em vez de cortar com reticências (achado 03/09/2026) */
+.bar-row .lab{color:var(--ink-2);text-align:right;white-space:normal;overflow-wrap:anywhere;line-height:1.22;padding:2px 0}
+.bar-track{background:var(--neutro);border-radius:5px;height:15px;overflow:hidden}.bar-fill{height:100%;border-radius:5px;min-width:2px}
+.bar-row .val{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}.bar-row .val small{color:var(--muted);font-weight:600}
+.bar-row.sel{background:var(--claro);outline:1px solid var(--serie)}
+@media (prefers-reduced-motion:no-preference){
+  .bar-fill{transform-origin:left center;animation:barGrow .9s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .bars .bar-row:nth-child(1) .bar-fill{animation-delay:.08s}.bars .bar-row:nth-child(2) .bar-fill{animation-delay:.16s}
+  .bars .bar-row:nth-child(3) .bar-fill{animation-delay:.24s}.bars .bar-row:nth-child(4) .bar-fill{animation-delay:.32s}
+  .bars .bar-row:nth-child(5) .bar-fill{animation-delay:.40s}.bars .bar-row:nth-child(6) .bar-fill{animation-delay:.48s}
+  .bars .bar-row:nth-child(7) .bar-fill{animation-delay:.56s}.bars .bar-row:nth-child(n+8) .bar-fill{animation-delay:.64s}
+  svg .line{stroke-dasharray:6000;stroke-dashoffset:6000;animation:lineDraw 2s .25s ease-out forwards}
+  @keyframes lineDraw{to{stroke-dashoffset:0}}
+  svg .area{animation:fadeIn 1.9s .25s ease-out both}svg .dot{animation:fadeIn 1.1s 1.4s ease-out both}
+  svg .barnovas{transform-box:fill-box;transform-origin:center bottom;animation:barUp 1s .35s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes barUp{from{transform:scaleY(0)}to{transform:scaleY(1)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}}
+.svgwrap{width:100%;overflow-x:auto}svg .gl{stroke:var(--linha);stroke-width:1}svg .ax{stroke:var(--baseline);stroke-width:1}
+svg text{fill:var(--muted);font-size:11px}svg text.t{fill:var(--ink);font-weight:700}
+#tt{position:fixed;pointer-events:none;background:var(--ink);color:var(--surface);padding:6px 9px;border-radius:7px;font-size:12px;z-index:99;opacity:0;transition:opacity .1s;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:280px}
+.rodape{margin-top:24px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+.vazio{padding:26px;text-align:center;color:var(--muted)}
+/* menu do ecossistema — sempre visível (sticky), com ícones; mesma barra em todas as páginas */
+.eco-nav{position:sticky;top:0;z-index:40;display:flex;gap:4px;flex-wrap:wrap;align-items:center;
+  background:var(--surface);border-bottom:1px solid var(--linha);box-shadow:0 2px 8px rgba(20,40,80,.05);padding:6px 14px}
+.eco-nav .marca{font-weight:800;color:var(--gov);font-size:13px;margin-right:10px;letter-spacing:.02em}
+.eco-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink-2);font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:9px}
+.eco-nav a .ic{font-size:16px;line-height:1}
+.eco-nav a:hover{background:var(--claro);color:var(--gov)}
+.eco-nav a.on{background:var(--gov);color:#fff}
+.eco-nav .onde{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;margin-left:6px}
+.eco-nav .onde b{color:var(--gov);font-weight:800}
+.eco-nav .onde .sep{color:var(--linha);font-size:15px}
+@media (max-width:560px){.eco-nav .onde{width:100%;margin:2px 0 0 2px}}
+.eco-nav .tema{margin-left:auto;background:var(--surface-2);border:1px solid var(--linha);color:var(--ink-2);border-radius:9px;padding:7px 11px;cursor:pointer;font-size:15px}
+.eco-nav a span.lab .fora{font-size:9px;opacity:.6;margin-left:3px;vertical-align:super}
+@media (max-width:560px){.eco-nav a span.lab{display:none}.eco-nav a{padding:8px 11px}}
+/* ===== Documento PDF — fundo BRANCO, elegante, legível por qualquer pessoa.
+   Sem preenchimento azul; o azul institucional fica só em títulos, linhas finas e
+   destaques pontuais. Âmbar/verde = destaques (origem/destino, setas, alertas). ===== */
+#pdf-doc{display:none}
+@media print{
+  /* Esconder com display:none, e não visibility:hidden: o "hidden" mantinha o espaço da
+     página inteira no fluxo e saíam dezenas de folhas em branco depois do relatório. */
+  body>*:not(#pdf-doc){display:none!important}
+  /* FOLGA DE BORDA (21/09/2026). O @page de cada painel pede margin:12mm, mas quem imprime
+     com "Margens: Nenhuma" perde essa margem — nessa opção o Chrome ignora a do CSS — e o
+     texto vai até o fio do papel. Medido num PDF do usuário: conteúdo de x=0,2pt a x=596,5pt
+     numa página de 595,3pt, com 4 letras POR CIMA da borda direita; e a impressora ainda
+     tem 1-2mm de área não imprimível. Esta folga vale em QUALQUER escolha da caixa de
+     impressão. box-sizing: sem ele o padding somaria à largura e empurraria tudo para fora.
+     (O painel de reembolso já fazia isto desde 09/2026; aqui vira regra de todos.) */
+  #pdf-doc{display:block!important;position:static!important;width:auto;margin:0;padding:0 4mm!important;box-sizing:border-box!important;max-width:100%!important}
+  #pdf-doc,#pdf-doc *{visibility:visible!important}
+  html,body{height:auto!important;min-height:0!important;overflow:visible!important;background:#fff!important;margin:0;padding:0}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  /* gráficos precisam sair PREENCHIDOS: desligar animações de entrada e resetar estados iniciais */
+  #pdf-doc *,#pdf-doc *::before,#pdf-doc *::after{animation:none!important;transition:none!important}
+  #pdf-doc .bar-fill,#pdf-doc .meter .seg,#pdf-doc svg .barnovas{transform:none!important}
+  #pdf-doc svg .line{stroke-dashoffset:0!important}
+  #pdf-doc svg .area,#pdf-doc svg .dot{opacity:1!important}
+  /* nenhum título órfão no fim da página; tabelas/cartões não se partem */
+  #pdf-doc h2,#pdf-doc h3,#pdf-doc .rel-tit,#pdf-doc .sec-tit{break-after:avoid;page-break-after:avoid}
+  #pdf-doc table,#pdf-doc .card,#pdf-doc .kbox,#pdf-doc .krow,#pdf-doc .bars{break-inside:avoid;page-break-inside:avoid}
+  #pdf-doc tr,#pdf-doc .bar-row{break-inside:avoid;page-break-inside:avoid}}
+#pdf-doc{color:#1c1c1c;font-family:"Segoe UI",Arial,sans-serif;font-size:13px;line-height:1.5;background:#fff}
+#pdf-doc .cab-of{text-align:center;border-bottom:2px solid #cdd5e2;padding:2px 0 12px;margin-bottom:16px}
+#pdf-doc h2{font-size:20px;margin:6px 0 3px;color:#12336e;font-weight:800;letter-spacing:.2px}
+#pdf-doc h3,#pdf-doc .rel-tit,#pdf-doc .sec-tit{color:#12336e;font-weight:800;font-size:14px;margin:16px 0 4px;border-bottom:1px solid #dfe4ec;padding-bottom:3px}
+#pdf-doc .peq{font-size:12px;color:#555}
+#pdf-doc .params,#pdf-doc .criterio{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #c26a27;border-radius:8px;padding:12px 16px;font-size:12.5px;margin:14px 0;line-height:1.7;color:#1c1c1c}
+#pdf-doc .krow{display:flex;gap:16px;margin:14px 0;flex-wrap:wrap}
+#pdf-doc .kbox{border:1px solid #e0e4ec;border-top:3px solid #12336e;border-radius:8px;padding:10px 16px;min-width:140px;background:#fff}
+#pdf-doc .kbox .n{font-size:26px;font-weight:800;color:#12336e}.kbox .l{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.4px}
+#pdf-doc table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+#pdf-doc th{background:#fff;color:#12336e;padding:9px 11px;text-align:left;font-weight:800;font-size:12.5px;border-bottom:2px solid #12336e}
+#pdf-doc td{border-bottom:1px solid #e2e6ec;padding:8px 11px;color:#1c1c1c}#pdf-doc td.n,#pdf-doc th.num{text-align:right;font-variant-numeric:tabular-nums}
+/* Num documento impresso a largura da folha não cede: texto QUEBRA, nunca transborda.
+   A regra genérica de tabela de tela (thead th / tbody td) impõe white-space:nowrap a todas as
+   tabelas do documento — inclusive a do relatório — e até 22/09/2026 vencia aqui por omissão,
+   fazendo o nome do órgão invadir a coluna vizinha e cortar os cabeçalhos. Número segue
+   inteiro (td.n / th.num): "16.750" e "-7.400,0%" não podem quebrar no meio. */
+#pdf-doc th,#pdf-doc td{white-space:normal;overflow-wrap:break-word}
+#pdf-doc td.n,#pdf-doc th.num{white-space:nowrap}
+#pdf-doc tbody tr:nth-child(even){background:#f5f6f8}
+#pdf-doc .pos{color:#b3541c;font-weight:700}#pdf-doc .neg{color:#0f6b56;font-weight:700}
+#pdf-doc .seta{font-weight:800}#pdf-doc .seta.o{color:#c26a27}#pdf-doc .seta.d{color:#178a6e}
+#pdf-doc .ass{margin-top:40px;font-size:13px;color:#1c1c1c}
+.expl{background:var(--claro);border:1px solid var(--linha);border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--ink-2);line-height:1.6}
+.expl .rest{display:inline-block;background:var(--origem-suave);color:var(--origem);font-weight:800;border-radius:6px;padding:1px 8px;font-size:11.5px;margin-right:6px;letter-spacing:.3px}
+/* "Entenda" — o MESMO bloco do painel de Pessoal (é local dele, não do _comum) */
+.entenda{margin-top:9px}
+.entenda>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--serie);user-select:none}
+.entenda>summary::-webkit-details-marker{display:none}
+.entenda>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.entenda[open]>summary::before{transform:rotate(90deg)}
+.entenda>summary:hover{text-decoration:underline}
+.entenda-corpo{margin-top:8px;padding:12px 15px;background:var(--surface-2);border:1px solid var(--linha);border-radius:10px;font-size:12.5px;line-height:1.6}
+.entenda-corpo p{margin:0 0 9px}.entenda-corpo p:last-child{margin:0}
+.aviso-fonte{margin-top:9px;padding:7px 11px;border-radius:8px;background:var(--surface);
+  border:1px solid var(--linha);font-size:12.5px;color:var(--ink)}
+.protecao{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--linha);
+  border-left:4px solid #B05CE8;border-radius:12px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--sombra);font-size:13px;line-height:1.6;color:var(--ink-2)}
+.protecao .ic{font-size:26px;line-height:1}
+.protecao b{color:var(--ink)}
+.grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.card.largo{grid-column:1/-1}
+.card h3{margin:0 0 4px}
+.card .nota{font-size:11.5px;color:var(--muted);margin:0 0 12px}
+.oculto{border:1px dashed var(--linha);border-radius:10px;padding:16px;text-align:center;
+  font-size:12.5px;line-height:1.55;color:var(--ink-2);background:var(--surface-2)}
+.oculto b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:4px}
+.kpi .val.peq{font-size:20px}
+</style>
+<style id="portao-css">
+#portao{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#0b2a4a,#12336e);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+html.autenticado #portao{display:none}
+html:not(.autenticado) body{overflow:hidden}
+html:not(.autenticado) body>*:not(#portao){display:none!important}
+#portao .cx{background:#fff;border-radius:16px;padding:30px 30px 26px;width:min(370px,92vw);box-shadow:0 24px 70px rgba(0,0,0,.4);text-align:center}
+#portao .marca{font-weight:800;color:#12336e;font-size:12px;letter-spacing:.5px;text-transform:uppercase}
+#portao h2{margin:6px 0 2px;color:#12336e;font-size:19px}
+#portao p{margin:0 0 18px;color:#556;font-size:12.5px;line-height:1.5}
+#portao input{width:100%;padding:11px 13px;border:1px solid #cdd5e2;border-radius:10px;font-size:14px;margin-bottom:10px;box-sizing:border-box}
+#portao input:focus{outline:2px solid #2E75B6;border-color:#2E75B6}
+#portao button{width:100%;padding:12px;border:0;border-radius:10px;background:#12336e;color:#fff;font-weight:700;font-size:14px;cursor:pointer}
+#portao button:hover{filter:brightness(1.1)}
+#portao .err{color:#c0392b;font-size:12.5px;min-height:17px;margin-top:9px;font-weight:600}
+#portao .ajuda{margin-top:16px;padding-top:14px;border-top:1px solid #e6ebf3;text-align:left}
+#portao .ajuda b{color:#12336e}
+#portao .ajuda > b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+#portao .ajuda span{display:block;font-size:12.5px;color:#4a5568;line-height:1.55;margin-bottom:5px}
+#portao .ajuda i{display:inline-block;min-width:62px;font-style:normal;font-weight:700;color:#7a8090;font-size:11px;text-transform:uppercase}
+#portao .ajuda code{background:#eef2f8;border:1px solid #dbe3ef;border-radius:4px;padding:1px 5px;font-size:12px;color:#12336e}
+#portao .ajuda .obs{margin-top:9px;color:#7a8090;font-size:11.5px;font-style:italic}
+</style>
+</head><body>
+<nav class="eco-nav"><span class="marca">CGMOP · Movimentação de Pessoal</span><a href="index.html"><span class="ic">🏠</span><span class="lab">Início</span></a><a href="manual.html"><span class="ic">📘</span><span class="lab">Manual</span></a><a href="https://notebook.google.com/notebook/f526e962-e813-443b-bee0-87f059d46800" target="_blank" rel="noopener"><span class="ic">📚</span><span class="lab">Mara Legis<span class="fora" aria-hidden="true">↗</span></span></a><span class="onde"><span class="sep">›</span>você está em: <b>Movimentação com Dados Restritos</b></span><button class="tema" id="btn-tema" title="Alternar tema claro/escuro">◐</button></nav>
+<div class="wrap">
+  <div class="expl"><span class="rest">ACESSO RESTRITO</span><b>Movimentação com Dados Restritos.</b>
+  Retrato agregado da ocorrência <b id="x-oc"></b> do SIAPE · recorte de referência <b id="x-ref"></b> ·
+  <b>somente quantitativos</b> (sem nome, CPF, matrícula ou local de destino).
+  <!-- Redação do usuário (11/11/2026). Muitos casos chegam por formulário e ainda não têm
+       registro no sistema; sem este aviso, o número seria lido como o tamanho do programa. -->
+  <div class="aviso-fonte">ℹ️ Os quantitativos refletem os casos que possuem registros com o código
+  <b class="x-oc"></b> no Sigepe Ocorrências.</div>
+  <details class="entenda"><summary>Por que este painel mostra menos que os outros</summary>
+  <div class="entenda-corpo">
+  <p>Esta ocorrência registra a <b>movimentação protetiva</b> de servidoras e servidores. O público é pequeno, e
+  cada pessoa identificada pode correr risco real. Por isso valem três regras, que nenhum outro painel do
+  ecossistema precisa ter:</p>
+  <p><b>1. Nenhum recorte de perfil com menos de <span class="x-k"></span> pessoas aparece.</b> Os números são calculados
+  no próprio Data Lake, e os pequenos nem saem de lá. Um cartão sem barras <b>não</b> quer dizer que não há
+  ninguém naquele recorte — quer dizer que há poucas pessoas, e mostrar o número poderia identificá-las.</p>
+  <p><b>2. Os recortes não se cruzam.</b> Cada gráfico é visto sozinho. Cruzar, por exemplo, órgão + sexo +
+  faixa etária é exatamente o que transformaria um número em uma pessoa.</p>
+  <p><b>3. Não há local de destino.</b> UF e município ficam de fora de propósito: numa movimentação protetiva,
+  o lugar para onde a pessoa foi é o dado que não pode vazar.</p>
+  <p>Duas exceções, com números exatos: o <b>total</b>, que não é recorte, e a <b>linha do tempo</b>. O mês
+  sozinho — sem órgão, sexo, idade ou cargo — é o recorte que menos identifica; e, como o acumulado em linha
+  revela por diferença qualquer mês, escondê-lo seria proteção só aparente. Conforme o número de movimentações
+  crescer, os recortes de perfil passam a aparecer sozinhos, sem nenhuma mudança no painel.</p>
+  <p>O ícone é o <b>Sinal de Ajuda</b> — mão aberta com o polegar dobrado sobre a palma —, gesto usado
+  internacionalmente para pedir socorro em situação de violência.</p>
+  </div></details></div>
+
+  <div class="protecao"><div class="ic">🔒</div><div id="x-protecao"></div></div>
+
+  <div class="kpis" id="kpis"></div>
+  <div class="grid" id="graficos"></div>
+  <div class="rodape" id="rodape"></div>
+</div>
+<script>
+const D={"meta":{"k":5,"ocorrencia":1008,"total":1,"canceladas":null,"referencia":"10/2026","barrados":0,"serie_completa":true,"sem_data_inicio":0,"gerado_em":"11/11/2026 19:39"},"dims":{},"serie":[{"ano":"jun/2026","novas":1,"acumulado":1}]};
+const el=id=>document.getElementById(id),tt=el("tt");
+const fmtInt=n=>(n==null||isNaN(n))?"—":Math.round(n).toLocaleString("pt-BR");
+const fmtPct=n=>(n==null||isNaN(n))?"":(n*100).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
+const fmtMoeda=n=>(n==null||isNaN(n)||+n===0)?"—":(+n).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cap=s=>{s=String(s||"");if(s.length<=4&&s===s.toUpperCase())return s;return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();};
+// Data sempre em dd/mm/aaaa (aceita AAAA-MM-DD, AAAA-MM-DDT..., ou já formatada).
+// "Emitido em" é a hora em que o DOCUMENTO sai — não a da geração do painel. O .html é montado
+// uma vez e usado o dia inteiro: em 22/09/2026 um relatório impresso às 8h dizia 04:51, que era
+// a hora do build. Mesmo formato do gerado_em do Python (%d/%m/%Y %H:%M), para os dois lerem igual.
+const agoraBR=()=>{const d=new Date(),p=n=>String(n).padStart(2,"0");
+  return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;};
+// Painel gerado no MESMO dia: repetir a data ao lado da hora de emissão é ruído
+// ("Emitido em 22/09/2026 08:52 · painel gerado em 22/09/2026 08:25"). Mesmo dia, só a hora;
+// dia anterior, a data inteira — que é quando ela realmente informa alguma coisa.
+const geradoEm=g=>{const t=String(g||"").trim(); if(!t)return"";
+  return t.slice(0,10)===agoraBR().slice(0,10) ? ("às "+t.slice(11)) : ("em "+t);};
+const fmtData=s=>{if(s==null||s===""||s==="1889-09-09")return"";const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:String(s);};
+function showTT(e,h){if(!tt)return;tt.innerHTML=h;tt.style.opacity=1;moveTT(e);}
+function moveTT(e){if(!tt)return;let x=e.clientX+14,y=e.clientY+14;if(x+tt.offsetWidth>innerWidth)x=e.clientX-tt.offsetWidth-14;tt.style.left=x+"px";tt.style.top=y+"px";}
+function hideTT(){if(tt)tt.style.opacity=0;}
+function ligarTips(c){c.querySelectorAll("[data-tip]").forEach(n=>{n.addEventListener("mouseenter",e=>showTT(e,n.getAttribute("data-tip")));n.addEventListener("mousemove",moveTT);n.addEventListener("mouseleave",hideTT);});}
+function ligarTema(){const b=el("btn-tema");if(b)b.onclick=()=>{const c=document.documentElement.getAttribute("data-theme");document.documentElement.setAttribute("data-theme",c==="dark"?"light":"dark");};}
+// barras horizontais: dist=[{cat,n,pct,idx?}]; opts.dimKey liga clique (data-<dimKey>);
+// opts.selIdx destaca a(s) barra(s) selecionada(s) — aceita um valor único OU array/Set (multi-barra).
+function hbars(dist,o={}){o=Object.assign({max:12,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:true,extra:null},o);
+  const rows=dist.slice(0,o.max),mx=Math.max(...rows.map(r=>r.n),1);if(!rows.length)return'<p class="vazio">Sem dados no período.</p>';
+  const _selHas=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  // A coluna do rótulo se ajusta ao MAIOR texto deste gráfico. Antes era minmax(120px,240px)
+  // fixo, e num gráfico só de siglas ("AGU", "MF") sobrava uma faixa vazia à esquerda.
+  const labs=rows.map(r=>String(o.capLab?cap(r.cat):r.cat));
+  // com quebra de linha o rótulo cabe inteiro; a coluna cresce até ~2 linhas de 26 caracteres
+  const nmax=Math.min(26,Math.max(6,...labs.map(s=>s.length)));
+  let h=`<div class="bars" style="--lab:minmax(0,${(nmax*0.62+1.2).toFixed(1)}em)">`;
+  for(const r of rows){const w=(r.n/mx*100).toFixed(1),lab=o.capLab?cap(r.cat):r.cat;
+    const sel=_selHas(r.idx)?" sel":"";const click=o.dimKey?`data-${o.dimKey}="${r.idx}"`:"";
+    const pc=r.pct!=null?` <small>${(r.pct*100).toFixed(1)}%</small>`:"";
+    // dado secundário (ex.: remuneração média do grupo) DENTRO da barra, discreto: fica
+    // ao alcance do olho sem disputar espaço com a contagem, que é a informação principal.
+    const ex=o.extra?o.extra(r):"";
+    h+=`<div class="bar-row${sel}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}${ex?' · '+esc(ex):''}">
+      <div class="lab" title="${esc(lab)}">${esc(lab)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${o.cor}"></div>${ex?`<span class="bar-ex">${esc(ex)}</span>`:""}</div>
+      <div class="val">${fmtInt(r.n)}${pc}</div></div>`;}
+  return h+'</div>';}
+/* ===== Colunas VERTICAIS — para faixas ordenadas (etária, remuneração, tempo). Uma
+   sequência ordenada lê melhor ao longo de um eixo horizontal do que empilhada na
+   vertical, e quebra a monotonia de um painel só de barras deitadas. Mesmo contrato de
+   clique do hbars: cada coluna carrega data-<dimKey>, para multi-seleção. */
+function vbars(dist,o={}){o=Object.assign({max:14,cor:"var(--serie)",dimKey:null,selIdx:null,capLab:false,alt:150,extra:null},o);
+  const rows=dist.slice(0,o.max),mx=Math.max(...rows.map(r=>r.n),1);
+  if(!rows.length)return'<p class="vazio">Sem dados no período.</p>';
+  const _sel=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  let h=`<div class="vbars" style="--alt:${o.alt}px">`;
+  for(const r of rows){const alt=Math.max(2,r.n/mx*100).toFixed(1),lab=o.capLab?cap(r.cat):r.cat;
+    const click=o.dimKey?`data-${o.dimKey}="${esc(r.idx)}"`:"";
+    const ex=o.extra?o.extra(r):"";
+    h+=`<div class="vb${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${r.pct!=null?' ('+(r.pct*100).toFixed(1)+'%)':''}${ex?' · '+esc(ex):''}">
+      <div class="vb-n">${fmtInt(r.n)}</div>
+      <div class="vb-col"><div class="vb-fill" style="height:${alt}%;background:${o.cor}"></div></div>
+      <div class="vb-lab">${esc(lab)}${ex?`<span class="vb-ex">${esc(ex)}</span>`:""}</div></div>`;}
+  return h+'</div>';}
+
+/* ===== Rosca (donut) — para poucas categorias que somam um todo (situação, regime,
+   força de trabalho). Mostra a participação sem obrigar a comparar comprimentos de
+   barra. Fatias e itens da legenda são clicáveis, como as barras. */
+function rosca(dist,o={}){o=Object.assign({max:6,cores:null,dimKey:null,selIdx:null,capLab:true,raio:58,extra:null},o);
+  const rows=dist.slice(0,o.max),tot=rows.reduce((a,r)=>a+r.n,0);
+  if(!rows.length||!tot)return'<p class="vazio">Sem dados no período.</p>';
+  const PAL=o.cores||["var(--serie)","var(--destino)","var(--origem)","var(--magenta)","#7a5bbf","#0f6b56"];
+  const _sel=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  const R=o.raio,C=2*Math.PI*R,cx=R+18,cy=R+18;let off=0,seg="",leg="";
+  rows.forEach((r,k)=>{const frac=r.n/tot,cor=PAL[k%PAL.length],lab=o.capLab?cap(r.cat):r.cat;
+    const click=o.dimKey?`data-${o.dimKey}="${esc(r.idx)}"`:"";
+    seg+=`<circle class="fat${_sel(r.idx)?" sel":""}" ${click} cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${cor}"
+      stroke-width="${_sel(r.idx)?30:23}" stroke-dasharray="${(frac*C).toFixed(2)} ${C.toFixed(2)}"
+      stroke-dashoffset="${(-off*C).toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"
+      data-tip="${esc(lab)}: ${fmtInt(r.n)} (${(frac*100).toFixed(1)}%)"></circle>`;
+    // Sombra clara ATRÁS da linha, do tamanho da fatia e na cor dela: a legenda passa a
+    // comparar as fatias sozinha, sem precisar voltar os olhos ao círculo (achado 04/09/2026).
+    const larg=(frac/Math.max(...rows.map(x=>x.n/tot))*100).toFixed(1);
+    const ex=o.extra?o.extra(r):"";
+    leg+=`<div class="rz-it${_sel(r.idx)?" sel":""}" ${click} data-tip="${esc(lab)}: ${fmtInt(r.n)}${ex?' · '+esc(ex):''}">
+      <span class="rz-bg" style="width:${larg}%;background:${cor}"></span>
+      <span class="pt" style="background:${cor}"></span><span class="tx">${esc(lab)}</span>
+      ${ex?`<i class="rz-ex">${esc(ex)}</i>`:""}<b>${(frac*100).toFixed(1)}%</b><small>${fmtInt(r.n)}</small></div>`;
+    off+=frac;});
+  return `<div class="rz"><svg viewBox="0 0 ${cx*2} ${cy*2}" width="${cx*2}" height="${cy*2}" role="img">${seg}
+    <text x="${cx}" y="${cy-1}" text-anchor="middle" class="rz-tot">${fmtInt(tot)}</text>
+    <text x="${cx}" y="${cy+15}" text-anchor="middle" class="rz-sub">total</text></svg>
+    <div class="rz-leg">${leg}</div></div>`;}
+
+/* ===== Mapa de blocos por UF — as 27 unidades no formato aproximado do país. Uma
+   sequência de 27 colunas obriga a procurar o estado pelo rótulo; no mapa o olho vai
+   direto à região. `dist` = [{cat:"RJ", n, idx}]. Clique com data-<dimKey>. */
+const UF_GRADE={RR:[2,0],AP:[3,0],AM:[1,1],PA:[2,1],MA:[3,1],CE:[4,1],RN:[5,1],AC:[0,2],RO:[1,2],
+  TO:[2,2],PI:[3,2],PB:[4,2],PE:[5,2],MT:[1,3],GO:[2,3],BA:[3,3],AL:[4,3],SE:[5,3],MS:[1,4],
+  DF:[2,4],MG:[3,4],ES:[4,4],SP:[2,5],RJ:[3,5],PR:[2,6],SC:[2,7],RS:[1,8]};
+function mapaUF(dist,o={}){o=Object.assign({dimKey:null,selIdx:null,cor:"var(--serie)",extra:null},o);
+  const m={},ex={};let mx=0;
+  for(const d of dist){if(String(d.cat).length===2){m[d.cat]=d.n;ex[d.cat]=o.extra?o.extra(d):"";if(d.n>mx)mx=d.n;}}
+  const _sel=v=>o.selIdx==null?false:(Array.isArray(o.selIdx)?o.selIdx.includes(v):(o.selIdx instanceof Set?o.selIdx.has(v):o.selIdx===v));
+  let h='<div class="tilemap">';
+  for(const uf in UF_GRADE){const[c,r]=UF_GRADE[uf],v=m[uf]||0,int=mx?v/mx:0;
+    const bg=v?`color-mix(in srgb, ${o.cor} ${(15+int*85).toFixed(0)}%, var(--neutro))`:"var(--neutro)";
+    const tinta=int>.45?"#fff":"var(--ink-2)";
+    const click=o.dimKey?`data-${o.dimKey}="${uf}"`:"";
+    h+=`<div class="tile${_sel(uf)?" sel":""}" style="grid-column:${c+1};grid-row:${r+1};background:${bg};color:${tinta}" ${click}
+      data-tip="${uf}: ${fmtInt(v)}${ex[uf]?' · '+esc(ex[uf]):''}">${uf}<span class="v">${v?fmtInt(v):""}</span></div>`;}
+  h+='</div><div class="map-leg"><span>menos</span><span class="sw" style="background:var(--neutro)"></span>'
+    +`<span class="sw" style="background:color-mix(in srgb, ${o.cor} 55%, var(--neutro))"></span>`
+    +`<span class="sw" style="background:${o.cor}"></span><span>mais</span></div>`;
+  return h;}
+
+/* ===== Trilho lateral dos FILTROS APLICADOS. Achado de 03/09/2026: a relação de filtros
+   ocupava a área nobre do topo e empurrava os gráficos para baixo. Regra do ecossistema:
+   os filtros aplicados moram na lateral; o topo fica para escolher.
+   itens = [{lab, val, rmv()}]; cfg = {onClear, titulo, vazio}. */
+(function(){const CSS=`.frail{position:fixed;right:10px;top:96px;z-index:35;width:214px;max-height:74vh;
+  display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--linha);
+  border-radius:12px;box-shadow:0 10px 30px rgba(20,40,80,.16);overflow:hidden;font-size:12px}
+ .frail .cab{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid var(--linha);
+  font-weight:800;color:var(--gov);font-size:12px}
+ .frail .cab .n{margin-left:auto;background:var(--gov);color:#fff;border-radius:9px;padding:1px 7px;font-size:11px}
+ .frail .cab .dob{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;padding:0 2px}
+ .frail .lst{overflow:auto;padding:7px 8px;display:flex;flex-direction:column;gap:5px}
+ .frail .it{display:flex;gap:5px;align-items:flex-start;background:var(--claro);border-radius:8px;padding:5px 7px;line-height:1.3}
+ .frail .it .k{color:var(--muted);font-weight:700}
+ .frail .it .v{flex:1;overflow-wrap:anywhere;color:var(--ink)}
+ .frail .it .x{cursor:pointer;color:var(--muted);font-weight:800;flex:none}
+ .frail .it .x:hover{color:#b3261e}
+ .frail .pe{padding:9px 10px;color:var(--muted);line-height:1.4}
+ .frail .rod{border-top:1px solid var(--linha);padding:6px 8px}
+ .frail .rod button{width:100%;background:var(--surface-2);border:1px solid var(--linha);border-radius:8px;
+  padding:5px;cursor:pointer;color:var(--ink-2);font-weight:700;font-size:11.5px}
+ .frail.dobrado .lst,.frail.dobrado .rod{display:none}
+ @media (max-width:1450px){.frail{display:none}}
+ @media (min-width:1451px){body{padding-right:236px}
+   /* informação repetida não acrescenta: com o trilho à vista, some a lista de valores
+      logo abaixo de cada campo e a barra de chips. Em tela estreita, onde o trilho não
+      cabe, elas voltam — senão não haveria como saber o que está escolhido. */
+   .chips,.fchips{display:none}}
+ @media print{.frail{display:none!important}}`;
+ // Paleta clara para separar as dimensões no trilho. Cada rótulo pega uma cor fixa (pela
+ // ordem de aparição), então "Órgão de lotação" fica sempre com a mesma, dentro da sessão.
+ const TONS=[["#eef3fd","#2a5bb0"],["#eef7f1","#1c7a5b"],["#fdf3ea","#b96a24"],
+             ["#f7eff8","#8a4f9e"],["#eaf6f8","#1c6f80"],["#fdf0f3","#b03a5b"],
+             ["#f2f4e9","#6a7a2a"],["#f0f1f7","#4a4f7a"]];
+ const CORES={};let _proxCor=0;
+ function tomDe(lab){if(!(lab in CORES)){CORES[lab]=TONS[_proxCor%TONS.length];_proxCor++;}return CORES[lab];}
+ let inj=false,dobrado=false;
+ function css(){if(inj)return;inj=true;const s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s);}
+ window.railFiltros=function(itens,cfg){css();cfg=cfg||{};itens=itens||[];
+   document.documentElement.classList.add("com-rail");
+   let r=document.getElementById("frail");
+   if(!r){r=document.createElement("aside");r.id="frail";r.className="frail";document.body.appendChild(r);}
+   r.classList.toggle("dobrado",dobrado);
+   const n=itens.length;
+   r.innerHTML=`<div class="cab">&#128269; ${esc(cfg.titulo||"Filtros aplicados")}<span class="n">${n}</span>`
+     +`<button class="dob" title="${dobrado?"abrir":"recolher"}">${dobrado?"&#9656;":"&#9662;"}</button></div>`
+     +(n?`<div class="lst">${itens.map((x,k)=>{const[fundo,tinta]=tomDe(x.lab);
+         return `<div class="it" style="background:${fundo};border-left:3px solid ${tinta}">`
+           +`<span class="v"><span class="k" style="color:${tinta}">${esc(x.lab)}:</span> ${esc(x.val)}</span>`
+           +`<span class="x" data-i="${k}" title="remover">&times;</span></div>`;}).join("")}</div>`
+          +`<div class="rod"><button data-lim>&times; Limpar tudo</button></div>`
+        :`<div class="pe">${esc(cfg.vazio||"Nenhum filtro aplicado. Clique nas barras dos gráficos ou use os campos do topo.")}</div>`);
+   r.querySelector(".dob").onclick=()=>{dobrado=!dobrado;railFiltros(itens,cfg);};
+   r.querySelectorAll("[data-i]").forEach(x=>x.onclick=()=>{const it=itens[+x.dataset.i];if(it&&it.rmv)it.rmv();});
+   const lim=r.querySelector("[data-lim]");if(lim&&cfg.onClear)lim.onclick=cfg.onClear;};
+})();
+/* ===== "ⓘ" com a explicação junto do dado. Uso:
+     infoBolha("Título", "<p>texto…</p>")  -> devolve o HTML do ícone (a bolha é criada no
+     clique). Ligue com ligarInfo(container) depois de escrever o HTML. */
+function infoBolha(tit,html){
+  const id="ib"+(infoBolha._n=(infoBolha._n||0)+1);
+  infoBolha._m=infoBolha._m||{};infoBolha._m[id]={tit,html};
+  return `<button type="button" class="ibtn" data-ib="${id}" title="${esc(tit)}" aria-label="${esc(tit)}">i</button>`;}
+function ligarInfo(cont){(cont||document).querySelectorAll("[data-ib]").forEach(b=>{
+  if(b._lig)return;b._lig=1;
+  b.onclick=e=>{e.stopPropagation();
+    const d=(infoBolha._m||{})[b.dataset.ib];if(!d)return;
+    const velho=document.getElementById("ibpop");if(velho)velho.remove();
+    const pop=document.createElement("div");pop.id="ibpop";pop.className="ibpop";
+    pop.innerHTML=`<div class="cab">${esc(d.tit)}<button class="x" aria-label="fechar">&times;</button></div><div class="cp">${d.html}</div>`;
+    document.body.appendChild(pop);
+    const r=b.getBoundingClientRect();
+    pop.style.left=Math.max(8,Math.min(r.left-10,innerWidth-pop.offsetWidth-8))+"px";
+    let top=r.bottom+6;if(top+pop.offsetHeight>innerHeight-8)top=Math.max(8,r.top-pop.offsetHeight-6);
+    pop.style.top=top+"px";
+    pop.querySelector(".x").onclick=()=>pop.remove();
+    setTimeout(()=>{const fora=ev=>{if(!pop.contains(ev.target)){pop.remove();document.removeEventListener("click",fora);}};
+      document.addEventListener("click",fora);},0);};});}
+
+/* ===== Matriz de calor origem × destino. pares=[{o,d,n}].
+   Linhas = origens, colunas = destinos, célula pintada pela intensidade — é o que faz a
+   matriz "ter cara de matriz" e mostrar concentração de fluxo num relance. Cabeçalho e
+   primeira coluna ficam grudados; o resto rola na horizontal. Célula clicável. */
+function matrizCalor(pares,o={}){
+  o=Object.assign({linhas:12,colunas:12,cor:"18,63,133",rot:s=>String(s).split(" — ")[0],titLin:"Origem (cedeu)",titCol:"Destino (recebeu)"},o);
+  if(!pares||!pares.length)return'<p class="vazio">Sem pares com origem e destino conhecidos no recorte.</p>';
+  const somaL={},somaC={};
+  for(const x of pares){somaL[x.o]=(somaL[x.o]||0)+x.n;somaC[x.d]=(somaC[x.d]||0)+x.n;}
+  const topo=(m,k)=>Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,k).map(e=>e[0]);
+  const L=topo(somaL,o.linhas),C=topo(somaC,o.colunas);
+  const cel={};for(const x of pares)if(L.includes(x.o)&&C.includes(x.d))cel[x.o+"\u0001"+x.d]=x.n;
+  const mx=Math.max(1,...Object.values(cel));
+  const tint=n=>{if(!n)return"";const a=(0.10+0.90*Math.sqrt(n/mx)).toFixed(3);
+    return `background:rgba(${o.cor},${a});color:${a>0.55?"#fff":"var(--ink)"}`;};
+  let h=`<div class="mtz-wrap"><table class="mtz"><thead><tr><th class="cnt">${esc(o.titLin)} \\ ${esc(o.titCol)}</th>`;
+  for(const d of C)h+=`<th class="rot" title="${esc(d)}"><span>${esc(o.rot(d))}</span></th>`;
+  h+=`<th class="tot">Σ</th></tr></thead><tbody>`;
+  for(const l of L){h+=`<tr><th class="cnt" title="${esc(l)}">${esc(o.rot(l))}</th>`;
+    for(const d of C){const n=cel[l+"\u0001"+d]||0;
+      h+=`<td class="cl${n?" tem":""}" style="${tint(n)}" ${n?`data-o="${esc(l)}" data-d="${esc(d)}"`:""}
+        data-tip="${esc(o.rot(l))} → ${esc(o.rot(d))}: ${fmtInt(n)}">${n?fmtInt(n):""}</td>`;}
+    h+=`<td class="tot">${fmtInt(somaL[l])}</td></tr>`;}
+  h+=`<tr class="rodape"><th class="cnt">Σ</th>`;
+  for(const d of C)h+=`<td class="tot">${fmtInt(somaC[d])}</td>`;
+  h+=`<td class="tot"></td></tr></tbody></table></div>`;
+  return h;}
+// temporal empilhado: acumulado (área+linha) + novas por ano (barras). serie=[{ano,novas,acumulado}]. Barras clicáveis (data-ano).
+function temporal(serie,cor,titAc,titNo,opts){opts=opts||{};const semArea=!!opts.semArea,corB=opts.corBarras||cor;serie=serie.filter(d=>d.novas>0||d.acumulado>0);if(!serie.length)return'<p class="vazio">Sem dados no período.</p>';
+  const W=Math.max(680,serie.length*54),H=300,mL=54,mR=16,gap=30,pAc={t:14,h:150},pNo={t:14+150+gap,h:78};
+  const iw=W-mL-mR,x=i=>mL+(serie.length===1?iw/2:i/(serie.length-1)*iw);
+  const maxA=Math.max(...serie.map(d=>d.acumulado),1),maxN=Math.max(...serie.map(d=>d.novas),1);
+  const yA=v=>pAc.t+pAc.h-(v/maxA)*pAc.h,yN=v=>pNo.t+pNo.h-(v/maxN)*pNo.h;
+  const pts=serie.map((d,i)=>[x(i),yA(d.acumulado)]);
+  const linha=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+  const area=`M${x(0)} ${pAc.t+pAc.h} `+pts.map(p=>"L"+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ")+` L${x(serie.length-1)} ${pAc.t+pAc.h} Z`;
+  let gridA="";for(let g=1;g<=2;g++){const gy=pAc.t+pAc.h-g/2*pAc.h;gridA+=`<line class="gl" x1="${mL}" y1="${gy}" x2="${W-mR}" y2="${gy}"/><text x="${mL-6}" y="${gy+3}" text-anchor="end">${fmtInt(maxA*g/2)}</text>`;}
+  const bw=Math.min(24,iw/serie.length*.6);
+  const barras=serie.map((d,i)=>`<rect class="barnovas" x="${(x(i)-bw/2).toFixed(1)}" y="${yN(d.novas).toFixed(1)}" width="${bw.toFixed(1)}" height="${(pNo.t+pNo.h-yN(d.novas)).toFixed(1)}" rx="2" fill="${corB}" style="cursor:pointer" data-ano="${d.ano}" data-tip="${d.ano}: ${fmtInt(d.novas)}"/>`).join("");
+  const dots=serie.map((d,i)=>`<circle class="dot" cx="${x(i)}" cy="${yA(d.acumulado)}" r="3.5" fill="${cor}" data-tip="${d.ano}: acumulado ${fmtInt(d.acumulado)}"/>`).join("");
+  const labsX=serie.map((d,i)=>(i%Math.ceil(serie.length/9)===0||i===serie.length-1)?`<text x="${x(i)}" y="${H-6}" text-anchor="middle">${d.ano}</text>`:"").join("");
+  return `<div class="svgwrap"><svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}">
+    <text class="t" x="${mL}" y="10">${titAc}</text>${gridA}<line class="ax" x1="${mL}" y1="${pAc.t+pAc.h}" x2="${W-mR}" y2="${pAc.t+pAc.h}"/>
+    ${semArea?"":`<path class="area" d="${area}" fill="${cor}" opacity=".18"/>`}<path class="line" d="${linha}" fill="none" stroke="${cor}" stroke-width="2"/>${dots}
+    <text class="t" x="${mL}" y="${pNo.t-2}">${titNo}</text><line class="ax" x1="${mL}" y1="${pNo.t+pNo.h}" x2="${W-mR}" y2="${pNo.t+pNo.h}"/><text x="${mL-6}" y="${pNo.t+9}" text-anchor="end">${fmtInt(maxN)}</text>${barras}${labsX}</svg></div>`;}
+// XLSX (zip+deflate manual, sem biblioteca) — matriz de linhas -> Blob .xlsx
+function crc32(b){let c,crc=0xFFFFFFFF;for(let i=0;i<b.length;i++){c=(crc^b[i])&0xFF;for(let k=0;k<8;k++)c=c&1?(c>>>1)^0xEDB88320:c>>>1;crc=(crc>>>8)^c;}return(crc^0xFFFFFFFF)>>>0;}
+function strU8(s){return new TextEncoder().encode(s);}
+async function deflateRaw(u8){if(typeof CompressionStream==="undefined")return null;const cs=new CompressionStream("deflate-raw");const w=cs.writable.getWriter();w.write(u8);w.close();return new Uint8Array(await new Response(cs.readable).arrayBuffer());}
+async function zipFiles(files){const dv=(n,b)=>{const a=new Uint8Array(b);let v=n>>>0;for(let i=0;i<b;i++){a[i]=v&0xFF;v>>>=8;}return a;};let parts=[],central=[],off=0;
+  for(const f of files){const nb=strU8(f.name),crc=crc32(f.data);let comp=await deflateRaw(f.data),method=8;if(!comp){comp=f.data;method=0;}
+    const lh=[...strU8("PK\x03\x04"),...dv(20,2),...dv(0,2),...dv(method,2),...dv(0,2),...dv(0,2),...dv(crc,4),...dv(comp.length,4),...dv(f.data.length,4),...dv(nb.length,2),...dv(0,2)];parts.push(new Uint8Array(lh),nb,comp);
+    const ch=[...strU8("PK\x01\x02"),...dv(20,2),...dv(20,2),...dv(0,2),...dv(method,2),...dv(0,2),...dv(0,2),...dv(crc,4),...dv(comp.length,4),...dv(f.data.length,4),...dv(nb.length,2),...dv(0,2),...dv(0,2),
+      // ZIP: depois de "comment length" vem disco inicial(2) + atributos internos(2) +
+      // atributos externos(4) + deslocamento do cabeçalho local(4). Faltavam os 2 bytes de
+      // atributos internos, e o diretório central saía com 44 bytes em vez de 46 — o Excel
+      // recusava o arquivo ("bad magic number"). Era a causa da "planilha bagunçada".
+      ...dv(0,2),...dv(0,2),...dv(0,4),...dv(off,4)];central.push(new Uint8Array(ch),nb);off+=lh.length+nb.length+comp.length;}
+  let cs=central.reduce((a,p)=>a+p.length,0),ps=parts.reduce((a,p)=>a+p.length,0);
+  const eocd=[...strU8("PK\x05\x06"),...dv(0,2),...dv(0,2),...dv(files.length,2),...dv(files.length,2),...dv(cs,4),...dv(ps,4),...dv(0,2)];
+  const all=[...parts,...central,new Uint8Array(eocd)];let tot=all.reduce((a,p)=>a+p.length,0),out=new Uint8Array(tot),oo=0;for(const p of all){out.set(p,oo);oo+=p.length;}return out;}
+function xc(v,r,c){const col=String.fromCharCode(65+(c%26)),ref=(c>=26?String.fromCharCode(64+Math.floor(c/26)):"")+col+r;if(typeof v==="number"&&isFinite(v))return`<c r="${ref}"><v>${v}</v></c>`;return`<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${esc(v)}</t></is></c>`;}
+/* Planilha com VARIAS ABAS: abas=[{nome,linhas}]. Uma aba por assunto, cabecalho na
+   primeira linha e dados linha a linha — para outra pessoa filtrar/dinamizar sem ter de
+   limpar linhas-titulo no meio da grade. Numero sai como numero (ver xc). */
+async function baixarXLSXAbas(abas,nomeArq){
+  abas=(abas||[]).filter(a=>a&&a.linhas&&a.linhas.length);
+  if(!abas.length){alert("Nada para exportar no recorte atual.");return;}
+  const nm=n=>String(n||"Dados").replace(/[\\/\?\*\[\]:]/g,"-").slice(0,31);
+  const usados=new Set();
+  const sheets=abas.map((a,i)=>{
+    let n=nm(a.nome),b=n,k=2;while(usados.has(n.toLowerCase())){n=(b+" "+k++).slice(0,31);}
+    usados.add(n.toLowerCase());
+    let rows="";a.linhas.forEach((ln,ri)=>{rows+=`<row r="${ri+1}">`+ln.map((v,ci)=>xc(v,ri+1,ci)).join("")+"</row>";});
+    const cols=Math.max(...a.linhas.map(l=>l.length));
+    const larg=`<cols><col min="1" max="1" width="42" customWidth="1"/><col min="2" max="${Math.max(2,cols)}" width="17" customWidth="1"/></cols>`;
+    return {nome:n,id:i+1,
+      xml:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">`
+        +`<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>`
+        +`${larg}<sheetData>${rows}</sheetData>`
+        +`<autoFilter ref="A1:${String.fromCharCode(64+Math.min(26,cols))}${a.linhas.length}"/></worksheet>`};
+  });
+  const wb=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>`
+    +sheets.map(s=>`<sheet name="${esc(s.nome)}" sheetId="${s.id}" r:id="rId${s.id}"/>`).join("")+`</sheets></workbook>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">`
+    +sheets.map(s=>`<Relationship Id="rId${s.id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${s.id}.xml"/>`).join("")+`</Relationships>`;
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>`
+    +sheets.map(s=>`<Override PartName="/xl/worksheets/sheet${s.id}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")+`</Types>`;
+  const root=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+  const files=[{name:"[Content_Types].xml",data:strU8(ct)},{name:"_rels/.rels",data:strU8(root)},
+    {name:"xl/workbook.xml",data:strU8(wb)},{name:"xl/_rels/workbook.xml.rels",data:strU8(rels)}]
+    .concat(sheets.map(s=>({name:`xl/worksheets/sheet${s.id}.xml`,data:strU8(s.xml)})));
+  const zip=await zipFiles(files),blob=new Blob([zip],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nomeArq||"dados.xlsx";a.click();}
+async function baixarXLSX(linhas,nomeAba,nomeArq){
+  let rows="";linhas.forEach((ln,ri)=>{rows+=`<row r="${ri+1}">`+ln.map((v,ci)=>xc(v,ri+1,ci)).join("")+"</row>";});
+  const sheet=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${rows}</sheetData></worksheet>`;
+  const wb=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${esc(nomeAba||"Dados")}" sheetId="1" r:id="rId1"/></sheets></workbook>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>`;
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>`;
+  const root=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+  const files=[{name:"[Content_Types].xml",data:strU8(ct)},{name:"_rels/.rels",data:strU8(root)},{name:"xl/workbook.xml",data:strU8(wb)},{name:"xl/_rels/workbook.xml.rels",data:strU8(rels)},{name:"xl/worksheets/sheet1.xml",data:strU8(sheet)}];
+  const zip=await zipFiles(files),blob=new Blob([zip],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nomeArq||"dados.xlsx";a.click();}
+/* ===== Multi-seleção (checklist com busca) — escolha VÁRIOS de uma vez num só painel.
+   O gerador desenha o campo com um botão .msel[data-mtrigger] e liga com ligarMulti(btn,cfg).
+   cfg.getOptions() -> [{v,label}] (em cascata, recalculado a cada abertura);
+   cfg.getSelected() -> [v]; cfg.onApply(arr) -> aplica ao fechar. CSS auto-injetado. */
+(function(){const CSS=`.mpop{position:fixed;z-index:2000;background:var(--surface);border:1px solid var(--linha);border-radius:12px;
+  box-shadow:0 14px 44px rgba(20,40,80,.28);width:min(340px,92vw);max-height:min(56vh,420px);display:flex;flex-direction:column;overflow:hidden}
+  .mpop .top{padding:8px;border-bottom:1px solid var(--linha);display:flex;gap:6px;align-items:center}
+  .mpop .top input{flex:1;padding:7px 9px;border:1px solid var(--linha);border-radius:8px;font-size:13px;background:var(--surface);color:var(--ink)}
+  .mpop .lst{overflow:auto;padding:4px 4px 6px}
+  .mpop .opt{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink)}
+  .mpop .opt:hover{background:var(--claro)}.mpop .opt input{accent-color:var(--serie);width:15px;height:15px;flex:none}
+  .mpop .opt .lb{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mpop .opt.marc{background:var(--claro)}
+  .mpop .foot{display:flex;gap:6px;justify-content:space-between;align-items:center;padding:7px 9px;border-top:1px solid var(--linha);font-size:12px}
+  .mpop .foot .cta{background:var(--gov);color:#fff;border:0;border-radius:8px;padding:6px 14px;font-weight:700;cursor:pointer}
+  .mpop .foot .lk{background:none;border:0;color:var(--serie);cursor:pointer;font-weight:700;font-size:12px}
+  .msel{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--linha);border-radius:8px;background:var(--surface);
+    color:var(--ink);font-size:13px;cursor:pointer;min-width:150px;text-align:left}
+  .msel:hover{border-color:var(--serie)}.msel .cnt{margin-left:auto;color:var(--serie);font-weight:800}.msel .ch{color:var(--muted)}`;
+  let inj=false;function css(){if(inj)return;inj=true;const s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s);}
+  let abrir_=null;
+  window.ligarMulti=function(btn,cfg){css();btn.onclick=function(e){e.stopPropagation();if(abrir_){abrir_();abrir_=null;}
+    const opts=cfg.getOptions()||[],sel=new Set((cfg.getSelected()||[]).map(String));
+    const pop=document.createElement("div");pop.className="mpop";
+    pop.innerHTML=`<div class="top"><input placeholder="buscar…" autocomplete="off"></div><div class="lst"></div>
+      <div class="foot"><button class="lk" data-all>Todos</button><button class="lk" data-none>Nenhum</button><button class="cta">Aplicar (<span class="q">${sel.size}</span>)</button></div>`;
+    document.body.appendChild(pop);const r=btn.getBoundingClientRect();
+    pop.style.left=Math.max(6,Math.min(r.left,innerWidth-pop.offsetWidth-6))+"px";
+    let top=r.bottom+4;if(top+pop.offsetHeight>innerHeight-6)top=Math.max(6,r.top-pop.offsetHeight-4);pop.style.top=top+"px";
+    const lst=pop.querySelector(".lst"),busca=pop.querySelector(".top input"),q=pop.querySelector(".q");
+    function pinta(){const f=(busca.value||"").toLowerCase().trim();
+      lst.innerHTML=opts.filter(o=>!f||o.label.toLowerCase().includes(f)||String(o.v).toLowerCase().includes(f)).slice(0,600)
+        .map(o=>`<label class="opt${sel.has(String(o.v))?" marc":""}"><input type="checkbox" data-v="${esc(o.v)}" ${sel.has(String(o.v))?"checked":""}><span class="lb" title="${esc(o.label)}">${esc(o.label)}</span></label>`).join("")
+        ||'<div class="opt" style="color:var(--muted);cursor:default">sem opções</div>';
+      lst.querySelectorAll("input[data-v]").forEach(c=>c.onchange=()=>{const v=c.dataset.v;if(c.checked)sel.add(v);else sel.delete(v);c.closest(".opt").classList.toggle("marc",c.checked);q.textContent=sel.size;});}
+    pinta();busca.oninput=pinta;setTimeout(()=>busca.focus(),0);
+    pop.querySelector("[data-all]").onclick=()=>{const f=(busca.value||"").toLowerCase().trim();opts.filter(o=>!f||o.label.toLowerCase().includes(f)||String(o.v).toLowerCase().includes(f)).forEach(o=>sel.add(String(o.v)));pinta();q.textContent=sel.size;};
+    pop.querySelector("[data-none]").onclick=()=>{sel.clear();pinta();q.textContent=0;};
+    function fechar(aplicar){pop.remove();document.removeEventListener("mousedown",fora,true);document.removeEventListener("keydown",tecla,true);abrir_=null;if(aplicar)cfg.onApply([...sel]);}
+    function fora(ev){if(!pop.contains(ev.target)&&ev.target!==btn)fechar(true);}
+    function tecla(ev){if(ev.key==="Escape")fechar(false);}
+    pop.querySelector(".cta").onclick=()=>fechar(true);
+    document.addEventListener("mousedown",fora,true);document.addEventListener("keydown",tecla,true);
+    abrir_=()=>fechar(false);};};})();
+
+/* ===== Caixa de apresentação RECOLHÍVEL (pedido do usuário, 14/09/2026) =====
+   O bloco ".expl" no topo dos painéis explica o que a página é — indispensável na primeira
+   visita, estorvo na décima, porque empurra os filtros e os números para baixo da dobra.
+   Agora ele recolhe, e a escolha FICA GUARDADA por página (localStorage): quem já leu não
+   precisa recolher de novo a cada abertura.
+
+   Auto-instala: nenhum painel precisa chamar nada, e painel novo já nasce com o recurso.
+   Roda num setTimeout(0) para acontecer DEPOIS do init() síncrono da página — há painel
+   (afastamentos) que preenche o texto da caixa dentro do init.
+   Só a PRIMEIRA .expl da página é tratada: é a de apresentação. As demais, quando existem
+   (reembolso), são legendas curtas dentro das abas — recolher cada uma seria ruído. */
+(function(){const CSS=`.expl{position:relative}
+  /* Um "×" só, no canto (pedido do usuário, 14/09/2026): a versão anterior escrevia
+     "▾ recolher" em cima do texto, porque o botão era absoluto e a caixa não reservava o
+     espaço dele. Agora o corpo e o título têm padding-right para o texto nunca correr por
+     baixo. A classe é .expl-x, e não .expl-bt, porque o reembolso tem botões próprios com
+     esse nome nas legendas das abas — o CSS colidia. */
+  .expl-x{position:absolute;top:8px;right:8px;width:22px;height:22px;line-height:20px;
+    text-align:center;background:none;border:1px solid transparent;border-radius:6px;
+    cursor:pointer;color:var(--ink-2);font:inherit;font-size:17px;font-weight:700;opacity:.6;
+    padding:0}
+  .expl-x:hover{opacity:1;background:var(--surface);border-color:var(--linha)}
+  .expl-corpo,.expl-tit{padding-right:30px}
+  .expl.recolhida{padding-top:9px;padding-bottom:9px}
+  .expl.recolhida .expl-corpo{display:none}
+  .expl-tit{display:none;font-weight:700;color:var(--ink-2)}
+  .expl.recolhida .expl-tit{display:block}
+  @media print{.expl-x{display:none}.expl.recolhida .expl-corpo{display:block}.expl-tit{display:none}}`;
+  let inj=false;
+  function css(){if(inj)return;inj=true;const s=document.createElement("style");
+    s.textContent=CSS;document.head.appendChild(s);}
+  function chave(){return "expl_recolhida_v1:"+location.pathname.split("/").pop();}
+  function ler(){try{return localStorage.getItem(chave())==="1";}catch(e){return false;}}
+  function gravar(v){try{localStorage.setItem(chave(),v?"1":"0");}catch(e){}}
+  window.ligarRecolher=function(sel){
+    const cx=document.querySelector(sel||".expl");
+    if(!cx||cx.dataset.recolhivel)return;          // idempotente
+    if(!cx.textContent.trim())return;              // caixa ainda vazia: nada a recolher
+    cx.dataset.recolhivel="1";css();
+    // Título do estado recolhido = o primeiro <b> da caixa ("Quem são os anistiados?"),
+    // que é justamente a pergunta que ela responde. Sem <b>, um rótulo genérico.
+    const b=cx.querySelector("b");
+    const tit=b?b.textContent.replace(/[:?]\s*$/,""):"Sobre este painel";
+    const corpo=document.createElement("div");corpo.className="expl-corpo";
+    while(cx.firstChild)corpo.appendChild(cx.firstChild);
+    const cab=document.createElement("div");cab.className="expl-tit";cab.textContent="ⓘ "+tit;
+    const bt=document.createElement("button");bt.className="expl-x";bt.type="button";
+    cx.appendChild(cab);cx.appendChild(corpo);cx.appendChild(bt);
+    function pinta(){const r=cx.classList.contains("recolhida");
+      bt.textContent=r?"+":"×";
+      bt.setAttribute("aria-expanded",r?"false":"true");
+      bt.setAttribute("aria-label",r?"Mostrar a apresentação":"Recolher a apresentação");
+      bt.title=r?"Mostrar a apresentação do painel":"Recolher — fica guardado para as próximas visitas";}
+    function alterna(){cx.classList.toggle("recolhida");gravar(cx.classList.contains("recolhida"));pinta();}
+    bt.onclick=alterna;
+    // no estado recolhido, a faixa inteira volta a abrir com um clique
+    cab.style.cursor="pointer";cab.onclick=alterna;
+    if(ler())cx.classList.add("recolhida");
+    pinta();};
+  setTimeout(()=>{try{window.ligarRecolher();}catch(e){}},0);})();
+const M=D.meta,K=M.k;
+function menos(){return `menos de ${K}`;}
+// Com total ZERO não há o que proteger — dizer "há registros" seria falso.
+function oculto(){return M.total===0
+  ? `<div class="oculto"><b>Sem movimentações ativas</b>Não há movimentação ativa no recorte de referência.</div>`
+  : `<div class="oculto"><b>Recorte protegido</b>Há registros, mas nenhum grupo deste recorte
+  reúne ao menos ${K} pessoas. Mostrar os números poderia identificar alguém.</div>`;}
+function qtd(n){return n===1?"há 1 movimentação ativa":`são ${fmtInt(n)} movimentações ativas`;}
+function cartao(id,tit,nota,corpo,largo){return `<div class="card${largo?" largo":""}" id="c-${id}"><h3>${esc(tit)}</h3>`+
+  `<p class="nota">${nota}</p>${corpo}</div>`;}
+function lista(dim){return (D.dims[dim]||[]);}
+function grafico(dim,tipo,o){const d=lista(dim);if(!d.length)return oculto();
+  if(tipo==="rosca")return rosca(d,Object.assign({max:6},o||{}));
+  if(tipo==="v")return vbars(d,Object.assign({max:24,alt:170},o||{}));
+  return hbars(d,Object.assign({max:15},o||{}));}
+
+el("x-oc").textContent=M.ocorrencia;
+document.querySelectorAll(".x-oc").forEach(n=>n.textContent=M.ocorrencia);
+el("x-ref").textContent=M.referencia||"—";
+document.querySelectorAll(".x-k").forEach(n=>n.textContent=K);
+
+el("x-protecao").innerHTML=M.total===0
+  ? `<b>Não há movimentação ativa no recorte de referência.</b> Quando houver, os números aparecem aqui — sempre com a
+     mesma regra: nenhum recorte com menos de ${K} pessoas.`
+  : M.total<K
+  ? `<b>Hoje o total é pequeno demais para qualquer recorte.</b> No recorte de referência ${qtd(M.total)} — menos de ${K}.
+     Por isso os cartões de perfil abaixo aparecem protegidos; eles se preenchem sozinhos quando cada grupo alcançar ${K} pessoas.
+     A linha do tempo mostra os números exatos.`
+  : `<b>Proteção ativa:</b> recortes de perfil com menos de ${K} pessoas não aparecem e os gráficos não se cruzam.
+     Um cartão sem barras indica grupos pequenos demais para mostrar — não ausência de registros. A linha do tempo mostra os números exatos.`;
+
+el("kpis").innerHTML=`
+  <div class="kpi destaque"><div class="rot">Movimentações ativas</div><div class="val">${fmtInt(M.total)}</div><div class="sub">pessoas com registro não cancelado</div></div>
+  <div class="kpi"><div class="rot">Canceladas</div><div class="val${M.canceladas==null?" peq":""}">${M.canceladas==null?menos():fmtInt(M.canceladas)}</div><div class="sub">registros cancelados, por pessoa</div></div>
+  <div class="kpi"><div class="rot">Recorte de referência</div><div class="val peq">${esc(M.referencia||"—")}</div><div class="sub">retrato mensal do SIAPE</div></div>
+  <div class="kpi"><div class="rot">Regra de proteção</div><div class="val peq">mín. ${K} pessoas</div><div class="sub">por recorte de perfil</div></div>`;
+
+const so=`Recortes com menos de ${K} pessoas não aparecem.`;
+// Linha do tempo: acumulado em LINHA (lilás, sem área) + novas do mês em BARRAS (âmbar) — as duas
+// cores do ícone. Se os meses não somarem o total (cache anterior a 11/11/2026), um acumulado
+// desenhado estaria ERRADO: no lugar dele vai o aviso, nunca uma linha falsa.
+function linhaTempo(){
+  if(M.total===0)return oculto();
+  if(!M.serie_completa)return `<div class="oculto"><b>Linha do tempo indisponível neste recorte</b>Os dados mensais
+    estão incompletos (extração anterior à mudança da linha do tempo). Re-extraia com <code>--atualizar</code>.</div>`;
+  return temporal(D.serie,"#B05CE8","Acumulado de movimentações","Novas no mês",{semArea:true,corBarras:"var(--origem)"});}
+const notaTempo=`Linha = total acumulado; barras = movimentações iniciadas em cada mês. Números exatos — o mês sozinho não identifica ninguém.`
+  +(M.sem_data_inicio?` ${fmtInt(M.sem_data_inicio)} movimentação(ões) sem data de início registrada não entra(m) na linha.`:"");
+el("graficos").innerHTML=
+  cartao("mes","Linha do tempo — início das movimentações",notaTempo,linhaTempo(),true)+
+  cartao("sexo","Sexo",so,grafico("sexo","rosca"))+
+  cartao("faixa","Faixa etária",`Idade na data de início da movimentação. ${so}`,grafico("faixa_etaria","v"))+
+  cartao("sit","Situação funcional",so,grafico("situacao","h"))+
+  cartao("dur","Duração prevista",`Do início à data de fim registrada. ${so}`,grafico("duracao","v"))+
+  cartao("org","Órgão",so,grafico("orgao","h"))+
+  cartao("carr","Carreira",so,grafico("carreira","h"))+
+  cartao("cargo","Cargo",so,grafico("cargo","h"));
+
+el("rodape").innerHTML=`Fonte: SIAPE / Data Lake MGI — bd_ocorrencia (ocorrência ${M.ocorrencia}) cruzado com o fatoServidor ·
+  recorte ${esc(M.referencia||"—")} · agregação e proteção (mínimo de ${K} pessoas por recorte de perfil; linha do tempo exata) aplicadas no próprio Data Lake ·
+  gerado em ${esc(M.gerado_em)} · uso restrito da CGMOP.`;
+ligarTips(document.body);ligarTema();
+</script>
+<div id="portao"><div class="cx">
+  <div class="marca">CGMOP · MGI</div>
+  <h2>Movimentação de Pessoal</h2>
+  <p>Acesso restrito. Informe usuário e senha para visualizar o painel.</p>
+  <input id="portao-user" placeholder="nome.sobrenome" autocomplete="username">
+  <input id="portao-pass" type="password" placeholder="ddmmaaaa" autocomplete="current-password">
+  <button id="portao-btn">Entrar</button>
+  <div class="err" id="portao-err"></div>
+  <div class="ajuda">
+    <b>Como entrar</b>
+    <span><i>Usuário</i> o seu <b>nome.sobrenome</b> (ex.: <code>maria.silva</code>)</span>
+    <span><i>Senha</i> a sua <b>data de nascimento</b>, só números, no formato
+      <b>ddmmaaaa</b> (ex.: <code>07091985</code> para 07/09/1985)</span>
+    <span class="obs">Não conseguiu entrar? Fale com a CGMOP.</span>
+  </div>
+</div></div>
+
+<script>
+(function(){
+  // ATRITO — NÃO é segurança real (o arquivo é público; o dado está embutido nele).
+  // HASHES = lista de SHA-256 de "usuario:senha". Para trocar/adicionar usuários, edite
+  // USUARIOS em publicar_cgmop.py e rode de novo (ou troque a lista abaixo à mão).
+  var HASHES=["201602d21ed0e60ee8e96210d95472f92e1a68d382ee7a652060cb693b33c824", "5b2039fede59812df6aff851301c41fa25d855319a6e701b104645d134fb75d5", "117a93ecdcea3663a7913f5ec9088531e515052b12d52533ebd7c3a0fbf2c089", "5b3e3ad9548b68b6d3e830a281d93c97666e94c8357d98c50e68e97c152ed14f", "76f45d397daff8c185a6faa87c355320e86fdb1e9d0cfde002121bcbc37d2a2e", "a06daa29526f49c80be183a8d2cf343cf8c870d55bec56c8caa7c7f57bd1bc04", "3e8e80ed53d284bfc9ad2615f3a33721bebc60906bae921e9dcfe85bcbfbdafe", "e57e2a1e1a5205d1ab456e9b1878164d7c004921fdc86404eca8e711138d5d75", "ae171d8883b2a102be9d316b8a245e1ead123aac9ed2da15fcceb1cb5005daa6", "d89e01a5d3b1e46b95bd1b93304867619c26e70a0294fe36d5e5c4b4a941a1b8", "0bd948d75facc4d87c03906ac455265dcc239f3369dea48447e37deb444ea196", "4536e6b9f4bc36fd9fb0e5e4fea83a4c35e4a78c6c8cb1e1cdb519a7363cda79", "a009d92353cd8a15c1d8fd01f722ab8a1565e66dd8b1a08a26a042b3aa1729a6", "fd92d20f5b855a14c50ed804cc02239a9958c87d17bfc5ceea28e9048b81475e", "21f981da2b918484f099fd80e4ea59774d35b027bbbf251f02dc555573c4ec7a", "5a3eadff04e107a3130690b48767d301dc822dc23050b230995c834e5591adfb", "6ba02240e471a1b68671dbcf2e5d131a245abc1abeab3acf3031ff04bb4c3676", "117a93ecdcea3663a7913f5ec9088531e515052b12d52533ebd7c3a0fbf2c089", "d96b1c3083a7182bc6c3b3fa6fd487bd84d54752a08f048eb9a72a72cf7e30b0", "7b9208e967e184f55826d860d77fe8d2a345d9d2b7c1d2c2cb798fe538e71b1b", "45e051345efc4f8061bc9d2df03f85be82e78db6f02ab5faf80f62ebfe1f1f40", "4ffa764e7f1d15b0dd1c78024556aa034b375ceda7afffcfdfa14a95aad84296"];
+  var KEY="cgmop_auth_v2";          // v2: mudou o algoritmo -> força novo login de quem já entrou
+  var SAL="cgmop-painel-2026", ITER=250000;
+  // PBKDF2-HMAC-SHA256 com sal e muitas iterações. Antes era um SHA-256 simples, que tornava
+  // trivial varrer senhas curtas/previsíveis a partir do HTML publicado.
+  function derivar(s){
+    var enc=new TextEncoder();
+    return crypto.subtle.importKey("raw",enc.encode(s),{name:"PBKDF2"},false,["deriveBits"])
+      .then(function(k){return crypto.subtle.deriveBits(
+        {name:"PBKDF2",salt:enc.encode(SAL),iterations:ITER,hash:"SHA-256"},k,256);})
+      .then(function(b){return Array.prototype.map.call(new Uint8Array(b),
+        function(x){return x.toString(16).padStart(2,"0");}).join("");});
+  }
+  function liberar(){document.documentElement.classList.add("autenticado");}
+  try{if(sessionStorage.getItem(KEY)==="1")liberar();}catch(e){}
+  var ocupado=false;
+  function tentar(){
+    if(ocupado)return; ocupado=true;
+    var bt=document.getElementById("portao-btn"),er=document.getElementById("portao-err");
+    var txt=bt?bt.textContent:""; if(bt){bt.disabled=true;bt.textContent="Verificando…";}
+    if(er)er.textContent="";
+    // Canoniza igual ao Python (_canon_user/_canon_pass): usuário sem caixa; data sem separadores.
+    var u=(document.getElementById("portao-user").value||"").trim().toLowerCase(),
+        p=(document.getElementById("portao-pass").value||"").replace(/[\s\/.\-]/g,"");
+    derivar(u+":"+p).then(function(h){
+      if(HASHES.indexOf(h)>=0){try{sessionStorage.setItem(KEY,"1");}catch(e){}liberar();}
+      else{if(er)er.textContent="Usuário ou senha incorretos.";}
+    }).catch(function(e){
+      if(er)er.textContent="Não foi possível verificar (o navegador precisa de HTTPS).";
+    }).then(function(){ocupado=false;if(bt){bt.disabled=false;bt.textContent=txt;}});
+  }
+  document.addEventListener("DOMContentLoaded",function(){
+    var b=document.getElementById("portao-btn");if(b)b.onclick=tentar;
+    var pp=document.getElementById("portao-pass");if(pp)pp.addEventListener("keydown",function(e){if(e.key==="Enter")tentar();});
+  });
+})();
+</script>
+</body></html>
